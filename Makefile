@@ -2,7 +2,7 @@ include .envrc
 MIGRATIONS_PATH = ./cmd/migrate/migrations
 
 .PHONY: migrate-create
-migrate:
+migration:
 # https://stackoverflow.com/questions/6273608/how-to-pass-argument-to-makefile-from-command-line
 	@migrate create -seq -ext sql -dir $(MIGRATIONS_PATH) $(filter-out $@,$(MAKECMDGOALS))
 
