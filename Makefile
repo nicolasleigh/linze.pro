@@ -13,3 +13,9 @@ migrate-up:
 PHONY: migrate-down
 migrate-down:
 	@migrate -path $(MIGRATIONS_PATH) -database $(DB_ADDR) down $(filter-out $@,$(MAKECMDGOALS))
+
+get-health:
+	@curl http://localhost:4000/v1/health $(filter-out $@,$(MAKECMDGOALS))
+
+fmt:
+	@go fmt ./...
