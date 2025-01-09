@@ -1,7 +1,7 @@
 include .envrc
 MIGRATIONS_PATH = ./cmd/migrate/migrations
 
-.PHONY: migration migrate-up migrate-down get-health fmt run air
+.PHONY: migration migrate-up migrate-down get-health fmt run air seed
 
 migration:
 # https://stackoverflow.com/questions/6273608/how-to-pass-argument-to-makefile-from-command-line
@@ -24,3 +24,6 @@ run:
 
 air:
 	@air
+
+seed:
+	@go run cmd/migrate/seed/main.go
