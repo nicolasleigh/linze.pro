@@ -1,7 +1,7 @@
 include .envrc
 MIGRATIONS_PATH = ./cmd/migrate/migrations
 
-.PHONY: migration migrate-up migrate-down get-health fmt run air seed
+.PHONY: migration migrate-up migrate-down get-health fmt run air seed gen-docs
 
 migration:
 # https://stackoverflow.com/questions/6273608/how-to-pass-argument-to-makefile-from-command-line
@@ -27,3 +27,6 @@ air:
 
 seed:
 	@go run cmd/migrate/seed/main.go
+
+gen-docs:
+	@swag init -g ./api/main.go -d cmd,internal && swag fmt
