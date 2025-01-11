@@ -1,3 +1,6 @@
 {
-  "cSpell.words": ["Errorw", "Warnf", "Warnw"]
+  "cSpell.words": ["Errorw", "sendgrid", "tmpl", "unfollow", "Warnf", "Warnw"],
+  "files.associations": {
+    "*.tmpl": "html"
+  }
 }
