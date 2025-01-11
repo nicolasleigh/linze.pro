@@ -1,6 +1,7 @@
 package main
 
 import (
+	"database/sql"
 	"log"
 
 	"github.com/nicolasleigh/social/internal/db"
@@ -17,5 +18,5 @@ func main() {
 	defer conn.Close()
 	store := store.NewStorage(conn)
 
-	db.Seed(store)
+	db.Seed(store, &sql.DB{})
 }
