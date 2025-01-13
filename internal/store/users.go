@@ -75,7 +75,7 @@ func (s *UserStore) Create(ctx context.Context, tx *sql.Tx, user *User) error {
 }
 
 func (s *UserStore) GetByID(ctx context.Context, userID int64) (*User, error) {
-	query := `SELECT u.id, u.username, u.email, u.password, u.created_at, r.id, r.name, r.level, r.description
+	query := `SELECT u.id, u.username, u.email, u.password, u.created_at, u.is_active, u.role_id, r.id, r.name, r.level, r.description
 	FROM users u
 	JOIN roles r ON (u.role_id = r.id)
 	WHERE u.id = $1 AND u.is_active = true`
@@ -90,6 +90,8 @@ func (s *UserStore) GetByID(ctx context.Context, userID int64) (*User, error) {
 		&user.Email,
 		&user.Password.hash,
 		&user.CreatedAt,
+		&user.IsActive, // If you don't add this, 'is_active' will be 'false', because 'false' is the zero value for bool
+		&user.RoleID,   // If you don't add this, 'role_id' will be '0', because '0' is the zero value for int
 		&user.Role.ID,
 		&user.Role.Name,
 		&user.Role.Level,

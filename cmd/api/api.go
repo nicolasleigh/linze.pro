@@ -11,6 +11,7 @@ import (
 	"github.com/nicolasleigh/social/internal/auth"
 	"github.com/nicolasleigh/social/internal/mailer"
 	"github.com/nicolasleigh/social/internal/store"
+	"github.com/nicolasleigh/social/internal/store/cache"
 	httpSwagger "github.com/swaggo/http-swagger/v2"
 	"go.uber.org/zap"
 )
@@ -18,6 +19,7 @@ import (
 type application struct {
 	config        config
 	store         store.Storage
+	cacheStorage  cache.Storage
 	logger        *zap.SugaredLogger
 	mailer        mailer.Client
 	authenticator auth.Authenticator
@@ -31,6 +33,7 @@ type config struct {
 	mail        mailConfig
 	frontendURL string
 	auth        authConfig
+	redisCfg    redisConfig
 }
 
 type authConfig struct {
@@ -64,6 +67,13 @@ type dbConfig struct {
 	maxOpenConns int
 	maxIdleConns int
 	maxIdleTime  string
+}
+
+type redisConfig struct {
+	addr    string
+	pw      string
+	db      int
+	enabled bool
 }
 
 func (app *application) mount() http.Handler {
