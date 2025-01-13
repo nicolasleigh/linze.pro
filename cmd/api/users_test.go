@@ -8,7 +8,7 @@ import (
 
 func TestGetUser(t *testing.T) {
 	cfg := config{}
-	app := newTestApplication(t,cfg)
+	app := newTestApplication(t, cfg)
 	mux := app.mount()
 
 	testToken, err := app.authenticator.GenerateToken(nil)
