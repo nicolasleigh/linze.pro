@@ -21,7 +21,7 @@ func (app *application) AuthTokenMiddleware(next http.Handler) http.Handler {
 		}
 
 		parts := strings.Split(authHeader, " ")
-		if len(parts) != 2 {
+		if len(parts) != 2 || parts[0] != "Bearer" {
 			app.unauthorizedError(w, r, fmt.Errorf("authorization header is malformed"))
 			return
 		}
