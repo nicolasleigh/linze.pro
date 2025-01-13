@@ -7,6 +7,7 @@ import (
 	"github.com/nicolasleigh/social/internal/db"
 	"github.com/nicolasleigh/social/internal/env"
 	"github.com/nicolasleigh/social/internal/mailer"
+	"github.com/nicolasleigh/social/internal/ratelimiter"
 	"github.com/nicolasleigh/social/internal/store"
 	"github.com/nicolasleigh/social/internal/store/cache"
 	"github.com/redis/go-redis/v9"
@@ -67,6 +68,11 @@ func main() {
 			db:      env.GetInt("REDIS_DB", 0),
 			enabled: env.GetBool("REDIS_ENABLED", false),
 		},
+		rateLimiter: ratelimiter.Config{
+			RequestsPerTimeFrame: env.GetInt("RATE_LIMITER_REQUESTS_COUNT", 20),
+			TimeFrame:            time.Second * 5,
+			Enabled:              env.GetBool("RATE_LIMITER_ENABLED", true),
+		},
 	}
 
 	// Logger
@@ -89,6 +95,12 @@ func main() {
 		logger.Info("redis cache connection established")
 	}
 
+	// Rate limiter
+	rateLimiter := ratelimiter.NewFixedWindowLimiter(
+		cfg.rateLimiter.RequestsPerTimeFrame,
+		cfg.rateLimiter.TimeFrame,
+	)
+
 	store := store.NewStorage(db)
 	cacheStorage := cache.NewRedisStorage(rdb)
 
@@ -103,6 +115,7 @@ func main() {
 		logger:        logger,
 		mailer:        mailer,
 		authenticator: jwtAuthenticator,
+		rateLimiter:   rateLimiter,
 	}
 
 	logger.Fatal(app.run(app.mount()))
