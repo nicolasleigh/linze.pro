@@ -62,6 +62,7 @@ func (m *SendGridMailer) Send(templateFile, username, email string, data any, is
 
 			// exponential backoff
 			time.Sleep(time.Second * time.Duration(i+1))
+			continue
 		}
 		log.Printf("Email sent with status code %v", response.StatusCode)
 		return nil
