@@ -16,7 +16,7 @@ import (
 	"go.uber.org/zap"
 )
 
-const version = ""
+const version = "1.1.0"
 
 //	@title			GopherSocial API
 //	@description	This is a sample server Petstore server.
