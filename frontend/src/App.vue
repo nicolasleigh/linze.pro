@@ -1,23 +1,26 @@
 <script setup lang="ts">
 import { RouterLink, RouterView } from 'vue-router'
 import HelloWorld from './components/HelloWorld.vue'
+import LoginForm from './views/LoginForm'
 </script>
 
 <template>
-  <header>
+  <!-- <header>
     <img alt="Vue logo" class="logo" src="@/assets/logo.svg" width="125" height="125" />
+    <div class="text-blue-500 text-2xl">Hello</div>
 
     <div class="wrapper">
-      <HelloWorld msg="You did it!" />
+      <HelloWorld msg="You did it!" class="text-red-500" />
 
       <nav>
-        <RouterLink to="/">Home</RouterLink>
+        <RouterLink to="/" class="">Home</RouterLink>
         <RouterLink to="/about">About</RouterLink>
       </nav>
     </div>
   </header>
 
-  <RouterView />
+  <RouterView /> -->
+  <LoginForm />
 </template>
 
 <style scoped>

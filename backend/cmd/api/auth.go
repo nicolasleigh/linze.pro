@@ -24,18 +24,6 @@ type userWithToken struct {
 	Token string `json:"token"`
 }
 
-// registerUserHandler godoc
-//
-//	@Summary		Register a user
-//	@Description	Register a user
-//	@Tags			authentication
-//	@Accept			json
-//	@Produce		json
-//	@Param			payload	body		RegisterUserPayload	true	"User credentials"
-//	@Success		201		{object}	userWithToken		"User registered"
-//	@Failure		400		{object}	error
-//	@Failure		500		{object}	error
-//	@Router			/authentication/user [post]
 func (app *application) registerUserHandler(w http.ResponseWriter, r *http.Request) {
 	var payload RegisterUserPayload
 	if err := readJSON(w, r, &payload); err != nil {
@@ -120,19 +108,6 @@ type CreateUserTokenPayload struct {
 	Password string `json:"password" validate:"required,min=3,max=72"`
 }
 
-// createTokenHandler godoc
-//
-//	@Summary		Create a token
-//	@Description	Creates a token for a user
-//	@Tags			authentication
-//	@Accept			json
-//	@Produce		json
-//	@Param			payload	body		CreateUserTokenPayload	true	"User credentials"
-//	@Success		200		{string}	string					"Token"
-//	@Failure		400		{object}	error
-//	@Failure		401		{object}	error
-//	@Failure		500		{object}	error
-//	@Router			/authentication/token [post]
 func (app *application) createTokenHandler(w http.ResponseWriter, r *http.Request) {
 	// parse payload credentials
 	var payload CreateUserTokenPayload
