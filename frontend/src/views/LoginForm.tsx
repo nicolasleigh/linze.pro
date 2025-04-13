@@ -1,4 +1,5 @@
 import { client } from "@/api/client";
+import { useLogin } from "@/hooks/useLogin";
 import { defineComponent, ref } from "vue";
 
 export default defineComponent({
@@ -9,6 +10,8 @@ export default defineComponent({
     const password = ref("");
     const loading = ref(false);
     const error = ref("");
+
+    const { login, isPending } = useLogin();
 
     const handleSubmit = async (e: SubmitEvent) => {
       e.preventDefault();
@@ -22,22 +25,12 @@ export default defineComponent({
         loading.value = true;
         error.value = "";
 
-        const data = await client.post("/authentication/token", {
-          email: email.value,
-          password: password.value,
-        });
+        login({ email: email.value, password: password.value });
 
         console.log("Login attempted with:", {
           email: email.value,
           password: password.value,
         });
-
-        // Simulate API delay
-        await new Promise((resolve) => setTimeout(resolve, 1000));
-
-        // Reset form after successful login
-        // Typically you would redirect here
-        // this.$router.push('/dashboard');
       } catch (err) {
         error.value = err.message || "Login failed. Please try again.";
       } finally {

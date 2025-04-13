@@ -1,10 +1,12 @@
 <script setup lang="ts">
-import { RouterLink, RouterView } from 'vue-router'
-import HelloWorld from './components/HelloWorld.vue'
-import LoginForm from './views/LoginForm'
+import { RouterLink, RouterView } from "vue-router";
+import HelloWorld from "./components/HelloWorld.vue";
+import LoginForm from "./views/LoginForm";
+import { Toaster } from "@/components/ui/sonner";
 </script>
 
 <template>
+  <Toaster position="top-center" richColors />
   <!-- <header>
     <img alt="Vue logo" class="logo" src="@/assets/logo.svg" width="125" height="125" />
     <div class="text-blue-500 text-2xl">Hello</div>
