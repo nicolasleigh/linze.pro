@@ -45,7 +45,7 @@ func main() {
 			token: tokenConfig{
 				secret: env.GetString("AUTH_TOKEN_SECRET", "not-secret"),
 				exp:    time.Hour * 24 * 3,
-				iss:    "gophersocial",
+				iss:    "linze.pro",
 			},
 		},
 		redisCfg: redisConfig{
@@ -109,7 +109,7 @@ func main() {
 	expvar.Publish("database", expvar.Func(func() any {
 		return db.Stats()
 	}))
-	expvar.Publish("goroutines",expvar.Func(func() any {
+	expvar.Publish("goroutines", expvar.Func(func() any {
 		return runtime.NumGoroutine()
 	}))
 

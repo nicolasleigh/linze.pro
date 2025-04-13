@@ -8,5 +8,5 @@ export const signupApi = async (user: SignupUser) => {
 
 export const loginApi = async (user: LoginUser) => {
   const { data } = await client.post("/auth/token", user);
-  return data;
+  return data.data;
 };

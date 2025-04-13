@@ -14,13 +14,16 @@ export function useLogin() {
         email,
         password,
       }),
-    onSuccess: (user) => {
+    onSuccess: (data) => {
+      const token = data.token;
+      const user = data.user;
       queryClient.setQueryData(["user"], user);
+      localStorage.setItem("jwt-token", token);
       router.push({ path: "/dashboard", replace: true });
-      console.log(user);
+      // console.log(user);
     },
     onError: () => {
-      toast.error("Email or password are incorrect");
+      toast.error("Email or password is incorrect");
     },
   });
   return { login, isPending };

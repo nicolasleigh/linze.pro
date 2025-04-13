@@ -43,6 +43,14 @@ func (p *password) Set(text string) error {
 	return nil
 }
 
+func (p *password) Compare(text string, hash []byte) error {
+	err := bcrypt.CompareHashAndPassword(hash, []byte(text))
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
 type UserStore struct {
 	db *sql.DB
 }
@@ -114,9 +122,9 @@ func (s *UserStore) CreateAndInvite(ctx context.Context, user *User, token strin
 			return err
 		}
 
-		if err := s.createUserInvitation(ctx, tx, token, invitationExp, user.ID); err != nil {
-			return err
-		}
+		// if err := s.createUserInvitation(ctx, tx, token, invitationExp, user.ID); err != nil {
+		// 	return err
+		// }
 
 		return nil
 	})
@@ -238,10 +246,9 @@ func (s *UserStore) delete(ctx context.Context, tx *sql.Tx, id int64) error {
 	return nil
 }
 
-// TODO: using bcrypt to compare plain text password and hashed password
-func (s *UserStore) GetByEmail(ctx context.Context, email string) (*User, error) {
+func (s *UserStore) GetByEmail(ctx context.Context, email string, password string) (*User, error) {
 	query := `SELECT id, username, email, password, created_at FROM users
-	WHERE email = $1 AND is_active = true`
+	WHERE email = $1`
 
 	ctx, cancel := context.WithTimeout(ctx, QueryTimeoutDuration)
 	defer cancel()
@@ -262,5 +269,11 @@ func (s *UserStore) GetByEmail(ctx context.Context, email string) (*User, error)
 			return nil, err
 		}
 	}
+
+	err = user.Password.Compare(password, user.Password.hash)
+	if err != nil {
+		return nil, ErrEmailOrPassError
+	}
+
 	return user, nil
 }

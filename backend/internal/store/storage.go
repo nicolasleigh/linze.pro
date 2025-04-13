@@ -11,6 +11,7 @@ var (
 	ErrNotFound          = errors.New("resource not found")
 	QueryTimeoutDuration = time.Second * 5
 	ErrConflict          = errors.New("resource already exists")
+	ErrEmailOrPassError  = errors.New("password is incorrect")
 )
 
 type Storage struct {
@@ -27,7 +28,7 @@ type Storage struct {
 		CreateAndInvite(ctx context.Context, user *User, token string, exp time.Duration) error
 		Activate(context.Context, string) error
 		Delete(context.Context, int64) error
-		GetByEmail(context.Context, string) (*User, error)
+		GetByEmail(context.Context, string, string) (*User, error)
 	}
 	Comments interface {
 		Create(context.Context, *Comment) error

@@ -1,18 +1,19 @@
-import { client } from "@/api/client";
 import { useLogin } from "@/hooks/useLogin";
+import { useSignup } from "@/hooks/useSignup";
 import { defineComponent, ref } from "vue";
 import { RouterLink } from "vue-router";
 
 export default defineComponent({
-  name: "LoginForm",
+  name: "SignupForm",
 
   setup() {
     const email = ref("");
     const password = ref("");
+    const username = ref("");
     const loading = ref(false);
     const error = ref("");
 
-    const { login, isPending } = useLogin();
+    const { signup, isPending } = useSignup();
 
     const handleSubmit = async (e: SubmitEvent) => {
       e.preventDefault();
@@ -26,14 +27,15 @@ export default defineComponent({
         loading.value = true;
         error.value = "";
 
-        login({ email: email.value, password: password.value });
+        signup({ email: email.value, password: password.value, username: username.value });
 
-        console.log("Login attempted with:", {
+        console.log("Signup attempted with:", {
           email: email.value,
           password: password.value,
+          username: username.value,
         });
       } catch (err) {
-        error.value = err.message || "Login failed. Please try again.";
+        error.value = err.message || "Signup failed. Please try again.";
       } finally {
         loading.value = false;
       }
@@ -42,6 +44,7 @@ export default defineComponent({
     return {
       email,
       password,
+      username,
       loading,
       error,
       handleSubmit,
@@ -51,9 +54,24 @@ export default defineComponent({
   render() {
     return (
       <div class="border px-6 py-4 rounded-md w-[350px] mx-auto shadow-lg mt-16">
-        <h1 class="text-2xl font-semibold text-center mb-5">Login</h1>
+        <h1 class="text-2xl font-semibold text-center mb-5">Signup</h1>
 
         <form onSubmit={this.handleSubmit}>
+          <div class="mb-5">
+            <label for="username" class="mb-0.5 font-medium">
+              UserName
+            </label>
+            <input
+              type="text"
+              id="username"
+              class="w-full border rounded-md p-2 transition-colors duration-200 focus:border-blue-500 focus:outline-none focus:shadow-sm"
+              v-model={this.username}
+              disabled={this.loading}
+              placeholder="Enter your name"
+              autocomplete="username"
+              required
+            />
+          </div>
           <div class="mb-5">
             <label for="email" class="mb-0.5 font-medium">
               Email
@@ -92,16 +110,16 @@ export default defineComponent({
               disabled={this.loading}
               class="w-full border bg-blue-500 text-blue-50 rounded-md font-medium text-lg cursor-pointer hover:bg-blue-600 transition-colors duration-200 p-1 disabled:bg-blue-300 disabled:cursor-not-allowed"
             >
-              {this.loading ? "Logging in..." : "Login"}
+              {this.loading ? "Signing up..." : "Signup"}
             </button>
           </div>
 
           <div class="mb-4">
             <RouterLink
-              to="/signup"
+              to="/login"
               class="underline hover:no-underline underline-offset-4 hover:text-stone-600"
             >
-              Create an account
+              Already have an account?
             </RouterLink>
           </div>
         </form>

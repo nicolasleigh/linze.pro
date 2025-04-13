@@ -39,6 +39,6 @@ func (m *MockUserStore) Delete(ctx context.Context, userID int64) error {
 	return nil
 }
 
-func (m *MockUserStore) GetByEmail(ctx context.Context, email string) (*User, error) {
+func (m *MockUserStore) GetByEmail(ctx context.Context, email string, password string) (*User, error) {
 	return &User{}, nil
 }

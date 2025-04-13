@@ -9,7 +9,6 @@ import (
 
 	"github.com/golang-jwt/jwt/v5"
 	"github.com/google/uuid"
-	"github.com/nicolasleigh/social/internal/mailer"
 	"github.com/nicolasleigh/social/internal/store"
 )
 
@@ -30,6 +29,7 @@ func (app *application) registerUserHandler(w http.ResponseWriter, r *http.Reque
 		app.badRequestError(w, r, err)
 		return
 	}
+	fmt.Print(payload)
 
 	if err := Validate.Struct(payload); err != nil {
 		app.badRequestError(w, r, err)
@@ -75,28 +75,28 @@ func (app *application) registerUserHandler(w http.ResponseWriter, r *http.Reque
 		Token: plainToken,
 	}
 
-	activationURL := fmt.Sprintf("%s/confirm/%s", app.config.frontendURL, plainToken)
-	isProdEnv := app.config.env == "production"
-	vars := struct {
-		Username      string
-		ActivationURL string
-	}{
-		Username:      user.Username,
-		ActivationURL: activationURL,
-	}
+	// activationURL := fmt.Sprintf("%s/confirm/%s", app.config.frontendURL, plainToken)
+	// isProdEnv := app.config.env == "production"
+	// vars := struct {
+	// 	Username      string
+	// 	ActivationURL string
+	// }{
+	// 	Username:      user.Username,
+	// 	ActivationURL: activationURL,
+	// }
 
-	// send email
-	err = app.mailer.Send(mailer.UserWelcomeTemplate, user.Username, user.Email, vars, !isProdEnv)
-	if err != nil {
-		app.logger.Errorw("error sending welcome email", "error", err)
+	// // send email
+	// err = app.mailer.Send(mailer.UserWelcomeTemplate, user.Username, user.Email, vars, !isProdEnv)
+	// if err != nil {
+	// 	app.logger.Errorw("error sending welcome email", "error", err)
 
-		// rollback user creation if email fails (SAGA pattern)
-		if err := app.store.Users.Delete(ctx, user.ID); err != nil {
-			app.logger.Errorw("error deleting user", "error", err)
-		}
-		app.internalServerError(w, r, err)
-		return
-	}
+	// 	// rollback user creation if email fails (SAGA pattern)
+	// 	if err := app.store.Users.Delete(ctx, user.ID); err != nil {
+	// 		app.logger.Errorw("error deleting user", "error", err)
+	// 	}
+	// 	app.internalServerError(w, r, err)
+	// 	return
+	// }
 
 	if err := app.jsonResponse(w, http.StatusCreated, userWithToken); err != nil {
 		app.internalServerError(w, r, err)
@@ -122,12 +122,14 @@ func (app *application) createTokenHandler(w http.ResponseWriter, r *http.Reques
 	}
 
 	// fetch the user (check if the user exist) from the payload
-	user, err := app.store.Users.GetByEmail(r.Context(), payload.Email)
+	user, err := app.store.Users.GetByEmail(r.Context(), payload.Email, payload.Password)
 	if err != nil {
 		switch err {
 		case store.ErrNotFound:
 			// Returning a 'not found' error can expose the system to enumeration attacks.
 			app.unauthorizedError(w, r, err)
+		case store.ErrEmailOrPassError:
+			app.emailOrPasswordError(w, r, err)
 		default:
 			app.internalServerError(w, r, err)
 		}
@@ -149,7 +151,7 @@ func (app *application) createTokenHandler(w http.ResponseWriter, r *http.Reques
 		return
 	}
 
-	if err := app.jsonResponse(w, http.StatusCreated, token); err != nil {
+	if err := app.jsonResponse(w, http.StatusCreated, map[string]any{"token": token, "user": user}); err != nil {
 		app.internalServerError(w, r, err)
 	}
 }
