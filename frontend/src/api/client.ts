@@ -9,4 +9,5 @@ if (import.meta.env.PROD) {
 
 export const client = axios.create({
   baseURL,
+  withCredentials: true,
 });

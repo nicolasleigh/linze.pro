@@ -22,7 +22,10 @@ export default defineComponent({
         loading.value = true;
         error.value = "";
 
-        await client.post("");
+        const data = await client.post("/authentication/token", {
+          email: email.value,
+          password: password.value,
+        });
 
         console.log("Login attempted with:", {
           email: email.value,
