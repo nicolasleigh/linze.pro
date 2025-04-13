@@ -32,6 +32,7 @@ func (app *application) AuthTokenMiddleware(next http.Handler) http.Handler {
 			app.unauthorizedError(w, r, err)
 			return
 		}
+		// fmt.Print(jwtToken)
 
 		claims := jwtToken.Claims.(jwt.MapClaims)
 
@@ -53,6 +54,7 @@ func (app *application) AuthTokenMiddleware(next http.Handler) http.Handler {
 			app.unauthorizedError(w, r, err)
 			return
 		}
+		// fmt.Print(user)
 
 		ctx = context.WithValue(ctx, userCtx, user)
 		next.ServeHTTP(w, r.WithContext(ctx))

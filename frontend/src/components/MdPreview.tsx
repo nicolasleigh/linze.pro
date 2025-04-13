@@ -2,18 +2,21 @@ import { defineComponent } from "vue";
 import { ref } from "vue";
 import { MdPreview, MdCatalog } from "md-editor-v3";
 import "md-editor-v3/lib/preview.css";
+import { usePost } from "@/hooks/usePost";
 
 export default defineComponent({
   name: "MdPreview",
   setup() {
     const id = "preview-only";
-    const text = ref("## Hello");
-    const scrollElement = document.documentElement;
+    const { post, isLoading } = usePost();
 
     return () => (
       <>
-        <MdPreview id={id} modelValue={text.value} />
-        <MdCatalog scrollElement={scrollElement} />
+        {isLoading.value ? (
+          <div>Loading...</div>
+        ) : (
+          <MdPreview id={id} modelValue={post.value && post.value.content} />
+        )}
       </>
     );
   },

@@ -29,10 +29,11 @@ const router = createRouter({
       component: Editor,
     },
     {
-      path: "/preview",
-      name: "preview",
+      path: "/post/:postId",
+      name: "post",
       component: MdPreview,
     },
+
     {
       path: "/about",
       name: "about",
