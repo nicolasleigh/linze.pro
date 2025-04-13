@@ -4,22 +4,18 @@ import HelloWorld from "./components/HelloWorld.vue";
 import LoginForm from "./views/LoginForm";
 import { Toaster } from "@/components/ui/sonner";
 import { VueQueryDevtools } from "@tanstack/vue-query-devtools";
+import Editor from "./components/Editor";
 </script>
 
 <template>
   <Toaster position="top-center" richColors />
   <header>
-    <!-- <img alt="Vue logo" class="logo" src="@/assets/logo.svg" width="125" height="125" />
-    <div class="text-blue-500 text-2xl">Hello</div>
-
-    <div class="wrapper">
-      <HelloWorld msg="You did it!" class="text-red-500" /> -->
-
     <nav>
       <RouterLink to="/login" class="">Login</RouterLink>
       <RouterLink to="/signup">Signup</RouterLink>
+      <RouterLink to="/editor">Editor</RouterLink>
+      <RouterLink to="/preview">Preview</RouterLink>
     </nav>
-    <!-- </div> -->
   </header>
 
   <RouterView />
@@ -45,7 +41,8 @@ nav {
 }
 
 nav a.router-link-exact-active {
-  color: var(--color-text);
+  /* color: var(--color-text); */
+  color: blue;
 }
 
 nav a.router-link-exact-active:hover {

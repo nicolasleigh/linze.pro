@@ -2,6 +2,8 @@ import { createRouter, createWebHistory } from "vue-router";
 import HomeView from "../views/HomeView.vue";
 import LoginForm from "@/views/LoginForm";
 import SignupForm from "@/views/SignupForm";
+import Editor from "@/components/Editor";
+import MdPreview from "@/components/MdPreview";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -20,6 +22,16 @@ const router = createRouter({
       path: "/signup",
       name: "signup",
       component: SignupForm,
+    },
+    {
+      path: "/editor",
+      name: "editor",
+      component: Editor,
+    },
+    {
+      path: "/preview",
+      name: "preview",
+      component: MdPreview,
     },
     {
       path: "/about",
