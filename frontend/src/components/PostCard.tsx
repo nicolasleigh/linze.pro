@@ -1,10 +1,12 @@
 import { defineComponent } from "vue";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "./ui/card";
+import { useRoute, useRouter } from "vue-router";
 
 export default defineComponent({
   name: "PostCard",
 
   props: {
+    id: { type: String, required: true },
     title: { type: String, required: true },
     content: { type: String, required: true },
     createdAt: { type: String, required: true },
@@ -22,15 +24,21 @@ export default defineComponent({
       day: "numeric",
     };
     const formattedDate = date.toLocaleDateString("en-US", options);
+    const router = useRouter();
     return () => (
-      <Card class="hover:shadow-lg hover:-mt-3 hover:mb-3 transition-all duration-500 cursor-pointer">
-        <CardHeader>
-          <CardTitle>{props.title}</CardTitle>
-          <CardDescription>{props.username}</CardDescription>
-        </CardHeader>
-        <CardContent>{props.content}...</CardContent>
-        <CardFooter>{formattedDate}</CardFooter>
-      </Card>
+      <div
+        onClick={() => router.push({ path: `/post/${props.id}` })}
+        class="hover:shadow-lg hover:-mt-3 hover:mb-3 transition-all duration-500 cursor-pointer overflow-hidden rounded-xl"
+      >
+        <Card>
+          <CardHeader>
+            <CardTitle>{props.title}</CardTitle>
+            <CardDescription>{props.username}</CardDescription>
+          </CardHeader>
+          <CardContent>{props.content}...</CardContent>
+          <CardFooter>{formattedDate}</CardFooter>
+        </Card>
+      </div>
     );
   },
 });

@@ -5,19 +5,12 @@ import LoginForm from "./views/LoginForm";
 import { Toaster } from "@/components/ui/sonner";
 import { VueQueryDevtools } from "@tanstack/vue-query-devtools";
 import Editor from "./components/Editor";
+import Header from "./components/Header";
 </script>
 
 <template>
   <Toaster position="top-center" richColors />
-  <header class="w-[600px]">
-    <nav>
-      <RouterLink to="/login" class="">Login</RouterLink>
-      <RouterLink to="/signup">Signup</RouterLink>
-      <RouterLink to="/editor">Editor</RouterLink>
-      <RouterLink to="/post/10">Preview</RouterLink>
-      <RouterLink to="/posts">Posts</RouterLink>
-    </nav>
-  </header>
+  <Header />
 
   <RouterView />
   <VueQueryDevtools />

@@ -15,6 +15,7 @@ export default defineComponent({
           return (
             <div key={index}>
               <PostCard
+                id={item.id}
                 title={item.title}
                 content={item.content}
                 createdAt={item.created_at}
