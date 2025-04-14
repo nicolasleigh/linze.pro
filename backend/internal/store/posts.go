@@ -78,6 +78,48 @@ func (s *PostStore) GetByID(ctx context.Context, id int64) (*Post, error) {
 	return &post, nil
 }
 
+func (s *PostStore) GetAll(ctx context.Context, limit, offset int) (*[]Post, error) {
+	query := `SELECT p.id AS post_id, u.email, u.username, title, p.created_at, p.updated_at, tags
+	FROM posts AS p
+	JOIN users AS u ON u.id = p.user_id
+	ORDER BY p.created_at DESC
+	LIMIT $1 OFFSET $2;
+	`
+	ctx, cancel := context.WithTimeout(ctx, QueryTimeoutDuration)
+	defer cancel()
+
+	posts := make([]Post, 0)
+	rows, err := s.db.QueryContext(ctx, query, limit, offset)
+	if err != nil {
+		switch {
+		case errors.Is(err, sql.ErrNoRows):
+			return nil, ErrNotFound
+		default:
+			return nil, err
+		}
+	}
+	defer rows.Close()
+
+	for rows.Next() {
+		var post Post
+		err := rows.Scan(
+			&post.ID,
+			&post.User.Email,
+			&post.User.Username,
+			&post.Title,
+			&post.CreatedAt,
+			&post.UpdatedAt,
+			pq.Array(&post.Tags),
+		)
+		if err != nil {
+			return nil, err
+		}
+		posts = append(posts, post)
+	}
+
+	return &posts, nil
+}
+
 func (s *PostStore) Delete(ctx context.Context, id int64) error {
 	query := `DELETE FROM posts WHERE id = $1`
 
