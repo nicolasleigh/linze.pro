@@ -9,7 +9,7 @@ import Editor from "./components/Editor";
 
 <template>
   <Toaster position="top-center" richColors />
-  <header>
+  <header class="w-[600px]">
     <nav>
       <RouterLink to="/login" class="">Login</RouterLink>
       <RouterLink to="/signup">Signup</RouterLink>
@@ -64,11 +64,7 @@ nav a:first-of-type {
   header {
     display: flex;
     place-items: center;
-    padding-right: calc(var(--section-gap) / 2);
-  }
-
-  .logo {
-    margin: 0 2rem 0 0;
+    /* padding-right: calc(var(--section-gap) / 2); */
   }
 
   header .wrapper {
