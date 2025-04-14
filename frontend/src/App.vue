@@ -15,6 +15,7 @@ import Editor from "./components/Editor";
       <RouterLink to="/signup">Signup</RouterLink>
       <RouterLink to="/editor">Editor</RouterLink>
       <RouterLink to="/post/10">Preview</RouterLink>
+      <RouterLink to="/posts">Posts</RouterLink>
     </nav>
   </header>
 
