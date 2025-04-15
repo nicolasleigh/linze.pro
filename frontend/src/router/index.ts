@@ -3,7 +3,7 @@ import HomeView from "../views/HomeView.vue"
 import LoginForm from "@/views/LoginForm"
 import SignupForm from "@/views/SignupForm"
 import Editor from "@/components/Editor"
-import MdPreview from "@/components/MdPreview"
+import MdPreview from "@/components/MdPreview.vue"
 import Posts from "@/views/Posts"
 import CreatePost from "@/views/CreatePost"
 
