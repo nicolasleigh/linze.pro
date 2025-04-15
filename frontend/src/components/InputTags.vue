@@ -4,7 +4,7 @@
       <span
         v-for="(tag, index) in tags"
         :key="index"
-        class="flex items-center px-2 py-1 text-sm bg-gray-100 rounded-md"
+        class="flex items-center px-2 py-1 text-sm bg-gray-100 rounded-md capitalize"
       >
         {{ tag }}
         <button
@@ -18,6 +18,7 @@
       <input
         v-model="pendingDataPoint"
         type="text"
+        id="tags"
         placeholder="Add tags..."
         class="flex-grow min-w-[80px] outline-none border-none"
         @keydown.enter.prevent="addPendingDataPoint"

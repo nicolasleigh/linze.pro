@@ -1,61 +1,27 @@
 import { defineComponent, ref } from "vue"
-import { MdEditor } from "md-editor-v3"
+import { MdEditor, type ToolbarNames } from "md-editor-v3"
 import "md-editor-v3/lib/style.css"
+import { toolbars } from "@/utils/toolbars"
 
 export default defineComponent({
   name: "Editor",
-  setup() {
-    const text = ref("")
-    const onChange = (v: string) => (text.value = v)
-    const onSave = (v, h) => {
-      console.log(v)
+  props: ["content"],
+  setup({ content }) {
+    // const text = ref("")
+    const onChange = (v: string) => (content = v)
+    const onSave = () => {
+      console.log(content)
     }
-    const toolbars = [
-      "bold",
-      "underline",
-      "italic",
-      "strikeThrough",
-      "-",
-      "title",
-      "sub",
-      "sup",
-      "quote",
-      "unorderedList",
-      "orderedList",
-      "task",
-      "-",
-      "codeRow",
-      "code",
-      "link",
-      "image",
-      "table",
-      "mermaid",
-      "katex",
-      "-",
-      "revoke",
-      "next",
-      "save",
-      "=",
-      "prettier",
-      "pageFullscreen",
-      "fullscreen",
-      "preview",
-      "previewOnly",
-      "htmlPreview",
-      "catalog",
-      "github",
-    ]
 
     return () => (
       <div class="w-[1200px]">
         <MdEditor
           class="rounded-lg"
-          modelValue={text.value}
+          modelValue={content}
           onChange={onChange}
           onSave={onSave}
-          codeTheme="a11y"
-          // showToolbarName
-          // toolbars={toolbars}
+          // codeTheme="a11y"
+          toolbars={toolbars}
         />
       </div>
     )
