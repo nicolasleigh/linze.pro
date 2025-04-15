@@ -1,13 +1,13 @@
-import PostCard from "@/components/PostCard";
-import { usePosts } from "@/hooks/usePosts";
-import type { Post } from "@/types/post";
-import { defineComponent } from "vue";
+import PostCard from "@/components/PostCard.vue"
+import { usePosts } from "@/hooks/usePosts"
+import type { Post } from "@/types/post"
+import { defineComponent } from "vue"
 
 export default defineComponent({
   name: "Posts",
 
   setup() {
-    const { posts, error, isLoading } = usePosts();
+    const { posts, error, isLoading } = usePosts()
 
     return () => (
       <div class="grid grid-cols-2 gap-4">
@@ -24,9 +24,9 @@ export default defineComponent({
                 userEmail={item.user.email}
               />
             </div>
-          );
+          )
         })}
       </div>
-    );
+    )
   },
-});
+})
