@@ -24,7 +24,7 @@ const onSave = () => {
     <MdEditor
       class="rounded-lg"
       v-model="content"
-      @change="emit('update:modelValue', content)"
+      @input="emit('update:modelValue', content)"
       :toolbars="toolbars"
       @save="onSave"
     />

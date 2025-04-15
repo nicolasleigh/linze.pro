@@ -1,6 +1,6 @@
 import type { GetPostsOptions } from "@/types/user"
 import { client } from "./client"
-import type { Post } from "@/types/post"
+import type { CreatePost, Post } from "@/types/post"
 
 export const getPostByIdApi = async (id: string): Promise<Post> => {
   const token = await localStorage.getItem("jwt-token")
@@ -20,4 +20,13 @@ export const getPostsApi = async (options: GetPostsOptions): Promise<Post[]> => 
     },
   })
   return data.data
+}
+
+export const createPostApi = async (post: CreatePost) => {
+  const token = localStorage.getItem("jwt-token")
+  await client.post(`/posts`, post, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  })
 }

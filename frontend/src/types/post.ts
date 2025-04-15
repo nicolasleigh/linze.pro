@@ -1,5 +1,5 @@
 export type Post = {
-  id: string
+  id: number
   content: string
   title: string
   tags: string[]
@@ -12,11 +12,17 @@ export type Post = {
 }
 
 export type PostCardProps = {
-  id: string
+  id: number
   title: string
   content: string
   createdAt: string
   updatedAt: string
   username: string
   userEmail: string
+}
+
+export type CreatePost = {
+  title: string
+  content: string
+  tags: string[]
 }
