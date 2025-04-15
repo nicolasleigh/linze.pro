@@ -3,7 +3,7 @@ import HomeView from "../views/HomeView.vue"
 import LoginForm from "@/views/LoginForm.vue"
 import SignupForm from "@/views/SignupForm.vue"
 import MdPreview from "@/components/MdPreview.vue"
-import Posts from "@/views/Posts"
+import Posts from "@/views/Posts.vue"
 import CreatePost from "@/views/CreatePost.vue"
 
 const router = createRouter({
