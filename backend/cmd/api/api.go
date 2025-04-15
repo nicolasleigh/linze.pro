@@ -121,10 +121,10 @@ func (app *application) mount() http.Handler {
 
 		docsURL := fmt.Sprintf("%s/swagger/doc.json", app.config.addr)
 		r.Get("/swagger/*", httpSwagger.Handler(httpSwagger.URL(docsURL)))
-		// r.Get("/swagger/*", httpSwagger.Handler(httpSwagger.URL("doc.json")))
 
 		r.Route("/posts", func(r chi.Router) {
 			r.With(app.AuthTokenMiddleware).Post("/", app.createPostHandler)
+			r.With(app.AuthTokenMiddleware).Post("/image", app.uploadImage)
 			r.Get("/", app.getAllPostsHandler)
 			r.Route("/{postID}", func(r chi.Router) {
 				r.Use(app.postContextMiddleware)

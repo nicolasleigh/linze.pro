@@ -1,6 +1,7 @@
 import type { GetPostsOptions } from "@/types/user"
 import { client } from "./client"
 import type { CreatePost, Post } from "@/types/post"
+import { toast } from "vue-sonner"
 
 export const getPostByIdApi = async (id: string): Promise<Post> => {
   const token = await localStorage.getItem("jwt-token")
@@ -29,4 +30,22 @@ export const createPostApi = async (post: CreatePost) => {
       Authorization: `Bearer ${token}`,
     },
   })
+}
+
+export const uploadImageApi = async (imageFile: File) => {
+  const token = localStorage.getItem("jwt-token")
+  const form = new FormData()
+  form.append("image", imageFile)
+  const promise = client.post(`/posts/image`, form, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  })
+  toast.promise(promise, {
+    loading: "Uploading image...",
+    success: "Image uploaded successfully",
+    error: "Failed to upload image",
+  })
+  const { data } = await promise
+  return data.data
 }

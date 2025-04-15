@@ -6,10 +6,12 @@ import Button from "@/components/ui/button/Button.vue"
 import { Label } from "@/components/ui/label"
 import { toast } from "vue-sonner"
 import { useCreatePost } from "@/hooks/useCreatePost"
+import { useUploadImage } from "@/hooks/useUploadImage"
 
 const title = ref("")
 const content = ref("")
 const tags = ref<string[]>([])
+const img = ref("")
 
 const { createPost, isPending } = useCreatePost()
 
@@ -19,6 +21,15 @@ const handleUpdateTags = (data: string[]) => {
 
 const handleInputChange = (e: Event) => {
   e.preventDefault()
+  // console.log((e.target as HTMLInputElement).value)
+}
+
+const { uploadImage } = useUploadImage()
+
+const handleImage = (e: Event) => {
+  e.preventDefault()
+  uploadImage(e.target.files[0])
+  console.log(e.target.files[0])
   // console.log((e.target as HTMLInputElement).value)
 }
 
@@ -59,6 +70,17 @@ const wrapperStyle = "flex flex-col gap-2"
     <div :class="wrapperStyle">
       <Label for="tags">Tags</Label>
       <InputTags :tags="tags" @update="handleUpdateTags" />
+    </div>
+
+    <div :class="wrapperStyle">
+      <Label for="image">Image</Label>
+      <input
+        id="image"
+        type="file"
+        class="border rounded-md p-2 focus:outline-none"
+        :value="img"
+        @input="handleImage"
+      />
     </div>
 
     <div :class="wrapperStyle">

@@ -2,21 +2,27 @@
 import { MdEditor } from "md-editor-v3"
 import "md-editor-v3/lib/style.css"
 import { toolbars } from "@/utils/toolbars"
-import { ref } from "vue"
+import { ref, watch } from "vue"
+import { useUploadImage } from "@/hooks/useUploadImage"
 
 const content = ref("")
+const { uploadImage, imageUrl } = useUploadImage()
 
-// const props = defineProps(["content"])
-// const props = defineProps({
-//   content: String,
-// })
-// const emit = defineEmits(["change"])
 const emit = defineEmits(["update:modelValue"])
 
-// const onChange = (v: string) => (props.content = v)
 const onSave = () => {
   console.log(content.value)
 }
+const uploadImg = (files: File[]) => {
+  uploadImage(files[0])
+}
+
+watch(imageUrl, (value) => {
+  const mdImageUrl = `
+  ![image](${value})
+  `
+  content.value = content.value.concat(mdImageUrl)
+})
 </script>
 
 <template>
@@ -27,6 +33,7 @@ const onSave = () => {
       @input="emit('update:modelValue', content)"
       :toolbars="toolbars"
       @save="onSave"
+      @upload-img="uploadImg"
     />
   </div>
 </template>

@@ -5,8 +5,11 @@ import (
 	"errors"
 	"fmt"
 	"net/http"
+	"os"
 	"strconv"
 
+	"github.com/cloudinary/cloudinary-go/v2"
+	"github.com/cloudinary/cloudinary-go/v2/api/uploader"
 	"github.com/go-chi/chi/v5"
 	"github.com/nicolasleigh/social/internal/store"
 )
@@ -56,6 +59,41 @@ func (app *application) createPostHandler(w http.ResponseWriter, r *http.Request
 	}
 
 	if err := app.jsonResponse(w, http.StatusCreated, post); err != nil {
+		app.internalServerError(w, r, err)
+		return
+	}
+}
+
+func (app *application) uploadImage(w http.ResponseWriter, r *http.Request) {
+	var cld, err = cloudinary.NewFromURL(os.Getenv("CLOUDINARY_URL"))
+	if err != nil {
+		app.internalServerError(w, r, err)
+		return
+	}
+	err = r.ParseMultipartForm(10 << 20) //10 MB
+	if err != nil {
+		app.internalServerError(w, r, err)
+		return
+	}
+	file, _, err := r.FormFile("image")
+	if err != nil {
+		app.internalServerError(w, r, err)
+		return
+	}
+	defer file.Close()
+
+	var ctx = context.Background()
+	uploadResult, err := cld.Upload.Upload(
+		ctx,
+		file,
+		uploader.UploadParams{
+			Folder: "blog-post",
+		})
+	if err != nil {
+		app.internalServerError(w, r, err)
+		return
+	}
+	if err := app.jsonResponse(w, http.StatusOK, uploadResult.SecureURL); err != nil {
 		app.internalServerError(w, r, err)
 		return
 	}
