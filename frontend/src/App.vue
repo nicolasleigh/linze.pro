@@ -1,11 +1,10 @@
 <script setup lang="ts">
-import { RouterLink, RouterView } from "vue-router";
-import HelloWorld from "./components/HelloWorld.vue";
-import LoginForm from "./views/LoginForm";
-import { Toaster } from "@/components/ui/sonner";
-import { VueQueryDevtools } from "@tanstack/vue-query-devtools";
-import Editor from "./components/Editor";
-import Header from "./components/Header";
+import { RouterLink, RouterView } from "vue-router"
+import HelloWorld from "./components/HelloWorld.vue"
+import LoginForm from "./views/LoginForm"
+import { Toaster } from "@/components/ui/sonner"
+import { VueQueryDevtools } from "@tanstack/vue-query-devtools"
+import Header from "./components/Header.vue"
 </script>
 
 <template>

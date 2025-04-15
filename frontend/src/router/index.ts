@@ -2,10 +2,9 @@ import { createRouter, createWebHistory } from "vue-router"
 import HomeView from "../views/HomeView.vue"
 import LoginForm from "@/views/LoginForm"
 import SignupForm from "@/views/SignupForm"
-import Editor from "@/components/Editor"
 import MdPreview from "@/components/MdPreview.vue"
 import Posts from "@/views/Posts"
-import CreatePost from "@/views/CreatePost"
+import CreatePost from "@/views/CreatePost.vue"
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
