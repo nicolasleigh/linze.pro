@@ -4,6 +4,9 @@ import "md-editor-v3/lib/style.css"
 import { toolbars } from "@/utils/toolbars"
 import { ref, watch } from "vue"
 import { useUploadImage } from "@/hooks/useUploadImage"
+import { idbAddItem } from "@/utils/indexedDb"
+import { formatTime } from "@/utils/helper"
+import { toast } from "vue-sonner"
 
 const content = ref("")
 const { uploadImage, imageUrl } = useUploadImage()
@@ -11,7 +14,9 @@ const { uploadImage, imageUrl } = useUploadImage()
 const emit = defineEmits(["update:modelValue"])
 
 const onSave = () => {
-  console.log(content.value)
+  const time = formatTime(new Date())
+  idbAddItem(time, content.value)
+  toast.info("Content saved into the indexedDB")
 }
 const uploadImg = (files: File[]) => {
   uploadImage(files[0])

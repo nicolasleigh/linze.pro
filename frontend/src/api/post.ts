@@ -31,10 +31,15 @@ export const createPostApi = async (post: CreatePost) => {
   form.append("about", post.about)
   form.append("content", post.content)
   form.append("tags", JSON.stringify(post.tags))
-  await client.post(`/posts`, form, {
+  const promise = client.post(`/posts`, form, {
     headers: {
       Authorization: `Bearer ${token}`,
     },
+  })
+  toast.promise(promise, {
+    loading: "Creating post...",
+    success: "Post created successfully",
+    error: "Failed to create post",
   })
 }
 
