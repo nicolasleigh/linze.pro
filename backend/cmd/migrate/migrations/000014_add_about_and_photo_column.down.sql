@@ -1,0 +1,5 @@
+ALTER TABLE posts
+DROP COLUMN about;
+
+ALTER TABLE posts
+DROP COLUMN photo;
