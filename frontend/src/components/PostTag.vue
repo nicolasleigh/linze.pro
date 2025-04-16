@@ -6,7 +6,7 @@ const props = defineProps({
 })
 
 const style =
-  "flex items-center px-2 py-1 text-xs bg-neutral-800 text-neutral-400 rounded-md capitalize"
+  "flex items-center px-2 py-1 text-xs bg-neutral-900 font-semibold text-neutral-400 rounded-md capitalize"
 
 const mergedStyle = computed(() => [style, props.class])
 </script>

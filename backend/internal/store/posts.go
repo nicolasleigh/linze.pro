@@ -124,6 +124,31 @@ func (s *PostStore) GetAll(ctx context.Context, limit, offset int) (*[]Post, err
 	return &posts, nil
 }
 
+func (s *PostStore) GetTags(ctx context.Context) (string, error) {
+	query := `
+	SELECT string_agg(DISTINCT tag, ',') AS tags
+	FROM (
+		SELECT unnest(tags) AS tag
+		FROM posts
+	) AS all_tags;
+`
+	ctx, cancel := context.WithTimeout(ctx, QueryTimeoutDuration)
+	defer cancel()
+
+	var tag string
+	err := s.db.QueryRowContext(ctx, query).Scan(&tag)
+	if err != nil {
+		switch {
+		case errors.Is(err, sql.ErrNoRows):
+			return "", ErrNotFound
+		default:
+			return "", err
+		}
+	}
+
+	return tag, nil
+}
+
 func (s *PostStore) Delete(ctx context.Context, id int64) error {
 	query := `DELETE FROM posts WHERE id = $1`
 

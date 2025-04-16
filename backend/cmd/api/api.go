@@ -134,6 +134,7 @@ func (app *application) mount() http.Handler {
 		})
 		r.Group(func(r chi.Router) {
 			r.Get("/posts", app.getAllPostsHandler)
+			r.Get("/posts/tags", app.getAllTags)
 		})
 		r.Group(func(r chi.Router) {
 			r.Use(app.postContextMiddleware)

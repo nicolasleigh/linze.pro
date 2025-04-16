@@ -60,3 +60,8 @@ export const uploadImageApi = async (imageFile: File) => {
   const { data } = await promise
   return data.data
 }
+
+export const getAllTagsApi = async (): Promise<string> => {
+  const { data } = await client.get(`/posts/tags`)
+  return data.data
+}

@@ -138,6 +138,19 @@ func (app *application) getAllPostsHandler(w http.ResponseWriter, r *http.Reques
 	}
 }
 
+func (app *application) getAllTags(w http.ResponseWriter, r *http.Request) {
+	tag, err := app.store.Posts.GetTags(r.Context())
+	if err != nil {
+		app.internalServerError(w, r, err)
+		return
+	}
+
+	if err := app.jsonResponse(w, http.StatusOK, tag); err != nil {
+		app.internalServerError(w, r, err)
+		return
+	}
+}
+
 func (app *application) deletePostHandler(w http.ResponseWriter, r *http.Request) {
 	idParam := chi.URLParam(r, "postID")
 	id, err := strconv.ParseInt(idParam, 10, 64)
