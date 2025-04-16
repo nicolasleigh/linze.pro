@@ -19,7 +19,6 @@
         v-model="pendingDataPoint"
         type="text"
         id="tags"
-        placeholder="Add tags..."
         class="flex-grow min-w-[80px] outline-none border-none"
         @keydown.enter.prevent="addPendingDataPoint"
         @blur="addPendingDataPoint"

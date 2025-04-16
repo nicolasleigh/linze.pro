@@ -81,7 +81,7 @@ func (s *PostStore) GetByID(ctx context.Context, id int64) (*Post, error) {
 }
 
 func (s *PostStore) GetAll(ctx context.Context, limit, offset int) (*[]Post, error) {
-	query := `SELECT p.id AS post_id, u.email, u.username, title, p.created_at, p.updated_at, tags, LEFT(content, 100)
+	query := `SELECT p.id AS post_id, u.email, u.username, title, p.created_at, p.updated_at, tags, p.about, p.photo
 	FROM posts AS p
 	JOIN users AS u ON u.id = p.user_id
 	ORDER BY p.created_at DESC
@@ -112,7 +112,8 @@ func (s *PostStore) GetAll(ctx context.Context, limit, offset int) (*[]Post, err
 			&post.CreatedAt,
 			&post.UpdatedAt,
 			pq.Array(&post.Tags),
-			&post.Content,
+			&post.About,
+			&post.Photo,
 		)
 		if err != nil {
 			return nil, err

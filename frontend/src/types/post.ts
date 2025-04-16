@@ -2,6 +2,8 @@ export type Post = {
   id: number
   content: string
   title: string
+  about: string
+  photo: string
   tags: string[]
   created_at: string
   updated_at: string
@@ -14,7 +16,9 @@ export type Post = {
 export type PostCardProps = {
   id: number
   title: string
-  content: string
+  about: string
+  photo: string
+  tags: string[]
   createdAt: string
   updatedAt: string
   username: string

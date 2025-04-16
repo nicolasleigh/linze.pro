@@ -6,7 +6,6 @@ import Button from "@/components/ui/button/Button.vue"
 import { Label } from "@/components/ui/label"
 import { toast } from "vue-sonner"
 import { useCreatePost } from "@/hooks/useCreatePost"
-import { useUploadImage } from "@/hooks/useUploadImage"
 import Input from "@/components/ui/input/Input.vue"
 
 const title = ref("")
@@ -21,31 +20,19 @@ const handleUpdateTags = (data: string[]) => {
   tags.value = data
 }
 
-const handleInputChange = (e: Event) => {
-  e.preventDefault()
-  // console.log((e.target as HTMLInputElement).value)
-}
-
-const { uploadImage } = useUploadImage()
-
 const handleCoverPhoto = (e: Event) => {
   e.preventDefault()
   const target = e.target as HTMLInputElement
   if (target.files) {
     photo.value = target.files[0]
-    console.log(target.files[0])
   }
-  // console.log((e.target as HTMLInputElement).value)
 }
 
 const handleEditorUpdate = (value: string) => {
   content.value = value
-  // console.log(content.value)
-  // console.log(e)
 }
 
 const handleSubmit = () => {
-  console.log(photo.value)
   if (!title.value.trim()) {
     return toast.error("Please enter title")
   }
@@ -107,7 +94,7 @@ const wrapperStyle = "flex flex-col gap-2"
     </div>
 
     <div>
-      <Button @click="handleSubmit">Submit</Button>
+      <Button class="w-56" @click="handleSubmit">Publish Blog Post</Button>
     </div>
   </div>
 </template>
