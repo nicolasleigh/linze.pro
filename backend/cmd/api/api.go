@@ -115,47 +115,49 @@ func (app *application) mount() http.Handler {
 	r.Use(middleware.Timeout(60 * time.Second))
 
 	r.Route("/api/v1", func(r chi.Router) {
-		// r.With(app.BasicAuthMiddleware()).Get("/health", app.healthCheckHandler)
-		r.Get("/health", app.healthCheckHandler)
-		r.With(app.BasicAuthMiddleware()).Get("/debug/vars", expvar.Handler().ServeHTTP)
-
-		docsURL := fmt.Sprintf("%s/swagger/doc.json", app.config.addr)
-		r.Get("/swagger/*", httpSwagger.Handler(httpSwagger.URL(docsURL)))
-
-		r.Route("/posts", func(r chi.Router) {
-			r.With(app.AuthTokenMiddleware).Post("/", app.createPostHandler)
-			r.With(app.AuthTokenMiddleware).Post("/image", app.uploadImage)
-			r.Get("/", app.getAllPostsHandler)
-			r.Route("/{postID}", func(r chi.Router) {
-				r.Use(app.postContextMiddleware)
-				r.Get("/", app.getPostHandler)
-				r.With(app.AuthTokenMiddleware).Patch("/", app.checkPostOwnership("moderator", app.updatePostHandler))
-				r.With(app.AuthTokenMiddleware).Delete("/", app.checkPostOwnership("admin", app.deletePostHandler))
-			})
+		r.Group(func(r chi.Router) {
+			r.Get("/health", app.healthCheckHandler)
 		})
-
-		r.Route("/users", func(r chi.Router) {
-			r.Put("/activate/{token}", app.activateUserHandler)
-
-			r.Route("/{userID}", func(r chi.Router) {
-				// r.Use(app.userContextMiddleware)
-				r.Use(app.AuthTokenMiddleware)
-
-				r.Get("/", app.getUserHandler)
-				r.Put("/follow", app.followUserHandler)
-				r.Put("/unfollow", app.unfollowUserHandler)
-			})
-
-			r.Group(func(r chi.Router) {
-				r.Use(app.AuthTokenMiddleware)
-				r.Get("/feed", app.getUserFeedHandler)
-			})
+		r.Group(func(r chi.Router) {
+			r.Use(app.BasicAuthMiddleware())
+			r.Get("/debug/vars", expvar.Handler().ServeHTTP)
 		})
-
-		// Public routes
-		r.Route("/auth", func(r chi.Router) {
-			r.Post("/user", app.registerUserHandler)
-			r.Post("/token", app.createTokenHandler)
+		r.Group(func(r chi.Router) {
+			docsURL := fmt.Sprintf("%s/swagger/doc.json", app.config.addr)
+			r.Get("/swagger/*", httpSwagger.Handler(httpSwagger.URL(docsURL)))
+		})
+		r.Group(func(r chi.Router) {
+			r.Use(app.UploadImageMiddleware)
+			r.Use(app.AuthTokenMiddleware)
+			r.Post("/posts", app.createPostHandler)
+			r.Post("/posts/image", app.uploadImage)
+		})
+		r.Group(func(r chi.Router) {
+			r.Get("/posts", app.getAllPostsHandler)
+		})
+		r.Group(func(r chi.Router) {
+			r.Use(app.postContextMiddleware)
+			r.Get("/posts/{postID}", app.getPostHandler)
+		})
+		r.Group(func(r chi.Router) {
+			r.Use(app.AuthTokenMiddleware)
+			r.Use(app.postContextMiddleware)
+			r.Patch("/posts/{postID}", app.checkPostOwnership("moderator", app.updatePostHandler))
+			r.Delete("/posts/{postID}", app.checkPostOwnership("admin", app.deletePostHandler))
+		})
+		r.Group(func(r chi.Router) {
+			r.Put("/users/activate/{token}", app.activateUserHandler)
+		})
+		r.Group(func(r chi.Router) {
+			r.Use(app.AuthTokenMiddleware)
+			r.Get("/users/{userID}", app.getUserHandler)
+			r.Put("/users/{userID}/follow", app.followUserHandler)
+			r.Put("/users/{userID}/unfollow", app.unfollowUserHandler)
+			r.Get("/users/feed", app.getUserFeedHandler)
+		})
+		r.Group(func(r chi.Router) {
+			r.Post("/auth/user", app.registerUserHandler)
+			r.Post("/auth/token", app.createTokenHandler)
 		})
 	})
 
