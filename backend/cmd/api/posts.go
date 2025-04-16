@@ -2,14 +2,12 @@ package main
 
 import (
 	"context"
+	"encoding/json"
 	"errors"
 	"fmt"
 	"net/http"
-	"os"
 	"strconv"
 
-	"github.com/cloudinary/cloudinary-go/v2"
-	"github.com/cloudinary/cloudinary-go/v2/api/uploader"
 	"github.com/go-chi/chi/v5"
 	"github.com/nicolasleigh/social/internal/store"
 )
@@ -20,34 +18,55 @@ const postCtx postKey = "post"
 
 type CreatePostPayload struct {
 	Title   string   `json:"title" validate:"required,max=100"`
-	Content string   `json:"content" validate:"required,max=1000"`
-	Tags    []string `json:"tags"`
+	About   string   `json:"about" validate:"required,max=500"`
+	Content string   `json:"content" validate:"required,max=5000"`
+	Tags    []string `json:"tags" validate:"required"`
+	Photo   string   `json:"photo" validate:"required"`
 }
 
 type UpdatePostPayload struct {
-	Title   string `json:"title" validate:"omitempty,max=100"`
-	Content string `json:"content" validate:"omitempty,max=1000"`
+	Title   string   `json:"title" validate:"omitempty,max=100"`
+	About   string   `json:"about" validate:"omitempty,max=500"`
+	Content string   `json:"content" validate:"omitempty,max=5000"`
+	Tags    []string `json:"tags" validate:"omitempty"`
+	Photo   string   `json:"photo" validate:"omitempty"`
 }
 
 func (app *application) createPostHandler(w http.ResponseWriter, r *http.Request) {
 	var payload CreatePostPayload
+	var tags []string
+	json.Unmarshal([]byte(r.FormValue("tags")), &tags)
+	imageUrl := getImageUrlFromContext(r)
+	user := getUserFromContext(r)
+	payload.Title = r.FormValue("title")
+	payload.About = r.FormValue("about")
+	payload.Content = r.FormValue("content")
+	payload.Tags = tags
+	payload.Photo = imageUrl
 
-	if err := readJSON(w, r, &payload); err != nil {
-		app.badRequestError(w, r, err)
-		return
-	}
+	// fmt.Println("tags", tags)
+	// fmt.Println("title", r.FormValue("title"))
+	// fmt.Println("about", r.FormValue("about"))
+	// fmt.Println("content", r.FormValue("content"))
+	// fmt.Println("imageUrl", imageUrl)
+	// fmt.Println("user", user)
+
+	// if err := readJSON(w, r, &payload); err != nil {
+	// 	app.badRequestError(w, r, err)
+	// 	return
+	// }
 
 	if err := Validate.Struct(payload); err != nil {
 		app.badRequestError(w, r, err)
 		return
 	}
 
-	user := getUserFromContext(r)
-
 	post := &store.Post{
 		Title:   payload.Title,
+		About:   payload.About,
 		Content: payload.Content,
 		Tags:    payload.Tags,
+		Photo:   payload.Photo,
 		UserID:  user.ID,
 	}
 
@@ -65,35 +84,8 @@ func (app *application) createPostHandler(w http.ResponseWriter, r *http.Request
 }
 
 func (app *application) uploadImage(w http.ResponseWriter, r *http.Request) {
-	var cld, err = cloudinary.NewFromURL(os.Getenv("CLOUDINARY_URL"))
-	if err != nil {
-		app.internalServerError(w, r, err)
-		return
-	}
-	err = r.ParseMultipartForm(10 << 20) //10 MB
-	if err != nil {
-		app.internalServerError(w, r, err)
-		return
-	}
-	file, _, err := r.FormFile("image")
-	if err != nil {
-		app.internalServerError(w, r, err)
-		return
-	}
-	defer file.Close()
-
-	var ctx = context.Background()
-	uploadResult, err := cld.Upload.Upload(
-		ctx,
-		file,
-		uploader.UploadParams{
-			Folder: "blog-post",
-		})
-	if err != nil {
-		app.internalServerError(w, r, err)
-		return
-	}
-	if err := app.jsonResponse(w, http.StatusOK, uploadResult.SecureURL); err != nil {
+	imageUrl := getImageUrlFromContext(r)
+	if err := app.jsonResponse(w, http.StatusOK, imageUrl); err != nil {
 		app.internalServerError(w, r, err)
 		return
 	}
@@ -231,4 +223,9 @@ func (app *application) postContextMiddleware(next http.Handler) http.Handler {
 func getPostFromCtx(r *http.Request) *store.Post {
 	post := r.Context().Value(postCtx).(*store.Post)
 	return post
+}
+
+func getImageUrlFromContext(r *http.Request) string {
+	imageUrl := r.Context().Value(imageUrlCtx).(string)
+	return imageUrl
 }

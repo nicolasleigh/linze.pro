@@ -7,11 +7,13 @@ import { Label } from "@/components/ui/label"
 import { toast } from "vue-sonner"
 import { useCreatePost } from "@/hooks/useCreatePost"
 import { useUploadImage } from "@/hooks/useUploadImage"
+import Input from "@/components/ui/input/Input.vue"
 
 const title = ref("")
+const about = ref("")
 const content = ref("")
 const tags = ref<string[]>([])
-const img = ref("")
+const photo = ref<File>()
 
 const { createPost, isPending } = useCreatePost()
 
@@ -26,10 +28,13 @@ const handleInputChange = (e: Event) => {
 
 const { uploadImage } = useUploadImage()
 
-const handleImage = (e: Event) => {
+const handleCoverPhoto = (e: Event) => {
   e.preventDefault()
-  uploadImage(e.target.files[0])
-  console.log(e.target.files[0])
+  const target = e.target as HTMLInputElement
+  if (target.files) {
+    photo.value = target.files[0]
+    console.log(target.files[0])
+  }
   // console.log((e.target as HTMLInputElement).value)
 }
 
@@ -40,8 +45,12 @@ const handleEditorUpdate = (value: string) => {
 }
 
 const handleSubmit = () => {
+  console.log(photo.value)
   if (!title.value.trim()) {
     return toast.error("Please enter title")
+  }
+  if (!about.value.trim()) {
+    return toast.error("Please enter about")
   }
   if (tags.value.length === 0) {
     return toast.error("Please enter tags")
@@ -49,7 +58,16 @@ const handleSubmit = () => {
   if (!content.value.trim()) {
     return toast.error("Please enter content")
   }
-  createPost({ title: title.value, content: content.value, tags: tags.value })
+  if (!photo.value) {
+    return toast.error("Please select cover photo")
+  }
+  createPost({
+    title: title.value,
+    content: content.value,
+    tags: tags.value,
+    about: about.value,
+    photo: photo.value,
+  })
 }
 
 const wrapperStyle = "flex flex-col gap-2"
@@ -59,12 +77,12 @@ const wrapperStyle = "flex flex-col gap-2"
   <div class="flex flex-col gap-5">
     <div :class="wrapperStyle">
       <Label for="title">Title</Label>
-      <input
-        id="title"
-        class="border rounded-md p-2 focus:outline-none"
-        v-model="title"
-        @input="handleInputChange"
-      />
+      <input id="title" class="border rounded-md p-2 focus:outline-none" v-model="title" />
+    </div>
+
+    <div :class="wrapperStyle">
+      <Label for="about">About</Label>
+      <textarea id="about" class="border rounded-md p-2 focus:outline-none" v-model="about" />
     </div>
 
     <div :class="wrapperStyle">
@@ -73,13 +91,13 @@ const wrapperStyle = "flex flex-col gap-2"
     </div>
 
     <div :class="wrapperStyle">
-      <Label for="image">Image</Label>
-      <input
-        id="image"
+      <Label for="photo">Cover Photo</Label>
+      <Input
+        id="photo"
+        class="shadow-none pl-1 text-base text-muted-foreground"
         type="file"
-        class="border rounded-md p-2 focus:outline-none"
-        :value="img"
-        @input="handleImage"
+        ref="photo"
+        @input="handleCoverPhoto"
       />
     </div>
 

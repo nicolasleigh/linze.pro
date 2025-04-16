@@ -4,7 +4,7 @@ import type { CreatePost, Post } from "@/types/post"
 import { toast } from "vue-sonner"
 
 export const getPostByIdApi = async (id: string): Promise<Post> => {
-  const token = await localStorage.getItem("jwt-token")
+  const token = localStorage.getItem("jwt-token")
   const { data } = await client.get(`/posts/${id}`, {
     headers: {
       Authorization: `Bearer ${token}`,
@@ -25,7 +25,13 @@ export const getPostsApi = async (options: GetPostsOptions): Promise<Post[]> => 
 
 export const createPostApi = async (post: CreatePost) => {
   const token = localStorage.getItem("jwt-token")
-  await client.post(`/posts`, post, {
+  const form = new FormData()
+  form.append("image", post.photo)
+  form.append("title", post.title)
+  form.append("about", post.about)
+  form.append("content", post.content)
+  form.append("tags", JSON.stringify(post.tags))
+  await client.post(`/posts`, form, {
     headers: {
       Authorization: `Bearer ${token}`,
     },

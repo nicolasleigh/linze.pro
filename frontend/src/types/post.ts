@@ -25,4 +25,6 @@ export type CreatePost = {
   title: string
   content: string
   tags: string[]
+  photo: File
+  about: string
 }

@@ -5,12 +5,19 @@ import (
 	"encoding/base64"
 	"fmt"
 	"net/http"
+	"os"
 	"strconv"
 	"strings"
 
+	"github.com/cloudinary/cloudinary-go/v2"
+	"github.com/cloudinary/cloudinary-go/v2/api/uploader"
 	"github.com/golang-jwt/jwt/v5"
 	"github.com/nicolasleigh/social/internal/store"
 )
+
+type imageUrlKey string
+
+const imageUrlCtx imageUrlKey = "imageUrl"
 
 func (app *application) AuthTokenMiddleware(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
@@ -32,7 +39,7 @@ func (app *application) AuthTokenMiddleware(next http.Handler) http.Handler {
 			app.unauthorizedError(w, r, err)
 			return
 		}
-		// fmt.Print(jwtToken)
+		// fmt.Print("jwtToken",jwtToken)
 
 		claims := jwtToken.Claims.(jwt.MapClaims)
 
@@ -54,7 +61,7 @@ func (app *application) AuthTokenMiddleware(next http.Handler) http.Handler {
 			app.unauthorizedError(w, r, err)
 			return
 		}
-		// fmt.Print(user)
+		// fmt.Print("user-middleware:",user.ID)
 
 		ctx = context.WithValue(ctx, userCtx, user)
 		next.ServeHTTP(w, r.WithContext(ctx))
@@ -169,5 +176,42 @@ func (app *application) RateLimiterMiddleware(next http.Handler) http.Handler {
 		}
 
 		next.ServeHTTP(w, r)
+	})
+}
+
+func (app *application) UploadImageMiddleware(next http.Handler) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		var cld, err = cloudinary.NewFromURL(os.Getenv("CLOUDINARY_URL"))
+		if err != nil {
+			app.internalServerError(w, r, err)
+			return
+		}
+		err = r.ParseMultipartForm(10 << 20) //10 MB
+		if err != nil {
+			app.internalServerError(w, r, err)
+			return
+		}
+		file, _, err := r.FormFile("image")
+		if err != nil {
+			app.internalServerError(w, r, err)
+			return
+		}
+		defer file.Close()
+
+		var ctx = context.Background()
+		uploadResult, err := cld.Upload.Upload(
+			ctx,
+			file,
+			uploader.UploadParams{
+				Folder: "blog-post",
+			})
+		if err != nil {
+			app.internalServerError(w, r, err)
+			return
+		}
+
+		ctx = context.WithValue(ctx, imageUrlCtx, uploadResult.SecureURL)
+
+		next.ServeHTTP(w, r.WithContext(ctx))
 	})
 }
