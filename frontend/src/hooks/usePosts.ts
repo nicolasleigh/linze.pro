@@ -1,12 +1,10 @@
-import { getPostByIdApi, getPostsApi } from "@/api/post"
+import { getPostByIdApi, getPostsApi, getPostsByTagApi } from "@/api/post"
+import { POST_PAGE_LIMIT } from "@/utils/constant"
 import { useQuery } from "@tanstack/vue-query"
 import { useRoute } from "vue-router"
 
-export function usePosts() {
-  const route = useRoute()
-  const page = Number(route.query.page) || 1
-  // const limit = Number(route.query.limit) || 10;
-  const limit = 10
+export function usePosts(page: number) {
+  const limit = POST_PAGE_LIMIT
 
   const {
     data: posts,

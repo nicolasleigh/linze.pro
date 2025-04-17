@@ -151,6 +151,38 @@ func (app *application) getAllTags(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+func (app *application) getPostByTag(w http.ResponseWriter, r *http.Request) {
+	tag := r.URL.Query().Get("tag")
+	pageStr := r.URL.Query().Get("page")
+	limitStr := r.URL.Query().Get("limit")
+
+	page, err := strconv.Atoi(pageStr)
+	if err != nil {
+		app.internalServerError(w, r, err)
+		return
+	}
+
+	limit, err := strconv.Atoi(limitStr)
+	if err != nil {
+		app.internalServerError(w, r, err)
+		return
+	}
+
+	offset := (page - 1) * limit
+
+	posts, err := app.store.Posts.GetByTag(r.Context(),limit,offset,tag)
+	if err != nil {
+		app.internalServerError(w, r, err)
+		return
+	}
+
+
+	if err := app.jsonResponse(w, http.StatusOK, posts); err != nil {
+		app.internalServerError(w, r, err)
+		return
+	}
+}
+
 func (app *application) deletePostHandler(w http.ResponseWriter, r *http.Request) {
 	idParam := chi.URLParam(r, "postID")
 	id, err := strconv.ParseInt(idParam, 10, 64)

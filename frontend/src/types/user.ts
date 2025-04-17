@@ -11,3 +11,8 @@ export type GetPostsOptions = {
   page: number
   limit: number
 }
+export type GetPostsByTagOptions = {
+  page: number
+  limit: number
+  tag: string
+}

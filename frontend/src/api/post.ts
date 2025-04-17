@@ -1,4 +1,4 @@
-import type { GetPostsOptions } from "@/types/user"
+import type { GetPostsByTagOptions, GetPostsOptions } from "@/types/user"
 import { client } from "./client"
 import type { CreatePost, Post } from "@/types/post"
 import { toast } from "vue-sonner"
@@ -63,5 +63,16 @@ export const uploadImageApi = async (imageFile: File) => {
 
 export const getAllTagsApi = async (): Promise<string> => {
   const { data } = await client.get(`/posts/tags`)
+  return data.data
+}
+
+export const getPostsByTagApi = async (options: GetPostsByTagOptions): Promise<Post[]> => {
+  const { data } = await client.get(`/posts/tag`, {
+    params: {
+      page: options.page,
+      limit: options.limit,
+      tag: options.tag,
+    },
+  })
   return data.data
 }

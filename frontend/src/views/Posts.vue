@@ -2,8 +2,27 @@
 import PostAside from "@/components/PostAside.vue"
 import PostCard from "@/components/PostCard.vue"
 import { usePosts } from "@/hooks/usePosts"
+import { usePostsByTag } from "@/hooks/usePostsByTag"
+import { computed, ref, watch } from "vue"
+import { useRoute } from "vue-router"
 
-const { posts, error, isLoading } = usePosts()
+const route = useRoute()
+const tag = ref(route.query.tag)
+const page = Number(route.query.page) || 1
+const { posts: allPosts, error, isLoading } = usePosts(page)
+const { posts: postsByTag, refetch } = usePostsByTag(page, tag)
+
+const resultPost = computed(() => {
+  return tag.value && postsByTag.value?.length ? postsByTag.value : allPosts.value
+})
+
+watch(
+  () => route.query.tag,
+  (newTag) => {
+    tag.value = newTag
+    refetch()
+  },
+)
 </script>
 
 <template>
@@ -16,7 +35,7 @@ const { posts, error, isLoading } = usePosts()
 
         <ul class="md:border-r border-neutral-900 md:pr-8 grid gap-8 py-6">
           <li
-            v-for="(item, index) in posts"
+            v-for="(item, index) in resultPost"
             :key="index"
             class="w-full rounded-md @container/blog-card transition duration-100 group"
           >

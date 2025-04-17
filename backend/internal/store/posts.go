@@ -149,6 +149,51 @@ func (s *PostStore) GetTags(ctx context.Context) (string, error) {
 	return tag, nil
 }
 
+func (s *PostStore) GetByTag(ctx context.Context, limit, offset int, tag string) (*[]Post, error) {
+	query := `SELECT p.id AS post_id, u.email, u.username, title, p.created_at, p.updated_at, tags, p.about, p.photo
+	FROM posts AS p
+	JOIN users AS u ON u.id = p.user_id
+	WHERE $3 = ANY(p.tags)
+	ORDER BY p.created_at DESC
+	LIMIT $1 OFFSET $2;
+	`
+	ctx, cancel := context.WithTimeout(ctx, QueryTimeoutDuration)
+	defer cancel()
+
+	posts := make([]Post, 0)
+	rows, err := s.db.QueryContext(ctx, query, limit, offset, tag)
+	if err != nil {
+		switch {
+		case errors.Is(err, sql.ErrNoRows):
+			return nil, ErrNotFound
+		default:
+			return nil, err
+		}
+	}
+	defer rows.Close()
+
+	for rows.Next() {
+		var post Post
+		err := rows.Scan(
+			&post.ID,
+			&post.User.Email,
+			&post.User.Username,
+			&post.Title,
+			&post.CreatedAt,
+			&post.UpdatedAt,
+			pq.Array(&post.Tags),
+			&post.About,
+			&post.Photo,
+		)
+		if err != nil {
+			return nil, err
+		}
+		posts = append(posts, post)
+	}
+
+	return &posts, nil
+}
+
 func (s *PostStore) Delete(ctx context.Context, id int64) error {
 	query := `DELETE FROM posts WHERE id = $1`
 
