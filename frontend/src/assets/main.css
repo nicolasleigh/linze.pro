@@ -14,6 +14,12 @@
   margin: 0 auto;
 }
 
+.cursor-newtab {
+  cursor:
+    url(/link.svg) 10 10,
+    pointer;
+}
+
 @media (min-width: 1024px) {
   body {
     display: flex;

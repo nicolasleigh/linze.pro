@@ -5,6 +5,7 @@ import SignupForm from "@/views/SignupForm.vue"
 import MdPreview from "@/components/MdPreview.vue"
 import Posts from "@/views/Posts.vue"
 import CreatePost from "@/views/CreatePost.vue"
+import Projects from "@/views/Projects.vue"
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -38,6 +39,11 @@ const router = createRouter({
       path: "/posts",
       name: "posts",
       component: Posts,
+    },
+    {
+      path: "/projects",
+      name: "projects",
+      component: Projects,
     },
     {
       path: "/about",

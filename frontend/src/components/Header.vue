@@ -24,6 +24,9 @@ const linkStyle = "py-3 px-2 font-rethink text-neutral-200 hover:text-neutral-50
           Preview
         </RouterLink>
         <RouterLink to="/posts" :class="linkStyle" :active-class="activeStyle"> Posts </RouterLink>
+        <RouterLink to="/projects" :class="linkStyle" :active-class="activeStyle">
+          Projects
+        </RouterLink>
       </ul>
     </nav>
   </header>
