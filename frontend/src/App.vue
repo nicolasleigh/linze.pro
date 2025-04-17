@@ -10,9 +10,12 @@ import Header from "./components/Header.vue"
   <Toaster position="top-center" richColors />
   <Header />
 
-  <main class="w-full">
-    <RouterView />
-  </main>
+  <div>
+    <div class="absolute overflow-hidden inset-0 h-[450px] bg-black"></div>
+    <main class="w-full">
+      <RouterView />
+    </main>
+  </div>
   <VueQueryDevtools />
 </template>
 

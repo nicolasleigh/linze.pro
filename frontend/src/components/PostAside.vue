@@ -21,13 +21,13 @@ const handleClick = (item: string) => {
     <p>Choose Tag</p>
     <div class="flex flex-wrap mt-4">
       <PostTag
-        v-for="(tag, index) in tags"
+        v-for="(item, index) in tags"
         :key="index"
-        class="cursor-pointer hover:text-white transition-colors duration-300 m-1"
-        :class="route.query.tag === tag ? 'text-accent bg-accent/30 hover:text-accent' : ''"
-        @click="handleClick(tag)"
+        class="cursor-pointer transition-colors duration-300 m-1"
+        :class="route.query.tag === item ? '!bg-accent/30 !text-accent' : 'hover:text-white'"
+        @click="handleClick(item)"
       >
-        {{ tag }}
+        {{ item }}
       </PostTag>
     </div>
   </aside>
