@@ -49,7 +49,7 @@ func (app *application) AuthTokenMiddleware(next http.Handler) http.Handler {
 			return
 		}
 
-		ctx := r.Context()
+		var ctx = r.Context()
 
 		// user, err := app.store.Users.GetByID(ctx, userID)
 		// if err != nil {
@@ -197,8 +197,9 @@ func (app *application) UploadImageMiddleware(next http.Handler) http.Handler {
 			return
 		}
 		defer file.Close()
-
-		var ctx = context.Background()
+		
+		// var ctx = context.Background()
+		var ctx = r.Context()
 		uploadResult, err := cld.Upload.Upload(
 			ctx,
 			file,

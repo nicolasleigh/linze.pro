@@ -88,15 +88,15 @@ type redisConfig struct {
 }
 
 func (app *application) mount() http.Handler {
-	r := chi.NewRouter()
+	router := chi.NewRouter()
 
 	// A good base middleware stack
-	r.Use(middleware.RequestID)
-	r.Use(middleware.RealIP)
-	r.Use(middleware.Logger)
-	r.Use(middleware.Recoverer)
+	router.Use(middleware.RequestID)
+	router.Use(middleware.RealIP)
+	router.Use(middleware.Logger)
+	router.Use(middleware.Recoverer)
 	// Basic CORS for more ideas, see: https://developer.github.com/v3/#cross-origin-resource-sharing
-	r.Use(cors.Handler(cors.Options{
+	router.Use(cors.Handler(cors.Options{
 		// AllowedOrigins:   []string{"https://foo.com"}, // Use this to allow specific origin hosts
 		// AllowedOrigins: []string{"https://*", "http://*"},
 		AllowedOrigins: []string{env.GetString("CORS_ALLOWED_ORIGIN", "http://localhost:5173")},
@@ -107,14 +107,14 @@ func (app *application) mount() http.Handler {
 		AllowCredentials: true,
 		MaxAge:           300, // Maximum value not ignored by any of major browsers
 	}))
-	r.Use(app.RateLimiterMiddleware)
+	router.Use(app.RateLimiterMiddleware)
 
 	// Set a timeout value on the request context (ctx), that will signal
 	// through ctx.Done() that the request has timed out and further
 	// processing should be stopped.
-	r.Use(middleware.Timeout(60 * time.Second))
+	router.Use(middleware.Timeout(60 * time.Second))
 
-	r.Route("/api/v1", func(r chi.Router) {
+	router.Route("/api/v1", func(r chi.Router) {
 		r.Group(func(r chi.Router) {
 			r.Get("/health", app.healthCheckHandler)
 		})
@@ -127,10 +127,16 @@ func (app *application) mount() http.Handler {
 			r.Get("/swagger/*", httpSwagger.Handler(httpSwagger.URL(docsURL)))
 		})
 		r.Group(func(r chi.Router) {
-			r.Use(app.UploadImageMiddleware)
-			r.Use(app.AuthTokenMiddleware)
-			r.Post("/posts", app.createPostHandler)
-			r.Post("/posts/image", app.uploadImage)
+			r.Route("/posts",func(r chi.Router) {
+				r.Use(app.UploadImageMiddleware)
+				r.Use(app.AuthTokenMiddleware)
+				r.Post("/", app.createPostHandler)
+				r.Post("/image", app.uploadImage)
+			})
+			// r.Use(app.UploadImageMiddleware)
+			// r.Use(app.AuthTokenMiddleware)
+			// r.Post("/posts", app.createPostHandler)
+			// r.Post("/posts/image", app.uploadImage)
 		})
 		r.Group(func(r chi.Router) {
 			r.Get("/posts", app.getAllPostsHandler)
@@ -163,7 +169,7 @@ func (app *application) mount() http.Handler {
 		})
 	})
 
-	return r
+	return router
 }
 
 func (app *application) run(mux http.Handler) error {
