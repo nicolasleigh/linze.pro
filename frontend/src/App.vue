@@ -4,6 +4,7 @@ import HelloWorld from "./components/HelloWorld.vue"
 import { Toaster } from "@/components/ui/sonner"
 import { VueQueryDevtools } from "@tanstack/vue-query-devtools"
 import Header from "./components/Header.vue"
+import Footer from "./components/Footer.vue"
 </script>
 
 <template>
@@ -12,10 +13,11 @@ import Header from "./components/Header.vue"
 
   <div>
     <div class="absolute overflow-hidden inset-0 h-[450px] bg-black"></div>
-    <main class="w-full">
+    <main class="w-full pb-24">
       <RouterView />
     </main>
   </div>
+  <Footer />
   <VueQueryDevtools />
 </template>
 
