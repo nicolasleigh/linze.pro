@@ -12,8 +12,8 @@ const props = defineProps({
       <TooltipTrigger class="cursor-default">
         <slot></slot>
       </TooltipTrigger>
-      <TooltipContent class="bg-neutral-700">
-        <p class="text-base">{{ props.tooltip }}</p>
+      <TooltipContent class="bg-neutral-700 py-1 px-2">
+        <p class="text-xs font-semibold">{{ props.tooltip }}</p>
       </TooltipContent>
     </Tooltip>
   </TooltipProvider>
