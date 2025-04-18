@@ -5,7 +5,7 @@ import { toast } from "vue-sonner"
 
 export const getPostByIdApi = async (id: string): Promise<Post> => {
   const token = localStorage.getItem("jwt-token")
-  const { data } = await client.get(`/posts/${id}`, {
+  const { data } = await client.get(`/post/${id}`, {
     headers: {
       Authorization: `Bearer ${token}`,
     },

@@ -12,7 +12,6 @@ import Footer from "./components/Footer.vue"
   <Header />
 
   <div>
-    <div class="absolute overflow-hidden inset-0 h-[450px] bg-black"></div>
     <main class="w-full pb-24">
       <RouterView />
     </main>

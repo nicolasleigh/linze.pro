@@ -145,13 +145,13 @@ func (app *application) mount() http.Handler {
 		})
 		r.Group(func(r chi.Router) {
 			r.Use(app.postContextMiddleware)
-			r.Get("/posts/{postID}", app.getPostHandler)
+			r.Get("/post/{postID}", app.getPostHandler)
 		})
 		r.Group(func(r chi.Router) {
 			r.Use(app.AuthTokenMiddleware)
 			r.Use(app.postContextMiddleware)
-			r.Patch("/posts/{postID}", app.checkPostOwnership("moderator", app.updatePostHandler))
-			r.Delete("/posts/{postID}", app.checkPostOwnership("admin", app.deletePostHandler))
+			r.Patch("/post/{postID}", app.checkPostOwnership("moderator", app.updatePostHandler))
+			r.Delete("/post/{postID}", app.checkPostOwnership("admin", app.deletePostHandler))
 		})
 		r.Group(func(r chi.Router) {
 			r.Put("/users/activate/{token}", app.activateUserHandler)

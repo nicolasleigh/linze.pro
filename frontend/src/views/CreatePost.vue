@@ -30,6 +30,7 @@ const handleCoverPhoto = (e: Event) => {
 
 const handleEditorUpdate = (value: string) => {
   content.value = value
+  // console.log(content.value)
 }
 
 const handleSubmit = () => {

@@ -20,10 +20,11 @@ const linkStyle = "py-3 px-2 font-rethink text-neutral-200 hover:text-neutral-50
         <RouterLink to="/editor" :class="linkStyle" :active-class="activeStyle">
           Editor
         </RouterLink>
-        <RouterLink to="/post/10" :class="linkStyle" :active-class="activeStyle">
+        <RouterLink to="/preview/10" :class="linkStyle" :active-class="activeStyle">
           Preview
         </RouterLink>
         <RouterLink to="/posts" :class="linkStyle" :active-class="activeStyle"> Posts </RouterLink>
+        <RouterLink to="/post/1" :class="linkStyle" :active-class="activeStyle"> Post </RouterLink>
         <RouterLink to="/projects" :class="linkStyle" :active-class="activeStyle">
           Projects
         </RouterLink>
