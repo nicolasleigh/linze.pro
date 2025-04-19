@@ -31,7 +31,7 @@ watch(imageUrl, (value) => {
 </script>
 
 <template>
-  <div class="w-[1200px]">
+  <div class="">
     <MdEditor
       class="rounded-lg"
       v-model="content"
@@ -39,6 +39,7 @@ watch(imageUrl, (value) => {
       :toolbars="toolbars"
       @save="onSave"
       @upload-img="uploadImg"
+      theme="dark"
     />
   </div>
 </template>

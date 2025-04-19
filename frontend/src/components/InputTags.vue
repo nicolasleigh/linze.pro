@@ -1,15 +1,15 @@
 <template>
   <div>
-    <div class="flex flex-wrap gap-2 p-2 bg-white border rounded-md">
+    <div class="flex flex-wrap gap-2 p-2 border rounded-md" :class="style">
       <span
         v-for="(tag, index) in tags"
         :key="index"
-        class="flex items-center px-2 py-1 text-sm bg-gray-100 rounded-md capitalize"
+        class="flex items-center px-2 py-1 text-sm bg-neutral-800 rounded-md capitalize"
       >
         {{ tag }}
         <button
           type="button"
-          class="ml-1 text-gray-500 hover:text-gray-700"
+          class="ml-2 text-neutral-500 hover:text-neutral-300"
           @click="removeTag(index)"
         >
           ✕
@@ -19,7 +19,7 @@
         v-model="pendingDataPoint"
         type="text"
         id="tags"
-        class="flex-grow min-w-[80px] outline-none border-none"
+        class="flex-grow min-w-[80px] outline-none border-none text-neutral-100 bg-neutral-950"
         @keydown.enter.prevent="addPendingDataPoint"
         @blur="addPendingDataPoint"
       />
@@ -36,6 +36,9 @@ export default {
     tags: {
       type: Array,
       default: () => [],
+    },
+    style: {
+      type: String,
     },
   },
   emits: ["update"],
