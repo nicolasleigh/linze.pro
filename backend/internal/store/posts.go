@@ -51,7 +51,7 @@ func (s *PostStore) Create(ctx context.Context, post *Post) error {
 }
 
 func (s *PostStore) GetByID(ctx context.Context, id int64) (*Post, error) {
-	query := `SELECT id, user_id, title, content, created_at, updated_at, tags, version
+	query := `SELECT id, user_id, title, content, created_at, updated_at, tags, version, about, photo
 	FROM posts
 	WHERE id = $1`
 
@@ -68,6 +68,8 @@ func (s *PostStore) GetByID(ctx context.Context, id int64) (*Post, error) {
 		&post.UpdatedAt,
 		pq.Array(&post.Tags),
 		&post.Version,
+		&post.About,
+		&post.Photo,
 	)
 	if err != nil {
 		switch {
@@ -216,15 +218,15 @@ func (s *PostStore) Delete(ctx context.Context, id int64) error {
 
 func (s *PostStore) Update(ctx context.Context, post *Post) error {
 	query := `UPDATE posts
-	SET title = $1, content = $2, version = version + 1
-	WHERE id = $3 AND version = $4
+	SET title = $1, content = $2, about = $3, tags = $4, version = version + 1
+	WHERE id = $5 AND version = $6
 	RETURNING version`
 
 	ctx, cancel := context.WithTimeout(ctx, QueryTimeoutDuration)
 	defer cancel()
 
 	// _, err := s.db.ExecContext(ctx, query, post.Title, post.Content, post.ID)
-	err := s.db.QueryRowContext(ctx, query, post.Title, post.Content, post.ID, post.Version).Scan(&post.Version)
+	err := s.db.QueryRowContext(ctx, query, post.Title, post.Content, post.About, pq.Array(post.Tags), post.ID, post.Version).Scan(&post.Version)
 	if err != nil {
 		switch {
 		case errors.Is(err, sql.ErrNoRows):

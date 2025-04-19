@@ -32,3 +32,11 @@ export type CreatePost = {
   photo: File
   about: string
 }
+
+export type UpdatePost = {
+  title: string
+  content: string
+  tags: string[]
+  photo?: File
+  about: string
+}

@@ -1,8 +1,10 @@
 <script setup lang="ts">
 import MdPreview from "@/components/MdPreview.vue"
 import PostTag from "@/components/PostTag.vue"
-import { BookOpen, Eye, Heart } from "lucide-vue-next"
+import { BookOpen, ChevronRight, Eye, Heart } from "lucide-vue-next"
 import { useRoute } from "vue-router"
+
+const route = useRoute()
 </script>
 
 <template>
@@ -73,6 +75,18 @@ import { useRoute } from "vue-router"
       <section>
         <MdPreview />
       </section>
+      <div class="flex items-center justify-center pt-52 text-red-500">
+        <button>
+          <Heart :size="60" :stroke-width="1" />
+        </button>
+      </div>
+      <RouterLink
+        :to="{ name: 'edit-post', params: route.params }"
+        class="relative group px-4 py-3 mt-12 rounded-xl border inline-flex items-center gap-3 cursor-pointer text-neutral-100 hover:bg-neutral-100 hover:text-neutral-800 transition-colors duration-300"
+      >
+        <span class="font-semibold"> Edit This Post </span>
+        <ChevronRight :stroke-width="2" :size="20" />
+      </RouterLink>
     </div>
   </section>
 </template>

@@ -1,6 +1,6 @@
 import type { GetPostsByTagOptions, GetPostsOptions } from "@/types/user"
 import { client } from "./client"
-import type { CreatePost, Post } from "@/types/post"
+import type { CreatePost, Post, UpdatePost } from "@/types/post"
 import { toast } from "vue-sonner"
 
 export const getPostByIdApi = async (id: string): Promise<Post> => {
@@ -40,6 +40,30 @@ export const createPostApi = async (post: CreatePost) => {
     loading: "Creating post...",
     success: "Post created successfully",
     error: "Failed to create post",
+  })
+}
+
+export const updatePostApi = async ({ id, post }: { id: string; post: UpdatePost }) => {
+  const token = localStorage.getItem("jwt-token")
+  const promise = client.patch(
+    `/post/${id}`,
+    {
+      title: post.title,
+      about: post.about,
+      // tags: JSON.stringify(post.tags),
+      tags: post.tags,
+      content: post.content,
+    },
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    },
+  )
+  toast.promise(promise, {
+    loading: "Updating post...",
+    success: "Post updated successfully",
+    error: "Failed to update post",
   })
 }
 

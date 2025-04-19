@@ -7,6 +7,7 @@ import Posts from "@/views/Posts.vue"
 import CreatePost from "@/views/CreatePost.vue"
 import Projects from "@/views/Projects.vue"
 import Post from "@/views/Post.vue"
+import EditPost from "@/views/EditPost.vue"
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -45,6 +46,11 @@ const router = createRouter({
       path: "/post/:postId",
       name: "post",
       component: Post,
+    },
+    {
+      path: "/edit-post/:postId",
+      name: "edit-post",
+      component: EditPost,
     },
     {
       path: "/projects",

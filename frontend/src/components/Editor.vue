@@ -8,7 +8,10 @@ import { idbAddItem } from "@/utils/indexedDb"
 import { formatTime } from "@/utils/helper"
 import { toast } from "vue-sonner"
 
-const content = ref("")
+const props = defineProps({
+  initialContent: String,
+})
+const content = ref(props.initialContent || "")
 const { uploadImage, imageUrl } = useUploadImage()
 
 const emit = defineEmits(["update:modelValue"])
@@ -21,6 +24,13 @@ const onSave = () => {
 const uploadImg = (files: File[]) => {
   uploadImage(files[0])
 }
+
+watch(
+  () => props.initialContent,
+  (newVal) => {
+    content.value = newVal || ""
+  },
+)
 
 watch(imageUrl, (value) => {
   const mdImageUrl = `
