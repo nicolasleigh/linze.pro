@@ -1,10 +1,16 @@
 <script setup lang="ts">
 import MdPreview from "@/components/MdPreview.vue"
 import PostTag from "@/components/PostTag.vue"
-import { BookOpen, ChevronRight, Eye, Heart } from "lucide-vue-next"
+import { usePost } from "@/hooks/usePost"
+import { dateFormat } from "@/utils/helper"
+import { BookOpen, Calendar, CalendarDays, ChevronRight, Eye, Heart } from "lucide-vue-next"
+import { computed } from "vue"
 import { useRoute } from "vue-router"
 
 const route = useRoute()
+const { post, isLoading } = usePost()
+
+dateFormat
 </script>
 
 <template>
@@ -15,10 +21,7 @@ const route = useRoute()
       >
         <div class="relative pt-[40%] lg:translate-y-[-20%]">
           <div class="absolute inset-0 top-1/2">
-            <img
-              class="w-full -translate-y-1/2"
-              src="https://images.theodorusclarence.com/upload/q_auto,f_auto/theodorusclarence/banner/david-wright-F-Bq5wB5RY0-unsplash"
-            />
+            <img class="w-full -translate-y-1/2" :src="post?.photo" />
           </div>
         </div>
       </figure>
@@ -29,40 +32,46 @@ const route = useRoute()
     <div class="layout pb-12 pt-32 md:pb-20 md:pt-64">
       <div class="pb-4">
         <div class="flex flex-wrap gap-x-2 gap-y-1 text-sm text-gray-100">
-          <PostTag>React</PostTag>
+          <PostTag v-for="(item, index) in post?.tags" :key="index">{{ item }}</PostTag>
         </div>
         <h1
           class="txt-primary mt-6 leading-tight text-neutral-100 text-5xl font-semibold selection:bg-accent-dark"
         >
-          List Animation using Motion for React
+          {{ post?.title }}
         </h1>
         <p class="mt-1 text-neutral-400 selection:bg-accent-dark">
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Reprehenderit, aliquid ullam.
-          Laboriosam, minus?
+          {{ post?.about }}
         </p>
         <div class="mt-12 flex gap-3 items-center">
           <div class="size-10 rounded-full overflow-hidden">
             <figure
               class="isolate z-[1] overflow-hidden select-none pointer-events-none object-cover"
             >
-              <img src="https://avatars.githubusercontent.com/u/113521135?v=4" />
+              <img src="/avatar.webp" />
             </figure>
           </div>
           <div>
-            <p class="text-neutral-100">Nicolas Leigh</p>
-            <p class="mt-0.5 text-neutral-400 text-xs">December 17, 2024</p>
+            <p class="text-neutral-100 capitalize">{{ post?.user.username }}</p>
+            <p class="mt-0.5 text-neutral-400 text-xs">{{ post?.user.email }}</p>
           </div>
         </div>
         <div
           class="mt-12 py-4 border-y text-white border-neutral-800 flex items-center gap-5 flex-wrap"
         >
           <p class="text-neutral-400 text-xs flex items-center gap-2">
-            <Eye :size="15" class="text-neutral-600" />
-            <span>3,066 views</span>
+            <Calendar :size="15" class="text-neutral-600" />
+            <span>{{ dateFormat(post?.created_at || "") }}</span>
+          </p>
+          <p
+            class="text-neutral-400 text-xs flex items-center gap-2"
+            :class="post?.created_at === post?.updated_at ? 'hidden' : ''"
+          >
+            <CalendarDays :size="15" class="text-neutral-600" />
+            <span>{{ dateFormat(post?.updated_at || "") }}</span>
           </p>
           <p class="text-neutral-400 text-xs flex items-center gap-2 ml-auto">
-            <BookOpen :size="15" class="text-neutral-600" />
-            <span>6 min read</span>
+            <Eye :size="15" class="text-neutral-600" />
+            <span>3,066 views</span>
           </p>
           <a data-state="closed">
             <p class="text-neutral-400 text-xs flex items-center gap-2">
@@ -73,7 +82,7 @@ const route = useRoute()
         </div>
       </div>
       <section>
-        <MdPreview />
+        <MdPreview :post="post" :isLoading="isLoading" />
       </section>
       <div class="flex items-center justify-center pt-52 text-red-500">
         <button>

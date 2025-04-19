@@ -7,7 +7,7 @@ import { Label } from "@/components/ui/label"
 import { toast } from "vue-sonner"
 import { useCreatePost } from "@/hooks/useCreatePost"
 import Input from "@/components/ui/input/Input.vue"
-import { NotebookPen } from "lucide-vue-next"
+import { FilePenLine, NotebookPen } from "lucide-vue-next"
 import { usePost } from "@/hooks/usePost"
 import { useUpdatePost } from "@/hooks/useUpdatePost"
 import { useRoute } from "vue-router"
@@ -88,10 +88,10 @@ const inputStyle =
         <div
           class="size-11 rounded-xl flex items-center justify-center relative bg-neutral-900/80 backdrop-blur-sm"
         >
-          <NotebookPen class="text-accent" :size="20" :stroke-width="1" />
+          <FilePenLine class="text-accent" :size="20" :stroke-width="1" />
         </div>
         <h1 class="mt-4 text-6xl">
-          <span class="text-neutral-300 font-semibold"> Create </span>
+          <span class="text-neutral-300 font-semibold"> Edit </span>
           <span
             class="font-semibold transition-colors bg-gradient-to-br from-accent/30 via-accent/90 to-accent/30 bg-clip-text text-transparent"
             >Posts</span

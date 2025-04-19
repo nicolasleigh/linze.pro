@@ -51,9 +51,11 @@ func (s *PostStore) Create(ctx context.Context, post *Post) error {
 }
 
 func (s *PostStore) GetByID(ctx context.Context, id int64) (*Post, error) {
-	query := `SELECT id, user_id, title, content, created_at, updated_at, tags, version, about, photo
+	query := `SELECT posts.id, username, email, posts.title, posts.content, posts.created_at, posts.updated_at, posts.tags, posts.version, posts.about, posts.photo
 	FROM posts
-	WHERE id = $1`
+	JOIN users ON users.id = posts.user_id
+	WHERE posts.id = $1;
+	`
 
 	ctx, cancel := context.WithTimeout(ctx, QueryTimeoutDuration)
 	defer cancel()
@@ -61,7 +63,8 @@ func (s *PostStore) GetByID(ctx context.Context, id int64) (*Post, error) {
 	var post Post
 	err := s.db.QueryRowContext(ctx, query, id).Scan(
 		&post.ID,
-		&post.UserID,
+		&post.User.Username,
+		&post.User.Email,
 		&post.Title,
 		&post.Content,
 		&post.CreatedAt,

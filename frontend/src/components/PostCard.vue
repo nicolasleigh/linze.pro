@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import { computed } from "vue"
 import { useRouter } from "vue-router"
 import type { PostCardProps } from "@/types/post"
 import { Calendar } from "lucide-vue-next"
 import PostTag from "@/components/PostTag.vue"
+import { dateFormat } from "@/utils/helper"
 
 const props = defineProps<PostCardProps>()
 const router = useRouter()
@@ -11,16 +11,6 @@ const router = useRouter()
 const goToPost = () => {
   router.push({ path: `/post/${props.id}` })
 }
-
-const formattedDate = computed(() => {
-  const date = new Date(props.updatedAt)
-  return date.toLocaleDateString("en-US", {
-    weekday: "long",
-    year: "numeric",
-    month: "long",
-    day: "numeric",
-  })
-})
 </script>
 
 <template>
@@ -49,7 +39,7 @@ const formattedDate = computed(() => {
         <div class="flex justify-between mt-5">
           <div class="text-neutral-300 flex items-center justify-center gap-3 text-sm">
             <Calendar :size="15" color="hsl(var(--accent))" />
-            {{ formattedDate }}
+            {{ dateFormat(props.createdAt) }}
           </div>
           <div class="flex gap-2">
             <div v-for="(item, index) in tags" :key="index">
