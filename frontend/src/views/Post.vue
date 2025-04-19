@@ -2,15 +2,29 @@
 import MdPreview from "@/components/MdPreview.vue"
 import PostTag from "@/components/PostTag.vue"
 import { usePost } from "@/hooks/usePost"
+import { useGetPostLike, usePostLike, usePostView } from "@/hooks/usePostLikeAndView"
 import { dateFormat } from "@/utils/helper"
 import { BookOpen, Calendar, CalendarDays, ChevronRight, Eye, Heart } from "lucide-vue-next"
-import { computed } from "vue"
+import { computed, ref, watch } from "vue"
 import { useRoute } from "vue-router"
 
 const route = useRoute()
 const { post, isLoading } = usePost()
+const { viewNum } = usePostView()
+const { likeNum, updatePostLike } = usePostLike()
+const { likeNum: initialLike } = useGetPostLike()
+const isLiked = ref(localStorage.getItem(`like-post-${route.params.postId}`) === "true" || false)
 
-dateFormat
+const handleLike = () => {
+  const likeState = localStorage.getItem(`like-post-${route.params.postId}`)
+  if (likeState === "true") {
+    isLiked.value = true
+    return
+  }
+  localStorage.setItem(`like-post-${route.params.postId}`, "true")
+  isLiked.value = true
+  updatePostLike()
+}
 </script>
 
 <template>
@@ -71,31 +85,39 @@ dateFormat
           </p>
           <p class="text-neutral-400 text-xs flex items-center gap-2 ml-auto">
             <Eye :size="15" class="text-neutral-600" />
-            <span>3,066 views</span>
+            <span>{{ viewNum }} views</span>
           </p>
-          <a data-state="closed">
-            <p class="text-neutral-400 text-xs flex items-center gap-2">
-              <Heart :size="15" class="text-neutral-600" />
-              <span>128 likes</span>
-            </p>
-          </a>
+          <button
+            class="text-neutral-400 text-xs flex items-center gap-2 cursor-pointer disabled:cursor-not-allowed"
+            @click="handleLike"
+            :disabled="isLiked"
+          >
+            <Heart :size="15" :class="isLiked ? 'text-red-600' : 'text-neutral-600'" />
+            <span>{{ likeNum ? likeNum : initialLike }} likes</span>
+          </button>
         </div>
       </div>
       <section>
         <MdPreview :post="post" :isLoading="isLoading" />
       </section>
-      <div class="flex items-center justify-center pt-52 text-red-500">
-        <button>
-          <Heart :size="60" :stroke-width="1" />
+      <div class="flex gap-10">
+        <button
+          @click="handleLike"
+          class="relative group px-4 py-3 mt-12 rounded-xl border inline-flex items-center gap-3 cursor-pointer text-neutral-100 hover:bg-neutral-100 hover:text-neutral-800 transition-colors duration-300 disabled:cursor-not-allowed disabled:hover:text-neutral-100 disabled:hover:bg-neutral-950"
+          :disabled="isLiked"
+        >
+          <span v-if="isLiked" class="font-semibold"> Liked </span>
+          <span v-else class="font-semibold"> Like </span>
+          <Heart :stroke-width="2" :size="20" :class="isLiked ? 'text-red-600' : ''" />
         </button>
+        <RouterLink
+          :to="{ name: 'edit-post', params: route.params }"
+          class="relative group px-4 py-3 mt-12 rounded-xl border inline-flex items-center gap-3 cursor-pointer text-neutral-100 hover:bg-neutral-100 hover:text-neutral-800 transition-colors duration-300"
+        >
+          <span class="font-semibold"> Edit This Post </span>
+          <ChevronRight :stroke-width="2" :size="20" />
+        </RouterLink>
       </div>
-      <RouterLink
-        :to="{ name: 'edit-post', params: route.params }"
-        class="relative group px-4 py-3 mt-12 rounded-xl border inline-flex items-center gap-3 cursor-pointer text-neutral-100 hover:bg-neutral-100 hover:text-neutral-800 transition-colors duration-300"
-      >
-        <span class="font-semibold"> Edit This Post </span>
-        <ChevronRight :stroke-width="2" :size="20" />
-      </RouterLink>
     </div>
   </section>
 </template>

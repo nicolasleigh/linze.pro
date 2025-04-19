@@ -197,7 +197,7 @@ func (app *application) UploadImageMiddleware(next http.Handler) http.Handler {
 			return
 		}
 		defer file.Close()
-		
+
 		// var ctx = context.Background()
 		var ctx = r.Context()
 		uploadResult, err := cld.Upload.Upload(

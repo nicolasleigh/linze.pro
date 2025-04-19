@@ -1,0 +1,2 @@
+ALTER TABLE IF EXISTS likes
+RENAME TO post_likes;

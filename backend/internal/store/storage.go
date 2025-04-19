@@ -44,6 +44,11 @@ type Storage struct {
 	Roles interface {
 		GetByName(context.Context, string) (*Role, error)
 	}
+	PostLikes interface {
+		UpdateLike(context.Context, int64) (int, error)
+		GetLike(context.Context, int64)(int, error)
+		UpdateView(context.Context, int64) (int, error)
+	}
 }
 
 func NewStorage(db *sql.DB) Storage {
@@ -53,6 +58,7 @@ func NewStorage(db *sql.DB) Storage {
 		Comments:  &CommentStore{db},
 		Followers: &FollowerStore{db},
 		Roles:     &RoleStore{db},
+		PostLikes: &PostLikeStore{db},
 	}
 }
 

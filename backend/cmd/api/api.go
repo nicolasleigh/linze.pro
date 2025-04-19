@@ -127,7 +127,7 @@ func (app *application) mount() http.Handler {
 			r.Get("/swagger/*", httpSwagger.Handler(httpSwagger.URL(docsURL)))
 		})
 		r.Group(func(r chi.Router) {
-			r.Route("/posts",func(r chi.Router) {
+			r.Route("/posts", func(r chi.Router) {
 				r.Use(app.UploadImageMiddleware)
 				r.Use(app.AuthTokenMiddleware)
 				r.Post("/", app.createPostHandler)
@@ -166,6 +166,11 @@ func (app *application) mount() http.Handler {
 		r.Group(func(r chi.Router) {
 			r.Post("/auth/user", app.registerUserHandler)
 			r.Post("/auth/token", app.createTokenHandler)
+		})
+		r.Group(func(r chi.Router) {
+			r.Post("/like/post/{postID}", app.updatePostLike)
+			r.Get("/like/post/{postID}", app.getPostLike)
+			r.Get("/view/post/{postID}", app.updatePostView)
 		})
 	})
 

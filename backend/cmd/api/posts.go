@@ -169,12 +169,11 @@ func (app *application) getPostByTag(w http.ResponseWriter, r *http.Request) {
 
 	offset := (page - 1) * limit
 
-	posts, err := app.store.Posts.GetByTag(r.Context(),limit,offset,tag)
+	posts, err := app.store.Posts.GetByTag(r.Context(), limit, offset, tag)
 	if err != nil {
 		app.internalServerError(w, r, err)
 		return
 	}
-
 
 	if err := app.jsonResponse(w, http.StatusOK, posts); err != nil {
 		app.internalServerError(w, r, err)
