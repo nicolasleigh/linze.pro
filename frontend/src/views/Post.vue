@@ -72,18 +72,18 @@ const handleLike = () => {
         <div
           class="mt-12 py-4 border-y text-white border-neutral-800 flex items-center gap-5 flex-wrap"
         >
-          <p class="text-neutral-400 text-xs flex items-center gap-2">
+          <p class="text-neutral-400 text-xs flex items-center gap-2 pointer-events-none">
             <Calendar :size="15" class="text-neutral-600" />
             <span>{{ dateFormat(post?.created_at || "") }}</span>
           </p>
           <p
-            class="text-neutral-400 text-xs flex items-center gap-2"
+            class="text-neutral-400 text-xs flex items-center gap-2 pointer-events-none"
             :class="post?.created_at === post?.updated_at ? 'hidden' : ''"
           >
             <CalendarDays :size="15" class="text-neutral-600" />
             <span>{{ dateFormat(post?.updated_at || "") }}</span>
           </p>
-          <p class="text-neutral-400 text-xs flex items-center gap-2 ml-auto">
+          <p class="text-neutral-400 text-xs flex items-center gap-2 ml-auto pointer-events-none">
             <Eye :size="15" class="text-neutral-600" />
             <span>{{ viewNum }} views</span>
           </p>
