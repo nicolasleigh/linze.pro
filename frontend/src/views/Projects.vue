@@ -55,7 +55,7 @@ import { BriefcaseBusiness, ChevronRight } from "lucide-vue-next"
           image="https://images.theodorusclarence.com/upload/q_auto,f_auto,c_fill,ar_1:1,w_1440/theodorusclarence/projects/notiolink/notiolink-banner-square.png"
           repo="https://github.com/nicolasleigh/moviefy"
           website="https://movie.linze.pro"
-          link="/projects/moviefy"
+          link="/projects/en/moviefy"
         >
           <Moviefy />
         </ProjectCard>
@@ -64,7 +64,7 @@ import { BriefcaseBusiness, ChevronRight } from "lucide-vue-next"
           about="Lorem ipsum dolor sit amet, consectetur adipisicing elit. Corrupti, sequi!"
           image="https://images.theodorusclarence.com/upload/q_auto,f_auto,c_fill,ar_1:1,w_1440/theodorusclarence/projects/seasforus/seasforus-banner-square.png"
           repo="https://github.com/nicolasleigh/musicfy"
-          link="/projects/musicfy"
+          link="/projects/en/musicfy"
           reverse
         >
           <Musicfy />
@@ -75,7 +75,7 @@ import { BriefcaseBusiness, ChevronRight } from "lucide-vue-next"
           image="https://images.theodorusclarence.com/upload/q_auto,f_auto,c_fill,ar_1:1,w_1440/theodorusclarence/projects/notiolink/notiolink-banner-square.png"
           repo="https://github.com/nicolasleigh/petify"
           website="https://pet.linze.pro"
-          link="/projects/petify"
+          link="/projects/en/petify"
         >
           <Petify />
         </ProjectCard>
@@ -85,7 +85,7 @@ import { BriefcaseBusiness, ChevronRight } from "lucide-vue-next"
           image="https://images.theodorusclarence.com/upload/q_auto,f_auto,c_fill,ar_1:1,w_1440/theodorusclarence/projects/hexcape/hexcape-banner-square"
           repo="https://github.com/nicolasleigh/chatify"
           website="https://chat.linze.pro"
-          link="/projects/chatify"
+          link="/projects/en/chatify"
           reverse
         >
           <Chatify />
@@ -96,7 +96,7 @@ import { BriefcaseBusiness, ChevronRight } from "lucide-vue-next"
           image="https://images.theodorusclarence.com/upload/q_auto,f_auto,c_fill,ar_1:1,w_1440/theodorusclarence/projects/notiolink/notiolink-banner-square.png"
           repo="https://github.com/nicolasleigh/chatify"
           website="https://linze.pro"
-          link="/projects/blog"
+          link="/projects/en/blog"
         >
           <Current />
         </ProjectCard>
