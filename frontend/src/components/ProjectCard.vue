@@ -2,6 +2,7 @@
 import IconGithub from "@/components/icons/IconGithub.vue"
 import IconLink from "@/components/icons/IconLink.vue"
 import { ChevronRight } from "lucide-vue-next"
+import { RouterLink } from "vue-router"
 
 const props = defineProps({
   title: String,
@@ -10,6 +11,7 @@ const props = defineProps({
   repo: String,
   website: String,
   reverse: Boolean,
+  link: String,
 })
 </script>
 
@@ -36,12 +38,13 @@ const props = defineProps({
         </ul>
       </div>
       <div class="w-full flex flex-wrap justify-between gap-4 items-center mt-10">
-        <a
+        <RouterLink
+          :to="props.link || ''"
           class="relative group px-4 py-3 rounded-xl border inline-flex items-center gap-3 cursor-pointer text-neutral-100 hover:bg-neutral-100 hover:text-neutral-800 transition-colors duration-300"
         >
           <span class="font-semibold"> View Project </span>
           <ChevronRight :stroke-width="2" :size="20" />
-        </a>
+        </RouterLink>
         <div class="flex items-center gap-6">
           <a
             :href="props.repo"

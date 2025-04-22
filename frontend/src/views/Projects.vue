@@ -43,7 +43,8 @@ import { BriefcaseBusiness, ChevronRight } from "lucide-vue-next"
           about="Lorem ipsum dolor sit amet, consectetur adipisicing elit. Corrupti, sequi!"
           image="https://images.theodorusclarence.com/upload/q_auto,f_auto,c_fill,ar_1:1,w_1440/theodorusclarence/projects/hexcape/hexcape-banner-square"
           repo="https://github.com/nicolasleigh/cabinfy"
-          website="https://cabinfy.linze.pro"
+          website="https://cabin.linze.pro"
+          link="/projects/en/cabinfy"
           reverse
         >
           <Cabinfy />
@@ -53,7 +54,8 @@ import { BriefcaseBusiness, ChevronRight } from "lucide-vue-next"
           about="Lorem ipsum dolor sit amet, consectetur adipisicing elit. Corrupti, sequi!"
           image="https://images.theodorusclarence.com/upload/q_auto,f_auto,c_fill,ar_1:1,w_1440/theodorusclarence/projects/notiolink/notiolink-banner-square.png"
           repo="https://github.com/nicolasleigh/moviefy"
-          website="https://moviefy.linze.pro"
+          website="https://movie.linze.pro"
+          link="/projects/moviefy"
         >
           <Moviefy />
         </ProjectCard>
@@ -62,6 +64,7 @@ import { BriefcaseBusiness, ChevronRight } from "lucide-vue-next"
           about="Lorem ipsum dolor sit amet, consectetur adipisicing elit. Corrupti, sequi!"
           image="https://images.theodorusclarence.com/upload/q_auto,f_auto,c_fill,ar_1:1,w_1440/theodorusclarence/projects/seasforus/seasforus-banner-square.png"
           repo="https://github.com/nicolasleigh/musicfy"
+          link="/projects/musicfy"
           reverse
         >
           <Musicfy />
@@ -71,7 +74,8 @@ import { BriefcaseBusiness, ChevronRight } from "lucide-vue-next"
           about="Lorem ipsum dolor sit amet, consectetur adipisicing elit. Corrupti, sequi!"
           image="https://images.theodorusclarence.com/upload/q_auto,f_auto,c_fill,ar_1:1,w_1440/theodorusclarence/projects/notiolink/notiolink-banner-square.png"
           repo="https://github.com/nicolasleigh/petify"
-          website="https://petify.linze.pro"
+          website="https://pet.linze.pro"
+          link="/projects/petify"
         >
           <Petify />
         </ProjectCard>
@@ -80,7 +84,8 @@ import { BriefcaseBusiness, ChevronRight } from "lucide-vue-next"
           about="Lorem ipsum dolor sit amet, consectetur adipisicing elit. Corrupti, sequi!"
           image="https://images.theodorusclarence.com/upload/q_auto,f_auto,c_fill,ar_1:1,w_1440/theodorusclarence/projects/hexcape/hexcape-banner-square"
           repo="https://github.com/nicolasleigh/chatify"
-          website="https://chatify.linze.pro"
+          website="https://chat.linze.pro"
+          link="/projects/chatify"
           reverse
         >
           <Chatify />
@@ -90,7 +95,8 @@ import { BriefcaseBusiness, ChevronRight } from "lucide-vue-next"
           about="Lorem ipsum dolor sit amet, consectetur adipisicing elit. Corrupti, sequi!"
           image="https://images.theodorusclarence.com/upload/q_auto,f_auto,c_fill,ar_1:1,w_1440/theodorusclarence/projects/notiolink/notiolink-banner-square.png"
           repo="https://github.com/nicolasleigh/chatify"
-          website="https://chatify.linze.pro"
+          website="https://linze.pro"
+          link="/projects/blog"
         >
           <Current />
         </ProjectCard>

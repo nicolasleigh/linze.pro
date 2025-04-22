@@ -62,9 +62,4 @@ import IconSocketIO from "../icons/IconSocketIO.vue"
       <IconDocker />
     </IconWithTooltip>
   </li>
-  <li>
-    <IconWithTooltip tooltip="Caddy">
-      <IconCaddy />
-    </IconWithTooltip>
-  </li>
 </template>

@@ -58,9 +58,4 @@ import IconWithTooltip from "@/components/IconWithTooltip.vue"
       <IconDocker />
     </IconWithTooltip>
   </li>
-  <li>
-    <IconWithTooltip tooltip="Caddy">
-      <IconCaddy />
-    </IconWithTooltip>
-  </li>
 </template>

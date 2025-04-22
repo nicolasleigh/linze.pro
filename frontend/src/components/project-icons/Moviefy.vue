@@ -51,9 +51,4 @@ import IconI18next from "../icons/IconI18next.vue"
       <IconDocker />
     </IconWithTooltip>
   </li>
-  <li>
-    <IconWithTooltip tooltip="Caddy">
-      <IconCaddy />
-    </IconWithTooltip>
-  </li>
 </template>
