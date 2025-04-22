@@ -1,36 +1,10 @@
 <script setup lang="ts">
-import { onMounted, onUnmounted, ref } from "vue"
 import Header from "../Header.vue"
-
-const activeSection = ref(null)
-const sections = ref([])
+import { useActiveSection } from "@/hooks/useActiveSection"
 
 const activeStyle = "text-neutral-200"
 
-const handleScroll = () => {
-  const scrollY = window.scrollY
-  let newActiveSection = null
-
-  sections.value.forEach((section: HTMLElement) => {
-    const sectionOffsetTop = section.offsetTop
-    const sectionHeight = section.offsetHeight
-
-    if (scrollY >= sectionOffsetTop && scrollY < sectionOffsetTop + sectionHeight) {
-      newActiveSection = section.id
-    }
-  })
-
-  activeSection.value = newActiveSection
-}
-
-onMounted(() => {
-  sections.value = Array.from(document.querySelectorAll("[data-section]"))
-  window.addEventListener("scroll", handleScroll)
-})
-
-onUnmounted(() => {
-  window.removeEventListener("scroll", handleScroll)
-})
+const { activeSection } = useActiveSection()
 </script>
 
 <template>
