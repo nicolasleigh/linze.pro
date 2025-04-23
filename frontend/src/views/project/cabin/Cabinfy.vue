@@ -3,12 +3,19 @@ import { useActiveSection } from "@/hooks/useActiveSection"
 import Header from "../Header.vue"
 import Article from "./en/Article.vue"
 import Aside from "../Aside.vue"
+import { onMounted, ref, watch } from "vue"
 
 const { activeSection } = useActiveSection()
+const article = ref<InstanceType<typeof Article>>()
+const section = ref(article.value?.section || [])
+
+watch(article, (newVal) => {
+  section.value = newVal?.section || []
+})
 </script>
 
 <template>
-  <section>
+  <div>
     <div class="layout pb-12 pt-[8.6rem] md:pb-20 md:pt-[9.6rem]">
       <Header
         title="CabinFy"
@@ -19,10 +26,10 @@ const { activeSection } = useActiveSection()
         website="https://cabin.linze.pro"
         repo="https://github.com/nicolasleigh/cabinfy"
       />
-      <section class="mt-6 lg:grid lg:grid-cols-[minmax(0,1fr),250px] lg:gap-8">
-        <Article />
-        <Aside :activeSection="activeSection || ''" />
-      </section>
+      <div class="mt-6 lg:grid lg:grid-cols-[minmax(0,1fr),250px] lg:gap-8">
+        <Article ref="article" />
+        <Aside :section="section" :activeSection="activeSection || ''" />
+      </div>
     </div>
-  </section>
+  </div>
 </template>
