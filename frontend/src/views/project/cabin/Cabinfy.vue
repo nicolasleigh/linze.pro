@@ -26,7 +26,7 @@ watch(article, (newVal) => {
         website="https://cabin.linze.pro"
         repo="https://github.com/nicolasleigh/cabinfy"
       />
-      <div class="mt-6 lg:grid lg:grid-cols-[minmax(0,1fr),250px] lg:gap-8">
+      <div class="mt-10 lg:grid lg:grid-cols-[minmax(0,1fr),250px] lg:gap-8">
         <Article ref="article" />
         <Aside :section="section" :activeSection="activeSection || ''" />
       </div>

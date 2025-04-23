@@ -5,7 +5,7 @@ defineProps({
 </script>
 
 <template>
-  <section data-section :id="id">
+  <section data-section :id="id" class="mb-10">
     <slot></slot>
   </section>
 </template>
