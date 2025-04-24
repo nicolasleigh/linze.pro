@@ -40,7 +40,7 @@ import { BriefcaseBusiness, ChevronRight } from "lucide-vue-next"
       <ul class="mt-6 grid gap-8">
         <ProjectCard
           title="CabinFy"
-          about="Lorem ipsum dolor sit amet, consectetur adipisicing elit. Corrupti, sequi!"
+          about="Modern cabin booking platform with multilingual support and sleek admin dashboard for seamless rental management."
           image="https://images.theodorusclarence.com/upload/q_auto,f_auto,c_fill,ar_1:1,w_1440/theodorusclarence/projects/hexcape/hexcape-banner-square"
           repo="https://github.com/nicolasleigh/cabinfy"
           website="https://cabin.linze.pro"

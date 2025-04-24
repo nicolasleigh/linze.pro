@@ -10,6 +10,7 @@ import IconTailwind from "@/components/icons/IconTailwind.vue"
 import IconTS from "@/components/icons/IconTS.vue"
 import IconWithTooltip from "@/components/IconWithTooltip.vue"
 import IconI18next from "../icons/IconI18next.vue"
+import IconReactQuery from "../icons/IconReactQuery.vue"
 </script>
 
 <template>
@@ -21,6 +22,11 @@ import IconI18next from "../icons/IconI18next.vue"
   <li>
     <IconWithTooltip tooltip="React">
       <IconReact />
+    </IconWithTooltip>
+  </li>
+  <li>
+    <IconWithTooltip tooltip="React Query">
+      <IconReactQuery />
     </IconWithTooltip>
   </li>
   <li>

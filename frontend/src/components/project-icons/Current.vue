@@ -17,16 +17,16 @@ import IconI18next from "../icons/IconI18next.vue"
     </IconWithTooltip>
   </li>
   <li>
+    <IconWithTooltip tooltip="Go">
+      <IconGo />
+    </IconWithTooltip>
+  </li>
+  <li>
     <IconWithTooltip tooltip="Vue"><IconVue /></IconWithTooltip>
   </li>
   <li>
     <IconWithTooltip tooltip="Tailwind CSS">
       <IconTailwind />
-    </IconWithTooltip>
-  </li>
-  <li>
-    <IconWithTooltip tooltip="Go">
-      <IconGo />
     </IconWithTooltip>
   </li>
   <li>

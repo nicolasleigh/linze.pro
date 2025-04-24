@@ -1,16 +1,20 @@
 import { ref, onMounted, onUnmounted } from "vue"
 
 export function useActiveSection(selector = "[data-section]") {
-  const activeSection = ref(null)
   const sections = ref<HTMLElement[]>([])
+  const activeSection = ref(null)
 
   const handleScroll = () => {
     const scrollY = window.scrollY
     let newActiveSection: string | null = null
 
-    sections.value.forEach((section) => {
+    sections.value.forEach((section, index) => {
       const sectionOffsetTop = section.offsetTop
       const sectionHeight = section.offsetHeight
+
+      if (index === 0 && scrollY < sectionOffsetTop + sectionHeight) {
+        newActiveSection = section.id
+      }
 
       if (scrollY >= sectionOffsetTop - 100 && scrollY < sectionOffsetTop + sectionHeight) {
         newActiveSection = section.id

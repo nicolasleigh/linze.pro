@@ -39,7 +39,7 @@ const props = defineProps({
       </div>
       <div class="w-full flex flex-wrap justify-between gap-4 items-center mt-10">
         <RouterLink
-          :to="props.link || ''"
+          :to="{ path: props.link || '', state: { about: props.about } }"
           class="relative group px-4 py-3 rounded-xl border inline-flex items-center gap-3 cursor-pointer text-neutral-100 hover:bg-neutral-100 hover:text-neutral-800 transition-colors duration-300"
         >
           <span class="font-semibold"> View Project </span>

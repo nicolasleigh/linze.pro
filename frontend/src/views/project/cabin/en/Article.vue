@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import ExternalLink from "../../ExternalLink.vue"
 import Section from "../../Section.vue"
 const sectionTitle = [
   "Short Explanation",
@@ -10,10 +11,14 @@ const sectionTitle = [
 const sectionSlug = sectionTitle.map((e, i) => e.trim().toLowerCase().split(" ").join("-"))
 const section = sectionTitle.map((e, i) => ({ title: e, slug: sectionSlug[i] }))
 
-const titleStyle =
+const h2Style =
   "text-2xl text-neutral-100 font-semibold mb-6 before:border before:border-accent before:mr-4 before:border-2 pointer-events-none"
+const h3Style =
+  "text-lg text-neutral-100 font-semibold mt-6 mb-5 before:border before:border-accent before:mr-4 before:border-2 pointer-events-none"
+const h4Style = "text-base text-neutral-100 font-semibold mt-6 mb-5  pointer-events-none"
 const paragraphStyle = "my-4 leading-relaxed text-base"
-const unorderedListStyle = "list-disc ml-6 [&>li]:my-4 [&>li]:leading-relaxed"
+const unorderedListStyle =
+  "list-disc [&_ul]:list-[revert] marker:text-xl marker:text-accent pl-5 [&>li]:my-4 [&>li]:leading-relaxed text-base"
 
 defineExpose({ section })
 </script>
@@ -22,54 +27,32 @@ defineExpose({ section })
   <article class="mx-auto w-full transition-colors text-neutral-400">
     <div>
       <Section :id="section[0].slug">
-        <h2 :class="titleStyle">
+        <h2 :class="h2Style">
           {{ section[0].title }}
         </h2>
         <p :class="paragraphStyle">
-          This project was developed as part of my learning journey through
-          <a href="https://www.udemy.com/course/the-ultimate-react-course/"
-            ><em>The Ultimate React Course</em></a
-          >
-          on Udemy, which explores modern technologies such as React, Next.js, and Redux. The
-          primary goal was to deepen my full-stack development skills by implementing best practices
-          in component-based architecture, state management, routing, and responsive design.
+          <strong>CabinFy</strong> is a full-featured accommodation booking platform that connects
+          travelers with unique cabin rentals. It offers an intuitive experience for guests to
+          discover and book cabins, while providing owners with powerful management tools through a
+          secure admin dashboard. Though initially inspired by a React course, I completely rebuilt
+          it with a custom Node.js/Express backend, PostgreSQL database, and modernized UI using
+          Tailwind CSS—transforming it into a production-quality application with multilingual
+          support and responsive design. This project was developed as part of my learning journey
+          through
         </p>
-        <p :class="paragraphStyle">
-          Beyond the course material, I extended the project significantly by introducing several
-          custom implementations and enhancements:
-        </p>
-        <ul :class="unorderedListStyle">
-          <li>
-            <strong>Custom Backend:</strong> Instead of using
-            <a href="https://supabase.com/">Supabase</a> as provided in the course, I rebuilt the
-            entire backend from scratch using
-            <a href="https://www.postgresql.org/">PostgreSQL</a> for the database,
-            <a href="https://www.prisma.io/">Prisma</a> as the ORM,
-            <a href="https://zod.dev/">Zod</a> for schema validation, and a custom API built with
-            <a href="https://nodejs.org/">Node.js</a> and
-            <a href="https://expressjs.com/">Express</a>.
-          </li>
-          <li>
-            <strong>UI Overhaul:</strong> I also redesigned the frontend styling by replacing
-            <a href="https://styled-components.com/">styled-components</a> with a utility-first
-            approach using <a href="https://tailwindcss.com/">Tailwind CSS</a> and component
-            abstractions from <a href="https://ui.shadcn.com/">shadcn/ui</a>.
-          </li>
-        </ul>
       </Section>
 
       <Section :id="section[1].slug">
-        <h2 :class="titleStyle">
+        <h2 :class="h2Style">
           {{ section[1].title }}
         </h2>
-        <p>
-          <strong>CabinFy</strong> is a full-stack web application inspired by
-          <a href="https://www.airbnb.com">Airbnb</a>, designed for booking and managing cabin
-          rentals. It delivers a seamless experience for both guests and administrators, with a
-          strong focus on performance, usability, and modern development practices. Key features
-          include:
+        <p :class="paragraphStyle">
+          <strong>CabinFy</strong> is a full-stack web application inspired by Airbnb, designed for
+          booking and managing cabin rentals. It delivers a seamless experience for both guests and
+          administrators, with a strong focus on performance, usability, and modern development
+          practices. Key features include:
         </p>
-        <ul>
+        <ul :class="unorderedListStyle">
           <li>
             <p>
               <strong>Multilingual Support:</strong> Available in both <strong>English</strong> and
@@ -78,9 +61,10 @@ defineExpose({ section })
           </li>
           <li>
             <p>
-              <strong>Responsive Design:</strong> The UI is fully optimized for
-              <strong>desktop, tablet, and mobile</strong> devices, ensuring a smooth and visually
-              consistent experience across screen sizes.
+              <strong>Responsive Design & Accessibility:</strong> The UI is fully optimized for
+              desktop, tablet, and mobile devices, with built-in dark mode support and accessibility
+              features ensuring a comfortable experience for all users regardless of device or
+              viewing preferences.
             </p>
           </li>
           <li>
@@ -94,7 +78,7 @@ defineExpose({ section })
               <strong>Admin Dashboard:</strong> Admins have access to a secure dashboard where they
               can:
             </p>
-            <ul>
+            <ul :class="unorderedListStyle">
               <li><p>View, manage, and process bookings</p></li>
               <li><p>Submit new cabin listings or edit existing ones</p></li>
               <li><p>Monitor booking activity and cabin availability</p></li>
@@ -113,116 +97,78 @@ defineExpose({ section })
               access control to protect admin functionalities and private data.
             </p>
           </li>
-          <li>
-            <p>
-              <strong>Dark Mode:</strong> Built-in dark theme toggle for a better user experience,
-              especially in low-light environments.
-            </p>
-          </li>
         </ul>
       </Section>
       <Section :id="section[2].slug">
-        <h2 :class="titleStyle">
+        <h2 :class="h2Style">
           {{ section[2].title }}
         </h2>
-        <p>
+        <p :class="paragraphStyle">
           <strong>CabinFy</strong> is built using a modern and scalable full-stack architecture,
           combining powerful libraries and tools on both the frontend and backend to ensure
           performance, maintainability, and a smooth developer experience.
         </p>
-        <h4 id="frontend">Frontend</h4>
-        <ul>
+        <h3 :class="h3Style">Core Technologies</h3>
+        <h4 :class="h4Style">Frontend</h4>
+        <ul :class="unorderedListStyle">
+          <li><strong>React</strong> – Core library for building dynamic user interfaces</li>
           <li>
-            <a href="https://react.dev/"><strong>React</strong></a> – Core library for building
-            dynamic user interfaces
+            <strong>Tailwind CSS</strong>
+            – Utility-first CSS framework for building fast and responsive UIs
           </li>
           <li>
-            <a href="https://reactrouter.com/"><strong>React Router</strong></a> – Handles
-            client-side routing and navigation between pages
-          </li>
-          <li>
-            <a href="https://tailwindcss.com/"><strong>Tailwind CSS</strong></a> – Utility-first CSS
-            framework for building fast and responsive UIs
-          </li>
-          <li>
-            <a href="https://ui.shadcn.com/"><strong>shadcn/ui</strong></a
-            >– Component library for clean, accessible UI elements
-          </li>
-          <li>
-            <a href="https://tanstack.com/query/latest"><strong>React Query</strong></a> – Powerful
-            data-fetching and state management solution
-          </li>
-          <li>
-            <a href="https://react.i18next.com/"><strong>react-i18next</strong></a> –
-            Internationalization support for English and Chinese
-          </li>
-          <li>
-            <a href="https://axios-http.com/"><strong>Axios</strong></a> – Promise-based HTTP client
-            for API communication
-          </li>
-          <li>
-            <a href="https://recharts.org/"><strong>Recharts</strong></a> – Elegant charting library
-            used for visualizing sales and analytics
-          </li>
-          <li>
-            <strong>Makefile</strong> – Automates the build process and deployment of frontend
-            assets
-          </li>
-          <li>
-            <a href="https://caddyserver.com/"><strong>Caddy</strong></a> – Lightweight static file
-            server used to serve optimized frontend builds
+            <strong>React Query</strong>
+            – Selected over Redux for its optimized data fetching and caching capabilities
           </li>
         </ul>
-        <h4 id="backend">Backend</h4>
-        <ul>
+        <h4 :class="h4Style">Backend</h4>
+        <ul :class="unorderedListStyle">
           <li>
-            <a href="https://nodejs.org/"><strong>Node.js</strong></a> – JavaScript runtime used for
-            the backend server
+            <strong>Node.js & Express</strong>
+            – Lightweight yet powerful server framework enabling rapid API development
           </li>
           <li>
-            <a href="https://expressjs.com/"><strong>Express</strong></a> – Lightweight web
-            framework for handling routing and server logic
+            <strong>PostgreSQL & Prisma</strong>
+            – Combination provides type-safe database operations without the need to write raw SQL
           </li>
           <li>
-            <a href="https://www.passportjs.org/"><strong>Passport</strong></a> – Extremely flexible
-            and modular authentication middleware for Node.js
+            <strong>Zod</strong> – Implements thorough runtime validation at API boundaries,
+            preventing data corruption
+          </li>
+        </ul>
+        <h3 :class="h3Style">Technical Highlights</h3>
+        <h4 :class="h4Style">Authentication System</h4>
+        <p :class="paragraphStyle">
+          Built a secure authentication flow combining Passport.js with custom middleware that
+          integrates seamlessly with Prisma's user model, supporting both traditional and OAuth
+          authentication methods.
+        </p>
+        <h4 :class="h4Style">Deployment Infrastructure</h4>
+        <ul :class="unorderedListStyle">
+          <li>
+            <strong>Docker</strong> – Containerized application components for consistent
+            environments across development and production
           </li>
           <li>
-            <a href="https://www.postgresql.org/"><strong>PostgreSQL</strong></a> – Relational
-            database system for structured data storage
+            <strong>Caddy</strong> – Configured as both a static file server for the frontend and
+            reverse proxy for backend services, simplifying the deployment architecture
           </li>
           <li>
-            <a href="https://www.prisma.io/"><strong>Prisma</strong></a> – Type-safe ORM for
-            database management and queries
-          </li>
-          <li>
-            <a href="https://zod.dev/"><strong>Zod</strong></a> – Runtime schema validation for data
-            safety
-          </li>
-          <li>
-            <a href="https://www.docker.com/"><strong>Docker</strong></a> – Containerization tool
-            for consistent development and deployment environments
-          </li>
-          <li>
-            <strong>Makefile</strong> – Streamlines repetitive tasks like database migration and
-            seeding
-          </li>
-          <li>
-            <a href="https://caddyserver.com/"><strong>Caddy</strong></a> – Reverse proxy server to
-            avoid exposing backend servers
+            <strong>Makefile</strong> – Automated common development tasks and deployment
+            procedures, reducing errors when typing Linux commands
           </li>
         </ul>
       </Section>
       <Section :id="section[3].slug">
-        <h2 :class="titleStyle">
+        <h2 :class="h2Style">
           {{ section[3].title }}
         </h2>
-        <p>
+        <p :class="paragraphStyle">
           Building <strong>CabinFy</strong> was a comprehensive learning experience that challenged
           me to apply both frontend and backend skills in a real-world, full-stack project. Here are
           some of the key takeaways:
         </p>
-        <ul>
+        <ul :class="unorderedListStyle">
           <li>
             <strong>End-to-End Development Workflow:</strong> I gained hands-on experience managing
             an entire development lifecycle—from designing UI components to building a custom
@@ -265,31 +211,31 @@ defineExpose({ section })
             across platforms.
           </li>
         </ul>
-        <p>
+        <p :class="paragraphStyle">
           This project was not only a technical exercise but also a chance to think critically about
           architecture, performance, and maintainability—skills I’ll carry forward into future
           projects.
         </p>
       </Section>
       <Section :id="section[4].slug">
-        <h2 :class="titleStyle">
+        <h2 :class="h2Style">
           {{ section[4].title }}
         </h2>
-        <p>
+        <p :class="paragraphStyle">
           <strong>CabinFy</strong> was more than just a portfolio piece—it was a deep dive into
           building a full-stack, production-ready web application from the ground up. Through this
           project, I explored modern development practices, honed my skills across the stack, and
           gained hands-on experience with everything from multilingual support and authentication to
           responsive design and containerized deployment.
         </p>
-        <p>This project reflects my ability to:</p>
-        <ul>
+        <p :class="paragraphStyle">This project reflects my ability to:</p>
+        <ul :class="unorderedListStyle">
           <li>Take initiative beyond course content</li>
           <li>Architect scalable, maintainable systems</li>
           <li>Embrace modern tooling across frontend, backend, and DevOps</li>
           <li>Prioritize user experience across languages and devices</li>
         </ul>
-        <p>
+        <p :class="paragraphStyle">
           Most importantly, <strong>CabinFy</strong> gave me a clearer vision of how real-world web
           applications are designed, built, and deployed—and the confidence to take on even more
           complex, user-centric projects in the future.
