@@ -3,8 +3,15 @@ import { useActiveSection } from "@/hooks/useActiveSection"
 import Header from "../Header.vue"
 import Article from "./en/Article.vue"
 import Aside from "../Aside.vue"
+import { ref, watch } from "vue"
 
 const { activeSection } = useActiveSection()
+const article = ref<InstanceType<typeof Article>>()
+const section = ref(article.value?.section || [])
+
+watch(article, (newVal) => {
+  section.value = newVal?.section || []
+})
 </script>
 
 <template>
@@ -20,8 +27,8 @@ const { activeSection } = useActiveSection()
         repo="https://github.com/nicolasleigh/linze.pro"
       />
       <section class="mt-6 lg:grid lg:grid-cols-[minmax(0,1fr),250px] lg:gap-8">
-        <Article />
-        <Aside :activeSection="activeSection || ''" />
+        <Article ref="article" />
+        <Aside :section="section" :activeSection="activeSection || ''" />
       </section>
     </div>
   </section>
