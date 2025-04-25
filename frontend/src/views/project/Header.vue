@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import IconGithub from "@/components/icons/IconGithub.vue"
 import IconLink from "@/components/icons/IconLink.vue"
-import { Eye, Heart, Play } from "lucide-vue-next"
+import { Eye, Heart, Play, User } from "lucide-vue-next"
 
 defineProps({
   title: String,
@@ -23,12 +23,16 @@ defineProps({
     <div
       class="mt-9 py-0 border-y text-neutral-300 text-xs border-neutral-800 flex items-center gap-5 flex-wrap"
     >
-      <p class="c1 txt-secondary flex items-center gap-2 pointer-events-none">
+      <p class="flex items-center gap-2 pointer-events-none">
+        <User :size="15" class="text-neutral-600" />
+        <span>Personal Project</span>
+      </p>
+      <p class="flex items-center gap-2 pointer-events-none">
         <Eye :size="15" class="text-neutral-600" />
         <span> {{ view }} views</span>
       </p>
       <a class="mr-auto" data-state="closed" href="/projects/en/cabinfy#like-button">
-        <p class="c1 txt-secondary flex items-center gap-2">
+        <p class="flex items-center gap-2">
           <Heart :size="15" :class="'text-neutral-600'" />
           <span>{{ like }} likes</span>
         </p>

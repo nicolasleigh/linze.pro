@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { getSectionTitleAndSlug } from "@/utils/helper"
+import { h2Style, h3Style, h4Style, paragraphStyle, unorderedListStyle } from "../../CommonStyle"
 import ExternalLink from "../../ExternalLink.vue"
 import Section from "../../Section.vue"
 const sectionTitle = [
@@ -8,17 +10,7 @@ const sectionTitle = [
   "What I Learned",
   "Final Thoughts",
 ]
-const sectionSlug = sectionTitle.map((e, i) => e.trim().toLowerCase().split(" ").join("-"))
-const section = sectionTitle.map((e, i) => ({ title: e, slug: sectionSlug[i] }))
-
-const h2Style =
-  "text-2xl text-neutral-100 font-semibold mb-6 before:border before:border-accent before:mr-4 before:border-2 pointer-events-none"
-const h3Style =
-  "text-lg text-neutral-100 font-semibold mt-6 mb-5 before:border before:border-accent before:mr-4 before:border-2 pointer-events-none"
-const h4Style = "text-base text-neutral-100 font-semibold mt-6 mb-5  pointer-events-none"
-const paragraphStyle = "my-4 leading-relaxed text-base"
-const unorderedListStyle =
-  "list-disc [&_ul]:list-[revert] marker:text-xl marker:text-accent pl-5 [&>li]:my-4 [&>li]:leading-relaxed text-base"
+const section = getSectionTitleAndSlug(sectionTitle)
 
 defineExpose({ section })
 </script>

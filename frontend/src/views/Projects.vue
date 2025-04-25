@@ -51,7 +51,7 @@ import { BriefcaseBusiness, ChevronRight } from "lucide-vue-next"
         </ProjectCard>
         <ProjectCard
           title="MovieFy"
-          about="Lorem ipsum dolor sit amet, consectetur adipisicing elit. Corrupti, sequi!"
+          about="Full-stack movie platform with user and admin interfaces, featuring streaming, reviews, and content management built with React and Node.js."
           image="https://images.theodorusclarence.com/upload/q_auto,f_auto,c_fill,ar_1:1,w_1440/theodorusclarence/projects/notiolink/notiolink-banner-square.png"
           repo="https://github.com/nicolasleigh/moviefy"
           website="https://movie.linze.pro"
