@@ -15,6 +15,7 @@ import Chatify from "@/views/project/chat/Chatify.vue"
 import Petify from "@/views/project/pet/Petify.vue"
 import Blog from "@/views/project/blog/Blog.vue"
 import { h } from "vue"
+import AboutView from "@/views/AboutView.vue"
 
 const activeLinkStyle = "!text-accent"
 
@@ -110,10 +111,7 @@ const router = createRouter({
     {
       path: "/about",
       name: "about",
-      // route level code-splitting
-      // this generates a separate chunk (About.[hash].js) for this route
-      // which is lazy-loaded when the route is visited.
-      component: () => import("../views/AboutView.vue"),
+      component: AboutView,
     },
   ],
 })
