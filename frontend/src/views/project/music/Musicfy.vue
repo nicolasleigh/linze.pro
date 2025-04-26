@@ -19,7 +19,7 @@ watch(article, (newVal) => {
     <div class="layout pb-12 pt-[8.6rem] md:pb-20 md:pt-[9.6rem]">
       <Header
         title="MusicFy"
-        about="Lorem ipsum dolor sit, amet consectetur adipisicing elit. Optio, eligendi?"
+        about="A full-stack mobile music app built with bare React Native."
         :view="24"
         :like="12"
         video=""

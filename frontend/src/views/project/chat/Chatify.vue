@@ -19,7 +19,7 @@ watch(article, (newVal) => {
     <div class="layout pb-12 pt-[8.6rem] md:pb-20 md:pt-[9.6rem]">
       <Header
         title="Chatify"
-        about="Lorem ipsum dolor sit, amet consectetur adipisicing elit. Optio, eligendi?"
+        about="Real-time chat app with audio/video calls, rebuilt with Go and PostgreSQL for high performance and efficient, scalable backend architecture."
         :view="24"
         :like="12"
         video=""

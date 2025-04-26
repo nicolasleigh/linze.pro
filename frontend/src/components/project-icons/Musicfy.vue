@@ -10,14 +10,15 @@ import IconReact from "@/components/icons/IconReact.vue"
 import IconRedux from "@/components/icons/IconRedux.vue"
 import IconTS from "@/components/icons/IconTS.vue"
 import IconWithTooltip from "@/components/IconWithTooltip.vue"
+import IconReactQuery from "../icons/IconReactQuery.vue"
 </script>
 
 <template>
-  <li>
+  <!-- <li>
     <IconWithTooltip tooltip="Typescript">
       <IconTS />
     </IconWithTooltip>
-  </li>
+  </li> -->
   <li>
     <IconWithTooltip tooltip="Android">
       <IconAndroid />
@@ -31,6 +32,11 @@ import IconWithTooltip from "@/components/IconWithTooltip.vue"
   <li>
     <IconWithTooltip tooltip="React Native">
       <IconReact />
+    </IconWithTooltip>
+  </li>
+  <li>
+    <IconWithTooltip tooltip="React Query">
+      <IconReactQuery />
     </IconWithTooltip>
   </li>
   <li>
@@ -53,9 +59,9 @@ import IconWithTooltip from "@/components/IconWithTooltip.vue"
       <IconMongo />
     </IconWithTooltip>
   </li>
-  <li>
+  <!-- <li>
     <IconWithTooltip tooltip="Docker">
       <IconDocker />
     </IconWithTooltip>
-  </li>
+  </li> -->
 </template>

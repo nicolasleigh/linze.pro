@@ -12,19 +12,19 @@ import IconI18next from "../icons/IconI18next.vue"
 </script>
 
 <template>
-  <li>
+  <!-- <li>
     <IconWithTooltip tooltip="Typescript">
       <IconTS />
+    </IconWithTooltip>
+  </li> -->
+  <li>
+    <IconWithTooltip tooltip="Next.js">
+      <IconNextJs />
     </IconWithTooltip>
   </li>
   <li>
     <IconWithTooltip tooltip="Go">
       <IconGo />
-    </IconWithTooltip>
-  </li>
-  <li>
-    <IconWithTooltip tooltip="Next.js">
-      <IconNextJs />
     </IconWithTooltip>
   </li>
   <li>
@@ -37,7 +37,7 @@ import IconI18next from "../icons/IconI18next.vue"
       <IconPostgres />
     </IconWithTooltip>
   </li>
-  <li>
+  <!-- <li>
     <IconWithTooltip tooltip="Clerk">
       <IconClerk />
     </IconWithTooltip>
@@ -49,5 +49,5 @@ import IconI18next from "../icons/IconI18next.vue"
     <IconWithTooltip tooltip="Docker">
       <IconDocker />
     </IconWithTooltip>
-  </li>
+  </li> -->
 </template>

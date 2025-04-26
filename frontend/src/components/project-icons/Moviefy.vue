@@ -12,11 +12,11 @@ import IconI18next from "../icons/IconI18next.vue"
 </script>
 
 <template>
-  <li>
+  <!-- <li>
     <IconWithTooltip tooltip="Typescript">
       <IconTS />
     </IconWithTooltip>
-  </li>
+  </li> -->
   <li>
     <IconWithTooltip tooltip="React">
       <IconReact />
@@ -46,9 +46,9 @@ import IconI18next from "../icons/IconI18next.vue"
   <li>
     <IconWithTooltip tooltip="I18Next"><IconI18next /></IconWithTooltip>
   </li>
-  <li>
+  <!-- <li>
     <IconWithTooltip tooltip="Docker">
       <IconDocker />
     </IconWithTooltip>
-  </li>
+  </li> -->
 </template>

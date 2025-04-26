@@ -11,18 +11,18 @@ import IconI18next from "../icons/IconI18next.vue"
 </script>
 
 <template>
-  <li>
+  <!-- <li>
     <IconWithTooltip tooltip="Typescript">
       <IconTS />
     </IconWithTooltip>
+  </li> -->
+  <li>
+    <IconWithTooltip tooltip="Vue"><IconVue /></IconWithTooltip>
   </li>
   <li>
     <IconWithTooltip tooltip="Go">
       <IconGo />
     </IconWithTooltip>
-  </li>
-  <li>
-    <IconWithTooltip tooltip="Vue"><IconVue /></IconWithTooltip>
   </li>
   <li>
     <IconWithTooltip tooltip="Tailwind CSS">
@@ -37,9 +37,9 @@ import IconI18next from "../icons/IconI18next.vue"
   <li>
     <IconWithTooltip tooltip="I18Next"><IconI18next /></IconWithTooltip>
   </li>
-  <li>
+  <!-- <li>
     <IconWithTooltip tooltip="Docker">
       <IconDocker />
     </IconWithTooltip>
-  </li>
+  </li> -->
 </template>

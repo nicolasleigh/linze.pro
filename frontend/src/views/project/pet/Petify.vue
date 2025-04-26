@@ -19,7 +19,7 @@ watch(article, (newVal) => {
     <div class="layout pb-12 pt-[8.6rem] md:pb-20 md:pt-[9.6rem]">
       <Header
         title="Petify"
-        about="Lorem ipsum dolor sit, amet consectetur adipisicing elit. Optio, eligendi?"
+        about="Full-stack e-commerce platform for browsing, purchasing pets, real-time chat, product management, and scalable, secure backend architecture."
         :view="24"
         :like="12"
         video=""

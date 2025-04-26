@@ -61,7 +61,7 @@ import { BriefcaseBusiness, ChevronRight } from "lucide-vue-next"
         </ProjectCard>
         <ProjectCard
           title="MusicFy"
-          about="Lorem ipsum dolor sit amet, consectetur adipisicing elit. Corrupti, sequi!"
+          about="A full-stack mobile music app built with bare React Native."
           image="https://images.theodorusclarence.com/upload/q_auto,f_auto,c_fill,ar_1:1,w_1440/theodorusclarence/projects/seasforus/seasforus-banner-square.png"
           repo="https://github.com/nicolasleigh/musicfy"
           link="/projects/en/musicfy"
@@ -71,7 +71,7 @@ import { BriefcaseBusiness, ChevronRight } from "lucide-vue-next"
         </ProjectCard>
         <ProjectCard
           title="Petify"
-          about="Lorem ipsum dolor sit amet, consectetur adipisicing elit. Corrupti, sequi!"
+          about="Full-stack e-commerce platform for browsing, purchasing pets, real-time chat, product management, and scalable, secure backend architecture."
           image="https://images.theodorusclarence.com/upload/q_auto,f_auto,c_fill,ar_1:1,w_1440/theodorusclarence/projects/notiolink/notiolink-banner-square.png"
           repo="https://github.com/nicolasleigh/petify"
           website="https://pet.linze.pro"
@@ -81,7 +81,7 @@ import { BriefcaseBusiness, ChevronRight } from "lucide-vue-next"
         </ProjectCard>
         <ProjectCard
           title="Chatify"
-          about="Lorem ipsum dolor sit amet, consectetur adipisicing elit. Corrupti, sequi!"
+          about="Real-time chat app with audio/video calls, rebuilt with Go and PostgreSQL for high performance and efficient, scalable backend architecture."
           image="https://images.theodorusclarence.com/upload/q_auto,f_auto,c_fill,ar_1:1,w_1440/theodorusclarence/projects/hexcape/hexcape-banner-square"
           repo="https://github.com/nicolasleigh/chatify"
           website="https://chat.linze.pro"

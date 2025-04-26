@@ -14,11 +14,11 @@ import IconSocketIO from "../icons/IconSocketIO.vue"
 </script>
 
 <template>
-  <li>
+  <!-- <li>
     <IconWithTooltip tooltip="Typescript">
       <IconTS />
     </IconWithTooltip>
-  </li>
+  </li> -->
   <li>
     <IconWithTooltip tooltip="React">
       <IconReact />
@@ -54,12 +54,9 @@ import IconSocketIO from "../icons/IconSocketIO.vue"
       <IconSocketIO />
     </IconWithTooltip>
   </li>
-  <li>
-    <IconWithTooltip tooltip="I18Next"><IconI18next /></IconWithTooltip>
-  </li>
-  <li>
+  <!-- <li>
     <IconWithTooltip tooltip="Docker">
       <IconDocker />
     </IconWithTooltip>
-  </li>
+  </li> -->
 </template>
