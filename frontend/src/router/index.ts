@@ -1,4 +1,4 @@
-import { createRouter, createWebHistory } from "vue-router"
+import { createRouter, createWebHistory, RouterView } from "vue-router"
 import HomeView from "../views/HomeView.vue"
 import LoginForm from "@/views/LoginForm.vue"
 import SignupForm from "@/views/SignupForm.vue"
@@ -14,9 +14,16 @@ import Musicfy from "@/views/project/music/Musicfy.vue"
 import Chatify from "@/views/project/chat/Chatify.vue"
 import Petify from "@/views/project/pet/Petify.vue"
 import Blog from "@/views/project/blog/Blog.vue"
+import { h } from "vue"
+
+const activeLinkStyle = "!text-accent"
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
+  scrollBehavior(to, from, savedPosition) {
+    return { top: 0, behavior: "smooth" }
+  },
+  linkActiveClass: activeLinkStyle,
   routes: [
     {
       path: "/",
@@ -39,19 +46,20 @@ const router = createRouter({
       component: CreatePost,
     },
     {
-      path: "/preview/:postId",
-      name: "preview",
-      component: MdPreview,
-    },
-    {
       path: "/posts",
-      name: "posts",
-      component: Posts,
-    },
-    {
-      path: "/post/:postId",
-      name: "post",
-      component: Post,
+      component: { render: () => h(RouterView) },
+      children: [
+        {
+          path: "",
+          name: "posts",
+          component: Posts,
+        },
+        {
+          path: ":postId",
+          name: "post",
+          component: Post,
+        },
+      ],
     },
     {
       path: "/edit-post/:postId",
@@ -60,38 +68,44 @@ const router = createRouter({
     },
     {
       path: "/projects",
-      name: "projects",
-      component: Projects,
-    },
-    {
-      path: "/projects/en/cabinfy",
-      name: "cabinfy",
-      component: Cabinfy,
-    },
-    {
-      path: "/projects/en/moviefy",
-      name: "moviefy",
-      component: Moviefy,
-    },
-    {
-      path: "/projects/en/musicfy",
-      name: "musicfy",
-      component: Musicfy,
-    },
-    {
-      path: "/projects/en/chatify",
-      name: "chatify",
-      component: Chatify,
-    },
-    {
-      path: "/projects/en/petify",
-      name: "petify",
-      component: Petify,
-    },
-    {
-      path: "/projects/en/blog",
-      name: "blog",
-      component: Blog,
+      component: { render: () => h(RouterView) },
+      children: [
+        {
+          path: "",
+          name: "projects",
+          component: Projects,
+        },
+        {
+          path: "cabinfy/en",
+          name: "cabinfy",
+          component: Cabinfy,
+        },
+        {
+          path: "moviefy/en",
+          name: "moviefy",
+          component: Moviefy,
+        },
+        {
+          path: "musicfy/en",
+          name: "musicfy",
+          component: Musicfy,
+        },
+        {
+          path: "chatify/en",
+          name: "chatify",
+          component: Chatify,
+        },
+        {
+          path: "petify/en",
+          name: "petify",
+          component: Petify,
+        },
+        {
+          path: "blog/en",
+          name: "blog",
+          component: Blog,
+        },
+      ],
     },
     {
       path: "/about",

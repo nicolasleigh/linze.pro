@@ -8,13 +8,16 @@ import { dateFormat } from "@/utils/helper"
 const props = defineProps<PostCardProps>()
 const router = useRouter()
 
-const goToPost = () => {
-  router.push({ path: `/post/${props.id}` })
-}
+// const goToPost = () => {
+//   router.push({ path: `/posts/${props.id}` })
+// }
 </script>
 
 <template>
-  <div class="w-full rounded-md transition duration-300 group cursor-pointer" @click="goToPost">
+  <RouterLink
+    :to="'/posts/' + props.id"
+    class="w-full rounded-md transition duration-300 group cursor-pointer"
+  >
     <div class="flex flex-col md:flex-row-reverse md:items-center gap-4 py-3 md:gap-6">
       <figure
         class="isolate z-[1] pointer-events-none overflow-hidden flex justify-center items-center md:max-w-44 md:w-full md:h-32"
@@ -51,5 +54,5 @@ const goToPost = () => {
         </div>
       </div>
     </div>
-  </div>
+  </RouterLink>
 </template>

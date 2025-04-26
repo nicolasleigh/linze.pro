@@ -1,9 +1,6 @@
 <script setup lang="ts">
-import { useHideHeader } from "@/hooks/useHideHeader"
-import { onMounted, onUnmounted } from "vue"
-import { RouterLink, useRoute } from "vue-router"
+import { RouterLink } from "vue-router"
 
-const activeStyle = "!text-accent"
 const linkStyle = "py-3 px-2 font-rethink text-neutral-200 hover:text-neutral-50 transition-colors"
 </script>
 
@@ -15,21 +12,11 @@ const linkStyle = "py-3 px-2 font-rethink text-neutral-200 hover:text-neutral-50
       class="flex pointer-events-auto mt-8 px-3 rounded-lg bg-neutral-800/60 w-fit mx-auto text-sm md:text-base"
     >
       <ul class="flex items-center gap-4">
-        <RouterLink to="/login" :class="linkStyle" :active-class="activeStyle"> Login </RouterLink>
-        <RouterLink to="/signup" :class="linkStyle" :active-class="activeStyle">
-          Signup
-        </RouterLink>
-        <RouterLink to="/editor" :class="linkStyle" :active-class="activeStyle">
-          Editor
-        </RouterLink>
-        <RouterLink to="/preview/10" :class="linkStyle" :active-class="activeStyle">
-          Preview
-        </RouterLink>
-        <RouterLink to="/posts" :class="linkStyle" :active-class="activeStyle"> Posts </RouterLink>
-        <RouterLink to="/post/1" :class="linkStyle" :active-class="activeStyle"> Post </RouterLink>
-        <RouterLink to="/projects" :class="linkStyle" :active-class="activeStyle">
-          Projects
-        </RouterLink>
+        <RouterLink to="/login" :class="linkStyle"> Login </RouterLink>
+        <RouterLink to="/signup" :class="linkStyle"> Signup </RouterLink>
+        <RouterLink to="/editor" :class="linkStyle"> Editor </RouterLink>
+        <RouterLink to="/posts" :class="linkStyle"> Posts </RouterLink>
+        <RouterLink to="/projects" :class="linkStyle"> Projects </RouterLink>
       </ul>
     </nav>
   </header>

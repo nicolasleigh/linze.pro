@@ -44,7 +44,7 @@ import { BriefcaseBusiness, ChevronRight } from "lucide-vue-next"
           image="https://images.theodorusclarence.com/upload/q_auto,f_auto,c_fill,ar_1:1,w_1440/theodorusclarence/projects/hexcape/hexcape-banner-square"
           repo="https://github.com/nicolasleigh/cabinfy"
           website="https://cabin.linze.pro"
-          link="/projects/en/cabinfy"
+          link="/projects/cabinfy/en"
           reverse
         >
           <Cabinfy />
@@ -55,7 +55,7 @@ import { BriefcaseBusiness, ChevronRight } from "lucide-vue-next"
           image="https://images.theodorusclarence.com/upload/q_auto,f_auto,c_fill,ar_1:1,w_1440/theodorusclarence/projects/notiolink/notiolink-banner-square.png"
           repo="https://github.com/nicolasleigh/moviefy"
           website="https://movie.linze.pro"
-          link="/projects/en/moviefy"
+          link="/projects/moviefy/en"
         >
           <Moviefy />
         </ProjectCard>
@@ -64,7 +64,7 @@ import { BriefcaseBusiness, ChevronRight } from "lucide-vue-next"
           about="A full-stack mobile music app built with bare React Native."
           image="https://images.theodorusclarence.com/upload/q_auto,f_auto,c_fill,ar_1:1,w_1440/theodorusclarence/projects/seasforus/seasforus-banner-square.png"
           repo="https://github.com/nicolasleigh/musicfy"
-          link="/projects/en/musicfy"
+          link="/projects/musicfy/en"
           reverse
         >
           <Musicfy />
@@ -75,7 +75,7 @@ import { BriefcaseBusiness, ChevronRight } from "lucide-vue-next"
           image="https://images.theodorusclarence.com/upload/q_auto,f_auto,c_fill,ar_1:1,w_1440/theodorusclarence/projects/notiolink/notiolink-banner-square.png"
           repo="https://github.com/nicolasleigh/petify"
           website="https://pet.linze.pro"
-          link="/projects/en/petify"
+          link="/projects/petify/en"
         >
           <Petify />
         </ProjectCard>
@@ -85,7 +85,7 @@ import { BriefcaseBusiness, ChevronRight } from "lucide-vue-next"
           image="https://images.theodorusclarence.com/upload/q_auto,f_auto,c_fill,ar_1:1,w_1440/theodorusclarence/projects/hexcape/hexcape-banner-square"
           repo="https://github.com/nicolasleigh/chatify"
           website="https://chat.linze.pro"
-          link="/projects/en/chatify"
+          link="/projects/chatify/en"
           reverse
         >
           <Chatify />
@@ -96,7 +96,7 @@ import { BriefcaseBusiness, ChevronRight } from "lucide-vue-next"
           image="https://images.theodorusclarence.com/upload/q_auto,f_auto,c_fill,ar_1:1,w_1440/theodorusclarence/projects/notiolink/notiolink-banner-square.png"
           repo="https://github.com/nicolasleigh/chatify"
           website="https://linze.pro"
-          link="/projects/en/blog"
+          link="/projects/blog/en"
         >
           <Current />
         </ProjectCard>

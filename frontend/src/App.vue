@@ -1,10 +1,9 @@
 <script setup lang="ts">
-import { RouterLink, RouterView } from "vue-router"
-import HelloWorld from "./components/HelloWorld.vue"
 import { Toaster } from "@/components/ui/sonner"
 import { VueQueryDevtools } from "@tanstack/vue-query-devtools"
-import Header from "./components/Header.vue"
+import { RouterView } from "vue-router"
 import Footer from "./components/Footer.vue"
+import Header from "./components/Header.vue"
 import { useHideHeader } from "./hooks/useHideHeader"
 
 const { isHidden } = useHideHeader(300)
@@ -12,13 +11,17 @@ const { isHidden } = useHideHeader(300)
 
 <template>
   <Toaster position="top-center" richColors />
-  <Transition>
+  <Transition name="header">
     <Header v-if="!isHidden" />
   </Transition>
 
   <div>
     <main class="w-full pb-24">
-      <RouterView />
+      <RouterView v-slot="{ Component }">
+        <Transition name="page" mode="out-in">
+          <component :is="Component" />
+        </Transition>
+      </RouterView>
     </main>
   </div>
   <Footer />
@@ -26,71 +29,19 @@ const { isHidden } = useHideHeader(300)
 </template>
 
 <style scoped>
-.v-enter-active,
-.v-leave-active {
+.header-enter-active,
+.header-leave-active {
   transition: opacity 0.7s ease;
 }
-.v-enter-from,
-.v-leave-to {
+.header-enter-from,
+.header-leave-to {
   opacity: 0;
 }
 
-header {
-  line-height: 1.5;
-  max-height: 100vh;
+.page-enter-active {
+  transition: opacity 1.5s ease;
 }
-
-.logo {
-  display: block;
-  margin: 0 auto 2rem;
-}
-
-nav {
-  width: 100%;
-  font-size: 12px;
-  text-align: center;
-  margin-top: 2rem;
-}
-
-nav a.router-link-exact-active {
-  /* color: var(--color-text); */
-  color: blue;
-}
-
-nav a.router-link-exact-active:hover {
-  background-color: transparent;
-}
-
-nav a {
-  display: inline-block;
-  padding: 0 1rem;
-  border-left: 1px solid var(--color-border);
-}
-
-nav a:first-of-type {
-  border: 0;
-}
-
-@media (min-width: 1024px) {
-  header {
-    display: flex;
-    place-items: center;
-    /* padding-right: calc(var(--section-gap) / 2); */
-  }
-
-  header .wrapper {
-    display: flex;
-    place-items: flex-start;
-    flex-wrap: wrap;
-  }
-
-  nav {
-    text-align: left;
-    margin-left: -1rem;
-    font-size: 1rem;
-
-    padding: 1rem 0;
-    margin-top: 1rem;
-  }
+.page-enter-from {
+  opacity: 0;
 }
 </style>
