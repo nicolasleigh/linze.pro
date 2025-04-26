@@ -171,6 +171,9 @@ func (app *application) mount() http.Handler {
 			r.Post("/like/post/{postID}", app.updatePostLike)
 			r.Get("/like/post/{postID}", app.getPostLike)
 			r.Get("/view/post/{postID}", app.updatePostView)
+			r.Post("/like/project/{slug}", app.updateProjectLike)
+			r.Get("/like/project/{slug}", app.getProjectLike)
+			r.Get("/view/project/{slug}", app.updateProjectView)
 		})
 	})
 

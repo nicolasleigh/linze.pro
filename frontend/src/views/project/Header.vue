@@ -2,6 +2,9 @@
 import IconGithub from "@/components/icons/IconGithub.vue"
 import IconLink from "@/components/icons/IconLink.vue"
 import { Eye, Heart, Play, User } from "lucide-vue-next"
+import { useGetProjectLike, useProjectLike, useProjectView } from "@/hooks/useLikeAndView"
+import { useRoute } from "vue-router"
+import { ref } from "vue"
 
 defineProps({
   title: String,
@@ -12,6 +15,23 @@ defineProps({
   website: String,
   repo: String,
 })
+
+const route = useRoute()
+const { viewNum } = useProjectView()
+const { likeNum, updateProjectLike } = useProjectLike()
+const { likeNum: initialLike } = useGetProjectLike()
+const isLiked = ref(localStorage.getItem(`like-project-${String(route.name)}`) === "true" || false)
+
+const handleLike = () => {
+  const likeState = localStorage.getItem(`like-project-${String(route.name)}`)
+  if (likeState === "true") {
+    isLiked.value = true
+    return
+  }
+  localStorage.setItem(`like-project-${String(route.name)}`, "true")
+  isLiked.value = true
+  updateProjectLike()
+}
 </script>
 
 <template>
@@ -29,14 +49,12 @@ defineProps({
       </p>
       <p class="flex items-center gap-2 pointer-events-none">
         <Eye :size="15" class="text-neutral-600" />
-        <span> {{ view }} views</span>
+        <span> {{ viewNum }} views</span>
       </p>
-      <a class="mr-auto" data-state="closed" href="/projects/en/cabinfy#like-button">
-        <p class="flex items-center gap-2">
-          <Heart :size="15" :class="'text-neutral-600'" />
-          <span>{{ like }} likes</span>
-        </p>
-      </a>
+      <button class="flex items-center gap-2 mr-auto" @click="handleLike" :disabled="isLiked">
+        <Heart :size="15" :class="isLiked ? 'text-red-600' : 'text-neutral-600'" />
+        <span>{{ likeNum ? likeNum : initialLike }} likes</span>
+      </button>
       <a
         class="hover:underline hover:text-accent text-neutral-500 transition-colors flex items-center gap-1.5"
         :href="video"

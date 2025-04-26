@@ -4,10 +4,15 @@ import Header from "../Header.vue"
 import Article from "./en/Article.vue"
 import Aside from "../Aside.vue"
 import { onMounted, ref, watch } from "vue"
+import { useGetProjectLike, useProjectLike, useProjectView } from "@/hooks/useLikeAndView"
 
 const { activeSection } = useActiveSection()
 const article = ref<InstanceType<typeof Article>>()
 const section = ref(article.value?.section || [])
+
+// const { viewNum } = useProjectView()
+// const { likeNum, updateProjectLike } = useProjectLike()
+// const { likeNum: initialLike } = useGetProjectLike()
 
 watch(article, (newVal) => {
   section.value = newVal?.section || []

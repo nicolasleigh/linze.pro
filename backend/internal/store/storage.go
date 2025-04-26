@@ -46,19 +46,25 @@ type Storage struct {
 	}
 	PostLikes interface {
 		UpdateLike(context.Context, int64) (int, error)
-		GetLike(context.Context, int64)(int, error)
+		GetLike(context.Context, int64) (int, error)
 		UpdateView(context.Context, int64) (int, error)
+	}
+	ProjectLikes interface {
+		UpdateLike(context.Context, string) (int, error)
+		GetLike(context.Context, string) (int, error)
+		UpdateView(context.Context, string) (int, error)
 	}
 }
 
 func NewStorage(db *sql.DB) Storage {
 	return Storage{
-		Posts:     &PostStore{db},
-		Users:     &UserStore{db},
-		Comments:  &CommentStore{db},
-		Followers: &FollowerStore{db},
-		Roles:     &RoleStore{db},
-		PostLikes: &PostLikeStore{db},
+		Posts:        &PostStore{db},
+		Users:        &UserStore{db},
+		Comments:     &CommentStore{db},
+		Followers:    &FollowerStore{db},
+		Roles:        &RoleStore{db},
+		PostLikes:    &PostLikeStore{db},
+		ProjectLikes: &ProjectLikeStore{db},
 	}
 }
 
