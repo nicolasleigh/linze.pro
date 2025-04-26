@@ -5,11 +5,16 @@ import { Toaster } from "@/components/ui/sonner"
 import { VueQueryDevtools } from "@tanstack/vue-query-devtools"
 import Header from "./components/Header.vue"
 import Footer from "./components/Footer.vue"
+import { useHideHeader } from "./hooks/useHideHeader"
+
+const { isHidden } = useHideHeader(300)
 </script>
 
 <template>
   <Toaster position="top-center" richColors />
-  <Header />
+  <Transition>
+    <Header v-if="!isHidden" />
+  </Transition>
 
   <div>
     <main class="w-full pb-24">
@@ -21,6 +26,15 @@ import Footer from "./components/Footer.vue"
 </template>
 
 <style scoped>
+.v-enter-active,
+.v-leave-active {
+  transition: opacity 0.7s ease;
+}
+.v-enter-from,
+.v-leave-to {
+  opacity: 0;
+}
+
 header {
   line-height: 1.5;
   max-height: 100vh;
