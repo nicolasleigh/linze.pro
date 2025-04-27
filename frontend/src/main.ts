@@ -1,16 +1,31 @@
-import "./assets/main.css";
+import "./assets/main.css"
+import { createApp } from "vue"
+import { createPinia } from "pinia"
+import { VueQueryPlugin } from "@tanstack/vue-query"
+import i18next from "i18next"
+import I18NextVue from "i18next-vue"
+import LanguageDetector from "i18next-browser-languagedetector"
+import Backend from "i18next-http-backend"
+import App from "./App.vue"
+import router from "./router"
 
-import { createApp } from "vue";
-import { createPinia } from "pinia";
-import { VueQueryPlugin } from "@tanstack/vue-query";
+i18next
+  .use(Backend)
+  .use(LanguageDetector)
+  .init({
+    lng: "en",
+    interpolation: {
+      escapeValue: false,
+    },
+    fallbackLng: false,
+    debug: true,
+  })
 
-import App from "./App.vue";
-import router from "./router";
+const app = createApp(App)
 
-const app = createApp(App);
+app.use(createPinia())
+app.use(router)
+app.use(VueQueryPlugin)
+app.use(I18NextVue, { i18next })
 
-app.use(createPinia());
-app.use(router);
-app.use(VueQueryPlugin);
-
-app.mount("#app");
+app.mount("#app")
