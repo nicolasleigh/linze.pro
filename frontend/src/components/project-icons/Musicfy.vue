@@ -14,54 +14,44 @@ import IconReactQuery from "../icons/IconReactQuery.vue"
 </script>
 
 <template>
-  <!-- <li>
-    <IconWithTooltip tooltip="Typescript">
-      <IconTS />
-    </IconWithTooltip>
-  </li> -->
-  <li>
+  <li class="flex items-center">
     <IconWithTooltip tooltip="Android">
       <IconAndroid />
     </IconWithTooltip>
   </li>
-  <li>
+  <li class="flex items-center">
     <IconWithTooltip tooltip="iOS">
       <IconApple />
     </IconWithTooltip>
   </li>
-  <li>
+  <li class="flex items-center">
     <IconWithTooltip tooltip="React Native">
       <IconReact />
     </IconWithTooltip>
   </li>
-  <li>
+  <li class="flex items-center">
     <IconWithTooltip tooltip="React Query">
       <IconReactQuery />
     </IconWithTooltip>
   </li>
-  <li>
+  <li class="flex items-center">
     <IconWithTooltip tooltip="Redux">
       <IconRedux />
     </IconWithTooltip>
   </li>
-  <li>
+  <li class="flex items-center">
     <IconWithTooltip tooltip="Node.js">
       <IconNode />
     </IconWithTooltip>
   </li>
-  <li>
+  <li class="flex items-center">
     <IconWithTooltip tooltip="Express">
       <IconExpress />
     </IconWithTooltip>
   </li>
-  <li>
+  <li class="flex items-center">
     <IconWithTooltip tooltip="MongoDB">
       <IconMongo />
     </IconWithTooltip>
   </li>
-  <!-- <li>
-    <IconWithTooltip tooltip="Docker">
-      <IconDocker />
-    </IconWithTooltip>
-  </li> -->
 </template>

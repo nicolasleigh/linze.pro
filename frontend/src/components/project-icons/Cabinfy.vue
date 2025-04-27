@@ -14,52 +14,42 @@ import IconReactQuery from "../icons/IconReactQuery.vue"
 </script>
 
 <template>
-  <!-- <li>
-    <IconWithTooltip tooltip="Typescript">
-      <IconTS />
-    </IconWithTooltip>
-  </li> -->
-  <li>
+  <li class="flex items-center">
     <IconWithTooltip tooltip="React">
       <IconReact />
     </IconWithTooltip>
   </li>
-  <li>
+  <li class="flex items-center">
     <IconWithTooltip tooltip="React Query">
       <IconReactQuery />
     </IconWithTooltip>
   </li>
-  <li>
+  <li class="flex items-center">
     <IconWithTooltip tooltip="Tailwind CSS">
       <IconTailwind />
     </IconWithTooltip>
   </li>
-  <li>
+  <li class="flex items-center">
     <IconWithTooltip tooltip="Node.js">
       <IconNode />
     </IconWithTooltip>
   </li>
-  <li>
+  <li class="flex items-center">
     <IconWithTooltip tooltip="Express">
       <IconExpress />
     </IconWithTooltip>
   </li>
-  <li>
+  <li class="flex items-center">
     <IconWithTooltip tooltip="PostgreSQL">
       <IconPostgres />
     </IconWithTooltip>
   </li>
-  <li>
+  <li class="flex items-center">
     <IconWithTooltip tooltip="Prisma">
       <IconPrisma />
     </IconWithTooltip>
   </li>
-  <li>
+  <li class="flex items-center">
     <IconWithTooltip tooltip="I18Next"><IconI18next /></IconWithTooltip>
   </li>
-  <!-- <li>
-    <IconWithTooltip tooltip="Docker">
-      <IconDocker />
-    </IconWithTooltip>
-  </li> -->
 </template>

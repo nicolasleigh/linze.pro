@@ -1,7 +1,9 @@
 <script setup lang="ts">
+import { useTranslation } from "i18next-vue"
 import { Mail, Github } from "lucide-vue-next"
 
 const linkStyle = "hover:text-accent transition-colors"
+const { t } = useTranslation()
 </script>
 
 <template>
@@ -9,11 +11,11 @@ const linkStyle = "hover:text-accent transition-colors"
     <div
       class="shrink-0 bg-neutral-800 h-[1px] w-full bg-gradient-to-r from-[#171717] via-[#525252] to-[#171717]"
     ></div>
-    <div class="layout py-24 grid md:grid-cols-[1fr,1.8fr] gap-8 md:gap-52">
+    <div class="layout py-16 grid md:grid-cols-[1fr,1.8fr] gap-8 md:gap-32">
       <div>
         <h3 class="text-neutral-200 font-semibold text-2xl">Nicolas Leigh</h3>
-        <p class="mt-3 text-neutral-500 text-xs">
-          Lorem ipsum dolor, sit amet consectetur adipisicing elit. Iusto, recusandae.
+        <p class="mt-3 text-neutral-500 text-base">
+          {{ t("footer.about") }}
         </p>
         <div class="flex gap-5 mt-1">
           <a
@@ -35,41 +37,160 @@ const linkStyle = "hover:text-accent transition-colors"
         </div>
       </div>
       <div>
-        <div class="sm:grid-cols-3 grid-cols-2 grid gap-4 gap-y-10">
+        <div class="sm:grid-cols-4 grid-cols-2 grid gap-4 gap-y-10">
           <div>
-            <p class="text-sm text-neutral-500">General</p>
+            <p class="text-sm text-neutral-500">{{ t("footer.section_1") }}</p>
             <ul class="text-neutral-300 mt-4 space-y-3 text-sm">
-              <li><a :class="linkStyle" href="/">Home</a></li>
-              <li><a :class="linkStyle" href="/blog">Blog</a></li>
+              <li><RouterLink :class="linkStyle" to="/">Home</RouterLink></li>
+              <li><RouterLink :class="linkStyle" to="/posts">Posts</RouterLink></li>
               <li>
-                <a :class="linkStyle" href="/projects">Projects</a>
+                <RouterLink :class="linkStyle" to="/projects">Projects</RouterLink>
               </li>
-              <li><a :class="linkStyle" href="/about">About</a></li>
+              <li><RouterLink :class="linkStyle" to="/about">About</RouterLink></li>
+              <li><RouterLink :class="linkStyle" to="/editor">Create Post</RouterLink></li>
             </ul>
           </div>
           <div>
-            <p class="text-sm text-neutral-500">The Website</p>
-            <ul class="text-neutral-300 mt-4 space-y-3 text-sm">
-              <li><a :class="linkStyle" href="/uses">Uses</a></li>
-              <li>
-                <a :class="linkStyle" href="/statistics">Statistics</a>
-              </li>
-              <li>
-                <a :class="linkStyle" href="/guestbook">Guest Book</a>
-              </li>
-            </ul>
-          </div>
-          <div>
-            <p class="text-sm text-neutral-500">Resources</p>
+            <p class="text-sm text-neutral-500">{{ t("footer.section_2") }}</p>
             <ul class="text-neutral-300 mt-4 space-y-3 text-sm">
               <li>
                 <a
                   target="_blank"
-                  rel="noopener noreferrer"
+                  referrerpolicy="no-referrer"
+                  :class="linkStyle"
+                  class="cursor-newtab"
+                  href="https://cabin.linze.pro"
+                  >CabinFy</a
+                >
+              </li>
+              <li>
+                <a
+                  target="_blank"
+                  referrerpolicy="no-referrer"
+                  :class="linkStyle"
+                  class="cursor-newtab"
+                  href="https://movie.linze.pro"
+                  >MovieFy</a
+                >
+              </li>
+              <li>
+                <a
+                  target="_blank"
+                  referrerpolicy="no-referrer"
+                  :class="linkStyle"
+                  class="cursor-newtab"
+                  href="https://pet.linze.pro"
+                  >Petify</a
+                >
+              </li>
+              <li>
+                <a
+                  target="_blank"
+                  referrerpolicy="no-referrer"
+                  :class="linkStyle"
+                  class="cursor-newtab"
+                  href="https://chat.linze.pro"
+                  >Chatify</a
+                >
+              </li>
+              <li>
+                <a
+                  target="_blank"
+                  referrerpolicy="no-referrer"
+                  :class="linkStyle"
+                  class="cursor-newtab"
+                  href="https://linze.pro"
+                  >Blog</a
+                >
+              </li>
+            </ul>
+          </div>
+          <div>
+            <p class="text-sm text-neutral-500">{{ t("footer.section_3") }}</p>
+            <ul class="text-neutral-300 mt-4 space-y-3 text-sm">
+              <li>
+                <a
+                  target="_blank"
+                  referrerpolicy="no-referrer"
+                  :class="linkStyle"
+                  class="cursor-newtab"
+                  href="https://github.com/nicolasleigh/cabinfy"
+                  >CabinFy</a
+                >
+              </li>
+              <li>
+                <a
+                  target="_blank"
+                  referrerpolicy="no-referrer"
+                  :class="linkStyle"
+                  class="cursor-newtab"
+                  href="https://github.com/nicolasleigh/moviefy"
+                  >MovieFy</a
+                >
+              </li>
+              <li>
+                <a
+                  target="_blank"
+                  referrerpolicy="no-referrer"
+                  :class="linkStyle"
+                  class="cursor-newtab"
+                  href="https://github.com/nicolasleigh/petify"
+                  >Petify</a
+                >
+              </li>
+              <li>
+                <a
+                  target="_blank"
+                  referrerpolicy="no-referrer"
+                  :class="linkStyle"
+                  class="cursor-newtab"
+                  href="https://github.com/nicolasleigh/chatify"
+                  >Chatify</a
+                >
+              </li>
+              <li>
+                <a
+                  target="_blank"
+                  referrerpolicy="no-referrer"
+                  :class="linkStyle"
+                  class="cursor-newtab"
+                  href="https://github.com/nicolasleigh/musicfy"
+                  >MusicFy</a
+                >
+              </li>
+              <li>
+                <a
+                  target="_blank"
+                  referrerpolicy="no-referrer"
+                  :class="linkStyle"
+                  class="cursor-newtab"
+                  href="https://github.com/nicolasleigh/linze.pro"
+                  >Blog</a
+                >
+              </li>
+            </ul>
+          </div>
+          <div>
+            <p class="text-sm text-neutral-500">{{ t("footer.section_4") }}</p>
+            <ul class="text-neutral-300 mt-4 space-y-3 text-sm">
+              <li>
+                <a
+                  target="_blank"
+                  referrerpolicy="no-referrer"
                   href="https://github.com/nicolasleigh/NoteBooks"
                   class="cursor-newtab"
                   :class="linkStyle"
                   >Book Notes</a
+                >
+              </li>
+              <li>
+                <a
+                  target="_blank"
+                  referrerpolicy="no-referrer"
+                  href="https://github.com/nicolasleigh/javascript-algorithms"
+                  class="cursor-newtab"
+                  :class="linkStyle"
+                  >Algorithms</a
                 >
               </li>
             </ul>

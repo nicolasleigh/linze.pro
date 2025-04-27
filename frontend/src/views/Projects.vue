@@ -6,7 +6,10 @@ import Moviefy from "@/components/project-icons/Moviefy.vue"
 import Musicfy from "@/components/project-icons/Musicfy.vue"
 import Petify from "@/components/project-icons/Petify.vue"
 import ProjectCard from "@/components/ProjectCard.vue"
+import { useTranslation } from "i18next-vue"
 import { BriefcaseBusiness, ChevronRight } from "lucide-vue-next"
+
+const { t } = useTranslation()
 </script>
 
 <template>
@@ -21,17 +24,17 @@ import { BriefcaseBusiness, ChevronRight } from "lucide-vue-next"
           <BriefcaseBusiness class="text-accent" :size="20" :stroke-width="1.5" />
         </div>
         <h1 class="mt-4 text-6xl">
-          <span class="text-neutral-300 font-semibold"> Full-Stack </span>
+          <span class="text-neutral-300 font-semibold mr-3"> {{ t("projects.full_stack") }} </span>
           <span
             class="font-semibold transition-colors bg-gradient-to-br from-accent/30 via-accent/90 to-accent/30 bg-clip-text text-transparent"
-            >Projects</span
+            >{{ t("projects.projects") }}</span
           >
         </h1>
         <p class="mt-3">
           <span
             class="transition-colors bg-gradient-to-r from-neutral-300/[35%] via-neutral-300/90 to-neutral-300/[35%] bg-clip-text text-transparent"
           >
-            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Cum, animi?
+            {{ t("projects.about") }}
           </span>
         </p>
       </div>
@@ -39,8 +42,8 @@ import { BriefcaseBusiness, ChevronRight } from "lucide-vue-next"
     <div class="layout">
       <ul class="mt-6 grid gap-8">
         <ProjectCard
-          title="CabinFy"
-          about="Modern cabin booking platform with multilingual support and sleek admin dashboard for seamless rental management."
+          :title="t('projects.cabinfy_title')"
+          :about="t('projects.cabinfy_about')"
           image="https://images.theodorusclarence.com/upload/q_auto,f_auto,c_fill,ar_1:1,w_1440/theodorusclarence/projects/hexcape/hexcape-banner-square"
           repo="https://github.com/nicolasleigh/cabinfy"
           website="https://cabin.linze.pro"
@@ -50,8 +53,8 @@ import { BriefcaseBusiness, ChevronRight } from "lucide-vue-next"
           <Cabinfy />
         </ProjectCard>
         <ProjectCard
-          title="MovieFy"
-          about="Full-stack movie platform with user and admin interfaces, featuring streaming, reviews, and content management built with React and Node.js."
+          :title="t('projects.moviefy_title')"
+          :about="t('projects.moviefy_about')"
           image="https://images.theodorusclarence.com/upload/q_auto,f_auto,c_fill,ar_1:1,w_1440/theodorusclarence/projects/notiolink/notiolink-banner-square.png"
           repo="https://github.com/nicolasleigh/moviefy"
           website="https://movie.linze.pro"
@@ -60,8 +63,8 @@ import { BriefcaseBusiness, ChevronRight } from "lucide-vue-next"
           <Moviefy />
         </ProjectCard>
         <ProjectCard
-          title="MusicFy"
-          about="A full-stack mobile music app built with bare React Native."
+          :title="t('projects.musicfy_title')"
+          :about="t('projects.musicfy_about')"
           image="https://images.theodorusclarence.com/upload/q_auto,f_auto,c_fill,ar_1:1,w_1440/theodorusclarence/projects/seasforus/seasforus-banner-square.png"
           repo="https://github.com/nicolasleigh/musicfy"
           link="/projects/musicfy/en"
@@ -70,8 +73,8 @@ import { BriefcaseBusiness, ChevronRight } from "lucide-vue-next"
           <Musicfy />
         </ProjectCard>
         <ProjectCard
-          title="Petify"
-          about="Full-stack e-commerce platform for browsing, purchasing pets, real-time chat, product management, and scalable, secure backend architecture."
+          :title="t('projects.petify_title')"
+          :about="t('projects.petify_about')"
           image="https://images.theodorusclarence.com/upload/q_auto,f_auto,c_fill,ar_1:1,w_1440/theodorusclarence/projects/notiolink/notiolink-banner-square.png"
           repo="https://github.com/nicolasleigh/petify"
           website="https://pet.linze.pro"
@@ -80,8 +83,8 @@ import { BriefcaseBusiness, ChevronRight } from "lucide-vue-next"
           <Petify />
         </ProjectCard>
         <ProjectCard
-          title="Chatify"
-          about="Real-time chat app with audio/video calls, rebuilt with Go and PostgreSQL for high performance and efficient, scalable backend architecture."
+          :title="t('projects.chatify_title')"
+          :about="t('projects.chatify_about')"
           image="https://images.theodorusclarence.com/upload/q_auto,f_auto,c_fill,ar_1:1,w_1440/theodorusclarence/projects/hexcape/hexcape-banner-square"
           repo="https://github.com/nicolasleigh/chatify"
           website="https://chat.linze.pro"
@@ -91,8 +94,8 @@ import { BriefcaseBusiness, ChevronRight } from "lucide-vue-next"
           <Chatify />
         </ProjectCard>
         <ProjectCard
-          title="Linze.pro"
-          about="Lorem ipsum dolor sit amet, consectetur adipisicing elit. Corrupti, sequi!"
+          :title="t('projects.blog_title')"
+          :about="t('projects.blog_about')"
           image="https://images.theodorusclarence.com/upload/q_auto,f_auto,c_fill,ar_1:1,w_1440/theodorusclarence/projects/notiolink/notiolink-banner-square.png"
           repo="https://github.com/nicolasleigh/chatify"
           website="https://linze.pro"

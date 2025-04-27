@@ -1,3 +1,5 @@
+import { useTranslation } from "i18next-vue"
+
 export const formatTime = (date: Date) => {
   const formattedDate =
     [date.getMonth() + 1, date.getDate(), date.getFullYear()].join("/") +
@@ -7,6 +9,7 @@ export const formatTime = (date: Date) => {
 }
 
 export const dateFormat = (val: string) => {
+  const { i18next } = useTranslation()
   const date = new Date(val)
   const option: Intl.DateTimeFormatOptions = {
     weekday: "long",
@@ -14,7 +17,8 @@ export const dateFormat = (val: string) => {
     month: "long",
     day: "numeric",
   }
-  return date.toLocaleDateString("en-US", option)
+  const locale = i18next.language === "zh" ? "zh-CN" : "en-US"
+  return date.toLocaleDateString(locale, option)
 }
 
 export const getSectionTitleAndSlug = (sectionTitle: string[]) => {

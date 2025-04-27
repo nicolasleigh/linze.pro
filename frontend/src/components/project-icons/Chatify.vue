@@ -12,42 +12,24 @@ import IconI18next from "../icons/IconI18next.vue"
 </script>
 
 <template>
-  <!-- <li>
-    <IconWithTooltip tooltip="Typescript">
-      <IconTS />
-    </IconWithTooltip>
-  </li> -->
-  <li>
+  <li class="flex items-center">
     <IconWithTooltip tooltip="Next.js">
       <IconNextJs />
     </IconWithTooltip>
   </li>
-  <li>
+  <li class="flex items-center">
     <IconWithTooltip tooltip="Go">
       <IconGo />
     </IconWithTooltip>
   </li>
-  <li>
+  <li class="flex items-center">
     <IconWithTooltip tooltip="Tailwind CSS">
       <IconTailwind />
     </IconWithTooltip>
   </li>
-  <li>
+  <li class="flex items-center">
     <IconWithTooltip tooltip="PostgreSQL">
       <IconPostgres />
     </IconWithTooltip>
   </li>
-  <!-- <li>
-    <IconWithTooltip tooltip="Clerk">
-      <IconClerk />
-    </IconWithTooltip>
-  </li>
-  <li>
-    <IconWithTooltip tooltip="I18Next"><IconI18next /></IconWithTooltip>
-  </li>
-  <li>
-    <IconWithTooltip tooltip="Docker">
-      <IconDocker />
-    </IconWithTooltip>
-  </li> -->
 </template>

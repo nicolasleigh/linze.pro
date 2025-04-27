@@ -1,0 +1,42 @@
+{
+  "header": {
+    "home_link": "Home",
+    "posts_link": "Posts",
+    "projects_link": "Projects",
+    "about_link": "About"
+  },
+  "posts": {
+    "about": "Exploring the full journey from frontend to backend — and beyond with DevOps.",
+    "full_stack": "Full Stack",
+    "posts": "Posts",
+    "tag": "Choose Tag"
+  },
+  "projects": {
+    "about": "Showcasing real-world builds across the full development stack.",
+    "full_stack": "Full Stack",
+    "projects": "Projects",
+    "tool": "Tools:",
+    "cta": "View Project",
+    "github_link": "Repository",
+    "website_link": "Open Website",
+    "cabinfy_title": "CabinFy",
+    "cabinfy_about": "Modern cabin booking platform with multilingual support and sleek admin dashboard for seamless rental management.",
+    "moviefy_title": "MovieFy",
+    "moviefy_about": "Full-stack movie platform with user and admin interfaces, featuring streaming, reviews, and content management built with React and Node.js.",
+    "musicfy_title": "MusicFy",
+    "musicfy_about": "A full-stack mobile music app built with bare React Native.",
+    "petify_title": "Petify",
+    "petify_about": "Full-stack e-commerce platform for browsing, purchasing pets, real-time chat, product management, and scalable, secure backend architecture.",
+    "chatify_title": "Chatify",
+    "chatify_about": "Real-time chat app with audio/video calls, rebuilt with Go and PostgreSQL for high performance and efficient, scalable backend architecture.",
+    "blog_title": "Blog",
+    "blog_about": ""
+  },
+  "footer": {
+    "about": "Craft full-stack web apps with React, Vue, Next.js, Node.js, and Go.",
+    "section_1": "Navigation",
+    "section_2": "Project Websites",
+    "section_3": "Project Repositories",
+    "section_4": "Useful Resources"
+  }
+}

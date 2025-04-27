@@ -14,49 +14,39 @@ import IconSocketIO from "../icons/IconSocketIO.vue"
 </script>
 
 <template>
-  <!-- <li>
-    <IconWithTooltip tooltip="Typescript">
-      <IconTS />
-    </IconWithTooltip>
-  </li> -->
-  <li>
+  <li class="flex items-center">
     <IconWithTooltip tooltip="React">
       <IconReact />
     </IconWithTooltip>
   </li>
-  <li>
+  <li class="flex items-center">
     <IconWithTooltip tooltip="Redux">
       <IconRedux />
     </IconWithTooltip>
   </li>
-  <li>
+  <li class="flex items-center">
     <IconWithTooltip tooltip="Tailwind CSS">
       <IconTailwind />
     </IconWithTooltip>
   </li>
-  <li>
+  <li class="flex items-center">
     <IconWithTooltip tooltip="Node.js">
       <IconNode />
     </IconWithTooltip>
   </li>
-  <li>
+  <li class="flex items-center">
     <IconWithTooltip tooltip="Express">
       <IconExpress />
     </IconWithTooltip>
   </li>
-  <li>
+  <li class="flex items-center">
     <IconWithTooltip tooltip="MongoDB">
       <IconMongo />
     </IconWithTooltip>
   </li>
-  <li>
+  <li class="flex items-center">
     <IconWithTooltip tooltip="Socket.IO">
       <IconSocketIO />
     </IconWithTooltip>
   </li>
-  <!-- <li>
-    <IconWithTooltip tooltip="Docker">
-      <IconDocker />
-    </IconWithTooltip>
-  </li> -->
 </template>

@@ -1,8 +1,10 @@
 <script setup lang="ts">
 import { RouterLink } from "vue-router"
 import LanguageButton from "./LanguageButton.vue"
+import { useTranslation } from "i18next-vue"
 
 const linkStyle = "py-3 px-2 text-neutral-200 hover:text-neutral-50 transition-colors"
+const { t } = useTranslation()
 </script>
 
 <template>
@@ -13,13 +15,13 @@ const linkStyle = "py-3 px-2 text-neutral-200 hover:text-neutral-50 transition-c
       class="flex pointer-events-auto mt-8 px-3 rounded-lg bg-neutral-800/60 w-fit mx-auto text-sm md:text-base"
     >
       <ul class="flex items-center gap-4">
-        <RouterLink to="/" :class="linkStyle"> Home </RouterLink>
+        <RouterLink to="/" :class="linkStyle"> {{ t("header.home_link") }} </RouterLink>
         <RouterLink to="/login" :class="linkStyle"> Login </RouterLink>
         <RouterLink to="/signup" :class="linkStyle"> Signup </RouterLink>
         <RouterLink to="/editor" :class="linkStyle"> Editor </RouterLink>
-        <RouterLink to="/posts" :class="linkStyle"> Posts </RouterLink>
-        <RouterLink to="/projects" :class="linkStyle"> Projects </RouterLink>
-        <RouterLink to="/about" :class="linkStyle"> About </RouterLink>
+        <RouterLink to="/posts" :class="linkStyle"> {{ t("header.posts_link") }} </RouterLink>
+        <RouterLink to="/projects" :class="linkStyle"> {{ t("header.projects_link") }} </RouterLink>
+        <RouterLink to="/about" :class="linkStyle"> {{ t("header.about_link") }} </RouterLink>
         <div class="w-px bg-neutral-500 h-[18px]" />
         <LanguageButton />
       </ul>

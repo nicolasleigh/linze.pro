@@ -36,8 +36,7 @@ const router = useRouter()
           <span class="absolute left-0 top-0 font-semibold text-white"> {{ title }} </span>
         </h3>
         <p class="b2 txt-secondary mt-1 text-neutral-300">
-          {{ about }} Learning to code is like learning a new language. It requires patience, and
-          persistence, and practice. Start with small projects and build.
+          {{ about }}
         </p>
         <div class="flex justify-between mt-5">
           <div class="text-neutral-300 flex items-center justify-center gap-3 text-sm">

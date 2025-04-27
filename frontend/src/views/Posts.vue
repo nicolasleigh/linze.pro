@@ -3,6 +3,7 @@ import PostAside from "@/components/PostAside.vue"
 import PostCard from "@/components/PostCard.vue"
 import { usePosts } from "@/hooks/usePosts"
 import { usePostsByTag } from "@/hooks/usePostsByTag"
+import { useTranslation } from "i18next-vue"
 import { Book } from "lucide-vue-next"
 import { computed, ref, watch } from "vue"
 import { useRoute } from "vue-router"
@@ -12,6 +13,7 @@ const tag = ref(route.query.tag)
 const page = Number(route.query.page) || 1
 const { posts: allPosts, error, isLoading } = usePosts(page)
 const { posts: postsByTag, refetch } = usePostsByTag(page, tag)
+const { t } = useTranslation()
 
 const resultPost = computed(() => {
   return tag.value && postsByTag.value?.length ? postsByTag.value : allPosts.value
@@ -38,17 +40,18 @@ watch(
           <Book class="text-accent" :size="20" :stroke-width="1" />
         </div>
         <h1 class="mt-4 text-6xl">
-          <span class="text-neutral-300 font-semibold"> The </span>
+          <Trans> </Trans>
+          <span class="text-neutral-300 font-semibold mr-3"> {{ t("posts.full_stack") }} </span>
           <span
             class="font-semibold transition-colors bg-gradient-to-br from-accent/30 via-accent/90 to-accent/30 bg-clip-text text-transparent"
-            >Posts</span
+            >{{ t("posts.posts") }}</span
           >
         </h1>
         <p class="mt-3">
           <span
             class="transition-colors bg-gradient-to-r from-neutral-300/[35%] via-neutral-300/90 to-neutral-300/[35%] bg-clip-text text-transparent"
           >
-            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Cum, animi?
+            {{ t("posts.about") }}
           </span>
         </p>
       </div>

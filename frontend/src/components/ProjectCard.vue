@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import IconGithub from "@/components/icons/IconGithub.vue"
 import IconLink from "@/components/icons/IconLink.vue"
+import { useTranslation } from "i18next-vue"
 import { ChevronRight } from "lucide-vue-next"
 import { RouterLink } from "vue-router"
 
@@ -13,6 +14,8 @@ const props = defineProps({
   reverse: Boolean,
   link: String,
 })
+
+const { t } = useTranslation()
 </script>
 
 <template>
@@ -32,7 +35,7 @@ const props = defineProps({
         {{ props.about }}
       </p>
       <div class="flex items-center gap-2 mt-6 text-neutral-400">
-        <p class="text-sm">Tools:</p>
+        <p class="text-sm">{{ t("projects.tool") }}</p>
         <ul class="flex items-center gap-2 text-xl text-gray-200">
           <slot></slot>
         </ul>
@@ -42,7 +45,7 @@ const props = defineProps({
           :to="{ path: props.link || '', state: { about: props.about } }"
           class="relative group px-4 py-3 rounded-xl border inline-flex items-center gap-3 cursor-pointer text-neutral-100 hover:bg-neutral-100 hover:text-neutral-800 transition-colors duration-300"
         >
-          <span class="font-semibold"> View Project </span>
+          <span class="font-semibold"> {{ t("projects.cta") }} </span>
           <ChevronRight :stroke-width="2" :size="20" />
         </RouterLink>
         <div class="flex items-center gap-6">
@@ -55,7 +58,7 @@ const props = defineProps({
             <div class="">
               <IconGithub />
             </div>
-            <span class="text-neutral-200">Repository</span>
+            <span class="text-neutral-200">{{ t("projects.github_link") }}</span>
           </a>
           <a
             v-if="props.website"
@@ -67,7 +70,7 @@ const props = defineProps({
             <div class="">
               <IconLink />
             </div>
-            <span class="text-neutral-200">Open Website</span>
+            <span class="text-neutral-200">{{ t("projects.website_link") }}</span>
           </a>
         </div>
       </div>
