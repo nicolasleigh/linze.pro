@@ -3,6 +3,7 @@ import { getSectionTitleAndSlug } from "@/utils/helper"
 import Section from "../../Section.vue"
 import { h2Style, orderedListStyle, paragraphStyle, unorderedListStyle } from "../../CommonStyle"
 import ExternalLink from "../../ExternalLink.vue"
+import { useActiveSection } from "@/hooks/useActiveSection"
 
 const sectionTitle = [
   "Project Overview",
@@ -17,10 +18,9 @@ const sectionTitle = [
   "Summary",
   "Live Demo & Source Code",
 ]
-
+const { activeSection } = useActiveSection()
 const section = getSectionTitleAndSlug(sectionTitle)
-
-defineExpose({ section })
+defineExpose({ section, activeSection })
 </script>
 
 <template>

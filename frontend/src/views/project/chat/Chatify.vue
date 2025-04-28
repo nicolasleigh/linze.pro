@@ -1,18 +1,34 @@
 <script setup lang="ts">
-import { useActiveSection } from "@/hooks/useActiveSection"
 import Header from "../Header.vue"
-import Article from "./en/Article.vue"
+import ArticleEn from "./en/Article.vue"
+import ArticleZh from "./zh/Article.vue"
 import Aside from "../Aside.vue"
 import { ref, watch } from "vue"
 import { useTranslation } from "i18next-vue"
 
-const { activeSection } = useActiveSection()
-const article = ref<InstanceType<typeof Article>>()
-const section = ref(article.value?.section || [])
-const { t } = useTranslation()
+const articleEn = ref<InstanceType<typeof ArticleEn>>()
+const articleZh = ref<InstanceType<typeof ArticleZh>>()
+const sectionEn = ref(articleEn.value?.section || [])
+const sectionZh = ref(articleZh.value?.section || [])
 
-watch(article, (newVal) => {
-  section.value = newVal?.section || []
+const { t, i18next } = useTranslation()
+
+const currentLanguage = ref<string | null>(null)
+
+watch(
+  () => i18next.language,
+  (newLang) => {
+    currentLanguage.value = newLang
+  },
+  { immediate: true },
+)
+
+watch(articleEn, (newVal) => {
+  sectionEn.value = newVal?.section || []
+})
+
+watch(articleZh, (newVal) => {
+  sectionZh.value = newVal?.section || []
 })
 </script>
 
@@ -27,8 +43,18 @@ watch(article, (newVal) => {
         repo="https://github.com/nicolasleigh/chatify"
       />
       <section class="mt-6 lg:grid lg:grid-cols-[minmax(0,1fr),250px] lg:gap-8">
-        <Article ref="article" />
-        <Aside :section="section" :activeSection="activeSection || ''" />
+        <ArticleEn v-if="currentLanguage === 'en'" ref="articleEn" />
+        <ArticleZh v-if="currentLanguage === 'zh'" ref="articleZh" />
+        <Aside
+          v-if="currentLanguage === 'en'"
+          :section="sectionEn"
+          :activeSection="articleEn?.activeSection || ''"
+        />
+        <Aside
+          v-if="currentLanguage === 'zh'"
+          :section="sectionZh"
+          :activeSection="articleZh?.activeSection || ''"
+        />
       </section>
     </div>
   </section>
