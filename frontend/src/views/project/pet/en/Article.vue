@@ -8,6 +8,7 @@ import {
   paragraphStyle,
   unorderedListStyle,
 } from "../../CommonStyle"
+import { useActiveSection } from "@/hooks/useActiveSection"
 
 const sectionTitle = [
   "Project Overview",
@@ -20,9 +21,9 @@ const sectionTitle = [
   "Live Demo & Source Code",
 ]
 
+const { activeSection } = useActiveSection()
 const section = getSectionTitleAndSlug(sectionTitle)
-
-defineExpose({ section })
+defineExpose({ section, activeSection })
 </script>
 
 <template>
@@ -37,9 +38,7 @@ defineExpose({ section })
           offers a user-friendly shopping experience with features like smart filtering, real-time
           chat, and detailed order tracking. The platform is divided into three independent parts: a
           user-facing web app, an admin dashboard, and a backend API server. Each part was built
-          with scalability, usability, and performance in mind. Petify supports real-time
-          communication, dynamic product management, and secure checkout, making it a comprehensive
-          solution for pet commerce.
+          with scalability, usability, and performance in mind.
         </p>
       </Section>
       <Section :id="section[1].slug">
@@ -89,6 +88,10 @@ defineExpose({ section })
             stack.
           </li>
         </ul>
+        <p :class="paragraphStyle">
+          This project gave me end-to-end ownership, allowing me to practice problem-solving at
+          every layer of the application and gain valuable experience in full-stack development.
+        </p>
       </Section>
       <Section :id="section[3].slug">
         <h2 :class="h2Style">

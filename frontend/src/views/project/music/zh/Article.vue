@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { getSectionTitleAndSlug, getSectionTitleAndSlugChinese } from "@/utils/helper"
-import { h2Style, h3Style, paragraphStyle, unorderedListStyle } from "../../CommonStyle"
+import { h2Style, h3Style, orderedListStyle, paragraphStyle, unorderedListStyle } from "../../CommonStyle"
 import Section from "../../Section.vue"
 import { useActiveSection } from "@/hooks/useActiveSection"
 
@@ -133,7 +133,7 @@ defineExpose({ section, activeSection })
           尽管 MusicFy 已经可以在 Android 和 iOS
           设备上正常运行，但我计划在未来进行一系列优化和增强，以进一步提升用户体验和系统架构。
         </p>
-        <ul :class="unorderedListStyle">
+        <ol :class="orderedListStyle">
           <li>自动化测试：引入单元测试、集成测试和端到端测试，以确保系统稳定性并防止功能回归。</li>
           <li>CI/CD 流水线：搭建持续集成与持续部署流程，实现测试、构建和发布的自动化。</li>
           <li>
@@ -150,7 +150,7 @@ defineExpose({ section, activeSection })
           </li>
           <li>用户通知：增加推送通知功能，如关注动态、播放列表更新或精选歌曲推送。</li>
           <li>社交分享：允许用户将歌曲或播放列表分享到应用之外，提升内容的传播和发现。</li>
-        </ul>
+        </ol>
         <p :class="paragraphStyle">
           通过这些未来的功能和优化，MusicFy
           将变得更加完善、可扩展，并为用户提供更加出色的跨平台体验。

@@ -1,6 +1,12 @@
 <script setup lang="ts">
 import { getSectionTitleAndSlug } from "@/utils/helper"
-import { h2Style, h3Style, paragraphStyle, unorderedListStyle } from "../../CommonStyle"
+import {
+  h2Style,
+  h3Style,
+  orderedListStyle,
+  paragraphStyle,
+  unorderedListStyle,
+} from "../../CommonStyle"
 import Section from "../../Section.vue"
 import { useActiveSection } from "@/hooks/useActiveSection"
 
@@ -162,7 +168,7 @@ defineExpose({ section, activeSection })
           enhancements and optimizations I plan to implement to improve both the user experience and
           the system architecture.
         </p>
-        <ul :class="unorderedListStyle">
+        <ol :class="orderedListStyle">
           <li>
             Automated Testing: Introduce unit, integration, and end-to-end testing to ensure
             stability and prevent regressions.
@@ -199,7 +205,7 @@ defineExpose({ section, activeSection })
             Social Sharing: Let users share songs or playlists outside the app, enhancing
             discoverability.
           </li>
-        </ul>
+        </ol>
         <p :class="paragraphStyle">
           These future additions will help make MusicFy more polished, scalable, and user-friendly
           across platforms.
