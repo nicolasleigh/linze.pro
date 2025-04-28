@@ -1,9 +1,8 @@
 <script setup lang="ts">
-import { getSectionTitleAndSlug, getSectionTitleAndSlugChinese } from "@/utils/helper"
+import { useActiveSection } from "@/hooks/useActiveSection"
+import { getSectionTitleAndSlugChinese } from "@/utils/helper"
 import { h2Style, h3Style, h4Style, paragraphStyle, unorderedListStyle } from "../../CommonStyle"
 import Section from "../../Section.vue"
-import { useActiveSection } from "@/hooks/useActiveSection"
-import { computed, ref, watch } from "vue"
 
 const { activeSection } = useActiveSection()
 
@@ -23,10 +22,9 @@ defineExpose({ section, activeSection })
         </h2>
         <p :class="paragraphStyle">
           CabinFy
-          是一个功能全面的住宿预订平台，连接旅行者与独特的木屋租赁。它为客人提供直观的体验，帮助他们发现和预订木屋，同时通过安全的管理员后台为房东提供强大的管理工具。尽管最初受到
-          React 课程的启发，我完全重构了它，使用自定义的 Node.js/Express 后端、PostgreSQL
-          数据库和使用 Tailwind CSS 现代化的
-          UI，将其转变为一款具有多语言支持和响应式设计的生产级应用。
+          是一个功能齐全的住宿预订平台，将旅客与独特的小木屋租赁连接起来。它为客人提供直观的体验，以发现和预订小木屋，同时通过安全的管理员后台为业主提供强大的管理工具。虽然最初受到
+          React 课程的启发，但我使用自定义的 Node.js/Express 后端、PostgreSQL 数据库和采用 Tailwind
+          CSS 的现代化 UI 完全重建了它——将其转变为具有多语言支持和响应式设计的生产级应用程序。
         </p>
       </Section>
 
@@ -35,49 +33,37 @@ defineExpose({ section, activeSection })
           {{ section[1].title }}
         </h2>
         <p :class="paragraphStyle">
-          CabinFy is a full-stack web application inspired by Airbnb, designed for booking and
-          managing cabin rentals. It delivers a seamless experience for both guests and
-          administrators, with a strong focus on performance, usability, and modern development
-          practices. Key features include:
+          CabinFy 是一个受 Airbnb
+          启发的全栈网页应用程序，专为预订和管理小木屋租赁而设计。它为旅客和管理员提供了流畅的使用体验，注重性能、易用性和现代开发实践。主要功能包括：
         </p>
         <ul :class="unorderedListStyle">
           <li>
+            <p>多语言支持：提供英文和中文界面，使平台能够覆盖更广泛的用户群体。</p>
+          </li>
+          <li>
             <p>
-              Multilingual Support: Available in both English and Chinese, making the platform
-              accessible to a broader audience.
+              响应式设计与无障碍支持：界面针对桌面、平板和移动设备进行了全面优化，内置深色模式和无障碍功能，确保所有用户在不同设备和浏览偏好下都能获得舒适体验。
             </p>
           </li>
           <li>
             <p>
-              Responsive Design & Accessibility: The UI is fully optimized for desktop, tablet, and
-              mobile devices, with built-in dark mode support and accessibility features ensuring a
-              comfortable experience for all users regardless of device or viewing preferences.
+              旅客预订界面：用户可以浏览可用的小木屋，查看详细列表，并通过直观、现代的界面完成预订。
             </p>
           </li>
           <li>
-            <p>
-              Guest Booking Interface: Users can browse available cabins, view detailed listings,
-              and make bookings through an intuitive and modern interface.
-            </p>
-          </li>
-          <li>
-            <p>Admin Dashboard: Admins have access to a secure dashboard where they can:</p>
+            <p>管理员后台：管理员可以通过安全的后台系统进行以下操作：</p>
             <ul :class="unorderedListStyle">
-              <li><p>View, manage, and process bookings</p></li>
-              <li><p>Submit new cabin listings or edit existing ones</p></li>
-              <li><p>Monitor booking activity and cabin availability</p></li>
+              <li><p>查看、管理和处理预订信息</p></li>
+              <li><p>提交新的小木屋列表或编辑现有列表</p></li>
+              <li><p>监控预订活动和小木屋可用情况</p></li>
             </ul>
           </li>
           <li>
-            <p>
-              Advanced Data Management: Supports filtering, sorting, and pagination for easy
-              browsing and efficient data interaction
-            </p>
+            <p>高级数据管理：支持筛选、排序和分页，方便浏览和高效的数据交互。</p>
           </li>
           <li>
             <p>
-              Authentication &amp; Authorization: Secure user authentication with access control to
-              protect admin functionalities and private data.
+              身份验证与权限管理：提供安全的用户身份验证和访问控制，保护管理员功能和私人数据的安全。
             </p>
           </li>
         </ul>
@@ -87,56 +73,32 @@ defineExpose({ section, activeSection })
           {{ section[2].title }}
         </h2>
         <p :class="paragraphStyle">
-          CabinFy is built using a modern and scalable full-stack architecture, combining powerful
-          libraries and tools on both the frontend and backend to ensure performance,
-          maintainability, and a smooth developer experience.
+          CabinFy 基于现代且可扩展的全栈架构构建，设计时充分考虑了性能、可维护性以及开发者体验。
         </p>
-        <h3 :class="h3Style">Core Technologies</h3>
-        <h4 :class="h4Style">Frontend</h4>
+        <h3 :class="h3Style">核心技术</h3>
+        <h4 :class="h4Style">前端</h4>
         <ul :class="unorderedListStyle">
-          <li>React – Core library for building dynamic user interfaces</li>
-          <li>Tailwind CSS – Utility-first CSS framework for building fast and responsive UIs</li>
-          <li>
-            React Query – Selected over Redux for its optimized data fetching and caching
-            capabilities
-          </li>
+          <li>React – 用于构建动态用户界面的核心库</li>
+          <li>Tailwind CSS – 以实用为先的 CSS 框架，帮助快速搭建响应式界面</li>
+          <li>React Query – 因其高效的数据获取和缓存能力而取代 Redux</li>
         </ul>
-        <h4 :class="h4Style">Backend</h4>
+        <h4 :class="h4Style">后端</h4>
         <ul :class="unorderedListStyle">
-          <li>
-            Node.js & Express – Lightweight yet powerful server framework enabling rapid API
-            development
-          </li>
-          <li>
-            PostgreSQL & Prisma – Combination provides type-safe database operations without the
-            need to write raw SQL
-          </li>
-          <li>
-            Zod – Implements thorough runtime validation at API boundaries, preventing data
-            corruption
-          </li>
+          <li>Node.js & Express – 轻量且强大的服务器框架，支持快速开发 API</li>
+          <li>PostgreSQL & Prisma – 结合使用，提供类型安全的数据库操作，无需编写原生 SQL</li>
+          <li>Zod – 对表单数据实现全面的运行时验证，有效防止非法数据</li>
         </ul>
-        <h3 :class="h3Style">Technical Highlights</h3>
-        <h4 :class="h4Style">Authentication System</h4>
+        <h3 :class="h3Style">技术亮点</h3>
+        <h4 :class="h4Style">认证系统</h4>
         <p :class="paragraphStyle">
-          Built a secure authentication flow combining Passport.js with custom middleware that
-          integrates seamlessly with Prisma's user model, supporting both traditional and OAuth
-          authentication methods.
+          构建了一个安全的身份认证流程，结合 Passport.js 和自定义的中间件，与 Prisma
+          的用户模型无缝集成，支持传统账号密码登录和 OAuth 第三方登录方式。
         </p>
-        <h4 :class="h4Style">Deployment Infrastructure</h4>
+        <h4 :class="h4Style">部署基础设施</h4>
         <ul :class="unorderedListStyle">
-          <li>
-            Docker – Containerized application components for consistent environments across
-            development and production
-          </li>
-          <li>
-            Caddy – Configured as both a static file server for the frontend and reverse proxy for
-            backend services, simplifying the deployment architecture
-          </li>
-          <li>
-            Makefile – Automated common development tasks and deployment procedures, reducing errors
-            when typing Linux commands
-          </li>
+          <li>Docker – 通过容器化应用组件，实现开发与生产环境的一致性</li>
+          <li>Caddy – 作为前端静态文件服务器和后端服务反向代理，简化部署架构</li>
+          <li>Makefile – 自动化常见开发任务和部署流程，减少手动输入 Linux 命令时出错的风险</li>
         </ul>
       </Section>
       <Section :id="section[3].slug">
@@ -144,52 +106,39 @@ defineExpose({ section, activeSection })
           {{ section[3].title }}
         </h2>
         <p :class="paragraphStyle">
-          Building CabinFy was a comprehensive learning experience that challenged me to apply both
-          frontend and backend skills in a real-world, full-stack project. Here are some of the key
-          takeaways:
+          开发 CabinFy
+          是一次全面的学习体验，促使我在一个真实的全栈项目中同时应用前端和后端技能。以下是我在项目中收获的一些关键点：
         </p>
         <ul :class="unorderedListStyle">
           <li>
-            End-to-End Development Workflow: I gained hands-on experience managing an entire
-            development lifecycle—from designing UI components to building a custom backend and
-            deploying the full application using Docker and Caddy.
+            端到端开发流程：我亲自体验了完整的开发生命周期，从设计 UI 组件到构建自定义后端，再到使用
+            Docker 和 Caddy 部署整个应用。
           </li>
           <li>
-            Custom Backend Architecture: Instead of relying on prebuilt backend services like
-            Supabase, I built a complete backend from scratch using PostgreSQL, Prisma, Express, and
-            Zod, which taught me how to better handle data modeling, validation, and RESTful API
-            design.
+            自定义后端架构：没有依赖 Supabase 等预构建后端服务，而是通过 PostgreSQL、Prisma、Express
+            和 Zod 从零搭建了完整的后端系统，这让我深入理解了数据建模、验证以及 RESTful API 设计。
           </li>
           <li>
-            Authentication &amp; Authorization: Implementing secure login logic with Passport and
-            JWT gave me a deeper understanding of access control and session management in web
-            applications.
+            认证与权限管理：通过整合 Passport 和 JWT 实现安全登录逻辑，让我更深刻地理解了 Web
+            应用中的访问控制与会话管理。
           </li>
           <li>
-            Frontend Architecture &amp; Optimization: Using React and React Query helped me
-            understand efficient state management and data fetching strategies in large-scale apps.
+            前端架构与优化：使用 React 和 React Query
+            加深了我对大规模应用中高效状态管理与数据获取策略的理解。
+          </li>
+          <li>国际化支持：整合 react-i18next，让我掌握了多语言应用的架构设计与本地化内容管理。</li>
+          <li>
+            DevOps 与自动化：学习了如何使用 Makefile 自动化重复性任务，并通过 Docker
+            优化部署流程。编写了自定义 Dockerfile 和 docker-compose
+            配置，实现后端与数据库的容器化，简化了本地开发与上线部署流程。同时，使用 Caddy
+            作为反向代理和静态文件服务器，进一步简化了路由配置并保障后端服务的安全性。
           </li>
           <li>
-            Internationalization: Integrating react-i18next gave me insight into structuring
-            multilingual applications and managing locale-specific content.
-          </li>
-          <li>
-            DevOps &amp; Automation: I learned how to automate repetitive tasks using Makefile, and
-            improved deployment workflows by using Docker. I created custom Dockerfiles and a
-            docker-compose setup to containerize the backend and database, streamlining local
-            development and deployment. Additionally, I used Caddy as both a reverse proxy and
-            static file server to simplify routing and secure backend services.
-          </li>
-          <li>
-            Responsive Design &amp; UX: Implementing dark mode, responsive layouts, and
-            device-friendly interfaces helped me build a polished and accessible user experience
-            across platforms.
+            响应式设计与用户体验：通过实现暗黑模式、响应式布局及适配各种设备的界面设计，构建了跨平台统一、完善且易用的用户体验。
           </li>
         </ul>
         <p :class="paragraphStyle">
-          This project was not only a technical exercise but also a chance to think critically about
-          architecture, performance, and maintainability—skills I’ll carry forward into future
-          projects.
+          这个项目不仅是一次技术实践，也是一次深入思考架构、性能与可维护性的机会，这些宝贵的经验将成为我未来项目中重要的能力积累。
         </p>
       </Section>
       <Section :id="section[4].slug">
@@ -197,23 +146,19 @@ defineExpose({ section, activeSection })
           {{ section[4].title }}
         </h2>
         <p :class="paragraphStyle">
-          CabinFy was more than just a portfolio piece—it was a deep dive into building a
-          full-stack, production-ready web application from the ground up. Through this project, I
-          explored modern development practices, honed my skills across the stack, and gained
-          hands-on experience with everything from multilingual support and authentication to
-          responsive design and containerized deployment.
+          CabinFy
+          不仅仅是一个作品集项目——它更是一次从零开始构建全栈、生产就绪级别网页应用的深度实践。通过这个项目，我深入探索了现代开发实践，全面打磨了前后端技能，并获得了从多语言支持、用户认证，到响应式设计与容器化部署等多方面的实战经验。
         </p>
-        <p :class="paragraphStyle">This project reflects my ability to:</p>
+        <p :class="paragraphStyle">这个项目体现了我在以下方面的能力：</p>
         <ul :class="unorderedListStyle">
-          <li>Take initiative beyond course content</li>
-          <li>Architect scalable, maintainable systems</li>
-          <li>Embrace modern tooling across frontend, backend, and DevOps</li>
-          <li>Prioritize user experience across languages and devices</li>
+          <li>主动学习并超越课程内容的能力</li>
+          <li>架构可扩展、可维护系统的能力</li>
+          <li>在前端、后端与 DevOps 各领域灵活运用现代工具的能力</li>
+          <li>重视不同语言与设备用户体验的意识</li>
         </ul>
         <p :class="paragraphStyle">
-          Most importantly, CabinFy gave me a clearer vision of how real-world web applications are
-          designed, built, and deployed—and the confidence to take on even more complex,
-          user-centric projects in the future.
+          更重要的是，CabinFy
+          让我对真实世界中网页应用的设计、开发与部署有了更清晰的认识，也让我有了迎接更复杂、以用户为中心项目的信心。
         </p>
       </Section>
     </div>
