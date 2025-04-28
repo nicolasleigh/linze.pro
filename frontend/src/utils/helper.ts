@@ -34,3 +34,8 @@ export const getSectionTitleAndSlug = (sectionTitle: string[]) => {
   const section = sectionTitle.map((e, i) => ({ title: e, slug: sectionSlug[i] }))
   return section
 }
+
+export const getSectionTitleAndSlugChinese = (sectionTitle: string[]) => {
+  const section = sectionTitle.map((e) => ({ title: e, slug: e }))
+  return section
+}

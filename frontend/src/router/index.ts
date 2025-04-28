@@ -77,32 +77,32 @@ const router = createRouter({
           component: Projects,
         },
         {
-          path: "cabinfy/en",
+          path: "cabinfy",
           name: "cabinfy",
           component: Cabinfy,
         },
         {
-          path: "moviefy/en",
+          path: "moviefy",
           name: "moviefy",
           component: Moviefy,
         },
         {
-          path: "musicfy/en",
+          path: "musicfy",
           name: "musicfy",
           component: Musicfy,
         },
         {
-          path: "chatify/en",
+          path: "chatify",
           name: "chatify",
           component: Chatify,
         },
         {
-          path: "petify/en",
+          path: "petify",
           name: "petify",
           component: Petify,
         },
         {
-          path: "blog/en",
+          path: "blog",
           name: "blog",
           component: Blog,
         },

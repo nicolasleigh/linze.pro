@@ -4,10 +4,12 @@ import Header from "../Header.vue"
 import Article from "./en/Article.vue"
 import Aside from "../Aside.vue"
 import { ref, watch } from "vue"
+import { useTranslation } from "i18next-vue"
 
 const { activeSection } = useActiveSection()
 const article = ref<InstanceType<typeof Article>>()
 const section = ref(article.value?.section || [])
+const { t } = useTranslation()
 
 watch(article, (newVal) => {
   section.value = newVal?.section || []
@@ -18,10 +20,8 @@ watch(article, (newVal) => {
   <section>
     <div class="layout pb-12 pt-[8.6rem] md:pb-20 md:pt-[9.6rem]">
       <Header
-        title="MovieFy"
-        about="Full-stack movie platform with user and admin interfaces, featuring streaming, reviews, and content management built with React and Node.js."
-        :view="24"
-        :like="12"
+        :title="t('projects.moviefy_title')"
+        :about="t('projects.moviefy_about')"
         video=""
         website="https://movie.linze.pro"
         repo="https://github.com/nicolasleigh/moviefy"

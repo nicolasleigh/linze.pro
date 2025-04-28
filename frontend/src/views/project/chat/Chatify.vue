@@ -4,10 +4,12 @@ import Header from "../Header.vue"
 import Article from "./en/Article.vue"
 import Aside from "../Aside.vue"
 import { ref, watch } from "vue"
+import { useTranslation } from "i18next-vue"
 
 const { activeSection } = useActiveSection()
 const article = ref<InstanceType<typeof Article>>()
 const section = ref(article.value?.section || [])
+const { t } = useTranslation()
 
 watch(article, (newVal) => {
   section.value = newVal?.section || []
@@ -18,10 +20,8 @@ watch(article, (newVal) => {
   <section>
     <div class="layout pb-12 pt-[8.6rem] md:pb-20 md:pt-[9.6rem]">
       <Header
-        title="Chatify"
-        about="Real-time chat app with audio/video calls, rebuilt with Go and PostgreSQL for high performance and efficient, scalable backend architecture."
-        :view="24"
-        :like="12"
+        :title="t('projects.chatify_title')"
+        :about="t('projects.chatify_about')"
         video=""
         website="https://chat.linze.pro"
         repo="https://github.com/nicolasleigh/chatify"

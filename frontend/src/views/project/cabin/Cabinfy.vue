@@ -1,21 +1,34 @@
 <script setup lang="ts">
-import { useActiveSection } from "@/hooks/useActiveSection"
-import Header from "../Header.vue"
-import Article from "./en/Article.vue"
+import { ref, watch } from "vue"
 import Aside from "../Aside.vue"
-import { onMounted, ref, watch } from "vue"
-import { useGetProjectLike, useProjectLike, useProjectView } from "@/hooks/useLikeAndView"
+import Header from "../Header.vue"
+import ArticleEn from "./en/Article.vue"
+import ArticleZh from "./zh/Article.vue"
+import { useTranslation } from "i18next-vue"
 
-const { activeSection } = useActiveSection()
-const article = ref<InstanceType<typeof Article>>()
-const section = ref(article.value?.section || [])
+const articleEn = ref<InstanceType<typeof ArticleEn>>()
+const articleZh = ref<InstanceType<typeof ArticleZh>>()
+const sectionEn = ref(articleEn.value?.section || [])
+const sectionZh = ref(articleZh.value?.section || [])
 
-// const { viewNum } = useProjectView()
-// const { likeNum, updateProjectLike } = useProjectLike()
-// const { likeNum: initialLike } = useGetProjectLike()
+const { t, i18next } = useTranslation()
 
-watch(article, (newVal) => {
-  section.value = newVal?.section || []
+const currentLanguage = ref<string | null>(null)
+
+watch(
+  () => i18next.language,
+  (newLang) => {
+    currentLanguage.value = newLang
+  },
+  { immediate: true },
+)
+
+watch(articleEn, (newVal) => {
+  sectionEn.value = newVal?.section || []
+})
+
+watch(articleZh, (newVal) => {
+  sectionZh.value = newVal?.section || []
 })
 </script>
 
@@ -23,17 +36,25 @@ watch(article, (newVal) => {
   <div>
     <div class="layout pb-12 pt-[8.6rem] md:pb-20 md:pt-[9.6rem]">
       <Header
-        title="CabinFy"
-        about="Modern cabin booking platform with multilingual support and sleek admin dashboard for seamless rental management."
-        :view="24"
-        :like="12"
+        :title="t('projects.cabinfy_title')"
+        :about="t('projects.cabinfy_about')"
         video=""
         website="https://cabin.linze.pro"
         repo="https://github.com/nicolasleigh/cabinfy"
       />
       <div class="mt-10 lg:grid lg:grid-cols-[minmax(0,1fr),250px] lg:gap-8">
-        <Article ref="article" />
-        <Aside :section="section" :activeSection="activeSection || ''" />
+        <ArticleEn v-if="currentLanguage === 'en'" ref="articleEn" />
+        <ArticleZh v-if="currentLanguage === 'zh'" ref="articleZh" />
+        <Aside
+          v-if="currentLanguage === 'en'"
+          :section="sectionEn"
+          :activeSection="articleEn?.activeSection || ''"
+        />
+        <Aside
+          v-if="currentLanguage === 'zh'"
+          :section="sectionZh"
+          :activeSection="articleZh?.activeSection || ''"
+        />
       </div>
     </div>
   </div>

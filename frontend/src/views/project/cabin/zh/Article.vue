@@ -1,19 +1,15 @@
 <script setup lang="ts">
-import { getSectionTitleAndSlug } from "@/utils/helper"
+import { getSectionTitleAndSlug, getSectionTitleAndSlugChinese } from "@/utils/helper"
 import { h2Style, h3Style, h4Style, paragraphStyle, unorderedListStyle } from "../../CommonStyle"
 import Section from "../../Section.vue"
 import { useActiveSection } from "@/hooks/useActiveSection"
+import { computed, ref, watch } from "vue"
 
 const { activeSection } = useActiveSection()
 
-const sectionTitle = [
-  "Short Explanation",
-  "Features",
-  "Tech Stack",
-  "What I Learned",
-  "Final Thoughts",
-]
-const section = getSectionTitleAndSlug(sectionTitle)
+const sectionTitle = ["简短说明", "功能特点", "技术栈", "我的收获", "最终思考"]
+
+const section = getSectionTitleAndSlugChinese(sectionTitle)
 
 defineExpose({ section, activeSection })
 </script>
@@ -26,13 +22,11 @@ defineExpose({ section, activeSection })
           {{ section[0].title }}
         </h2>
         <p :class="paragraphStyle">
-          CabinFy is a full-featured accommodation booking platform that connects travelers with
-          unique cabin rentals. It offers an intuitive experience for guests to discover and book
-          cabins, while providing owners with powerful management tools through a secure admin
-          dashboard. Though initially inspired by a React course, I completely rebuilt it with a
-          custom Node.js/Express backend, PostgreSQL database, and modernized UI using Tailwind
-          CSS—transforming it into a production-quality application with multilingual support and
-          responsive design.
+          CabinFy
+          是一个功能全面的住宿预订平台，连接旅行者与独特的木屋租赁。它为客人提供直观的体验，帮助他们发现和预订木屋，同时通过安全的管理员后台为房东提供强大的管理工具。尽管最初受到
+          React 课程的启发，我完全重构了它，使用自定义的 Node.js/Express 后端、PostgreSQL
+          数据库和使用 Tailwind CSS 现代化的
+          UI，将其转变为一款具有多语言支持和响应式设计的生产级应用。
         </p>
       </Section>
 

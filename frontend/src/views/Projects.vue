@@ -47,7 +47,7 @@ const { t } = useTranslation()
           image="https://images.theodorusclarence.com/upload/q_auto,f_auto,c_fill,ar_1:1,w_1440/theodorusclarence/projects/hexcape/hexcape-banner-square"
           repo="https://github.com/nicolasleigh/cabinfy"
           website="https://cabin.linze.pro"
-          link="/projects/cabinfy/en"
+          link="/projects/cabinfy"
           reverse
         >
           <Cabinfy />
@@ -58,7 +58,7 @@ const { t } = useTranslation()
           image="https://images.theodorusclarence.com/upload/q_auto,f_auto,c_fill,ar_1:1,w_1440/theodorusclarence/projects/notiolink/notiolink-banner-square.png"
           repo="https://github.com/nicolasleigh/moviefy"
           website="https://movie.linze.pro"
-          link="/projects/moviefy/en"
+          link="/projects/moviefy"
         >
           <Moviefy />
         </ProjectCard>
@@ -67,7 +67,7 @@ const { t } = useTranslation()
           :about="t('projects.musicfy_about')"
           image="https://images.theodorusclarence.com/upload/q_auto,f_auto,c_fill,ar_1:1,w_1440/theodorusclarence/projects/seasforus/seasforus-banner-square.png"
           repo="https://github.com/nicolasleigh/musicfy"
-          link="/projects/musicfy/en"
+          link="/projects/musicfy"
           reverse
         >
           <Musicfy />
@@ -78,7 +78,7 @@ const { t } = useTranslation()
           image="https://images.theodorusclarence.com/upload/q_auto,f_auto,c_fill,ar_1:1,w_1440/theodorusclarence/projects/notiolink/notiolink-banner-square.png"
           repo="https://github.com/nicolasleigh/petify"
           website="https://pet.linze.pro"
-          link="/projects/petify/en"
+          link="/projects/petify"
         >
           <Petify />
         </ProjectCard>
@@ -88,7 +88,7 @@ const { t } = useTranslation()
           image="https://images.theodorusclarence.com/upload/q_auto,f_auto,c_fill,ar_1:1,w_1440/theodorusclarence/projects/hexcape/hexcape-banner-square"
           repo="https://github.com/nicolasleigh/chatify"
           website="https://chat.linze.pro"
-          link="/projects/chatify/en"
+          link="/projects/chatify"
           reverse
         >
           <Chatify />
@@ -99,7 +99,7 @@ const { t } = useTranslation()
           image="https://images.theodorusclarence.com/upload/q_auto,f_auto,c_fill,ar_1:1,w_1440/theodorusclarence/projects/notiolink/notiolink-banner-square.png"
           repo="https://github.com/nicolasleigh/chatify"
           website="https://linze.pro"
-          link="/projects/blog/en"
+          link="/projects/blog"
         >
           <Current />
         </ProjectCard>
