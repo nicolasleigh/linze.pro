@@ -10,6 +10,7 @@ import {
   unorderedListStyle,
 } from "../../CommonStyle"
 import Section from "../../Section.vue"
+import { useActiveSection } from "@/hooks/useActiveSection"
 
 const sectionTitle = [
   "Project Overview",
@@ -24,10 +25,9 @@ const sectionTitle = [
   "Summary",
   "Live Demo & Source Code",
 ]
-
+const { activeSection } = useActiveSection()
 const section = getSectionTitleAndSlug(sectionTitle)
-
-defineExpose({ section })
+defineExpose({ section, activeSection })
 </script>
 
 <template>
@@ -194,7 +194,7 @@ defineExpose({ section })
         <h5 :class="h5Style">Solution:</h5>
         <ul :class="unorderedListStyle">
           <li>
-            Email Verification: Used Resend to automatically send account activation emails with
+            Email Verification: Used Nodemailer to automatically send account activation emails with
             verification tokens
           </li>
           <li>Access Control: Restricted review and rating features to only verified users</li>
