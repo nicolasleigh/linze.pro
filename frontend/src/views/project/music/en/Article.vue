@@ -2,6 +2,7 @@
 import { getSectionTitleAndSlug } from "@/utils/helper"
 import { h2Style, h3Style, paragraphStyle, unorderedListStyle } from "../../CommonStyle"
 import Section from "../../Section.vue"
+import { useActiveSection } from "@/hooks/useActiveSection"
 
 const sectionTitle = [
   "Project Overview",
@@ -12,9 +13,9 @@ const sectionTitle = [
   "Live Demo & Source Code",
 ]
 
+const { activeSection } = useActiveSection()
 const section = getSectionTitleAndSlug(sectionTitle)
-
-defineExpose({ section })
+defineExpose({ section, activeSection })
 </script>
 
 <template>
@@ -188,7 +189,7 @@ defineExpose({ section })
           </li>
           <li>
             Enhanced Recommendation Engine: Improve the existing recommendation system with more
-            advanced algorithms.
+            advanced algorithms(e.g., collaborative filtering or ML-based suggestions).
           </li>
           <li>
             User Notifications: Add push notifications for follows, playlist updates, or featured
