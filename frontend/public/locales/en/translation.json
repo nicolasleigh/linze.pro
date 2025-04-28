@@ -33,8 +33,8 @@
     "petify_about": "Full-stack e-commerce platform for browsing, purchasing pets, real-time chat, product management, and scalable, secure backend architecture.",
     "chatify_title": "Chatify",
     "chatify_about": "Real-time chat app with audio/video calls, rebuilt with Go and PostgreSQL for high performance and efficient, scalable backend architecture.",
-    "blog_title": "Blog",
-    "blog_about": ""
+    "blog_title": "Linze.pro",
+    "blog_about": "A blog app developed with Vue and Go, supporting both English and Chinese, designed to showcase my portfolio and share technical articles."
   },
   "footer": {
     "about": "Craft full-stack web apps with React, Vue, Next.js, Node.js, and Go.",

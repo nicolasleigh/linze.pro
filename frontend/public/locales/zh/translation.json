@@ -33,8 +33,8 @@
     "petify_about": "全栈电子商务平台，支持浏览和购买宠物、实时聊天、商品管理，以及可扩展且安全的后端架构。",
     "chatify_title": "Chatify – 聊天派",
     "chatify_about": "实时聊天应用，支持音视频通话，使用 Go 和 PostgreSQL 重构，实现高性能和高效可扩展的后端架构。",
-    "blog_title": "Blog",
-    "blog_about": ""
+    "blog_title": "Linze.pro – 博客派",
+    "blog_about": "一款使用 Vue 和 Go 开发的博客应用，支持英语和中文，用于展示我的作品集和分享技术文章。"
   },
   "footer": {
     "about": "使用 React、Vue、Next.js、Node.js 和 Go 构建全栈 web 应用程序。",
