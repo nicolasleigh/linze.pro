@@ -112,7 +112,7 @@ func (app *application) checkPostOwnership(requiredRole string, next http.Handle
 		post := getPostFromCtx(r)
 
 		// if it is the owner's post
-		if post.UserID == user.ID {
+		if post != nil && post.UserID == user.ID {
 			next.ServeHTTP(w, r)
 			return
 		}

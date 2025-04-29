@@ -37,7 +37,7 @@
     "blog_about": "一款使用 Vue 和 Go 开发的博客应用，支持英语和中文，用于展示我的作品集和分享技术文章。"
   },
   "footer": {
-    "about": "使用 React、Vue、Next.js、Node.js 和 Go 构建全栈 web 应用程序。",
+    "about": "使用 React、Vue、Next.js、Node.js 和 Go 构建全栈 web 应用。",
     "section_1": "站内导航",
     "section_2": "项目网站",
     "section_3": "项目仓库",

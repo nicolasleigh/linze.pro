@@ -1,17 +1,17 @@
 <script setup lang="ts">
-import { usePost } from "@/hooks/usePost"
-import type { Post } from "@/types/post"
 import { MdPreview } from "md-editor-v3"
 import "md-editor-v3/lib/preview.css"
+import { computed, ref } from "vue"
 
-defineProps({
+const props = defineProps({
   isLoading: Boolean,
-  post: Object as () => Post,
+  content: String,
 })
+const text = computed(() => props.content)
 </script>
 
 <template>
   <div v-if="isLoading">Loading...</div>
-  <div v-else-if="!post">No Content</div>
-  <MdPreview v-else id="preview-only" v-model="post.content" theme="dark" preview-theme="github" />
+  <div v-else-if="!content">No Content</div>
+  <MdPreview v-else id="preview-only" v-model="text" theme="dark" preview-theme="github" />
 </template>

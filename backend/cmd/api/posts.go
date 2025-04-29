@@ -16,19 +16,26 @@ type postKey string
 const postCtx postKey = "post"
 
 type CreatePostPayload struct {
-	Title   string   `json:"title" validate:"required,max=100"`
-	About   string   `json:"about" validate:"required,max=500"`
-	Content string   `json:"content" validate:"required,max=5000"`
-	Tags    []string `json:"tags" validate:"required"`
-	Photo   string   `json:"photo" validate:"required"`
+	Slug      string   `json:"slug" validate:"required,max=100"`
+	TitleEn   string   `json:"titleEn" validate:"required,max=100"`
+	AboutEn   string   `json:"aboutEn" validate:"required,max=500"`
+	ContentEn string   `json:"contentEn" validate:"required,max=5000"`
+	TitleZh   string   `json:"titleZh" validate:"required,max=100"`
+	AboutZh   string   `json:"aboutZh" validate:"required,max=500"`
+	ContentZh string   `json:"contentZh" validate:"required,max=5000"`
+	Tags      []string `json:"tags" validate:"required"`
+	Photo     string   `json:"photo" validate:"required"`
 }
 
 type UpdatePostPayload struct {
-	Title   string   `json:"title" validate:"omitempty,max=100"`
-	About   string   `json:"about" validate:"omitempty,max=500"`
-	Content string   `json:"content" validate:"omitempty,max=5000"`
-	Tags    []string `json:"tags" validate:"omitempty"`
-	Photo   string   `json:"photo" validate:"omitempty"`
+	TitleEn   string   `json:"titleEn" validate:"omitempty,max=100"`
+	AboutEn   string   `json:"aboutEn" validate:"omitempty,max=500"`
+	ContentEn string   `json:"contentEn" validate:"omitempty,max=5000"`
+	TitleZh   string   `json:"titleZh" validate:"omitempty,max=100"`
+	AboutZh   string   `json:"aboutZh" validate:"omitempty,max=500"`
+	ContentZh string   `json:"contentZh" validate:"omitempty,max=5000"`
+	Tags      []string `json:"tags" validate:"omitempty"`
+	Photo     string   `json:"photo" validate:"omitempty"`
 }
 
 func (app *application) createPostHandler(w http.ResponseWriter, r *http.Request) {
@@ -37,9 +44,13 @@ func (app *application) createPostHandler(w http.ResponseWriter, r *http.Request
 	json.Unmarshal([]byte(r.FormValue("tags")), &tags)
 	imageUrl := getImageUrlFromContext(r)
 	user := getUserFromContext(r)
-	payload.Title = r.FormValue("title")
-	payload.About = r.FormValue("about")
-	payload.Content = r.FormValue("content")
+	payload.Slug = r.FormValue("slug")
+	payload.TitleEn = r.FormValue("titleEn")
+	payload.AboutEn = r.FormValue("aboutEn")
+	payload.ContentEn = r.FormValue("contentEn")
+	payload.TitleZh = r.FormValue("titleZh")
+	payload.AboutZh = r.FormValue("aboutZh")
+	payload.ContentZh = r.FormValue("contentZh")
 	payload.Tags = tags
 	payload.Photo = imageUrl
 
@@ -61,12 +72,16 @@ func (app *application) createPostHandler(w http.ResponseWriter, r *http.Request
 	}
 
 	post := &store.Post{
-		Title:   payload.Title,
-		About:   payload.About,
-		Content: payload.Content,
-		Tags:    payload.Tags,
-		Photo:   payload.Photo,
-		UserID:  user.ID,
+		Slug:      payload.Slug,
+		TitleEn:   payload.TitleEn,
+		AboutEn:   payload.AboutEn,
+		ContentEn: payload.ContentEn,
+		TitleZh:   payload.TitleZh,
+		AboutZh:   payload.AboutZh,
+		ContentZh: payload.ContentZh,
+		Tags:      payload.Tags,
+		Photo:     payload.Photo,
+		UserID:    user.ID,
 	}
 
 	ctx := r.Context()
@@ -100,6 +115,28 @@ func (app *application) getPostHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	post.Comments = comments
+
+	if err := app.jsonResponse(w, http.StatusOK, post); err != nil {
+		app.internalServerError(w, r, err)
+		return
+	}
+}
+
+func (app *application) getPostForUpdate(w http.ResponseWriter, r *http.Request) {
+
+	slug := chi.URLParam(r, "slug")
+
+	ctx := r.Context()
+	post, err := app.store.Posts.GetAllLang(ctx, slug)
+	if err != nil {
+		switch {
+		case errors.Is(err, store.ErrNotFound):
+			app.notFoundError(w, r, err)
+		default:
+			app.internalServerError(w, r, err)
+		}
+		return
+	}
 
 	if err := app.jsonResponse(w, http.StatusOK, post); err != nil {
 		app.internalServerError(w, r, err)
@@ -182,14 +219,14 @@ func (app *application) getPostByTag(w http.ResponseWriter, r *http.Request) {
 }
 
 func (app *application) deletePostHandler(w http.ResponseWriter, r *http.Request) {
-	idParam := chi.URLParam(r, "postID")
-	id, err := strconv.ParseInt(idParam, 10, 64)
-	if err != nil {
-		app.internalServerError(w, r, err)
-		return
-	}
+	slug := chi.URLParam(r, "slug")
+	// id, err := strconv.ParseInt(idParam, 10, 64)
+	// if err != nil {
+	// 	app.internalServerError(w, r, err)
+	// 	return
+	// }
 	ctx := r.Context()
-	if err := app.store.Posts.Delete(ctx, id); err != nil {
+	if err := app.store.Posts.Delete(ctx, slug); err != nil {
 		switch {
 		case errors.Is(err, store.ErrNotFound):
 			app.notFoundError(w, r, err)
@@ -202,7 +239,20 @@ func (app *application) deletePostHandler(w http.ResponseWriter, r *http.Request
 }
 
 func (app *application) updatePostHandler(w http.ResponseWriter, r *http.Request) {
-	post := getPostFromCtx(r)
+	// post := getPostFromCtx(r)
+	slug := chi.URLParam(r, "slug")
+
+	ctx := r.Context()
+	post, err := app.store.Posts.GetAllLang(ctx, slug)
+	if err != nil {
+		switch {
+		case errors.Is(err, store.ErrNotFound):
+			app.notFoundError(w, r, err)
+		default:
+			app.internalServerError(w, r, err)
+		}
+		return
+	}
 
 	var payload UpdatePostPayload
 	if err := readJSON(w, r, &payload); err != nil {
@@ -215,20 +265,26 @@ func (app *application) updatePostHandler(w http.ResponseWriter, r *http.Request
 		return
 	}
 
-	if payload.Title != "" {
-		post.Title = payload.Title
+	if payload.TitleEn != "" {
+		post.TitleEn = payload.TitleEn
 	}
-
-	if payload.About != "" {
-		post.About = payload.About
+	if payload.TitleZh != "" {
+		post.TitleZh = payload.TitleZh
 	}
-
+	if payload.AboutEn != "" {
+		post.AboutEn = payload.AboutEn
+	}
+	if payload.AboutZh != "" {
+		post.AboutZh = payload.AboutZh
+	}
+	if payload.ContentEn != "" {
+		post.ContentEn = payload.ContentEn
+	}
+	if payload.ContentZh != "" {
+		post.ContentZh = payload.ContentZh
+	}
 	if len(payload.Tags) != 0 {
 		post.Tags = payload.Tags
-	}
-
-	if payload.Content != "" {
-		post.Content = payload.Content
 	}
 
 	if err := app.store.Posts.Update(r.Context(), post); err != nil {
@@ -248,15 +304,11 @@ func (app *application) updatePostHandler(w http.ResponseWriter, r *http.Request
 
 func (app *application) postContextMiddleware(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		idParam := chi.URLParam(r, "postID")
-		// fmt.Print(idParam)
-		id, err := strconv.ParseInt(idParam, 10, 64)
-		if err != nil {
-			app.internalServerError(w, r, err)
-			return
-		}
+		slug := chi.URLParam(r, "slug")
+		lang := r.URL.Query().Get("lang")
+
 		ctx := r.Context()
-		post, err := app.store.Posts.GetByID(ctx, id)
+		post, err := app.store.Posts.GetBySlug(ctx, slug, lang)
 		if err != nil {
 			switch {
 			case errors.Is(err, store.ErrNotFound):
@@ -272,8 +324,11 @@ func (app *application) postContextMiddleware(next http.Handler) http.Handler {
 }
 
 func getPostFromCtx(r *http.Request) *store.Post {
-	post := r.Context().Value(postCtx).(*store.Post)
-	return post
+	post, ok := r.Context().Value(postCtx).(*store.Post)
+	if ok {
+		return post
+	}
+	return nil
 }
 
 func getImageUrlFromContext(r *http.Request) string {

@@ -39,3 +39,13 @@ export const getSectionTitleAndSlugChinese = (sectionTitle: string[]) => {
   const section = sectionTitle.map((e) => ({ title: e, slug: e }))
   return section
 }
+
+export const generatePostSlug = (title: string) => {
+  return title
+    .toLowerCase() // lowercase the title
+    .trim() // remove leading/trailing whitespace
+    .replace(/[^a-z0-9\s-]/g, "") // remove special characters
+    .replace(/\s+/g, "-") // replace spaces with hyphens
+    .replace(/-+/g, "-") // collapse multiple hyphens
+    .replace(/^-+|-+$/g, "") // trim leading/trailing hyphens
+}

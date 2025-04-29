@@ -1,8 +1,12 @@
 export type Post = {
   id: number
-  content: string
-  title: string
-  about: string
+  slug: string
+  contentEn: string
+  contentZh: string
+  titleEn: string
+  titleZh: string
+  aboutEn: string
+  aboutZh: string
   photo: string
   tags: string[]
   created_at: string
@@ -14,29 +18,33 @@ export type Post = {
 }
 
 export type PostCardProps = {
-  id: number
+  slug: string
   title: string
   about: string
   photo: string
   tags: string[]
   createdAt: string
-  updatedAt: string
-  username: string
-  userEmail: string
 }
 
 export type CreatePost = {
-  title: string
-  content: string
+  slug: string
+  titleEn: string
+  titleZh: string
+  contentEn: string
+  contentZh: string
+  aboutEn: string
+  aboutZh: string
   tags: string[]
   photo: File
-  about: string
 }
 
 export type UpdatePost = {
-  title: string
-  content: string
+  titleEn: string
+  titleZh: string
+  contentEn: string
+  contentZh: string
+  aboutEn: string
+  aboutZh: string
   tags: string[]
   photo?: File
-  about: string
 }

@@ -56,14 +56,14 @@ const router = createRouter({
           component: Posts,
         },
         {
-          path: ":postId",
+          path: ":slug",
           name: "post",
           component: Post,
         },
       ],
     },
     {
-      path: "/edit-post/:postId",
+      path: "/edit-post/:slug",
       name: "edit-post",
       component: EditPost,
     },

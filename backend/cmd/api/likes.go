@@ -3,20 +3,15 @@ package main
 import (
 	"errors"
 	"net/http"
-	"strconv"
 
 	"github.com/go-chi/chi/v5"
 	"github.com/nicolasleigh/social/internal/store"
 )
 
 func (app *application) updatePostLike(w http.ResponseWriter, r *http.Request) {
-	postID, err := strconv.ParseInt(chi.URLParam(r, "postID"), 10, 64)
-	if err != nil || postID < 1 {
-		app.badRequestError(w, r, err)
-		return
-	}
+	slug := chi.URLParam(r, "slug")
 
-	likeNum, err := app.store.PostLikes.UpdateLike(r.Context(), postID)
+	likeNum, err := app.store.PostLikes.UpdateLike(r.Context(), slug)
 	if err != nil {
 		switch {
 		case errors.Is(err, store.ErrNotFound):
@@ -33,13 +28,9 @@ func (app *application) updatePostLike(w http.ResponseWriter, r *http.Request) {
 }
 
 func (app *application) getPostLike(w http.ResponseWriter, r *http.Request) {
-	postID, err := strconv.ParseInt(chi.URLParam(r, "postID"), 10, 64)
-	if err != nil || postID < 1 {
-		app.badRequestError(w, r, err)
-		return
-	}
+	slug := chi.URLParam(r, "slug")
 
-	likeNum, err := app.store.PostLikes.GetLike(r.Context(), postID)
+	likeNum, err := app.store.PostLikes.GetLike(r.Context(), slug)
 	if err != nil {
 		switch {
 		case errors.Is(err, store.ErrNotFound):
@@ -56,12 +47,9 @@ func (app *application) getPostLike(w http.ResponseWriter, r *http.Request) {
 }
 
 func (app *application) updatePostView(w http.ResponseWriter, r *http.Request) {
-	postID, err := strconv.ParseInt(chi.URLParam(r, "postID"), 10, 64)
-	if err != nil || postID < 1 {
-		app.badRequestError(w, r, err)
-		return
-	}
-	viewNum, err := app.store.PostLikes.UpdateView(r.Context(), postID)
+	slug := chi.URLParam(r, "slug")
+
+	viewNum, err := app.store.PostLikes.UpdateView(r.Context(), slug)
 	if err != nil {
 		switch {
 		case errors.Is(err, store.ErrNotFound):

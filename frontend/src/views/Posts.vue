@@ -13,11 +13,21 @@ const tag = ref(route.query.tag)
 const page = Number(route.query.page) || 1
 const { posts: allPosts, error, isLoading } = usePosts(page)
 const { posts: postsByTag, refetch } = usePostsByTag(page, tag)
-const { t } = useTranslation()
+const { t, i18next } = useTranslation()
 
 const resultPost = computed(() => {
   return tag.value && postsByTag.value?.length ? postsByTag.value : allPosts.value
 })
+
+const currentLanguage = ref<string | null>(null)
+
+watch(
+  () => i18next.language,
+  (newLang) => {
+    currentLanguage.value = newLang
+  },
+  { immediate: true },
+)
 
 watch(
   () => route.query.tag,
@@ -40,7 +50,6 @@ watch(
           <Book class="text-accent" :size="20" :stroke-width="1" />
         </div>
         <h1 class="mt-4 text-6xl">
-          <Trans> </Trans>
           <span class="text-neutral-300 font-semibold mr-3"> {{ t("posts.full_stack") }} </span>
           <span
             class="font-semibold transition-colors bg-gradient-to-br from-accent/30 via-accent/90 to-accent/30 bg-clip-text text-transparent"
@@ -70,16 +79,22 @@ watch(
               class="w-full rounded-md @container/blog-card transition duration-100 group"
             >
               <PostCard
-                :id="item.id"
-                :title="item.title"
-                :about="item.about"
+                v-if="currentLanguage === 'zh'"
+                :slug="item.slug"
+                :title="item.titleZh"
+                :about="item.aboutZh"
                 :photo="item.photo"
                 :tags="item.tags"
-                :content="item.content"
                 :createdAt="item.created_at"
-                :updatedAt="item.updated_at"
-                :username="item.user.username"
-                :userEmail="item.user.email"
+              />
+              <PostCard
+                v-else
+                :slug="item.slug"
+                :title="item.titleEn"
+                :about="item.aboutEn"
+                :photo="item.photo"
+                :tags="item.tags"
+                :createdAt="item.created_at"
               />
               <hr class="border-dashed border-neutral-900 mt-8 group-last-of-type:hidden" />
             </li>

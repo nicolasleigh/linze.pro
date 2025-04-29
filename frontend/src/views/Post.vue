@@ -7,21 +7,33 @@ import { dateFormat } from "@/utils/helper"
 import { BookOpen, Calendar, CalendarDays, ChevronRight, Eye, Heart } from "lucide-vue-next"
 import { computed, ref, watch } from "vue"
 import { useRoute } from "vue-router"
+import { useTranslation } from "i18next-vue"
 
 const route = useRoute()
 const { post, isLoading } = usePost()
 const { viewNum } = usePostView()
 const { likeNum, updatePostLike } = usePostLike()
 const { likeNum: initialLike } = useGetPostLike()
-const isLiked = ref(localStorage.getItem(`like-post-${route.params.postId}`) === "true" || false)
+const { t, i18next } = useTranslation()
+const isLiked = ref(localStorage.getItem(`like-post-${route.params.slug}`) === "true" || false)
+
+const currentLanguage = ref<string | null>(null)
+
+watch(
+  () => i18next.language,
+  (newLang) => {
+    currentLanguage.value = newLang
+  },
+  { immediate: true },
+)
 
 const handleLike = () => {
-  const likeState = localStorage.getItem(`like-post-${route.params.postId}`)
+  const likeState = localStorage.getItem(`like-post-${route.params.slug}`)
   if (likeState === "true") {
     isLiked.value = true
     return
   }
-  localStorage.setItem(`like-post-${route.params.postId}`, "true")
+  localStorage.setItem(`like-post-${route.params.slug}`, "true")
   isLiked.value = true
   updatePostLike()
 }
@@ -49,12 +61,22 @@ const handleLike = () => {
           <PostTag v-for="(item, index) in post?.tags" :key="index">{{ item }}</PostTag>
         </div>
         <h1
+          v-if="currentLanguage === 'en'"
           class="txt-primary mt-6 leading-tight text-neutral-100 text-5xl font-semibold selection:bg-accent-dark"
         >
-          {{ post?.title }}
+          {{ post?.titleEn }}
         </h1>
-        <p class="mt-1 text-neutral-400 selection:bg-accent-dark">
-          {{ post?.about }}
+        <h1
+          v-if="currentLanguage === 'zh'"
+          class="txt-primary mt-6 leading-tight text-neutral-100 text-5xl font-semibold selection:bg-accent-dark"
+        >
+          {{ post?.titleZh }}
+        </h1>
+        <p v-if="currentLanguage === 'en'" class="mt-1 text-neutral-400 selection:bg-accent-dark">
+          {{ post?.aboutEn }}
+        </p>
+        <p v-if="currentLanguage === 'zh'" class="mt-1 text-neutral-400 selection:bg-accent-dark">
+          {{ post?.aboutZh }}
         </p>
         <div class="mt-12 flex gap-3 items-center">
           <div class="size-10 rounded-full overflow-hidden">
@@ -98,7 +120,16 @@ const handleLike = () => {
         </div>
       </div>
       <section>
-        <MdPreview :post="post" :isLoading="isLoading" />
+        <MdPreview
+          v-if="currentLanguage === 'en'"
+          :content="post?.contentEn"
+          :isLoading="isLoading"
+        />
+        <MdPreview
+          v-if="currentLanguage === 'zh'"
+          :content="post?.contentZh"
+          :isLoading="isLoading"
+        />
       </section>
       <div class="flex gap-10">
         <button

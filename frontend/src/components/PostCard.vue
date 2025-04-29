@@ -15,7 +15,7 @@ const router = useRouter()
 
 <template>
   <RouterLink
-    :to="'/posts/' + props.id"
+    :to="'/posts/' + slug"
     class="w-full rounded-md transition duration-300 group cursor-pointer"
   >
     <div class="flex flex-col md:flex-row-reverse md:items-center gap-4 py-3 md:gap-6">

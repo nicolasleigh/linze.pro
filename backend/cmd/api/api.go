@@ -130,8 +130,8 @@ func (app *application) mount() http.Handler {
 			r.Route("/posts", func(r chi.Router) {
 				r.Use(app.UploadImageMiddleware)
 				r.Use(app.AuthTokenMiddleware)
-				r.Post("/", app.createPostHandler)
-				r.Post("/image", app.uploadImage)
+				r.Post("/", app.checkPostOwnership("admin", app.createPostHandler))
+				r.Post("/image", app.checkPostOwnership("admin", app.uploadImage))
 			})
 			// r.Use(app.UploadImageMiddleware)
 			// r.Use(app.AuthTokenMiddleware)
@@ -145,13 +145,17 @@ func (app *application) mount() http.Handler {
 		})
 		r.Group(func(r chi.Router) {
 			r.Use(app.postContextMiddleware)
-			r.Get("/post/{postID}", app.getPostHandler)
+			r.Get("/post/{slug}", app.getPostHandler)
 		})
 		r.Group(func(r chi.Router) {
 			r.Use(app.AuthTokenMiddleware)
-			r.Use(app.postContextMiddleware)
-			r.Patch("/post/{postID}", app.checkPostOwnership("moderator", app.updatePostHandler))
-			r.Delete("/post/{postID}", app.checkPostOwnership("admin", app.deletePostHandler))
+			r.Get("/post-all/{slug}", app.checkPostOwnership("admin", app.getPostForUpdate))
+		})
+		r.Group(func(r chi.Router) {
+			r.Use(app.AuthTokenMiddleware)
+			// r.Use(app.postContextMiddleware)
+			r.Patch("/post/{slug}", app.checkPostOwnership("admin", app.updatePostHandler))
+			// r.Delete("/post/{slug}", app.checkPostOwnership("admin", app.deletePostHandler))
 		})
 		r.Group(func(r chi.Router) {
 			r.Put("/users/activate/{token}", app.activateUserHandler)
@@ -161,16 +165,16 @@ func (app *application) mount() http.Handler {
 			r.Get("/users/{userID}", app.getUserHandler)
 			r.Put("/users/{userID}/follow", app.followUserHandler)
 			r.Put("/users/{userID}/unfollow", app.unfollowUserHandler)
-			r.Get("/users/feed", app.getUserFeedHandler)
+			// r.Get("/users/feed", app.getUserFeedHandler)
 		})
 		r.Group(func(r chi.Router) {
 			r.Post("/auth/user", app.registerUserHandler)
 			r.Post("/auth/token", app.createTokenHandler)
 		})
 		r.Group(func(r chi.Router) {
-			r.Post("/like/post/{postID}", app.updatePostLike)
-			r.Get("/like/post/{postID}", app.getPostLike)
-			r.Get("/view/post/{postID}", app.updatePostView)
+			r.Post("/like/post/{slug}", app.updatePostLike)
+			r.Get("/like/post/{slug}", app.getPostLike)
+			r.Get("/view/post/{slug}", app.updatePostView)
 			r.Post("/like/project/{slug}", app.updateProjectLike)
 			r.Get("/like/project/{slug}", app.getProjectLike)
 			r.Get("/view/project/{slug}", app.updateProjectView)

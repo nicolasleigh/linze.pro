@@ -3,9 +3,24 @@ import { client } from "./client"
 import type { CreatePost, Post, UpdatePost } from "@/types/post"
 import { toast } from "vue-sonner"
 
-export const getPostByIdApi = async (id: string): Promise<Post> => {
+export const getPostBySlugAndLangApi = async ({
+  slug,
+  lang,
+}: {
+  slug: string
+  lang: string
+}): Promise<Post> => {
+  const { data } = await client.get(`/post/${slug}`, {
+    params: {
+      lang: lang,
+    },
+  })
+  return data.data
+}
+
+export const getPostForAllLanguage = async (slug: string): Promise<Post> => {
   const token = localStorage.getItem("jwt-token")
-  const { data } = await client.get(`/post/${id}`, {
+  const { data } = await client.get(`/post-all/${slug}`, {
     headers: {
       Authorization: `Bearer ${token}`,
     },
@@ -26,10 +41,14 @@ export const getPostsApi = async (options: GetPostsOptions): Promise<Post[]> => 
 export const createPostApi = async (post: CreatePost) => {
   const token = localStorage.getItem("jwt-token")
   const form = new FormData()
+  form.append("slug", post.slug)
   form.append("image", post.photo)
-  form.append("title", post.title)
-  form.append("about", post.about)
-  form.append("content", post.content)
+  form.append("titleEn", post.titleEn)
+  form.append("titleZh", post.titleZh)
+  form.append("aboutEn", post.aboutEn)
+  form.append("aboutZh", post.aboutZh)
+  form.append("contentEn", post.contentEn)
+  form.append("contentZh", post.contentZh)
   form.append("tags", JSON.stringify(post.tags))
   const promise = client.post(`/posts`, form, {
     headers: {
@@ -43,16 +62,19 @@ export const createPostApi = async (post: CreatePost) => {
   })
 }
 
-export const updatePostApi = async ({ id, post }: { id: string; post: UpdatePost }) => {
+export const updatePostApi = async ({ slug, post }: { slug: string; post: UpdatePost }) => {
   const token = localStorage.getItem("jwt-token")
   const promise = client.patch(
-    `/post/${id}`,
+    `/post/${slug}`,
     {
-      title: post.title,
-      about: post.about,
+      titleEn: post.titleEn,
+      titleZh: post.titleZh,
+      aboutEn: post.aboutEn,
+      aboutZh: post.aboutZh,
       // tags: JSON.stringify(post.tags),
       tags: post.tags,
-      content: post.content,
+      contentEn: post.contentEn,
+      contentZh: post.contentZh,
     },
     {
       headers: {

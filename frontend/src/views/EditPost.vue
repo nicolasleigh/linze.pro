@@ -11,22 +11,29 @@ import { FilePenLine, NotebookPen } from "lucide-vue-next"
 import { usePost } from "@/hooks/usePost"
 import { useUpdatePost } from "@/hooks/useUpdatePost"
 import { useRoute } from "vue-router"
+import { usePostForEdit } from "@/hooks/usePostForUpdate"
 
-const { post, isLoading } = usePost()
+const { post, isLoading } = usePostForEdit()
 const route = useRoute()
 
-const title = ref(post.value?.title || "")
-const about = ref(post.value?.about || "")
-const content = ref(post.value?.content || "")
+const titleEn = ref(post.value?.titleEn || "")
+const titleZh = ref(post.value?.titleZh || "")
+const aboutEn = ref(post.value?.aboutEn || "")
+const aboutZh = ref(post.value?.aboutZh || "")
+const contentEn = ref(post.value?.contentEn || "")
+const contentZh = ref(post.value?.contentZh || "")
 const tags = ref<string[]>(post.value?.tags || [])
 const photo = ref<File>()
 
 watch(
   () => post.value,
   (newVal) => {
-    title.value = newVal?.title || ""
-    about.value = newVal?.about || ""
-    content.value = newVal?.content || ""
+    titleEn.value = newVal?.titleEn || ""
+    titleZh.value = newVal?.titleZh || ""
+    aboutEn.value = newVal?.aboutEn || ""
+    aboutZh.value = newVal?.aboutZh || ""
+    contentEn.value = newVal?.contentEn || ""
+    contentZh.value = newVal?.contentZh || ""
     tags.value = newVal?.tags || []
   },
 )
@@ -45,36 +52,53 @@ const handleCoverPhoto = (e: Event) => {
   }
 }
 
-const handleEditorUpdate = (value: string) => {
-  content.value = value
-  // console.log(content.value)
+const handleEnglishContentUpdate = (value: string) => {
+  contentEn.value = value
+}
+
+const handleChineseContentUpdate = (value: string) => {
+  contentZh.value = value
 }
 
 const handleSubmit = () => {
-  if (!title.value.trim()) {
-    return toast.error("Please enter title")
+  if (!titleEn.value.trim()) {
+    return toast.error("Please enter English title")
   }
-  if (!about.value.trim()) {
-    return toast.error("Please enter about")
+  if (!titleZh.value.trim()) {
+    return toast.error("Please enter Chinese title")
+  }
+  if (!aboutEn.value.trim()) {
+    return toast.error("Please enter English about")
+  }
+  if (!aboutZh.value.trim()) {
+    return toast.error("Please enter Chinese about")
+  }
+  if (!contentEn.value.trim()) {
+    return toast.error("Please enter English content")
+  }
+  if (!contentZh.value.trim()) {
+    return toast.error("Please enter Chinese content")
   }
   if (tags.value.length === 0) {
     return toast.error("Please enter tags")
   }
-  if (!content.value.trim()) {
-    return toast.error("Please enter content")
-  }
+  // console.log(contentEn.value)
   updatePost({
-    id: route.params.postId as string,
+    slug: route.params.slug as string,
     post: {
-      title: title.value,
-      content: content.value,
+      titleEn: titleEn.value,
+      titleZh: titleZh.value,
+      aboutEn: aboutEn.value,
+      aboutZh: aboutZh.value,
+      contentEn: contentEn.value,
+      contentZh: contentZh.value,
       tags: tags.value,
-      about: about.value,
     },
   })
 }
 
 const wrapperStyle = "flex flex-col gap-2"
+const gridWrapperStyle = "grid gap-2 grid-cols-1 sm:grid-cols-2"
 const inputStyle =
   "border border-neutral-800 rounded-md p-2 focus:outline-none focus:border-neutral-600 bg-neutral-950"
 </script>
@@ -109,39 +133,57 @@ const inputStyle =
 
     <div class="border-t border-neutral-900 bg-black pt-20">
       <div class="layout">
-        <div class="flex flex-col gap-5 text-neutral-100">
-          <div :class="wrapperStyle">
-            <Label for="title">Title</Label>
-            <input id="title" :class="inputStyle" v-model="title" />
+        <div class="flex flex-col gap-6 text-neutral-100">
+          <div :class="gridWrapperStyle">
+            <div :class="wrapperStyle">
+              <Label for="titleEn">Title – English</Label>
+              <input id="titleEn" :class="inputStyle" v-model="titleEn" />
+            </div>
+            <div :class="wrapperStyle">
+              <Label for="titleZh">Title – 中文</Label>
+              <input id="titleZh" :class="inputStyle" v-model="titleZh" />
+            </div>
+          </div>
+
+          <div :class="gridWrapperStyle">
+            <div :class="wrapperStyle">
+              <Label for="aboutEn">About – English</Label>
+              <textarea id="aboutEn" :class="inputStyle" v-model="aboutEn" />
+            </div>
+            <div :class="wrapperStyle">
+              <Label for="aboutZh">About – 中文</Label>
+              <textarea id="aboutZh" :class="inputStyle" v-model="aboutZh" />
+            </div>
+          </div>
+
+          <div :class="gridWrapperStyle">
+            <div :class="wrapperStyle">
+              <Label for="tags">Tags</Label>
+              <InputTags :tags="tags" @update="handleUpdateTags" :style="inputStyle" />
+            </div>
+            <div :class="wrapperStyle">
+              <Label for="photo">Cover Photo</Label>
+              <Input
+                id="photo"
+                class="shadow-none pl-1 h-11 text-base text-muted-foreground file:hidden"
+                :class="inputStyle"
+                accept="image/*"
+                placeholder="Click"
+                type="file"
+                ref="photo"
+                @input="handleCoverPhoto"
+              />
+            </div>
           </div>
 
           <div :class="wrapperStyle">
-            <Label for="about">About</Label>
-            <textarea id="about" :class="inputStyle" v-model="about" />
+            <Label>Content – English</Label>
+            <Editor @update:model-value="handleEnglishContentUpdate" :initialContent="contentEn" />
           </div>
 
           <div :class="wrapperStyle">
-            <Label for="tags">Tags</Label>
-            <InputTags :tags="tags" @update="handleUpdateTags" :style="inputStyle" />
-          </div>
-
-          <div :class="wrapperStyle">
-            <Label for="photo">Cover Photo</Label>
-            <Input
-              id="photo"
-              class="shadow-none pl-1 h-11 text-base text-muted-foreground file:hidden"
-              :class="inputStyle"
-              accept="image/*"
-              placeholder="Click"
-              type="file"
-              ref="photo"
-              @input="handleCoverPhoto"
-            />
-          </div>
-
-          <div :class="wrapperStyle">
-            <Label>Content</Label>
-            <Editor @update:model-value="handleEditorUpdate" :initialContent="content" />
+            <Label>Content – 中文</Label>
+            <Editor @update:model-value="handleChineseContentUpdate" :initialContent="contentZh" />
           </div>
 
           <div class="mt-2">

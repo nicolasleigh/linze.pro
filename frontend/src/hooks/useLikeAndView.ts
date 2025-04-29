@@ -11,10 +11,10 @@ import { useRoute } from "vue-router"
 
 export function usePostLike() {
   const route = useRoute()
-  const id = route.params.postId as string
+  const slug = route.params.slug as string
 
   const { mutate: updatePostLike, data: likeNum } = useMutation({
-    mutationFn: () => updatePostLikeApi(id),
+    mutationFn: () => updatePostLikeApi(slug),
   })
 
   return { likeNum, updatePostLike }
@@ -22,11 +22,11 @@ export function usePostLike() {
 
 export function useGetPostLike() {
   const route = useRoute()
-  const id = route.params.postId as string
+  const slug = route.params.slug as string
 
   const { data: likeNum } = useQuery({
-    queryKey: ["post-like-num", id],
-    queryFn: () => getPostLikeApi(id),
+    queryKey: ["post-like-num", slug],
+    queryFn: () => getPostLikeApi(slug),
   })
 
   return { likeNum }
@@ -34,11 +34,11 @@ export function useGetPostLike() {
 
 export function usePostView() {
   const route = useRoute()
-  const id = route.params.postId as string
+  const slug = route.params.slug as string
 
   const { data: viewNum } = useQuery({
-    queryKey: ["post-view-num", id],
-    queryFn: () => updatePostViewApi(id),
+    queryKey: ["post-view-num", slug],
+    queryFn: () => updatePostViewApi(slug),
   })
 
   return { viewNum }

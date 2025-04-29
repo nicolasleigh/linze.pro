@@ -17,11 +17,13 @@ var (
 type Storage struct {
 	Posts interface {
 		Create(context.Context, *Post) error
-		GetByID(context.Context, int64) (*Post, error)
-		Delete(context.Context, int64) error
+		// GetByID(context.Context, int64) (*Post, error)
+		GetBySlug(ctx context.Context, slug, lang string) (*Post, error)
+		Delete(context.Context, string) error
 		Update(context.Context, *Post) error
-		GetUserFeed(context.Context, int64, PaginatedFeedQuery) ([]PostWithMetadata, error)
+		// GetUserFeed(context.Context, int64, PaginatedFeedQuery) ([]PostWithMetadata, error)
 		GetAll(context.Context, int, int) (*[]Post, error)
+		GetAllLang(context.Context, string) (*Post, error)
 		GetTags(context.Context) (string, error)
 		GetByTag(context.Context, int, int, string) (*[]Post, error)
 	}
@@ -45,9 +47,9 @@ type Storage struct {
 		GetByName(context.Context, string) (*Role, error)
 	}
 	PostLikes interface {
-		UpdateLike(context.Context, int64) (int, error)
-		GetLike(context.Context, int64) (int, error)
-		UpdateView(context.Context, int64) (int, error)
+		UpdateLike(context.Context, string) (int, error)
+		GetLike(context.Context, string) (int, error)
+		UpdateView(context.Context, string) (int, error)
 	}
 	ProjectLikes interface {
 		UpdateLike(context.Context, string) (int, error)

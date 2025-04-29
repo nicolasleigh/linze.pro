@@ -1,4 +1,4 @@
-import { getAllTagsApi, getPostByIdApi, getPostsApi } from "@/api/post"
+import { getAllTagsApi } from "@/api/post"
 import { useQuery } from "@tanstack/vue-query"
 
 export function useTags() {
