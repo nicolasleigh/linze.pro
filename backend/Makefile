@@ -1,7 +1,7 @@
 include .envrc
 MIGRATIONS_PATH = ./cmd/migrate/migrations
 
-.PHONY: migration migrate/up migrate/down get-health fmt run air seed gen-docs test
+.PHONY: migration migrate/up migrate/down migrate/force get-health fmt run air seed gen-docs test
 
 migration:
 	@migrate create -seq -ext sql -dir ${MIGRATIONS_PATH} ${name}
@@ -11,6 +11,9 @@ migrate/up:
 
 migrate/down:
 	@migrate -path ${MIGRATIONS_PATH} -database ${DB_ADDR} down ${num}
+
+migrate/force:
+	@migrate -path ${MIGRATIONS_PATH} -database ${DB_ADDR} force ${version}
 
 get-health:
 	@curl http://localhost:4000/v1/health
