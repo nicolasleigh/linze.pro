@@ -1,0 +1,4 @@
+DROP TABLE IF EXISTS posts;
+
+ALTER TABLE IF EXISTS posts_test
+RENAME TO posts;
