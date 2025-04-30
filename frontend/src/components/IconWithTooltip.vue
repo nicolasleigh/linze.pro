@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
 
-const props = defineProps({
+defineProps({
   tooltip: String,
 })
 </script>
@@ -12,8 +12,8 @@ const props = defineProps({
       <TooltipTrigger class="cursor-default">
         <slot></slot>
       </TooltipTrigger>
-      <TooltipContent class="bg-neutral-700 py-1 px-2">
-        <p class="text-xs font-semibold">{{ props.tooltip }}</p>
+      <TooltipContent class="bg-neutral-900 py-1 px-2 border">
+        <p class="text-xs font-semibold">{{ tooltip }}</p>
       </TooltipContent>
     </Tooltip>
   </TooltipProvider>

@@ -46,6 +46,7 @@ watch(imageUrl, (value) => {
       class="rounded-lg"
       v-model="content"
       @input="emit('update:modelValue', content)"
+      @paste="emit('update:modelValue', content)"
       :toolbars="toolbars"
       @save="onSave"
       @upload-img="uploadImg"

@@ -1,7 +1,7 @@
 export const h2Style =
-  "text-2xl text-neutral-100 font-semibold mb-6 before:border-accent before:mr-4 before:border-2 pointer-events-none"
+  "text-2xl text-neutral-100 font-semibold mt-6 mb-5 before:border-accent before:mr-4 before:border-2 pointer-events-none"
 export const h3Style =
-  "text-lg text-neutral-100 font-semibold mt-6 mb-5 before:border-accent before:mr-4 before:border-2 pointer-events-none"
+  "text-lg text-neutral-100 font-semibold mt-5 mb-5 before:border-accent before:mr-4 before:border-2 pointer-events-none"
 export const h4Style = "text-base text-neutral-100 font-semibold mt-6 mb-5  pointer-events-none"
 export const h5Style = "text-sm text-neutral-200 font-semibold mt-6 mb-5  pointer-events-none"
 export const paragraphStyle = "my-4 leading-relaxed text-base"

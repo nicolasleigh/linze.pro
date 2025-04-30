@@ -42,5 +42,10 @@
     "section_2": "项目网站",
     "section_3": "项目仓库",
     "section_4": "其他资源"
+  },
+  "about": {
+    "title_about": "关于",
+    "title_me": "我",
+    "about": "自学开发者，拥有财经背景，专注构建现代全栈应用。"
   }
 }

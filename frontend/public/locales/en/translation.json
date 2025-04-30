@@ -42,5 +42,10 @@
     "section_2": "Project Websites",
     "section_3": "Project Repositories",
     "section_4": "Useful Resources"
+  },
+  "about": {
+    "title_about": "About ",
+    "title_me": "Me",
+    "about": "Self-taught developer with finance background, building modern full-stack apps."
   }
 }
