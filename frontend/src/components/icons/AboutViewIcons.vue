@@ -22,7 +22,7 @@ import IconWithTooltip from "@/components/IconWithTooltip.vue"
 import IconExpress from "./IconExpress.vue"
 
 const liStyle = "flex items-center size-14"
-const iconStyle = "size-10 text-neutral-300 hover:text-accent"
+const iconStyle = "size-10 text-neutral-400 hover:text-accent"
 const titleStyle = "text-lg text-neutral-100 font-semibold mt-4 mb-2  pointer-events-none"
 </script>
 
@@ -58,6 +58,11 @@ const titleStyle = "text-lg text-neutral-100 font-semibold mt-4 mb-2  pointer-ev
       </IconWithTooltip>
     </li>
     <li :class="liStyle">
+      <IconWithTooltip tooltip="React Native">
+        <IconReact :class="iconStyle" />
+      </IconWithTooltip>
+    </li>
+    <li :class="liStyle">
       <IconWithTooltip tooltip="Vue">
         <IconVue :class="iconStyle" />
       </IconWithTooltip>
@@ -65,11 +70,6 @@ const titleStyle = "text-lg text-neutral-100 font-semibold mt-4 mb-2  pointer-ev
     <li :class="liStyle">
       <IconWithTooltip tooltip="Next.js">
         <IconNextJs :class="iconStyle" />
-      </IconWithTooltip>
-    </li>
-    <li :class="liStyle">
-      <IconWithTooltip tooltip="React Native">
-        <IconReact :class="iconStyle" />
       </IconWithTooltip>
     </li>
     <li :class="liStyle">
