@@ -16,9 +16,6 @@ const { t } = useTranslation()
     >
       <ul class="flex items-center gap-4">
         <RouterLink to="/" :class="linkStyle"> {{ t("header.home_link") }} </RouterLink>
-        <RouterLink to="/login" :class="linkStyle"> Login </RouterLink>
-        <RouterLink to="/signup" :class="linkStyle"> Signup </RouterLink>
-        <RouterLink to="/editor" :class="linkStyle"> Editor </RouterLink>
         <RouterLink to="/posts" :class="linkStyle"> {{ t("header.posts_link") }} </RouterLink>
         <RouterLink to="/projects" :class="linkStyle"> {{ t("header.projects_link") }} </RouterLink>
         <RouterLink to="/about" :class="linkStyle"> {{ t("header.about_link") }} </RouterLink>

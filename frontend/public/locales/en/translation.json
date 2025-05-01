@@ -46,6 +46,26 @@
   "about": {
     "title_about": "About ",
     "title_me": "Me",
-    "about": "Self-taught developer with finance background, building modern full-stack apps."
+    "about": "Self-taught developer with finance background, building modern full-stack apps.",
+    "tech_languages": "Languages",
+    "tech_frontend": "Frontend",
+    "tech_backend": "Backend",
+    "tech_database": "Database",
+    "tech_devops": "DevOps"
+  },
+  "auth": {
+    "login": "Login",
+    "signup": "Signup",
+    "email": "Email",
+    "password": "Password",
+    "username": "UserName",
+    "welcome": "Welcome",
+    "email_placeholder": "Enter your email",
+    "password_placeholder": "Enter your password",
+    "username_placeholder": "Enter your username",
+    "login_loading": "Logging in...",
+    "signup_loading": "Signing up...",
+    "login_link": "Already have an account?",
+    "signup_link": "Create an account"
   }
 }

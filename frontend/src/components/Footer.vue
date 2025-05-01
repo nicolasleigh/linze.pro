@@ -48,6 +48,7 @@ const { t } = useTranslation()
               </li>
               <li><RouterLink :class="linkStyle" to="/about">About</RouterLink></li>
               <li><RouterLink :class="linkStyle" to="/editor">Create Post</RouterLink></li>
+              <li><RouterLink :class="linkStyle" to="/signup">Register</RouterLink></li>
             </ul>
           </div>
           <div>

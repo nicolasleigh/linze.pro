@@ -19,16 +19,20 @@ import IconDocker from "@/components/icons/IconDocker.vue"
 import IconCaddy from "@/components/icons/IconCaddy.vue"
 import IconGithubActions from "@/components/icons/IconGithubActions.vue"
 import IconWithTooltip from "@/components/IconWithTooltip.vue"
-import IconExpress from "./IconExpress.vue"
+import { useTranslation } from "i18next-vue"
+import IconExpress from "@/components/icons/IconExpress.vue"
 
-const liStyle = "flex items-center size-14"
-const iconStyle = "size-10 text-neutral-400 hover:text-accent"
+const ulStyle = "flex gap-2"
+const liStyle = "flex"
+const iconStyle = "size-7 text-neutral-400 hover:text-accent"
 const titleStyle = "text-lg text-neutral-100 font-semibold mt-4 mb-2  pointer-events-none"
+
+const { t } = useTranslation()
 </script>
 
 <template>
-  <h3 :class="titleStyle">Languages</h3>
-  <ul class="flex">
+  <h3 :class="titleStyle">{{ t("about.tech_languages") }}</h3>
+  <ul :class="ulStyle">
     <li :class="liStyle">
       <IconWithTooltip tooltip="JavaScript">
         <IconJS :class="iconStyle" />
@@ -50,8 +54,8 @@ const titleStyle = "text-lg text-neutral-100 font-semibold mt-4 mb-2  pointer-ev
       </IconWithTooltip>
     </li>
   </ul>
-  <h3 :class="titleStyle" class="text-lg">Frontend</h3>
-  <ul class="flex">
+  <h3 :class="titleStyle" class="text-lg">{{ t("about.tech_frontend") }}</h3>
+  <ul :class="ulStyle">
     <li :class="liStyle">
       <IconWithTooltip tooltip="React">
         <IconReact :class="iconStyle" />
@@ -88,8 +92,8 @@ const titleStyle = "text-lg text-neutral-100 font-semibold mt-4 mb-2  pointer-ev
       </IconWithTooltip>
     </li>
   </ul>
-  <h3 :class="titleStyle" class="text-lg">Backend</h3>
-  <ul class="flex">
+  <h3 :class="titleStyle" class="text-lg">{{ t("about.tech_backend") }}</h3>
+  <ul :class="ulStyle">
     <li :class="liStyle">
       <IconWithTooltip tooltip="Node.js">
         <IconNode :class="iconStyle" />
@@ -121,8 +125,8 @@ const titleStyle = "text-lg text-neutral-100 font-semibold mt-4 mb-2  pointer-ev
       </IconWithTooltip>
     </li>
   </ul>
-  <h3 :class="titleStyle" class="text-lg">Database</h3>
-  <ul class="flex">
+  <h3 :class="titleStyle" class="text-lg">{{ t("about.tech_database") }}</h3>
+  <ul :class="ulStyle">
     <li :class="liStyle">
       <IconWithTooltip tooltip="MongoDB">
         <IconMongo :class="iconStyle" />
@@ -134,8 +138,8 @@ const titleStyle = "text-lg text-neutral-100 font-semibold mt-4 mb-2  pointer-ev
       </IconWithTooltip>
     </li>
   </ul>
-  <h3 :class="titleStyle" class="text-lg">DevOps</h3>
-  <ul class="flex">
+  <h3 :class="titleStyle" class="text-lg">{{ t("about.tech_devops") }}</h3>
+  <ul :class="ulStyle">
     <li :class="liStyle">
       <IconWithTooltip tooltip="Docker">
         <IconDocker :class="iconStyle" />
