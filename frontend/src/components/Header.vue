@@ -3,7 +3,7 @@ import { RouterLink } from "vue-router"
 import LanguageButton from "./LanguageButton.vue"
 import { useTranslation } from "i18next-vue"
 
-const linkStyle = "py-3 px-2 hover:text-accent transition-colors"
+const linkStyle = "py-3 px-2 hover:text-accent transition-colors font-medium"
 const { t } = useTranslation()
 </script>
 

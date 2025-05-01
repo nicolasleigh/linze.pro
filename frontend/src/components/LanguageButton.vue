@@ -46,12 +46,10 @@ async function changeLanguage(lang: string) {
   <DropdownMenu>
     <DropdownMenuTrigger as-child>
       <Button
-        class="bg-inherit hover:bg-inherit py-3 px-2 group font-rethink text-neutral-500 hover:text-neutral-400 transition-colors flex items-center justify-center gap-1.5"
+        class="bg-inherit hover:bg-inherit py-3 px-2 group text-neutral-300 hover:text-accent transition-colors flex items-center justify-center gap-1.5"
       >
-        <Languages class="mt-0.5 size-4 text-neutral-500 group-hover:text-neutral-400 transition" />
-        <ChevronDown
-          class="mt-0.5 size-4 text-neutral-500 group-hover:text-neutral-400 transition"
-        />
+        <Languages class="mt-0.5 size-4 transition" />
+        <ChevronDown class="mt-0.5 size-4 transition" />
       </Button>
     </DropdownMenuTrigger>
     <DropdownMenuContent

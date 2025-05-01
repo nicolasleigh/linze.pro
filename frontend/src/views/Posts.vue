@@ -50,7 +50,6 @@ watch(
           <Book class="text-accent" :size="20" :stroke-width="1" />
         </div>
         <h1 class="mt-4 text-6xl">
-          <span class="text-neutral-300 font-semibold mr-3"> {{ t("posts.full_stack") }} </span>
           <span
             class="font-semibold transition-colors bg-gradient-to-br from-accent/30 via-accent/90 to-accent/30 bg-clip-text text-transparent"
             >{{ t("posts.posts") }}</span
