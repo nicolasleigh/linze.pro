@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { Toaster } from "@/components/ui/sonner"
 import { VueQueryDevtools } from "@tanstack/vue-query-devtools"
-import { RouterView } from "vue-router"
+import { RouterView, useRoute } from "vue-router"
 import Footer from "./components/Footer.vue"
 import Header from "./components/Header.vue"
 import { useHideHeader } from "./hooks/useHideHeader"

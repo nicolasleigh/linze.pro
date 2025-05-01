@@ -30,13 +30,13 @@ const { t } = useTranslation()
     <div
       class="grow p-6 lg:p-8 border-neutral-900 border border-dashed rounded-xl rounded-t-none lg:rounded-t-xl"
     >
-      <h3 class="text-4xl text-neutral-300 font-semibold">{{ props.title }}</h3>
-      <p class="mt-6 text-neutral-400">
+      <h3 class="text-4xl text-neutral-200 font-semibold">{{ props.title }}</h3>
+      <p class="mt-6 text-neutral-300">
         {{ props.about }}
       </p>
-      <div class="flex items-center gap-2 mt-6 text-neutral-400">
+      <div class="flex items-center gap-2 mt-6 text-neutral-300">
         <p class="text-sm">{{ t("projects.tool") }}</p>
-        <ul class="flex items-center gap-2 text-xl text-gray-200">
+        <ul class="flex items-center gap-2 text-xl text-neutral-50">
           <slot></slot>
         </ul>
       </div>

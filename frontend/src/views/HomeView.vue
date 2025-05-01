@@ -5,41 +5,71 @@ import ProjectCard from "@/components/ProjectCard.vue"
 import { useTranslation } from "i18next-vue"
 import { ChevronRightIcon, Eye, FileUser, Github } from "lucide-vue-next"
 import { paragraphStyle } from "./project/CommonStyle"
+import IconReact from "@/components/icons/IconReact.vue"
+import IconVue from "@/components/icons/IconVue.vue"
+import IconGo from "@/components/icons/IconGo.vue"
+import IconNode from "@/components/icons/IconNode.vue"
+import IconWithTooltip from "@/components/IconWithTooltip.vue"
+import IconTailwind from "@/components/icons/IconTailwind.vue"
+import { useRouter } from "vue-router"
 
 const { t } = useTranslation()
+const router = useRouter()
+const navigateToAboutPage = () => {
+  router.push("/about")
+}
 </script>
 
 <template>
-  <div class="layout pb-12 pt-12 md:pb-20 md:pt-36 flex flex-col justify-center">
-    <section class="flex w-full flex-col items-start pb-12 pt-12 md:pb-20 md:pt-20">
+  <div class="layout pb-12 pt-12 md:pb-20 md:pt-36">
+    <section
+      class="flex w-full flex-col min-h-[calc(100vh-150px)] items-start pb-12 pt-12 md:pb-20 md:pt-20"
+    >
       <div class="max-w-[30rem] text-left text-white">
-        <h1 class="text-3xl mt-10 font-semibold">Hi, I'm Nicolas Leigh (Li Linze)</h1>
-        <p class="mt-4">
-          A self-taught full-stack developer with a background in finance. I build modern web
-          applications using React, Vue, Go, Node.js, and more.
-        </p>
+        <h1 class="text-6xl mt-10 font-semibold">I'm Nicolas Leigh</h1>
+        <div class="text-lg">
+          <p :class="paragraphStyle">
+            A self-taught full-stack developer with a background in finance. I build modern web
+            applications mainly using:
+          </p>
+          <ul class="flex items-center gap-3">
+            <li>
+              <IconWithTooltip tooltip="React">
+                <IconReact class="size-7" />
+              </IconWithTooltip>
+            </li>
+            <li>
+              <IconWithTooltip tooltip="Vue">
+                <IconVue class="size-7" />
+              </IconWithTooltip>
+            </li>
+            <li>
+              <IconWithTooltip tooltip="Golang">
+                <IconGo class="size-7" />
+              </IconWithTooltip>
+            </li>
+            <li>
+              <IconWithTooltip tooltip="Node.js">
+                <IconNode class="size-7" />
+              </IconWithTooltip>
+            </li>
+            <li>
+              <IconWithTooltip tooltip="Tailwind CSS">
+                <IconTailwind class="size-10" />
+              </IconWithTooltip>
+            </li>
+          </ul>
+        </div>
       </div>
-      <div class="mt-10 flex gap-4">
-        <button
-          class="relative group px-4 py-3 font-medium rounded-xl border inline-flex items-center gap-3 cursor-pointer text-neutral-100 hover:bg-neutral-100 hover:text-neutral-800 transition-colors duration-300 disabled:cursor-not-allowed disabled:hover:text-neutral-100 disabled:hover:bg-neutral-950"
-          @click=""
-        >
-          View My Projects
-        </button>
+      <div class="mt-6 flex gap-4">
         <button
           class="relative group px-4 py-3 font-medium rounded-xl border inline-flex items-center gap-3 cursor-pointer text-neutral-100 hover:bg-neutral-100 hover:text-neutral-800 transition-colors duration-300 disabled:cursor-not-allowed disabled:hover:text-neutral-100 disabled:hover:bg-neutral-950"
           @click=""
         >
           Download Resume
         </button>
-        <button
-          class="relative group px-4 py-3 font-medium rounded-xl border inline-flex items-center gap-3 cursor-pointer text-neutral-100 hover:bg-neutral-100 hover:text-neutral-800 transition-colors duration-300 disabled:cursor-not-allowed disabled:hover:text-neutral-100 disabled:hover:bg-neutral-950"
-          @click=""
-        >
-          Contact Me
-        </button>
       </div>
-      <div class="mt-10 flex gap-4">
+      <div class="mt-8 flex gap-4">
         <a
           target="_blank"
           referrerpolicy="no-referrer"
@@ -57,9 +87,9 @@ const { t } = useTranslation()
         </a>
       </div>
     </section>
-    <section class="py-12 md:py-20 flex items-center justify-end">
+    <section class="flex items-start justify-end pb-12 md:pb-20">
       <div class="text-neutral-200 max-w-[30rem] items-end justify-end">
-        <h1 class="text-3xl mt-10 font-semibold">About Me</h1>
+        <h2 class="text-5xl font-semibold">About Me</h2>
         <p :class="paragraphStyle">
           With a foundation in economics and financial auditing, I discovered my passion for
           programming in 2021 and never looked back.
@@ -69,17 +99,18 @@ const { t } = useTranslation()
           modern tools and thoughtful design.
         </p>
         <button
-          class="relative group px-4 py-3 font-medium rounded-xl border inline-flex items-center gap-3 cursor-pointer text-neutral-100 hover:bg-neutral-100 hover:text-neutral-800 transition-colors duration-300 disabled:cursor-not-allowed disabled:hover:text-neutral-100 disabled:hover:bg-neutral-950"
-          @click=""
+          class="relative mt-6 group px-4 py-3 font-medium rounded-xl border inline-flex items-center gap-3 cursor-pointer text-neutral-100 hover:bg-neutral-100 hover:text-neutral-800 transition-colors duration-300 disabled:cursor-not-allowed disabled:hover:text-neutral-100 disabled:hover:bg-neutral-950"
+          @click="navigateToAboutPage"
         >
-          See More
+          More About Me
+          <ChevronRightIcon />
         </button>
       </div>
     </section>
     <section class="relative overflow-hidden">
       <div class="layout py-12 md:py-20 flex flex-col">
         <div>
-          <h2 class="text-5xl text-neutral-100 relative flex items-center gap-2 self-start">
+          <!-- <h2 class="text-5xl text-neutral-100 relative flex items-center gap-2 self-start">
             <span
               >Featured
               <span
@@ -87,8 +118,9 @@ const { t } = useTranslation()
                 >Projects</span
               >
             </span>
-          </h2>
-          <p class="text-neutral-300 mt-2 self-start flex">
+          </h2> -->
+          <h1 class="text-5xl font-semibold text-neutral-200">Featured Projects</h1>
+          <p class="text-neutral-300 mt-2 self-start flex text-base">
             A selection of projects that I've worked on.
           </p>
         </div>
@@ -100,7 +132,6 @@ const { t } = useTranslation()
             repo="https://github.com/nicolasleigh/cabinfy"
             website="https://cabin.linze.pro"
             link="/projects/cabinfy"
-            reverse
           >
             <Cabinfy />
           </ProjectCard>
@@ -111,25 +142,29 @@ const { t } = useTranslation()
             repo="https://github.com/nicolasleigh/petify"
             website="https://pet.linze.pro"
             link="/projects/petify"
+            reverse
           >
             <Petify />
           </ProjectCard>
         </ul>
 
-        <a
-          class="mt-16 self-center flex items-center gap-2 hover:text-neutral-100 transition-colors text-neutral-300"
-          data-fade="3"
-          href="/projects"
+        <RouterLink
+          class="mt-16 self-center text-base flex items-center gap-2 hover:text-neutral-100 transition-colors text-neutral-300"
+          to="/projects"
         >
-          See more projects
-          <ChevronRightIcon :stroke-width="1" />
-        </a>
+          <span> See more projects </span>
+          <div
+            class="border border-neutral-400 size-6 flex items-center justify-center bg-white/5 rounded-[10px]"
+          >
+            <ChevronRightIcon :stroke-width="1" :size="20" />
+          </div>
+        </RouterLink>
       </div>
     </section>
     <section>
       <div class="layout py-12 md:py-20 flex flex-col">
         <div>
-          <h2 class="text-5xl text-neutral-100 relative flex items-center gap-2 self-start">
+          <!-- <h2 class="text-5xl text-neutral-100 relative flex items-center gap-2 self-start">
             <span
               >Featured
               <span
@@ -137,7 +172,8 @@ const { t } = useTranslation()
                 >Posts</span
               >
             </span>
-          </h2>
+          </h2> -->
+          <h1 class="text-3xl font-semibold text-neutral-200">Featured Posts</h1>
           <p class="text-neutral-300 mt-2 self-start flex">
             A selection of posts that I've worked on.
           </p>
