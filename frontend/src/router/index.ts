@@ -17,11 +17,17 @@ import Blog from "@/views/project/blog/Blog.vue"
 import { h } from "vue"
 import AboutView from "@/views/AboutView.vue"
 
-const activeLinkStyle = "!text-accent"
+const activeLinkStyle = "text-accent"
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   scrollBehavior(to, from, savedPosition) {
+    if (to.hash) {
+      return {
+        el: to.hash,
+        behavior: "smooth",
+      }
+    }
     return { top: 0, behavior: "smooth" }
   },
   linkActiveClass: activeLinkStyle,

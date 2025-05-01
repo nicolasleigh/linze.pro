@@ -9,7 +9,12 @@
     "about": "Exploring the full journey from frontend to backend — and beyond with DevOps.",
     "full_stack": "Full Stack",
     "posts": "Posts",
-    "tag": "Choose Tag"
+    "tag": "Choose Tag",
+    "view": "views",
+    "like": "likes",
+    "edit_button": "Edit This Post",
+    "like_button": "Like",
+    "liked_button": "Liked"
   },
   "projects": {
     "about": "Showcasing real-world builds across the full development stack.",

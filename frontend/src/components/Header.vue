@@ -3,7 +3,7 @@ import { RouterLink } from "vue-router"
 import LanguageButton from "./LanguageButton.vue"
 import { useTranslation } from "i18next-vue"
 
-const linkStyle = "py-3 px-2 text-neutral-200 hover:text-neutral-50 transition-colors"
+const linkStyle = "py-3 px-2 hover:text-accent transition-colors"
 const { t } = useTranslation()
 </script>
 
@@ -14,7 +14,7 @@ const { t } = useTranslation()
     <nav
       class="flex pointer-events-auto mt-8 px-3 rounded-lg bg-neutral-800/60 w-fit mx-auto text-sm md:text-base"
     >
-      <ul class="flex items-center gap-4">
+      <ul class="flex items-center gap-4 text-neutral-200">
         <RouterLink to="/" :class="linkStyle"> {{ t("header.home_link") }} </RouterLink>
         <RouterLink to="/posts" :class="linkStyle"> {{ t("header.posts_link") }} </RouterLink>
         <RouterLink to="/projects" :class="linkStyle"> {{ t("header.projects_link") }} </RouterLink>

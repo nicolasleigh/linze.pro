@@ -1,16 +1,17 @@
 <script setup lang="ts">
-import { useActiveSection } from "@/hooks/useActiveSection"
 import Header from "../Header.vue"
 import ArticleEn from "./en/Article.vue"
 import ArticleZh from "./zh/Article.vue"
 import Aside from "../Aside.vue"
 import { ref, watch } from "vue"
 import { useTranslation } from "i18next-vue"
+import LikedButton from "@/components/LikedButton.vue"
 
 const articleEn = ref<InstanceType<typeof ArticleEn>>()
 const articleZh = ref<InstanceType<typeof ArticleZh>>()
 const sectionEn = ref(articleEn.value?.section || [])
 const sectionZh = ref(articleZh.value?.section || [])
+const header = ref<InstanceType<typeof Header>>()
 
 const { t, i18next } = useTranslation()
 
@@ -42,6 +43,7 @@ watch(articleZh, (newVal) => {
         video=""
         website="https://pet.linze.pro"
         repo="https://github.com/nicolasleigh/petify"
+        ref="header"
       />
       <section class="mt-6 lg:grid lg:grid-cols-[minmax(0,1fr),250px] lg:gap-8">
         <ArticleEn v-if="currentLanguage === 'en'" ref="articleEn" />
@@ -57,6 +59,7 @@ watch(articleZh, (newVal) => {
           :activeSection="articleZh?.activeSection || ''"
         />
       </section>
+      <LikedButton :handleLike="header?.handleLike" :isLiked="header?.isLiked || false" />
     </div>
   </section>
 </template>

@@ -121,13 +121,6 @@ const inputStyle =
             >Posts</span
           >
         </h1>
-        <p class="mt-3">
-          <span
-            class="transition-colors bg-gradient-to-r from-neutral-300/[35%] via-neutral-300/90 to-neutral-300/[35%] bg-clip-text text-transparent"
-          >
-            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Cum, animi?
-          </span>
-        </p>
       </div>
     </div>
 

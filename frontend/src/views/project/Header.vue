@@ -32,6 +32,8 @@ const handleLike = () => {
   isLiked.value = true
   updateProjectLike()
 }
+
+defineExpose({ isLiked, handleLike })
 </script>
 
 <template>

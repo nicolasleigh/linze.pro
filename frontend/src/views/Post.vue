@@ -8,6 +8,7 @@ import { BookOpen, Calendar, CalendarDays, ChevronRight, Eye, Heart } from "luci
 import { computed, ref, watch } from "vue"
 import { useRoute } from "vue-router"
 import { useTranslation } from "i18next-vue"
+import LikedButton from "@/components/LikedButton.vue"
 
 const route = useRoute()
 const { post, isLoading } = usePost()
@@ -107,7 +108,7 @@ const handleLike = () => {
           </p>
           <p class="text-neutral-400 text-xs flex items-center gap-2 ml-auto pointer-events-none">
             <Eye :size="15" class="text-neutral-600" />
-            <span>{{ viewNum }} views</span>
+            <span>{{ viewNum }} {{ t("posts.view") }}</span>
           </p>
           <button
             class="text-neutral-400 text-xs flex items-center gap-2 cursor-pointer disabled:cursor-not-allowed"
@@ -115,7 +116,7 @@ const handleLike = () => {
             :disabled="isLiked"
           >
             <Heart :size="15" :class="isLiked ? 'text-red-600' : 'text-neutral-600'" />
-            <span>{{ likeNum ? likeNum : initialLike }} likes</span>
+            <span>{{ likeNum ? likeNum : initialLike }} {{ t("posts.like") }}</span>
           </button>
         </div>
       </div>
@@ -132,20 +133,12 @@ const handleLike = () => {
         />
       </section>
       <div class="flex gap-10">
-        <button
-          @click="handleLike"
-          class="relative group px-4 py-3 mt-12 rounded-xl border inline-flex items-center gap-3 cursor-pointer text-neutral-100 hover:bg-neutral-100 hover:text-neutral-800 transition-colors duration-300 disabled:cursor-not-allowed disabled:hover:text-neutral-100 disabled:hover:bg-neutral-950"
-          :disabled="isLiked"
-        >
-          <span v-if="isLiked" class="font-semibold"> Liked </span>
-          <span v-else class="font-semibold"> Like </span>
-          <Heart :stroke-width="2" :size="20" :class="isLiked ? 'text-red-600' : ''" />
-        </button>
+        <LikedButton :handleLike="handleLike" :isLiked="isLiked" />
         <RouterLink
           :to="{ name: 'edit-post', params: route.params }"
           class="relative group px-4 py-3 mt-12 rounded-xl border inline-flex items-center gap-3 cursor-pointer text-neutral-100 hover:bg-neutral-100 hover:text-neutral-800 transition-colors duration-300"
         >
-          <span class="font-semibold"> Edit This Post </span>
+          <span class="font-semibold"> {{ t("posts.edit_button") }} </span>
           <ChevronRight :stroke-width="2" :size="20" />
         </RouterLink>
       </div>

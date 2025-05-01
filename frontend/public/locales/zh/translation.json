@@ -9,7 +9,12 @@
     "about": "探索从前端到后端，再到 DevOps 的完整旅程。",
     "full_stack": "全栈",
     "posts": "博文",
-    "tag": "选择标签"
+    "tag": "选择标签",
+    "view": "次浏览",
+    "like": "个点赞",
+    "edit_button": "编辑本文",
+    "like_button": "喜欢",
+    "liked_button": "已喜欢"
   },
   "projects": {
     "about": "全栈开发中的真实项目实践。",
