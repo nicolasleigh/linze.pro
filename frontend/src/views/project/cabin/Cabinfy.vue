@@ -45,7 +45,7 @@ watch(articleZh, (newVal) => {
         repo="https://github.com/nicolasleigh/cabinfy"
         ref="header"
       />
-      <div class="mt-10 lg:grid lg:grid-cols-[minmax(0,1fr),250px] lg:gap-8">
+      <section class="mt-10 lg:grid lg:grid-cols-[minmax(0,1fr),250px] lg:gap-8">
         <ArticleEn v-if="currentLanguage === 'en'" ref="articleEn" />
         <ArticleZh v-if="currentLanguage === 'zh'" ref="articleZh" />
         <Aside
@@ -58,7 +58,7 @@ watch(articleZh, (newVal) => {
           :section="sectionZh"
           :activeSection="articleZh?.activeSection || ''"
         />
-      </div>
+      </section>
       <LikedButton :handleLike="header?.handleLike" :isLiked="header?.isLiked || false" />
     </div>
   </div>

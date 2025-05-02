@@ -72,5 +72,9 @@
     "signup_loading": "正在注册...",
     "login_link": "已有账号？",
     "signup_link": "创建账号"
+  },
+  "comments": {
+    "title_comments": "访客留言",
+    "about": "访客可在此公开留言、反馈或打招呼。"
   }
 }

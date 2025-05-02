@@ -16,6 +16,7 @@ import Petify from "@/views/project/pet/Petify.vue"
 import Blog from "@/views/project/blog/Blog.vue"
 import { h } from "vue"
 import AboutView from "@/views/AboutView.vue"
+import CommentView from "@/views/CommentView.vue"
 
 const activeLinkStyle = "text-accent"
 
@@ -118,6 +119,11 @@ const router = createRouter({
       path: "/about",
       name: "about",
       component: AboutView,
+    },
+    {
+      path: "/comments",
+      name: "comments",
+      component: CommentView,
     },
   ],
 })

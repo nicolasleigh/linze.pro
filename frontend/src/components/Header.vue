@@ -2,6 +2,8 @@
 import { RouterLink } from "vue-router"
 import LanguageButton from "./LanguageButton.vue"
 import { useTranslation } from "i18next-vue"
+import { MessagesSquare } from "lucide-vue-next"
+import Button from "./ui/button/Button.vue"
 
 const linkStyle = "py-3 px-2 hover:text-accent transition-colors font-medium"
 const { t } = useTranslation()
@@ -21,6 +23,9 @@ const { t } = useTranslation()
         <RouterLink to="/about" :class="linkStyle"> {{ t("header.about_link") }} </RouterLink>
         <div class="w-px bg-neutral-500 h-[18px]" />
         <LanguageButton />
+        <RouterLink to="/comments" :class="linkStyle">
+          <MessagesSquare class="mt-0.5 size-4 transition" />
+        </RouterLink>
       </ul>
     </nav>
   </header>

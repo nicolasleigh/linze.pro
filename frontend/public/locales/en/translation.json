@@ -72,5 +72,9 @@
     "signup_loading": "Signing up...",
     "login_link": "Already have an account?",
     "signup_link": "Create an account"
+  },
+  "comments": {
+    "title_comments": "Messages",
+    "about": "A place where visitors leave feedback, thoughts, or greetings publicly."
   }
 }
