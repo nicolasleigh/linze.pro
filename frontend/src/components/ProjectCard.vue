@@ -22,7 +22,7 @@ const { t } = useTranslation()
   <li class="lg:flex gap-8" :class="reverse ? 'flex-row-reverse' : 'flex-row'">
     <div class="shrink-0 relative aspect-video lg:aspect-square lg:h-full">
       <figure
-        class="overflow-hidden relative isolate z-[1] hidden lg:block lg:aspect-square pointer-events-none h-full border border-neutral-900 rounded-xl"
+        class="overflow-hidden relative isolate z-[1] lg:aspect-square pointer-events-none h-full border border-neutral-900 rounded-xl"
       >
         <img class="absolute top-0 left-0" :src="props.image" />
       </figure>
@@ -30,7 +30,7 @@ const { t } = useTranslation()
     <div
       class="grow p-6 lg:p-8 border-neutral-900 border border-dashed rounded-xl rounded-t-none lg:rounded-t-xl"
     >
-      <h3 class="text-4xl text-neutral-200 font-semibold">{{ props.title }}</h3>
+      <h3 class="text-2xl md:text-4xl text-neutral-200 font-semibold">{{ props.title }}</h3>
       <p class="mt-6 text-neutral-300">
         {{ props.about }}
       </p>

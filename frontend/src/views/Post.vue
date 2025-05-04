@@ -63,13 +63,13 @@ const handleLike = () => {
         </div>
         <h1
           v-if="currentLanguage === 'en'"
-          class="txt-primary mt-6 leading-tight text-neutral-100 text-5xl font-semibold selection:bg-accent-dark"
+          class="mt-6 leading-tight text-neutral-100 text-4xl sm:text-5xl font-semibold selection:bg-accent-dark"
         >
           {{ post?.titleEn }}
         </h1>
         <h1
           v-if="currentLanguage === 'zh'"
-          class="txt-primary mt-6 leading-tight text-neutral-100 text-5xl font-semibold selection:bg-accent-dark"
+          class="mt-6 leading-tight text-neutral-100 text-4xl sm:text-5xl font-semibold selection:bg-accent-dark"
         >
           {{ post?.titleZh }}
         </h1>
@@ -132,15 +132,19 @@ const handleLike = () => {
           :isLoading="isLoading"
         />
       </section>
-      <div class="flex gap-10">
-        <LikedButton :handleLike="handleLike" :isLiked="isLiked" />
-        <RouterLink
-          :to="{ name: 'edit-post', params: route.params }"
-          class="relative group px-4 py-3 mt-12 rounded-xl border inline-flex items-center gap-3 cursor-pointer text-neutral-100 hover:bg-neutral-100 hover:text-neutral-800 transition-colors duration-300"
-        >
-          <span class="font-semibold"> {{ t("posts.edit_button") }} </span>
-          <ChevronRight :stroke-width="2" :size="20" />
-        </RouterLink>
+      <div class="flex flex-col sm:flex-row gap-3 sm:gap-10 mt-12">
+        <div>
+          <LikedButton :handleLike="handleLike" :isLiked="isLiked" />
+        </div>
+        <div>
+          <RouterLink
+            :to="{ name: 'edit-post', params: route.params }"
+            class="relative group px-4 py-3 rounded-xl border inline-flex items-center gap-3 cursor-pointer text-neutral-100 hover:bg-neutral-100 hover:text-neutral-800 transition-colors duration-300"
+          >
+            <span class="font-semibold"> {{ t("posts.edit_button") }} </span>
+            <ChevronRight :stroke-width="2" :size="20" />
+          </RouterLink>
+        </div>
       </div>
     </div>
   </section>

@@ -58,7 +58,9 @@ watch(articleZh, (newVal) => {
           :activeSection="articleZh?.activeSection || ''"
         />
       </section>
-      <LikedButton :handleLike="header?.handleLike" :isLiked="header?.isLiked || false" />
+      <div class="mt-12 mb-24">
+        <LikedButton :handleLike="header?.handleLike" :isLiked="header?.isLiked || false" />
+      </div>
     </div>
   </section>
 </template>

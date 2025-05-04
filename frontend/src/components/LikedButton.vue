@@ -13,7 +13,7 @@ const { t } = useTranslation()
 <template>
   <button
     @click="handleLike"
-    class="relative group px-4 py-3 mt-12 mb-24 rounded-xl border inline-flex items-center gap-3 cursor-pointer text-neutral-100 hover:bg-neutral-100 hover:text-neutral-800 transition-colors duration-300 disabled:cursor-not-allowed disabled:hover:text-neutral-100 disabled:hover:bg-neutral-950"
+    class="relative group px-4 py-3 rounded-xl border inline-flex items-center gap-3 cursor-pointer text-neutral-100 hover:bg-neutral-100 hover:text-neutral-800 transition-colors duration-300 disabled:cursor-not-allowed disabled:hover:text-neutral-100 disabled:hover:bg-neutral-950"
     :disabled="isLiked"
   >
     <span v-if="isLiked" class="font-semibold"> {{ t("posts.liked_button") }} </span>

@@ -146,7 +146,7 @@ const dropdownItemStyle =
           </DropdownMenuSubTrigger>
           <DropdownMenuPortal>
             <DropdownMenuSubContent
-              class="bg-neutral-800/60 border-none text-neutral-200 hover:text-neutral-50 transition-colors mt-3 backdrop-blur-sm"
+              class="bg-neutral-800/60 border-none text-neutral-200 hover:text-neutral-50 transition-colors mt-3 backdrop-blur-md"
             >
               <DropdownMenuItem
                 class="focus:bg-neutral-600 focus:text-neutral-100 flex items-center gap-3"
@@ -176,7 +176,7 @@ const dropdownItemStyle =
           <HeaderDropdownLink
             :title="t('header.dropdown.messages')"
             :subtitle="t('header.dropdown.messages_sub')"
-            to="/messages"
+            to="/comments"
           >
             <MessagesSquareIcon />
           </HeaderDropdownLink>

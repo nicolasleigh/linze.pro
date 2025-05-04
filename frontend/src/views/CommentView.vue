@@ -28,7 +28,7 @@ watch(
         >
           <MessagesSquare class="text-accent" :size="20" :stroke-width="1" />
         </div>
-        <h1 class="mt-4 text-6xl">
+        <h1 class="mt-4 text-5xl sm:text-6xl">
           <span
             class="font-semibold transition-colors bg-gradient-to-br from-accent/30 via-accent/90 to-accent/30 bg-clip-text text-transparent"
             >{{ t("comments.title_comments") }}</span

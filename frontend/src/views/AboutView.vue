@@ -44,7 +44,7 @@ watch(articleZh, (newVal) => {
         >
           <User2 class="text-accent" :size="20" :stroke-width="1" />
         </div>
-        <h1 class="mt-4 text-6xl">
+        <h1 class="mt-4 text-5xl sm:text-6xl">
           <span class="text-neutral-300 font-semibold"> {{ t("about.title_about") }} </span>
           <span
             class="font-semibold transition-colors bg-gradient-to-br from-accent/30 via-accent/90 to-accent/30 bg-clip-text text-transparent"

@@ -39,9 +39,9 @@ watch(
 <template>
   <div class="">
     <section
-      class="flex w-full h-screen items-start pb-12 pt-12 md:pb-20 md:pt-36 bg-cover bg-no-repeat bg-[linear-gradient(to_bottom,rgba(0,0,0,0.1),rgba(0,0,0,0.9)),url(hero.webp)]"
+      class="flex w-full md:h-screen items-start pb-12 pt-12 md:pb-20 md:pt-36 bg-cover bg-no-repeat bg-[linear-gradient(to_bottom,rgba(0,0,0,0.1),rgba(0,0,0,0.9)),url(hero.webp)]"
     >
-      <div class="ml-5 sm:ml-10 md:ml-20 lg:ml-32 xl:ml-40 mt-14">
+      <div class="mx-auto w-11/12 min-[450px]:ml-5 sm:ml-10 md:ml-20 lg:ml-24 xl:ml-40 mt-14">
         <div class="max-w-[29rem] text-left text-white">
           <h1 class="text-2xl sm:text-4xl md:text-6xl mt-10 font-semibold">
             {{ t("home.hero_title") }}
@@ -102,10 +102,12 @@ watch(
         </div>
       </div>
     </section>
-    <section class="layout flex items-start justify-end pb-12 md:pb-20">
-      <img src="/arrow.svg" class="mr-56" />
-      <div class="text-neutral-200 max-w-[33rem]">
-        <h2 class="text-5xl font-semibold">{{ t("home.about_title") }}</h2>
+    <section class="layout flex items-start justify-end max-md:justify-center pb-12 md:pb-20">
+      <img src="/arrow.svg" class="hidden min-[900px]:block mr-20 lg:mr-36 xl:mr-56" />
+      <div
+        class="text-neutral-200 max-w-[33rem] max-xl:mr-5 max-lg:mr-10 max-md:mr-0 max-[900px]:mr-20"
+      >
+        <h2 class="text-2xl sm:text-3xl md:text-5xl font-semibold">{{ t("home.about_title") }}</h2>
         <p :class="paragraphStyle">
           {{ t("home.about_1") }}
         </p>
@@ -121,10 +123,12 @@ watch(
         </button>
       </div>
     </section>
-    <section class="relative overflow-hidden">
-      <div class="layout py-12 md:py-20 flex flex-col">
+    <section class="relative layout overflow-hidden">
+      <div class="py-12 md:py-20 flex flex-col">
         <div>
-          <h2 class="text-5xl font-semibold text-neutral-200">{{ t("home.project_title") }}</h2>
+          <h2 class="text-2xl sm:text-3xl md:text-5xl font-semibold text-neutral-200">
+            {{ t("home.project_title") }}
+          </h2>
           <p class="text-neutral-300 mt-2 self-start flex text-base">
             {{ t("home.project_subtitle") }}
           </p>
@@ -166,10 +170,10 @@ watch(
         </RouterLink>
       </div>
     </section>
-    <section>
-      <div class="layout py-12 md:py-20 flex flex-col">
+    <section class="layout">
+      <div class="py-12 md:py-20 flex flex-col">
         <div>
-          <h2 class="text-5xl font-semibold text-neutral-200">
+          <h2 class="text-2xl sm:text-3xl md:text-5xl font-semibold text-neutral-200">
             {{ t("home.post_title") }}
           </h2>
           <p class="text-neutral-300 mt-2 self-start flex">

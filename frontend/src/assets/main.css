@@ -12,6 +12,7 @@
 .layout {
   max-width: 1100px;
   margin: 0 auto;
+  width: 92%;
 }
 
 .cursor-newtab {
@@ -20,12 +21,10 @@
     pointer;
 }
 
-@media (min-width: 1024px) {
-  body {
-    display: flex;
-    place-items: center;
-    background-color: black;
-  }
+body {
+  display: flex;
+  place-items: center;
+  background-color: black;
 }
 
 @layer base {
