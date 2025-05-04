@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import IconGoogle from "@/components/icons/IconGoogle.vue"
 import IconQQ from "@/components/icons/IconQQ.vue"
-import IconGitHub2 from "@/components/icons/IconGitHub2.vue"
+import IconGitHub2 from "@/components/icons/IconGithub2.vue"
 </script>
 
 <template>

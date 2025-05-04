@@ -6,7 +6,6 @@ import ArticleEn from "./en/Article.vue"
 import ArticleZh from "./zh/Article.vue"
 import { useTranslation } from "i18next-vue"
 import LikedButton from "@/components/LikedButton.vue"
-import AsideInMobile from "../AsideInMobile.vue"
 
 const articleEn = ref<InstanceType<typeof ArticleEn>>()
 const articleZh = ref<InstanceType<typeof ArticleZh>>()

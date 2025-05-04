@@ -6,7 +6,6 @@ import Aside from "../Aside.vue"
 import { ref, watch } from "vue"
 import { useTranslation } from "i18next-vue"
 import LikedButton from "@/components/LikedButton.vue"
-import AsideInMobile from "../AsideInMobile.vue"
 
 const articleEn = ref<InstanceType<typeof ArticleEn>>()
 const articleZh = ref<InstanceType<typeof ArticleZh>>()

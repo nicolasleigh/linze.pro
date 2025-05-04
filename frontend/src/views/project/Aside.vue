@@ -31,6 +31,21 @@ const isOpen = ref(false)
 </script>
 
 <template>
+  <DefineTemplate>
+    <div class="flex flex-col space-y-2 text-sm">
+      <RouterLink
+        v-for="(item, index) in section"
+        :key="index"
+        :to="'#' + item.slug"
+        :class="
+          activeSection === item.slug ? activeStyle : 'text-neutral-500 hover:text-neutral-400'
+        "
+      >
+        {{ item.title }}
+      </RouterLink>
+    </div>
+  </DefineTemplate>
+
   <aside class="py-4" v-if="isDesktop">
     <div class="sticky top-36">
       <div class="overflow-auto border border-neutral-900 px-6 rounded-xl py-5 hidden lg:block">
@@ -58,19 +73,4 @@ const isOpen = ref(false)
       </div>
     </DrawerContent>
   </Drawer>
-
-  <DefineTemplate>
-    <div class="flex flex-col space-y-2 text-sm">
-      <RouterLink
-        v-for="(item, index) in section"
-        :key="index"
-        :to="'#' + item.slug"
-        :class="
-          activeSection === item.slug ? activeStyle : 'text-neutral-500 hover:text-neutral-400'
-        "
-      >
-        {{ item.title }}
-      </RouterLink>
-    </div>
-  </DefineTemplate>
 </template>
