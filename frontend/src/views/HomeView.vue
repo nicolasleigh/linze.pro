@@ -39,11 +39,13 @@ watch(
 <template>
   <div class="">
     <section
-      class="flex w-full h-screen items-start pb-12 pt-12 md:pb-20 md:pt-36 bg-cover bg-no-repeat bg-[linear-gradient(to_right_bottom,rgba(0,0,0,0.1),rgba(0,0,0,0.9)),url(hero.webp)]"
+      class="flex w-full h-screen items-start pb-12 pt-12 md:pb-20 md:pt-36 bg-cover bg-no-repeat bg-[linear-gradient(to_bottom,rgba(0,0,0,0.1),rgba(0,0,0,0.9)),url(hero.webp)]"
     >
-      <div class="ml-44 mt-14">
+      <div class="ml-5 sm:ml-10 md:ml-20 lg:ml-32 xl:ml-40 mt-14">
         <div class="max-w-[29rem] text-left text-white">
-          <h1 class="text-6xl mt-10 font-semibold">{{ t("home.hero_title") }}</h1>
+          <h1 class="text-2xl sm:text-4xl md:text-6xl mt-10 font-semibold">
+            {{ t("home.hero_title") }}
+          </h1>
           <div class="text-lg">
             <p :class="paragraphStyle">
               {{ t("home.hero_about") }}
@@ -101,7 +103,8 @@ watch(
       </div>
     </section>
     <section class="layout flex items-start justify-end pb-12 md:pb-20">
-      <div class="text-neutral-200 max-w-[30rem] items-end justify-end">
+      <img src="/arrow.svg" class="mr-56" />
+      <div class="text-neutral-200 max-w-[33rem]">
         <h2 class="text-5xl font-semibold">{{ t("home.about_title") }}</h2>
         <p :class="paragraphStyle">
           {{ t("home.about_1") }}

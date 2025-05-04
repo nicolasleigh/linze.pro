@@ -3,7 +3,23 @@
     "home_link": "Home",
     "posts_link": "Posts",
     "projects_link": "Projects",
-    "about_link": "About"
+    "about_link": "About",
+    "dropdown": {
+      "menu": "Menu",
+      "current": "Current",
+      "home": "Home",
+      "home_sub": "Welcome to my website",
+      "projects": "Projects",
+      "projects_sub": "Showcase of my projects",
+      "posts": "Posts",
+      "posts_sub": "Thoughts",
+      "about": "About",
+      "about_sub": "Learn about me",
+      "language": "Language",
+      "language_sub": "Change language",
+      "messages": "Guest Book",
+      "messages_sub": "Leave your comments"
+    }
   },
   "posts": {
     "about": "Exploring the full journey from frontend to backend — and beyond with DevOps.",

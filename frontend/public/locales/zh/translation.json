@@ -3,7 +3,23 @@
     "home_link": "主页",
     "posts_link": "博文",
     "projects_link": "项目",
-    "about_link": "关于"
+    "about_link": "关于",
+    "dropdown": {
+      "menu": "导航",
+      "current": "当前",
+      "home": "主页",
+      "home_sub": "欢迎访问我的网站",
+      "projects": "项目",
+      "projects_sub": "项目展示",
+      "posts": "博文",
+      "posts_sub": "想法与见解",
+      "about": "关于",
+      "about_sub": "关于我的信息",
+      "language": "语言",
+      "language_sub": "改变语言",
+      "messages": "访客留言",
+      "messages_sub": "留下您的评论"
+    }
   },
   "posts": {
     "about": "探索从前端到后端，再到 DevOps 的完整旅程。",

@@ -3,7 +3,7 @@ import { useTranslation } from "i18next-vue"
 import { Mail, Github } from "lucide-vue-next"
 
 const linkStyle = "hover:text-accent transition-colors"
-const { t } = useTranslation()
+const { t, i18next } = useTranslation()
 </script>
 
 <template>
@@ -207,6 +207,14 @@ const { t } = useTranslation()
         <span>Copyright &copy;</span>
         <span>2025</span>
         <span>Nicolas Leigh. All rights reserved.</span>
+        <a
+          v-if="i18next.language === 'zh'"
+          href="https://beian.miit.gov.cn"
+          target="_blank"
+          rel="noreferrer nofollow"
+        >
+          滇ICP备2024048511号
+        </a>
       </p>
     </div>
   </footer>
