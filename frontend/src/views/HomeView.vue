@@ -12,25 +12,41 @@ import IconNode from "@/components/icons/IconNode.vue"
 import IconWithTooltip from "@/components/IconWithTooltip.vue"
 import IconTailwind from "@/components/icons/IconTailwind.vue"
 import { useRouter } from "vue-router"
+import PostCard from "@/components/PostCard.vue"
+import { ref, watch } from "vue"
+import { usePosts } from "@/hooks/usePosts"
 
-const { t } = useTranslation()
 const router = useRouter()
+
+const { posts: resultPost, error, isLoading } = usePosts({ page: 1, limit: 2 })
+
 const navigateToAboutPage = () => {
   router.push("/about")
 }
+
+const { t, i18next } = useTranslation()
+
+const currentLanguage = ref<string | null>(null)
+
+watch(
+  () => i18next.language,
+  (newLang) => {
+    currentLanguage.value = newLang
+  },
+  { immediate: true },
+)
 </script>
 
 <template>
   <div class="layout pb-12 pt-12 md:pb-20 md:pt-36">
     <section
-      class="flex w-full flex-col min-h-[calc(100vh-150px)] items-start pb-12 pt-12 md:pb-20 md:pt-20"
+      class="flex w-full flex-col min-h-[calc(100vh-140px)] items-start pb-12 pt-12 md:pb-20 md:pt-20"
     >
-      <div class="max-w-[30rem] text-left text-white">
-        <h1 class="text-6xl mt-10 font-semibold">I'm Nicolas Leigh</h1>
+      <div class="max-w-[29rem] text-left text-white">
+        <h1 class="text-6xl mt-10 font-semibold">{{ t("home.hero_title") }}</h1>
         <div class="text-lg">
           <p :class="paragraphStyle">
-            A self-taught full-stack developer with a background in finance. I build modern web
-            applications mainly using:
+            {{ t("home.hero_about") }}
           </p>
           <ul class="flex items-center gap-3">
             <li>
@@ -61,48 +77,50 @@ const navigateToAboutPage = () => {
           </ul>
         </div>
       </div>
-      <div class="mt-6 flex gap-4">
+      <!-- <div class="mt-6 flex gap-4">
         <button
           class="relative group px-4 py-3 font-medium rounded-xl border inline-flex items-center gap-3 cursor-pointer text-neutral-100 hover:bg-neutral-100 hover:text-neutral-800 transition-colors duration-300 disabled:cursor-not-allowed disabled:hover:text-neutral-100 disabled:hover:bg-neutral-950"
           @click=""
         >
           Download Resume
         </button>
-      </div>
+      </div> -->
       <div class="mt-8 flex gap-4">
         <a
           target="_blank"
           referrerpolicy="no-referrer"
           href="https://github.com/nicolasleigh"
-          class="p-0.5 hover:text-neutral-400 transition-colors text-neutral-500 flex items-center justify-center rounded-sm"
+          class="p-0.5 hover:text-neutral-400 transition-colors text-neutral-500 flex items-center justify-center rounded-sm cursor-newtab"
         >
-          <Github :stroke-width="1" />
+          <IconWithTooltip tooltip="GitHub">
+            <Github :stroke-width="1" class="cursor-newtab" />
+          </IconWithTooltip>
         </a>
         <a
           target="_blank"
           referrerpolicy="no-referrer"
-          class="p-0.5 hover:text-neutral-400 transition-colors text-neutral-500 flex items-center justify-center rounded-sm"
+          class="p-0.5 hover:text-neutral-400 transition-colors text-neutral-500 flex items-center justify-center rounded-sm cursor-newtab"
         >
-          <FileUser :stroke-width="1" />
+          <IconWithTooltip :tooltip="t('home.hero_resume')">
+            <FileUser :stroke-width="1" class="cursor-newtab" />
+          </IconWithTooltip>
         </a>
       </div>
     </section>
     <section class="flex items-start justify-end pb-12 md:pb-20">
       <div class="text-neutral-200 max-w-[30rem] items-end justify-end">
-        <h2 class="text-5xl font-semibold">About Me</h2>
+        <h2 class="text-5xl font-semibold">{{ t("home.about_title") }}</h2>
         <p :class="paragraphStyle">
-          With a foundation in economics and financial auditing, I discovered my passion for
-          programming in 2021 and never looked back.
+          {{ t("home.about_1") }}
         </p>
         <p :class="paragraphStyle">
-          Now I focus on building fast, clean, and user-friendly full-stack applications using
-          modern tools and thoughtful design.
+          {{ t("home.about_2") }}
         </p>
         <button
           class="relative mt-6 group px-4 py-3 font-medium rounded-xl border inline-flex items-center gap-3 cursor-pointer text-neutral-100 hover:bg-neutral-100 hover:text-neutral-800 transition-colors duration-300 disabled:cursor-not-allowed disabled:hover:text-neutral-100 disabled:hover:bg-neutral-950"
           @click="navigateToAboutPage"
         >
-          More About Me
+          {{ t("home.about_cta") }}
           <ChevronRightIcon />
         </button>
       </div>
@@ -119,9 +137,10 @@ const navigateToAboutPage = () => {
               >
             </span>
           </h2> -->
-          <h1 class="text-5xl font-semibold text-neutral-200">Featured Projects</h1>
+
+          <h2 class="text-5xl font-semibold text-neutral-200">{{ t("home.project_title") }}</h2>
           <p class="text-neutral-300 mt-2 self-start flex text-base">
-            A selection of projects that I've worked on.
+            {{ t("home.project_subtitle") }}
           </p>
         </div>
         <ul class="mt-6 grid gap-8">
@@ -149,10 +168,10 @@ const navigateToAboutPage = () => {
         </ul>
 
         <RouterLink
-          class="mt-16 self-center text-base flex items-center gap-2 hover:text-neutral-100 transition-colors text-neutral-300"
+          class="mt-16 self-center text-base flex items-center gap-2 hover:text-accent transition-colors text-neutral-300"
           to="/projects"
         >
-          <span> See more projects </span>
+          <span> {{ t("home.project_button") }}</span>
           <div
             class="border border-neutral-400 size-6 flex items-center justify-center bg-white/5 rounded-[10px]"
           >
@@ -173,12 +192,46 @@ const navigateToAboutPage = () => {
               >
             </span>
           </h2> -->
-          <h1 class="text-3xl font-semibold text-neutral-200">Featured Posts</h1>
+          <h2 class="text-5xl font-semibold text-neutral-200">
+            {{ t("home.post_title") }}
+          </h2>
           <p class="text-neutral-300 mt-2 self-start flex">
-            A selection of posts that I've worked on.
+            {{ t("home.post_subtitle") }}
           </p>
         </div>
-        <ul class="mt-4 sm:mt-10 grid gap-8 py-6">
+
+        <ul class="md:border-r border-neutral-900 md:pr-8 grid gap-8 py-6">
+          <li
+            v-for="(item, index) in resultPost"
+            :key="index"
+            class="w-full rounded-md @container/blog-card transition duration-100 group"
+          >
+            <PostCard
+              v-if="currentLanguage === 'zh'"
+              :slug="item.slug"
+              :title="item.titleZh"
+              :about="item.aboutZh"
+              :photo="item.photo"
+              :tags="item.tags"
+              :createdAt="item.created_at"
+              :view="item.viewNum"
+              :like="item.likeNum"
+            />
+            <PostCard
+              v-else
+              :slug="item.slug"
+              :title="item.titleEn"
+              :about="item.aboutEn"
+              :photo="item.photo"
+              :tags="item.tags"
+              :createdAt="item.created_at"
+              :view="item.viewNum"
+              :like="item.likeNum"
+            />
+            <hr class="border-dashed border-neutral-900 mt-8 group-last-of-type:hidden" />
+          </li>
+        </ul>
+        <!-- <ul class="mt-4 sm:mt-10 grid gap-8 py-6">
           <li class="w-full rounded-md transition duration-100 group">
             <a class="block rounded-md default-ring px-2 -mx-2"
               ><div class="flex flex-col gap-4 lg:flex-row-reverse lg:gap-6 lg:items-center py-3">
@@ -249,16 +302,19 @@ const navigateToAboutPage = () => {
             >
           </li>
           <hr class="border-dashed border-neutral-900" />
-        </ul>
+        </ul> -->
 
-        <a
-          class="mt-16 self-center flex items-center gap-2 hover:text-neutral-100 transition-colors text-neutral-300"
-          data-fade="3"
-          href="/posts"
+        <RouterLink
+          class="mt-16 self-center text-base flex items-center gap-2 hover:text-accent transition-colors text-neutral-300"
+          to="/posts"
         >
-          See more Posts
-          <ChevronRightIcon :stroke-width="1" />
-        </a>
+          <span> {{ t("home.post_button") }} </span>
+          <div
+            class="border border-neutral-400 size-6 flex items-center justify-center bg-white/5 rounded-[10px]"
+          >
+            <ChevronRightIcon :stroke-width="1" :size="20" />
+          </div>
+        </RouterLink>
       </div>
     </section>
   </div>

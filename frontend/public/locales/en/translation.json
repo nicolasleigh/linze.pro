@@ -76,5 +76,20 @@
   "comments": {
     "title_comments": "Messages",
     "about": "A place where visitors leave feedback, thoughts, or greetings publicly."
+  },
+  "home": {
+    "hero_title": "I'm Nicolas Leigh",
+    "hero_about": "A self-taught full-stack developer with a background in finance. I build modern, high-performance web applications using:",
+    "hero_resume": "Resume",
+    "about_title": "About Me",
+    "about_1": "With a background in economics and financial auditing, I discovered my passion for programming in 2021 — and haven’t looked back since.",
+    "about_2": "Today, I specialize in building fast, clean, and user-focused full-stack web applications using modern technologies and thoughtful design.",
+    "about_cta": "More About Me",
+    "project_title": "Featured Projects",
+    "project_subtitle": "A curated selection of projects I've built.",
+    "project_button": "See more projects",
+    "post_title": "Featured Posts",
+    "post_subtitle": "Insights and technical articles I've written.",
+    "post_button": "See more posts"
   }
 }

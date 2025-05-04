@@ -15,6 +15,8 @@ export type Post = {
     username: string
     email: string
   }
+  viewNum: number
+  likeNum: number
 }
 
 export type PostCardProps = {
@@ -24,6 +26,8 @@ export type PostCardProps = {
   photo: string
   tags: string[]
   createdAt: string
+  view: number
+  like: number
 }
 
 export type CreatePost = {

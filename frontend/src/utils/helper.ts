@@ -12,7 +12,7 @@ export const dateFormat = (val: string) => {
   const { i18next } = useTranslation()
   const date = new Date(val)
   const option: Intl.DateTimeFormatOptions = {
-    weekday: "long",
+    // weekday: "long",
     year: "numeric",
     month: "long",
     day: "numeric",

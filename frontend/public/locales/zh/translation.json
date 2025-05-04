@@ -76,5 +76,20 @@
   "comments": {
     "title_comments": "访客留言",
     "about": "访客可在此公开留言、反馈或打招呼。"
+  },
+  "home": {
+    "hero_title": "我是李林泽",
+    "hero_about": "一名拥有财务背景的自学全栈开发者。擅长使用以下技术构建现代且高性能的 Web 应用：",
+    "hero_resume": "简历",
+    "about_title": "关于我",
+    "about_1": "我拥有经济学和财务审计背景，并于 2021 年发现了对编程的热情，从此全力投入。",
+    "about_2": "如今，我专注于使用现代技术和精心设计构建快速、整洁、以用户为中心的全栈 Web 应用。",
+    "about_cta": "更多关于我",
+    "project_title": "精选项目",
+    "project_subtitle": "我参与开发的一些代表性项目。",
+    "project_button": "查看更多项目",
+    "post_title": "精选文章",
+    "post_subtitle": "我撰写的部分技术文章与见解。",
+    "post_button": "查看更多文章"
   }
 }

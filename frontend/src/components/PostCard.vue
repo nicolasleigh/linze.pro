@@ -1,11 +1,13 @@
 <script setup lang="ts">
 import { useRouter } from "vue-router"
 import type { PostCardProps } from "@/types/post"
-import { Calendar } from "lucide-vue-next"
+import { Calendar, Eye, Heart } from "lucide-vue-next"
 import PostTag from "@/components/PostTag.vue"
 import { dateFormat } from "@/utils/helper"
+import { useTranslation } from "i18next-vue"
 
 const props = defineProps<PostCardProps>()
+const { t } = useTranslation()
 const router = useRouter()
 
 // const goToPost = () => {
@@ -26,6 +28,19 @@ const router = useRouter()
         <img v-else src="/default-cover-photo.webp" alt="cover photo" class="rounded-md" />
       </figure>
       <div class="w-full">
+        <div class="flex items-center gap-3">
+          <p class="text-neutral-400 text-sm flex items-center justify-center gap-3">
+            {{ dateFormat(props.createdAt) }}
+          </p>
+        </div>
+
+        <!-- <div class="flex gap-2">
+          <div v-for="(item, index) in tags" :key="index">
+            <PostTag>
+              {{ item }}
+            </PostTag>
+          </div>
+        </div> -->
         <h3 class="text-lg mt-3 relative">
           <span
             class="bg-gradient-to-r font-semibold from-accent via-accent/60 to-accent box-decoration-clone group-hover:opacity-30 opacity-0 transition text-transparent"
@@ -39,10 +54,21 @@ const router = useRouter()
           {{ about }}
         </p>
         <div class="flex justify-between mt-5">
-          <div class="text-neutral-300 flex items-center justify-center gap-3 text-sm">
-            <Calendar :size="15" color="hsl(var(--accent))" />
-            {{ dateFormat(props.createdAt) }}
+          <div class="flex gap-5">
+            <!-- <div class="text-neutral-300 flex items-center justify-center gap-3 text-xs">
+              <Calendar :size="15" class="text-accent" />
+              {{ dateFormat(props.createdAt) }}
+            </div> -->
+            <div class="text-neutral-300 flex items-center justify-center gap-2 text-xs">
+              <Eye :size="15" class="text-accent" />
+              <p class="">{{ view }} {{ t("posts.view") }}</p>
+            </div>
+            <div class="text-neutral-300 flex items-center justify-center gap-2 text-xs">
+              <Heart :size="15" class="text-accent" />
+              <p class="">{{ like }} {{ t("posts.like") }}</p>
+            </div>
           </div>
+
           <div class="flex gap-2">
             <div v-for="(item, index) in tags" :key="index">
               <PostTag>

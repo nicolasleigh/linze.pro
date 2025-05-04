@@ -28,6 +28,8 @@ type Post struct {
 	Version   int       `json:"version"`
 	Comments  []Comment `json:"comments"`
 	User      User      `json:"user"`
+	ViewNum   int       `json:"viewNum"`
+	LikeNum   int       `json:"likeNum"`
 }
 
 type PostWithMetadata struct {
@@ -162,9 +164,10 @@ func (s *PostStore) GetAllLang(ctx context.Context, slug string) (*Post, error) 
 }
 
 func (s *PostStore) GetAll(ctx context.Context, limit, offset int) (*[]Post, error) {
-	query := `SELECT p.slug, u.email, u.username, p.title_en, p.title_zh, p.about_en, p.about_zh, p.created_at, p.updated_at, tags, p.photo
+	query := `SELECT p.slug, u.email, u.username, p.title_en, p.title_zh, p.about_en, p.about_zh, p.created_at, p.updated_at, tags, p.photo, l.view_num, l.like_num
 		FROM posts AS p
 		JOIN users AS u ON u.id = p.user_id
+		JOIN post_likes AS l ON l.post_slug = p.slug
 		ORDER BY p.created_at DESC
 		LIMIT $1 OFFSET $2;
 		`
@@ -197,6 +200,8 @@ func (s *PostStore) GetAll(ctx context.Context, limit, offset int) (*[]Post, err
 			&post.UpdatedAt,
 			pq.Array(&post.Tags),
 			&post.Photo,
+			&post.ViewNum,
+			&post.LikeNum,
 		)
 		if err != nil {
 			return nil, err

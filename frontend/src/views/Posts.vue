@@ -11,7 +11,7 @@ import { useRoute } from "vue-router"
 const route = useRoute()
 const tag = ref(route.query.tag)
 const page = Number(route.query.page) || 1
-const { posts: allPosts, error, isLoading } = usePosts(page)
+const { posts: allPosts, error, isLoading } = usePosts({ page })
 const { posts: postsByTag, refetch } = usePostsByTag(page, tag)
 const { t, i18next } = useTranslation()
 
@@ -85,6 +85,8 @@ watch(
                 :photo="item.photo"
                 :tags="item.tags"
                 :createdAt="item.created_at"
+                :view="item.viewNum"
+                :like="item.likeNum"
               />
               <PostCard
                 v-else
@@ -94,6 +96,8 @@ watch(
                 :photo="item.photo"
                 :tags="item.tags"
                 :createdAt="item.created_at"
+                :view="item.viewNum"
+                :like="item.likeNum"
               />
               <hr class="border-dashed border-neutral-900 mt-8 group-last-of-type:hidden" />
             </li>
