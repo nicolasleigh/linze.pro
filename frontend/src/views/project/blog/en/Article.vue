@@ -31,11 +31,10 @@ defineExpose({ section, activeSection })
           {{ section[0].title }}
         </h2>
         <p :class="paragraphStyle">
-          The Blog App is a platform designed to showcase my portfolio projects and share technical
+          Linze.pro is a platform designed to showcase my portfolio projects and share technical
           articles with a wider audience. As the admin, I can create, edit, and manage blog posts,
           while users can browse the posts, view information about me, and explore my portfolio. The
-          blog supports both English and Chinese, allowing users to filter posts by tags. Each post
-          includes two statistics: the number of views and the number of likes.
+          blog supports both English and Chinese, allowing users to filter posts by tags.
         </p>
       </Section>
       <Section :id="section[1].slug">
@@ -85,7 +84,7 @@ defineExpose({ section, activeSection })
           </li>
           <li>
             Deployment & DevOps: The app is dockerized for easy deployment using Docker and Docker
-            Compose. Caddy is used as a reverse proxy server to serve static files. I set up GitHub
+            Compose. Caddy is used as a reverse proxy and static file server. I set up GitHub
             actions for continuous integration and delivery.
           </li>
           <li>
@@ -151,11 +150,6 @@ defineExpose({ section, activeSection })
             policies, as well as optimizing performance with Redis caching, were critical for both
             security and the user experience.
           </li>
-          <li>
-            Containerization & Deployment: Setting up Docker and Docker Compose for development and
-            production environments required fine-tuning to ensure smooth deployment. This was
-            resolved by thorough testing and adjusting configurations.
-          </li>
         </ul>
       </Section>
       <Section :id="section[7].slug">
@@ -183,14 +177,6 @@ defineExpose({ section, activeSection })
         </h2>
         <ul :class="unorderedListStyle">
           <li>
-            Advanced Analytics: Adding more detailed analytics, such as post engagement metrics,
-            will enhance the overall user experience.
-          </li>
-          <li>
-            User Authentication Enhancements: Implementing OAuth for social login options could
-            improve the user registration and login process.
-          </li>
-          <li>
             SEO Optimization: Improving search engine optimization (SEO) for better discoverability
             of blog posts.
           </li>
@@ -201,7 +187,7 @@ defineExpose({ section, activeSection })
           {{ section[9].title }}
         </h2>
         <p :class="paragraphStyle">
-          This Blog App serves as a platform to showcase my portfolio, share insights, and interact
+          This Blog app serves as a platform to showcase my portfolio, share insights, and interact
           with readers. By using modern technologies like Vue.js, Golang, and Docker, I have built a
           secure, scalable, and feature-rich app. This project reflects my ability to manage both
           frontend and backend development while utilizing industry-standard tools and practices.
