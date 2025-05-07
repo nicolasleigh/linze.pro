@@ -15,6 +15,7 @@ import { useRouter } from "vue-router"
 import PostCard from "@/components/PostCard.vue"
 import { ref, watch } from "vue"
 import { usePosts } from "@/hooks/usePosts"
+import Musicfy from "@/components/project-icons/Musicfy.vue"
 
 const router = useRouter()
 
@@ -135,6 +136,15 @@ watch(
         </div>
         <ul class="mt-6 grid gap-8">
           <ProjectCard
+            :title="t('projects.musicfy_title')"
+            :about="t('projects.musicfy_about')"
+            image="https://file.linze.pro/images/musicfy/11.webp"
+            repo="https://github.com/nicolasleigh/musicfy"
+            link="/projects/musicfy"
+          >
+            <Musicfy />
+          </ProjectCard>
+          <!-- <ProjectCard
             :title="t('projects.cabinfy_title')"
             :about="t('projects.cabinfy_about')"
             image="https://file.linze.pro/images/cabinfy/1.webp"
@@ -143,7 +153,7 @@ watch(
             link="/projects/cabinfy"
           >
             <Cabinfy />
-          </ProjectCard>
+          </ProjectCard> -->
           <ProjectCard
             :title="t('projects.petify_title')"
             :about="t('projects.petify_about')"

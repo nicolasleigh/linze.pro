@@ -11,6 +11,10 @@ import {
 } from "../../CommonStyle"
 import Section from "../../Section.vue"
 import { useActiveSection } from "@/hooks/useActiveSection"
+import { Chrome, Github, GithubIcon } from "lucide-vue-next"
+import IconGithub2 from "@/components/icons/IconGithub2.vue"
+import IconChrome from "@/components/icons/IconChrome.vue"
+import ImageDialog from "@/components/ImageDialog.vue"
 
 const sectionTitle = [
   "Project Overview",
@@ -19,15 +23,17 @@ const sectionTitle = [
   "Development Process",
   "Tech Stack",
   "Key Features",
+  "Demo Video & Screenshots",
   "Challenges & Solutions",
   "What I Learned",
   "Future Improvements",
   "Summary",
-  "Live Demo & Source Code",
+  "Live Site & Source Code",
 ]
 const { activeSection } = useActiveSection()
 const section = getSectionTitleAndSlug(sectionTitle)
 defineExpose({ section, activeSection })
+defineProps<{ demoImages: string[] }>()
 </script>
 
 <template>
@@ -147,6 +153,18 @@ defineExpose({ section, activeSection })
         <h2 :class="h2Style">
           {{ section[6].title }}
         </h2>
+        <video controls>
+          <source src="https://file.linze.pro/videos/moviefy/1.mp4" type="video/mp4" />
+        </video>
+        <div class="grid grid-cols-2 gap-2 mt-2">
+          <ImageDialog v-for="(item, index) in demoImages" :key="index" :url="item" />
+        </div>
+      </Section>
+
+      <Section :id="section[7].slug">
+        <h2 :class="h2Style">
+          {{ section[7].title }}
+        </h2>
         <p :class="paragraphStyle">
           Throughout the development of MovieFy, I encountered and solved several complex technical
           challenges that significantly shaped the robustness and user experience of the app.
@@ -206,9 +224,9 @@ defineExpose({ section, activeSection })
         </ul>
       </Section>
 
-      <Section :id="section[7].slug">
+      <Section :id="section[8].slug">
         <h2 :class="h2Style">
-          {{ section[7].title }}
+          {{ section[8].title }}
         </h2>
         <p :class="paragraphStyle">
           Working on MovieFy was an incredibly rewarding experience that challenged me to think like
@@ -247,9 +265,9 @@ defineExpose({ section, activeSection })
         </p>
       </Section>
 
-      <Section :id="section[8].slug">
+      <Section :id="section[9].slug">
         <h2 :class="h2Style">
-          {{ section[8].title }}
+          {{ section[9].title }}
         </h2>
         <p :class="paragraphStyle">
           While MovieFy successfully demonstrates my full-stack development capabilities, I've
@@ -312,9 +330,9 @@ defineExpose({ section, activeSection })
         </ol>
       </Section>
 
-      <Section :id="section[9].slug">
+      <Section :id="section[10].slug">
         <h2 :class="h2Style">
-          {{ section[9].title }}
+          {{ section[10].title }}
         </h2>
         <p :class="paragraphStyle">
           MovieFy is a full-stack movie app designed to deliver a seamless experience for both users
@@ -333,14 +351,41 @@ defineExpose({ section, activeSection })
         </p>
       </Section>
 
-      <Section :id="section[10].slug">
+      <Section :id="section[11].slug">
         <h2 :class="h2Style">
-          {{ section[10].title }}
+          {{ section[11].title }}
         </h2>
-        <ul :class="unorderedListStyle">
-          <li>Live Site:</li>
-          <li>GitHub Repo:</li>
-        </ul>
+
+        <div class="space-y-2">
+          <a
+            target="_blank"
+            referrerpolicy="no-referrer"
+            href="https://movie.linze.pro"
+            class="!block max-w-xl px-4 py-3 rounded-lg border border-neutral-800 scale-100 transform-gpu hover:scale-[1.02] active:scale-[0.97] transition duration-200 cursor-newtab"
+          >
+            <div class="flex items-center gap-2 text-sm md:text-base">
+              <IconChrome class="size-5" />
+              <span class="text-accent font-semibold">movie.linze.pro</span>
+            </div>
+          </a>
+
+          <a
+            target="_blank"
+            referrerpolicy="no-referrer"
+            href="https://github.com/nicolasleigh/moviefy"
+            class="!block max-w-xl px-4 py-3 rounded-lg border border-neutral-800 scale-100 transform-gpu hover:scale-[1.02] active:scale-[0.97] transition duration-200 cursor-newtab"
+          >
+            <div class="flex items-center gap-2 text-sm md:text-base">
+              <IconGithub2 class="size-5" />
+              <span class="truncate overflow-ellipsis font-semibold text-accent"
+                >nicolasleigh/moviefy</span
+              >
+            </div>
+            <p class="mt-2 text-sm text-neutral-200">
+              A full-stack movie platform with user and admin interfaces
+            </p>
+          </a>
+        </div>
       </Section>
     </div>
   </article>

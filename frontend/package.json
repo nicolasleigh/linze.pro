@@ -29,7 +29,7 @@
     "lucide-vue-next": "^0.487.0",
     "md-editor-v3": "^5.4.5",
     "pinia": "^3.0.1",
-    "reka-ui": "^2.2.0",
+    "reka-ui": "^2.2.1",
     "tailwind-merge": "^3.2.0",
     "tailwindcss-animate": "^1.0.7",
     "vaul-vue": "^0.4.1",
