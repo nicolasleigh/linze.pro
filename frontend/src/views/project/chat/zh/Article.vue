@@ -4,6 +4,9 @@ import Section from "../../Section.vue"
 import { h2Style, orderedListStyle, paragraphStyle, unorderedListStyle } from "../../CommonStyle"
 import ExternalLink from "../../ExternalLink.vue"
 import { useActiveSection } from "@/hooks/useActiveSection"
+import ImageDialog from "@/components/ImageDialog.vue"
+import IconGithub2 from "@/components/icons/IconGithub2.vue"
+import IconChrome from "@/components/icons/IconChrome.vue"
 
 const sectionTitle = [
   "项目概述",
@@ -12,16 +15,18 @@ const sectionTitle = [
   "开发过程",
   "技术栈",
   "主要功能",
+  "演示视频与截图",
   "挑战与解决方案",
   "我的收获",
   "未来改进",
   "总结",
-  "在线演示与源码链接",
+  "在线网站与源码链接",
 ]
 
 const { activeSection } = useActiveSection()
 const section = getSectionTitleAndSlugChinese(sectionTitle)
 defineExpose({ section, activeSection })
+defineProps<{ demoImages: string[] }>()
 </script>
 
 <template>
@@ -131,9 +136,22 @@ defineExpose({ section, activeSection })
           <li>基于 Docker 的本地和生产环境部署设置</li>
         </ul>
       </Section>
+
       <Section :id="section[6].slug">
         <h2 :class="h2Style">
           {{ section[6].title }}
+        </h2>
+        <video controls>
+          <source src="https://file.linze.pro/videos/chatify/1.mp4" type="video/mp4" />
+        </video>
+        <div class="grid grid-cols-2 gap-2 mt-2">
+          <ImageDialog v-for="(item, index) in demoImages" :key="index" :url="item" />
+        </div>
+      </Section>
+
+      <Section :id="section[7].slug">
+        <h2 :class="h2Style">
+          {{ section[7].title }}
         </h2>
         <ul :class="unorderedListStyle">
           <li>
@@ -150,9 +168,9 @@ defineExpose({ section, activeSection })
           </li>
         </ul>
       </Section>
-      <Section :id="section[7].slug">
+      <Section :id="section[8].slug">
         <h2 :class="h2Style">
-          {{ section[7].title }}
+          {{ section[8].title }}
         </h2>
         <ul :class="unorderedListStyle">
           <li>如何诊断并解决真实应用中的 N+1 查询问题。</li>
@@ -162,9 +180,9 @@ defineExpose({ section, activeSection })
           <li>使用 Docker、docker-compose 和 Caddy 完成端到端的应用部署。</li>
         </ul>
       </Section>
-      <Section :id="section[8].slug">
+      <Section :id="section[9].slug">
         <h2 :class="h2Style">
-          {{ section[8].title }}
+          {{ section[9].title }}
         </h2>
         <ol :class="orderedListStyle">
           <li>为后端服务添加单元测试和集成测试。</li>
@@ -177,19 +195,51 @@ defineExpose({ section, activeSection })
           <li>集成监控工具（如 Prometheus、Grafana）进行系统健康检查。</li>
         </ol>
       </Section>
-      <Section :id="section[9].slug">
+      <Section :id="section[10].slug">
         <h2 :class="h2Style">
-          {{ section[9].title }}
+          {{ section[10].title }}
         </h2>
         <p :class="paragraphStyle">
           Chatify
           展示了我从识别关键后端限制到构建一个健壮且可扩展的聊天系统的全过程。它体现了我的后端开发技能、优化性能的能力，以及对全栈部署实践的了解。这个项目不仅满足了最初的课程要求，还通过深思熟虑的重构和执行，发展成了一个专业级的应用。
         </p>
       </Section>
-      <Section :id="section[10].slug">
+      <Section :id="section[11].slug">
         <h2 :class="h2Style">
-          {{ section[10].title }}
+          {{ section[11].title }}
         </h2>
+        <div class="space-y-2">
+          <a
+            target="_blank"
+            referrerpolicy="no-referrer"
+            href="https://chat.linze.pro"
+            class="!block max-w-xl px-4 py-3 rounded-lg border border-neutral-800 scale-100 transform-gpu hover:scale-[1.02] active:scale-[0.97] transition duration-200 cursor-newtab"
+          >
+            <div class="flex items-center gap-2 text-sm md:text-base">
+              <IconChrome class="size-5" />
+              <span class="text-accent font-semibold">chat.linze.pro</span>
+            </div>
+          </a>
+
+          <a
+            target="_blank"
+            referrerpolicy="no-referrer"
+            href="https://github.com/nicolasleigh/chatify"
+            class="!block max-w-xl px-4 py-3 rounded-lg border border-neutral-800 scale-100 transform-gpu hover:scale-[1.02] active:scale-[0.97] transition duration-200 cursor-newtab"
+          >
+            <div class="flex items-center gap-2 text-sm md:text-base">
+              <IconGithub2 class="size-5" />
+              <span class="truncate overflow-ellipsis font-semibold text-accent"
+                >nicolasleigh/chatify</span
+              >
+            </div>
+            <p class="mt-2 text-sm text-neutral-200">
+              A real-time chat app with support for audio and video calls, rebuilt with Golang and
+              PostgreSQL for high performance, efficient database operations, and scalable backend
+              architecture.
+            </p>
+          </a>
+        </div>
       </Section>
     </div>
   </article>
