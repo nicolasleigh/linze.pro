@@ -9,6 +9,9 @@ import {
   unorderedListStyle,
 } from "../../CommonStyle"
 import { useActiveSection } from "@/hooks/useActiveSection"
+import ImageDialog from "@/components/ImageDialog.vue"
+import IconGithub2 from "@/components/icons/IconGithub2.vue"
+import IconChrome from "@/components/icons/IconChrome.vue"
 
 const sectionTitle = [
   "项目概述",
@@ -16,14 +19,16 @@ const sectionTitle = [
   "我的角色",
   "技术栈",
   "主要功能",
+  "演示视频与截图",
   "我的收获",
   "未来改进",
-  "在线演示与源码链接",
+  "在线网站与源码链接",
 ]
 
 const { activeSection } = useActiveSection()
 const section = getSectionTitleAndSlugChinese(sectionTitle)
 defineExpose({ section, activeSection })
+defineProps<{ demoImages: string[] }>()
 </script>
 
 <template>
@@ -143,9 +148,22 @@ defineExpose({ section, activeSection })
           </li>
         </ul>
       </Section>
+
       <Section :id="section[5].slug">
         <h2 :class="h2Style">
           {{ section[5].title }}
+        </h2>
+        <video controls>
+          <source src="https://file.linze.pro/videos/petify/1.mp4" type="video/mp4" />
+        </video>
+        <div class="grid grid-cols-2 gap-2 mt-2">
+          <ImageDialog v-for="(item, index) in demoImages" :key="index" :url="item" />
+        </div>
+      </Section>
+
+      <Section :id="section[6].slug">
+        <h2 :class="h2Style">
+          {{ section[6].title }}
         </h2>
         <p :class="paragraphStyle">
           构建 Petify 是一次宝贵的实践经验，让我深入理解了全栈开发。在整个过程中，我学会了如何：
@@ -165,9 +183,9 @@ defineExpose({ section, activeSection })
           将抽象的知识转化为实际可用的解决方案。
         </p>
       </Section>
-      <Section :id="section[6].slug">
+      <Section :id="section[7].slug">
         <h2 :class="h2Style">
-          {{ section[6].title }}
+          {{ section[7].title }}
         </h2>
         <p :class="paragraphStyle">
           尽管 Petify
@@ -207,10 +225,53 @@ defineExpose({ section, activeSection })
           在不断发展的过程中，始终保持现代化、高性能和可扩展，满足日益增长的用户需求。
         </p>
       </Section>
-      <Section :id="section[7].slug">
+      <Section :id="section[8].slug">
         <h2 :class="h2Style">
-          {{ section[7].title }}
+          {{ section[8].title }}
         </h2>
+        <div class="space-y-2">
+          <a
+            target="_blank"
+            referrerpolicy="no-referrer"
+            href="https://seller.pet.linze.pro"
+            class="!block max-w-xl px-4 py-3 rounded-lg border border-neutral-800 scale-100 transform-gpu hover:scale-[1.02] active:scale-[0.97] transition duration-200 cursor-newtab"
+          >
+            <div class="flex items-center gap-2 text-sm md:text-base">
+              <IconChrome class="size-5" />
+              <span class="text-accent font-semibold">seller.pet.linze.pro</span>
+            </div>
+          </a>
+
+          <a
+            target="_blank"
+            referrerpolicy="no-referrer"
+            href="https://pet.linze.pro"
+            class="!block max-w-xl px-4 py-3 rounded-lg border border-neutral-800 scale-100 transform-gpu hover:scale-[1.02] active:scale-[0.97] transition duration-200 cursor-newtab"
+          >
+            <div class="flex items-center gap-2 text-sm md:text-base">
+              <IconChrome class="size-5" />
+              <span class="text-accent font-semibold">pet.linze.pro</span>
+            </div>
+          </a>
+
+          <a
+            target="_blank"
+            referrerpolicy="no-referrer"
+            href="https://github.com/nicolasleigh/petify"
+            class="!block max-w-xl px-4 py-3 rounded-lg border border-neutral-800 scale-100 transform-gpu hover:scale-[1.02] active:scale-[0.97] transition duration-200 cursor-newtab"
+          >
+            <div class="flex items-center gap-2 text-sm md:text-base">
+              <IconGithub2 class="size-5" />
+              <span class="truncate overflow-ellipsis font-semibold text-accent"
+                >nicolasleigh/petify</span
+              >
+            </div>
+            <p class="mt-2 text-sm text-neutral-200">
+              A full-stack e-commerce platform for browsing and purchasing pets, featuring real-time
+              chat, advanced product filtering, and a scalable, secure backend architecture.
+            </p>
+          </a>
+        </div>
       </Section>
     </div>
   </article>

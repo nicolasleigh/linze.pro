@@ -7,6 +7,21 @@ import { ref, watch } from "vue"
 import { useTranslation } from "i18next-vue"
 import LikedButton from "@/components/LikedButton.vue"
 
+const demoImages = [
+  "https://file.linze.pro/images/petify/1.webp",
+  "https://file.linze.pro/images/petify/3.webp",
+  "https://file.linze.pro/images/petify/4.webp",
+  "https://file.linze.pro/images/petify/5.webp",
+  "https://file.linze.pro/images/petify/6.webp",
+  "https://file.linze.pro/images/petify/7.webp",
+  "https://file.linze.pro/images/petify/8.webp",
+  "https://file.linze.pro/images/petify/9.webp",
+  "https://file.linze.pro/images/petify/10.webp",
+  "https://file.linze.pro/images/petify/11.webp",
+  "https://file.linze.pro/images/petify/12.webp",
+  "https://file.linze.pro/images/petify/13.webp",
+]
+
 const articleEn = ref<InstanceType<typeof ArticleEn>>()
 const articleZh = ref<InstanceType<typeof ArticleZh>>()
 const sectionEn = ref(articleEn.value?.section || [])
@@ -46,8 +61,8 @@ watch(articleZh, (newVal) => {
         ref="header"
       />
       <section class="mt-6 lg:grid lg:grid-cols-[minmax(0,1fr),250px] lg:gap-8">
-        <ArticleEn v-if="currentLanguage === 'en'" ref="articleEn" />
-        <ArticleZh v-if="currentLanguage === 'zh'" ref="articleZh" />
+        <ArticleEn v-if="currentLanguage === 'en'" ref="articleEn" :demoImages="demoImages" />
+        <ArticleZh v-if="currentLanguage === 'zh'" ref="articleZh" :demoImages="demoImages" />
         <Aside
           v-if="currentLanguage === 'en'"
           :section="sectionEn"
@@ -59,7 +74,7 @@ watch(articleZh, (newVal) => {
           :activeSection="articleZh?.activeSection || ''"
         />
       </section>
-      <div class="mt-12 mb-24">
+      <div class="">
         <LikedButton :handleLike="header?.handleLike" :isLiked="header?.isLiked || false" />
       </div>
     </div>

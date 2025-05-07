@@ -9,6 +9,9 @@ import {
   unorderedListStyle,
 } from "../../CommonStyle"
 import { useActiveSection } from "@/hooks/useActiveSection"
+import ImageDialog from "@/components/ImageDialog.vue"
+import IconGithub2 from "@/components/icons/IconGithub2.vue"
+import IconChrome from "@/components/icons/IconChrome.vue"
 
 const sectionTitle = [
   "Project Overview",
@@ -16,14 +19,16 @@ const sectionTitle = [
   "My Role",
   "Tech Stack",
   "Key Features",
+  "Demo Video & Screenshots",
   "What I Learned",
   "Future Improvements",
-  "Live Demo & Source Code",
+  "Live Site & Source Code",
 ]
 
 const { activeSection } = useActiveSection()
 const section = getSectionTitleAndSlug(sectionTitle)
 defineExpose({ section, activeSection })
+defineProps<{ demoImages: string[] }>()
 </script>
 
 <template>
@@ -187,9 +192,22 @@ defineExpose({ section, activeSection })
           </li>
         </ul>
       </Section>
+
       <Section :id="section[5].slug">
         <h2 :class="h2Style">
           {{ section[5].title }}
+        </h2>
+        <video controls>
+          <source src="https://file.linze.pro/videos/petify/1.mp4" type="video/mp4" />
+        </video>
+        <div class="grid grid-cols-2 gap-2 mt-2">
+          <ImageDialog v-for="(item, index) in demoImages" :key="index" :url="item" />
+        </div>
+      </Section>
+
+      <Section :id="section[6].slug">
+        <h2 :class="h2Style">
+          {{ section[6].title }}
         </h2>
         <p :class="paragraphStyle">
           Building Petify was a valuable hands-on experience that allowed me to deepen my
@@ -228,9 +246,9 @@ defineExpose({ section, activeSection })
           working solutions.
         </p>
       </Section>
-      <Section :id="section[6].slug">
+      <Section :id="section[7].slug">
         <h2 :class="h2Style">
-          {{ section[6].title }}
+          {{ section[7].title }}
         </h2>
         <p :class="paragraphStyle">
           While Petify is already a functional and scalable e-commerce platform, there are several
@@ -289,10 +307,53 @@ defineExpose({ section, activeSection })
           solution as it evolves to meet growing user demands.
         </p>
       </Section>
-      <Section :id="section[7].slug">
+      <Section :id="section[8].slug">
         <h2 :class="h2Style">
-          {{ section[7].title }}
+          {{ section[8].title }}
         </h2>
+        <div class="space-y-2">
+          <a
+            target="_blank"
+            referrerpolicy="no-referrer"
+            href="https://seller.pet.linze.pro"
+            class="!block max-w-xl px-4 py-3 rounded-lg border border-neutral-800 scale-100 transform-gpu hover:scale-[1.02] active:scale-[0.97] transition duration-200 cursor-newtab"
+          >
+            <div class="flex items-center gap-2 text-sm md:text-base">
+              <IconChrome class="size-5" />
+              <span class="text-accent font-semibold">seller.pet.linze.pro</span>
+            </div>
+          </a>
+
+          <a
+            target="_blank"
+            referrerpolicy="no-referrer"
+            href="https://pet.linze.pro"
+            class="!block max-w-xl px-4 py-3 rounded-lg border border-neutral-800 scale-100 transform-gpu hover:scale-[1.02] active:scale-[0.97] transition duration-200 cursor-newtab"
+          >
+            <div class="flex items-center gap-2 text-sm md:text-base">
+              <IconChrome class="size-5" />
+              <span class="text-accent font-semibold">pet.linze.pro</span>
+            </div>
+          </a>
+
+          <a
+            target="_blank"
+            referrerpolicy="no-referrer"
+            href="https://github.com/nicolasleigh/petify"
+            class="!block max-w-xl px-4 py-3 rounded-lg border border-neutral-800 scale-100 transform-gpu hover:scale-[1.02] active:scale-[0.97] transition duration-200 cursor-newtab"
+          >
+            <div class="flex items-center gap-2 text-sm md:text-base">
+              <IconGithub2 class="size-5" />
+              <span class="truncate overflow-ellipsis font-semibold text-accent"
+                >nicolasleigh/petify</span
+              >
+            </div>
+            <p class="mt-2 text-sm text-neutral-200">
+              A full-stack e-commerce platform for browsing and purchasing pets, featuring real-time
+              chat, advanced product filtering, and a scalable, secure backend architecture.
+            </p>
+          </a>
+        </div>
       </Section>
     </div>
   </article>
