@@ -35,11 +35,6 @@ import IconReactQuery from "../icons/IconReactQuery.vue"
     </IconWithTooltip>
   </li>
   <li class="flex items-center">
-    <IconWithTooltip tooltip="Express">
-      <IconExpress />
-    </IconWithTooltip>
-  </li>
-  <li class="flex items-center">
     <IconWithTooltip tooltip="PostgreSQL">
       <IconPostgres />
     </IconWithTooltip>
@@ -48,8 +43,5 @@ import IconReactQuery from "../icons/IconReactQuery.vue"
     <IconWithTooltip tooltip="Prisma">
       <IconPrisma />
     </IconWithTooltip>
-  </li>
-  <li class="flex items-center">
-    <IconWithTooltip tooltip="I18Next"><IconI18next /></IconWithTooltip>
   </li>
 </template>

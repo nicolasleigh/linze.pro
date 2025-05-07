@@ -40,11 +40,21 @@ const { t } = useTranslation()
       </div>
     </div>
     <div class="layout">
-      <ul class="mt-6 grid gap-8">
+      <ul class="mt-6 grid gap-16">
+        <ProjectCard
+          :title="t('projects.moviefy_title')"
+          :about="t('projects.moviefy_about')"
+          image="https://file.linze.pro/images/moviefy/1.webp"
+          repo="https://github.com/nicolasleigh/moviefy"
+          website="https://movie.linze.pro"
+          link="/projects/moviefy"
+        >
+          <Moviefy />
+        </ProjectCard>
         <ProjectCard
           :title="t('projects.cabinfy_title')"
           :about="t('projects.cabinfy_about')"
-          image="https://images.theodorusclarence.com/upload/q_auto,f_auto,c_fill,ar_1:1,w_1440/theodorusclarence/projects/hexcape/hexcape-banner-square"
+          image="https://file.linze.pro/images/cabinfy/1.webp"
           repo="https://github.com/nicolasleigh/cabinfy"
           website="https://cabin.linze.pro"
           link="/projects/cabinfy"
@@ -53,53 +63,44 @@ const { t } = useTranslation()
           <Cabinfy />
         </ProjectCard>
         <ProjectCard
-          :title="t('projects.moviefy_title')"
-          :about="t('projects.moviefy_about')"
-          image="https://images.theodorusclarence.com/upload/q_auto,f_auto,c_fill,ar_1:1,w_1440/theodorusclarence/projects/notiolink/notiolink-banner-square.png"
-          repo="https://github.com/nicolasleigh/moviefy"
-          website="https://movie.linze.pro"
-          link="/projects/moviefy"
-        >
-          <Moviefy />
-        </ProjectCard>
-        <ProjectCard
           :title="t('projects.musicfy_title')"
           :about="t('projects.musicfy_about')"
-          image="https://images.theodorusclarence.com/upload/q_auto,f_auto,c_fill,ar_1:1,w_1440/theodorusclarence/projects/seasforus/seasforus-banner-square.png"
+          image="https://file.linze.pro/images/musicfy/11.webp"
           repo="https://github.com/nicolasleigh/musicfy"
           link="/projects/musicfy"
-          reverse
         >
           <Musicfy />
         </ProjectCard>
         <ProjectCard
           :title="t('projects.petify_title')"
           :about="t('projects.petify_about')"
-          image="https://images.theodorusclarence.com/upload/q_auto,f_auto,c_fill,ar_1:1,w_1440/theodorusclarence/projects/notiolink/notiolink-banner-square.png"
+          image="https://file.linze.pro/images/petify/1.webp"
           repo="https://github.com/nicolasleigh/petify"
           website="https://pet.linze.pro"
           link="/projects/petify"
+          reverse
         >
           <Petify />
         </ProjectCard>
         <ProjectCard
           :title="t('projects.chatify_title')"
           :about="t('projects.chatify_about')"
-          image="https://images.theodorusclarence.com/upload/q_auto,f_auto,c_fill,ar_1:1,w_1440/theodorusclarence/projects/hexcape/hexcape-banner-square"
+          image="https://file.linze.pro/images/chatify/2.webp"
           repo="https://github.com/nicolasleigh/chatify"
           website="https://chat.linze.pro"
           link="/projects/chatify"
-          reverse
         >
           <Chatify />
         </ProjectCard>
         <ProjectCard
           :title="t('projects.blog_title')"
           :about="t('projects.blog_about')"
-          image="https://images.theodorusclarence.com/upload/q_auto,f_auto,c_fill,ar_1:1,w_1440/theodorusclarence/projects/notiolink/notiolink-banner-square.png"
+          image="https://file.linze.pro/images/blog/1.webp"
           repo="https://github.com/nicolasleigh/chatify"
           website="https://linze.pro"
           link="/projects/blog"
+          reverse
+          bright
         >
           <Current />
         </ProjectCard>

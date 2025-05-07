@@ -45,11 +45,6 @@ import IconReactQuery from "../icons/IconReactQuery.vue"
     </IconWithTooltip>
   </li>
   <li class="flex items-center">
-    <IconWithTooltip tooltip="Express">
-      <IconExpress />
-    </IconWithTooltip>
-  </li>
-  <li class="flex items-center">
     <IconWithTooltip tooltip="MongoDB">
       <IconMongo />
     </IconWithTooltip>

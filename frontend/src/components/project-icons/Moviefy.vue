@@ -28,11 +28,6 @@ import IconI18next from "../icons/IconI18next.vue"
     </IconWithTooltip>
   </li>
   <li class="flex items-center">
-    <IconWithTooltip tooltip="Express">
-      <IconExpress />
-    </IconWithTooltip>
-  </li>
-  <li class="flex items-center">
     <IconWithTooltip tooltip="MongoDB">
       <IconMongo />
     </IconWithTooltip>

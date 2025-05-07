@@ -137,7 +137,7 @@ watch(
           <ProjectCard
             :title="t('projects.cabinfy_title')"
             :about="t('projects.cabinfy_about')"
-            image="https://images.theodorusclarence.com/upload/q_auto,f_auto,c_fill,ar_1:1,w_1440/theodorusclarence/projects/hexcape/hexcape-banner-square"
+            image="https://file.linze.pro/images/cabinfy/1.webp"
             repo="https://github.com/nicolasleigh/cabinfy"
             website="https://cabin.linze.pro"
             link="/projects/cabinfy"
@@ -147,7 +147,7 @@ watch(
           <ProjectCard
             :title="t('projects.petify_title')"
             :about="t('projects.petify_about')"
-            image="https://images.theodorusclarence.com/upload/q_auto,f_auto,c_fill,ar_1:1,w_1440/theodorusclarence/projects/notiolink/notiolink-banner-square.png"
+            image="https://file.linze.pro/images/petify/1.webp"
             repo="https://github.com/nicolasleigh/petify"
             website="https://pet.linze.pro"
             link="/projects/petify"

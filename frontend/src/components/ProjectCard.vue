@@ -12,6 +12,7 @@ const props = defineProps({
   repo: String,
   website: String,
   reverse: Boolean,
+  bright: Boolean,
   link: String,
 })
 
@@ -20,27 +21,27 @@ const { t } = useTranslation()
 
 <template>
   <li class="lg:flex gap-8" :class="reverse ? 'flex-row-reverse' : 'flex-row'">
-    <div class="shrink-0 relative aspect-video lg:aspect-square lg:h-full">
+    <div class="shrink-0 relative aspect-video lg:h-full">
       <figure
-        class="overflow-hidden relative isolate z-[1] lg:aspect-square pointer-events-none h-full border border-neutral-900 rounded-xl"
+        class="overflow-hidden relative isolate z-[1] pointer-events-none h-full border border-neutral-900 rounded-xl"
       >
-        <img class="absolute top-0 left-0" :src="props.image" />
+        <img class="absolute" :class="bright ? '' : 'brightness-50'" :src="props.image" />
       </figure>
     </div>
     <div
-      class="grow p-6 lg:p-8 border-neutral-900 border border-dashed rounded-xl rounded-t-none lg:rounded-t-xl"
+      class="grow p-6 border-neutral-900 border border-dashed rounded-xl rounded-t-none lg:rounded-t-xl"
     >
       <h3 class="text-2xl md:text-4xl text-neutral-200 font-semibold">{{ props.title }}</h3>
-      <p class="mt-6 text-neutral-300">
+      <p class="mt-4 text-neutral-300">
         {{ props.about }}
       </p>
-      <div class="flex items-center gap-2 mt-6 text-neutral-300">
+      <div class="flex items-center gap-2 mt-4 text-neutral-300">
         <p class="text-sm">{{ t("projects.tool") }}</p>
         <ul class="flex items-center gap-2 text-xl text-neutral-50">
           <slot></slot>
         </ul>
       </div>
-      <div class="w-full flex flex-wrap justify-between gap-4 items-center mt-10">
+      <div class="w-full flex flex-wrap justify-between gap-4 items-center mt-6 mb-6">
         <RouterLink
           :to="{ path: props.link || '', state: { about: props.about } }"
           class="relative group px-4 py-3 rounded-xl border inline-flex items-center gap-3 cursor-pointer text-neutral-100 hover:bg-neutral-100 hover:text-neutral-800 transition-colors duration-300"
