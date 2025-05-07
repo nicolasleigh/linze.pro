@@ -3,14 +3,26 @@ import { useActiveSection } from "@/hooks/useActiveSection"
 import { getSectionTitleAndSlugChinese } from "@/utils/helper"
 import { h2Style, h3Style, h4Style, paragraphStyle, unorderedListStyle } from "../../CommonStyle"
 import Section from "../../Section.vue"
+import ImageDialog from "@/components/ImageDialog.vue"
+import IconChrome from "@/components/icons/IconChrome.vue"
+import IconGithub2 from "@/components/icons/IconGithub2.vue"
 
 const { activeSection } = useActiveSection()
 
-const sectionTitle = ["简短说明", "功能特点", "技术栈", "我的收获", "最终思考"]
+const sectionTitle = [
+  "简短说明",
+  "功能特点",
+  "演示视频与截图",
+  "技术栈",
+  "我的收获",
+  "最终思考",
+  "在线网站与源码链接",
+]
 
 const section = getSectionTitleAndSlugChinese(sectionTitle)
 
 defineExpose({ section, activeSection })
+defineProps<{ demoImages: string[] }>()
 </script>
 
 <template>
@@ -68,9 +80,22 @@ defineExpose({ section, activeSection })
           </li>
         </ul>
       </Section>
+
       <Section :id="section[2].slug">
         <h2 :class="h2Style">
           {{ section[2].title }}
+        </h2>
+        <video controls>
+          <source src="https://file.linze.pro/videos/cabinfy/1.mp4" type="video/mp4" />
+        </video>
+        <div class="grid grid-cols-2 gap-2 mt-2">
+          <ImageDialog v-for="(item, index) in demoImages" :key="index" :url="item" />
+        </div>
+      </Section>
+
+      <Section :id="section[3].slug">
+        <h2 :class="h2Style">
+          {{ section[3].title }}
         </h2>
         <p :class="paragraphStyle">
           CabinFy 基于现代且可扩展的全栈架构构建，设计时充分考虑了性能、可维护性以及开发者体验。
@@ -101,9 +126,9 @@ defineExpose({ section, activeSection })
           <li>Makefile – 自动化常见开发任务和部署流程，减少手动输入 Linux 命令时出错的风险</li>
         </ul>
       </Section>
-      <Section :id="section[3].slug">
+      <Section :id="section[4].slug">
         <h2 :class="h2Style">
-          {{ section[3].title }}
+          {{ section[4].title }}
         </h2>
         <p :class="paragraphStyle">
           开发 CabinFy
@@ -141,9 +166,9 @@ defineExpose({ section, activeSection })
           这个项目不仅是一次技术实践，也是一次深入思考架构、性能与可维护性的机会，这些宝贵的经验将成为我未来项目中重要的能力积累。
         </p>
       </Section>
-      <Section :id="section[4].slug">
+      <Section :id="section[5].slug">
         <h2 :class="h2Style">
-          {{ section[4].title }}
+          {{ section[5].title }}
         </h2>
         <p :class="paragraphStyle">
           CabinFy
@@ -160,6 +185,43 @@ defineExpose({ section, activeSection })
           更重要的是，CabinFy
           让我对真实世界中网页应用的设计、开发与部署有了更清晰的认识，也让我有了迎接更复杂、以用户为中心项目的信心。
         </p>
+      </Section>
+
+      <Section :id="section[6].slug">
+        <h2 :class="h2Style">
+          {{ section[6].title }}
+        </h2>
+        <div class="space-y-2">
+          <a
+            target="_blank"
+            referrerpolicy="no-referrer"
+            href="https://cabin.linze.pro"
+            class="!block max-w-xl px-4 py-3 rounded-lg border border-neutral-800 scale-100 transform-gpu hover:scale-[1.02] active:scale-[0.97] transition duration-200 cursor-newtab"
+          >
+            <div class="flex items-center gap-2 text-sm md:text-base">
+              <IconChrome class="size-5" />
+              <span class="text-accent font-semibold">cabin.linze.pro</span>
+            </div>
+          </a>
+
+          <a
+            target="_blank"
+            referrerpolicy="no-referrer"
+            href="https://github.com/nicolasleigh/cabinfy"
+            class="!block max-w-xl px-4 py-3 rounded-lg border border-neutral-800 scale-100 transform-gpu hover:scale-[1.02] active:scale-[0.97] transition duration-200 cursor-newtab"
+          >
+            <div class="flex items-center gap-2 text-sm md:text-base">
+              <IconGithub2 class="size-5" />
+              <span class="truncate overflow-ellipsis font-semibold text-accent"
+                >nicolasleigh/cabinfy</span
+              >
+            </div>
+            <p class="mt-2 text-sm text-neutral-200">
+              Modern cabin booking platform with multilingual support and a sleek admin dashboard
+              for seamless rental management.
+            </p>
+          </a>
+        </div>
       </Section>
     </div>
   </article>
