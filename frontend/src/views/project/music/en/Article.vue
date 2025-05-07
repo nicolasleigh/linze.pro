@@ -9,19 +9,23 @@ import {
 } from "../../CommonStyle"
 import Section from "../../Section.vue"
 import { useActiveSection } from "@/hooks/useActiveSection"
+import ImageDialog from "@/components/ImageDialog.vue"
+import IconGithub2 from "@/components/icons/IconGithub2.vue"
 
 const sectionTitle = [
   "Project Overview",
   "Project Goals",
   "Tech Stack",
+  "Demo Video & Screenshots",
   "What I Learned",
   "Future Improvements",
-  "Live Demo & Source Code",
+  "Source Code",
 ]
 
 const { activeSection } = useActiveSection()
 const section = getSectionTitleAndSlug(sectionTitle)
 defineExpose({ section, activeSection })
+defineProps<{ demoImages: string[] }>()
 </script>
 
 <template>
@@ -116,9 +120,22 @@ defineExpose({ section, activeSection })
           </li>
         </ul>
       </Section>
+
       <Section :id="section[3].slug">
         <h2 :class="h2Style">
           {{ section[3].title }}
+        </h2>
+        <video controls>
+          <source src="https://file.linze.pro/videos/musicfy/1.mp4" type="video/mp4" />
+        </video>
+        <div class="grid grid-cols-2 gap-2 mt-2">
+          <img v-for="(item, index) in demoImages" :key="index" :src="item" />
+        </div>
+      </Section>
+
+      <Section :id="section[4].slug">
+        <h2 :class="h2Style">
+          {{ section[4].title }}
         </h2>
         <p :class="paragraphStyle">
           Building MusicFy was a hands-on journey that helped me grow both as a developer and as a
@@ -159,9 +176,9 @@ defineExpose({ section, activeSection })
           deepened my understanding of the full development lifecycle—from design to deployment.
         </p>
       </Section>
-      <Section :id="section[4].slug">
+      <Section :id="section[5].slug">
         <h2 :class="h2Style">
-          {{ section[4].title }}
+          {{ section[5].title }}
         </h2>
         <p :class="paragraphStyle">
           While MusicFy is fully functional on both Android and iOS devices, there are several
@@ -211,10 +228,27 @@ defineExpose({ section, activeSection })
           across platforms.
         </p>
       </Section>
-      <Section :id="section[5].slug">
+      <Section :id="section[6].slug">
         <h2 :class="h2Style">
-          {{ section[5].title }}
+          {{ section[6].title }}
         </h2>
+        <div class="space-y-2">
+          <a
+            target="_blank"
+            referrerpolicy="no-referrer"
+            href="https://github.com/nicolasleigh/musicfy"
+            class="!block max-w-xl px-4 py-3 rounded-lg border border-neutral-800 scale-100 transform-gpu hover:scale-[1.02] active:scale-[0.97] transition duration-200 cursor-newtab"
+          >
+            <div class="flex items-center gap-2 text-sm md:text-base">
+              <IconGithub2 class="size-5" />
+              <span class="truncate overflow-ellipsis font-semibold text-accent"
+                >nicolasleigh/musicfy</span
+              >
+            </div>
+            <!-- <p class="mt-2 text-sm text-neutral-200">
+            </p> -->
+          </a>
+        </div>
       </Section>
     </div>
   </article>

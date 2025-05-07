@@ -1,21 +1,31 @@
 <script setup lang="ts">
 import { getSectionTitleAndSlug, getSectionTitleAndSlugChinese } from "@/utils/helper"
-import { h2Style, h3Style, orderedListStyle, paragraphStyle, unorderedListStyle } from "../../CommonStyle"
+import {
+  h2Style,
+  h3Style,
+  orderedListStyle,
+  paragraphStyle,
+  unorderedListStyle,
+} from "../../CommonStyle"
 import Section from "../../Section.vue"
 import { useActiveSection } from "@/hooks/useActiveSection"
+import ImageDialog from "@/components/ImageDialog.vue"
+import IconGithub2 from "@/components/icons/IconGithub2.vue"
 
 const sectionTitle = [
   "项目概述",
   "项目目标",
   "技术栈",
+  "演示视频与截图",
   "我的收获",
   "未来改进",
-  "在线演示与源码链接",
+  "源码链接",
 ]
 
 const { activeSection } = useActiveSection()
 const section = getSectionTitleAndSlugChinese(sectionTitle)
 defineExpose({ section, activeSection })
+defineProps<{ demoImages: string[] }>()
 </script>
 
 <template>
@@ -89,9 +99,22 @@ defineExpose({ section, activeSection })
           <li>Caddy – 用作 Web 服务器和反向代理，支持自动 HTTPS，用于服务后端 API</li>
         </ul>
       </Section>
+
       <Section :id="section[3].slug">
         <h2 :class="h2Style">
           {{ section[3].title }}
+        </h2>
+        <video controls>
+          <source src="https://file.linze.pro/videos/musicfy/1.mp4" type="video/mp4" />
+        </video>
+        <div class="grid grid-cols-2 gap-2 mt-2">
+          <img v-for="(item, index) in demoImages" :key="index" :src="item" />
+        </div>
+      </Section>
+
+      <Section :id="section[4].slug">
+        <h2 :class="h2Style">
+          {{ section[4].title }}
         </h2>
         <p :class="paragraphStyle">
           构建 MusicFy 是一次实践性的旅程，帮助我在开发技能和问题解决能力上都有了显著成长。通过跳出
@@ -125,9 +148,9 @@ defineExpose({ section, activeSection })
           这个项目不仅提升了我构建可扩展、真实世界应用的信心，也让我对从设计到部署的完整开发生命周期有了更深刻的理解。
         </p>
       </Section>
-      <Section :id="section[4].slug">
+      <Section :id="section[5].slug">
         <h2 :class="h2Style">
-          {{ section[4].title }}
+          {{ section[5].title }}
         </h2>
         <p :class="paragraphStyle">
           尽管 MusicFy 已经可以在 Android 和 iOS
@@ -156,10 +179,27 @@ defineExpose({ section, activeSection })
           将变得更加完善、可扩展，并为用户提供更加出色的跨平台体验。
         </p>
       </Section>
-      <Section :id="section[5].slug">
+      <Section :id="section[6].slug">
         <h2 :class="h2Style">
-          {{ section[5].title }}
+          {{ section[6].title }}
         </h2>
+        <div class="space-y-2">
+          <a
+            target="_blank"
+            referrerpolicy="no-referrer"
+            href="https://github.com/nicolasleigh/musicfy"
+            class="!block max-w-xl px-4 py-3 rounded-lg border border-neutral-800 scale-100 transform-gpu hover:scale-[1.02] active:scale-[0.97] transition duration-200 cursor-newtab"
+          >
+            <div class="flex items-center gap-2 text-sm md:text-base">
+              <IconGithub2 class="size-5" />
+              <span class="truncate overflow-ellipsis font-semibold text-accent"
+                >nicolasleigh/musicfy</span
+              >
+            </div>
+            <!-- <p class="mt-2 text-sm text-neutral-200">
+            </p> -->
+          </a>
+        </div>
       </Section>
     </div>
   </article>
