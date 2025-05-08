@@ -1,5 +1,5 @@
 include ./backend/.envrc
-MIGRATIONS_PATH=./migrate/migrations
+MIGRATIONS_PATH=./cmd/migrate/migrations
 
 .PHONY: res/send
 res/send:
