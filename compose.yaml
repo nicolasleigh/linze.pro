@@ -35,12 +35,12 @@ services:
       - "127.0.0.1:8085:8085"
 
   redis:
-  image: redis:6.2-alpine
-  restart: always
-  container_name: blog-redis
-  ports:
-    - "6379:6379"
-  command: redis-server --save 60 1 --loglevel warning
+    image: redis:6.2-alpine
+    restart: always
+    container_name: blog-redis
+    ports:
+      - "6379:6379"
+    command: redis-server --save 60 1 --loglevel warning
 
 secrets:
   db_password:
