@@ -245,8 +245,10 @@ defineProps<{ demoImages: string[] }>()
                 >nicolasleigh/musicfy</span
               >
             </div>
-            <!-- <p class="mt-2 text-sm text-neutral-200">
-            </p> -->
+            <p class="mt-2 text-sm text-neutral-200">
+              A full-stack music streaming app for mobile, built with bare React Native for maximum
+              performance and flexibility.
+            </p>
           </a>
         </div>
       </Section>
