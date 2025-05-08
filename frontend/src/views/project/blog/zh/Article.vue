@@ -3,6 +3,8 @@ import { getSectionTitleAndSlug, getSectionTitleAndSlugChinese } from "@/utils/h
 import Section from "../../Section.vue"
 import { h2Style, orderedListStyle, paragraphStyle, unorderedListStyle } from "../../CommonStyle"
 import { useActiveSection } from "@/hooks/useActiveSection"
+import IconGithub2 from "@/components/icons/IconGithub2.vue"
+import IconChrome from "@/components/icons/IconChrome.vue"
 
 const sectionTitle = [
   "项目概述",
@@ -15,7 +17,7 @@ const sectionTitle = [
   "我的收获",
   "未来改进",
   "总结",
-  "在线演示与源码链接",
+  "在线网站与源码链接",
 ]
 
 const { activeSection } = useActiveSection()
@@ -156,6 +158,42 @@ defineExpose({ section, activeSection })
           Docker 等现代技术，我构建了一个安全、可扩展且功能丰富的应用。本项目展现了我在前后端开发及
           DevOps 实践中的能力，体现了我对行业标准工具和开发流程的熟练运用。
         </p>
+      </Section>
+      <Section :id="section[10].slug">
+        <h2 :class="h2Style">
+          {{ section[10].title }}
+        </h2>
+        <div class="space-y-2">
+          <a
+            target="_blank"
+            referrerpolicy="no-referrer"
+            href="https://linze.pro"
+            class="!block max-w-xl px-4 py-3 rounded-lg border border-neutral-800 scale-100 transform-gpu hover:scale-[1.02] active:scale-[0.97] transition duration-200 cursor-newtab"
+          >
+            <div class="flex items-center gap-2 text-sm md:text-base">
+              <IconChrome class="size-5" />
+              <span class="text-accent font-semibold">linze.pro</span>
+            </div>
+          </a>
+
+          <a
+            target="_blank"
+            referrerpolicy="no-referrer"
+            href="https://github.com/nicolasleigh/linze.pro"
+            class="!block max-w-xl px-4 py-3 rounded-lg border border-neutral-800 scale-100 transform-gpu hover:scale-[1.02] active:scale-[0.97] transition duration-200 cursor-newtab"
+          >
+            <div class="flex items-center gap-2 text-sm md:text-base">
+              <IconGithub2 class="size-5" />
+              <span class="truncate overflow-ellipsis font-semibold text-accent"
+                >nicolasleigh/linze.pro</span
+              >
+            </div>
+            <p class="mt-2 text-sm text-neutral-200">
+              A modern, multilingual blog app built with Vue and Go to showcase my portfolio and
+              share technical articles.
+            </p>
+          </a>
+        </div>
       </Section>
     </div>
   </article>

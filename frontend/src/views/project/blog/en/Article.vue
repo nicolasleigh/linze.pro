@@ -3,6 +3,8 @@ import { getSectionTitleAndSlug } from "@/utils/helper"
 import Section from "../../Section.vue"
 import { h2Style, orderedListStyle, paragraphStyle, unorderedListStyle } from "../../CommonStyle"
 import { useActiveSection } from "@/hooks/useActiveSection"
+import IconGithub2 from "@/components/icons/IconGithub2.vue"
+import IconChrome from "@/components/icons/IconChrome.vue"
 
 const sectionTitle = [
   "Project Overview",
@@ -15,7 +17,7 @@ const sectionTitle = [
   "What I Learned",
   "Future Improvements",
   "Summary",
-  "Live Demo & Source Code",
+  "Live Site & Source Code",
 ]
 
 const { activeSection } = useActiveSection()
@@ -197,6 +199,37 @@ defineExpose({ section, activeSection })
         <h2 :class="h2Style">
           {{ section[10].title }}
         </h2>
+        <div class="space-y-2">
+          <a
+            target="_blank"
+            referrerpolicy="no-referrer"
+            href="https://linze.pro"
+            class="!block max-w-xl px-4 py-3 rounded-lg border border-neutral-800 scale-100 transform-gpu hover:scale-[1.02] active:scale-[0.97] transition duration-200 cursor-newtab"
+          >
+            <div class="flex items-center gap-2 text-sm md:text-base">
+              <IconChrome class="size-5" />
+              <span class="text-accent font-semibold">linze.pro</span>
+            </div>
+          </a>
+
+          <a
+            target="_blank"
+            referrerpolicy="no-referrer"
+            href="https://github.com/nicolasleigh/linze.pro"
+            class="!block max-w-xl px-4 py-3 rounded-lg border border-neutral-800 scale-100 transform-gpu hover:scale-[1.02] active:scale-[0.97] transition duration-200 cursor-newtab"
+          >
+            <div class="flex items-center gap-2 text-sm md:text-base">
+              <IconGithub2 class="size-5" />
+              <span class="truncate overflow-ellipsis font-semibold text-accent"
+                >nicolasleigh/linze.pro</span
+              >
+            </div>
+            <p class="mt-2 text-sm text-neutral-200">
+              A modern, multilingual blog app built with Vue and Go to showcase my portfolio and
+              share technical articles.
+            </p>
+          </a>
+        </div>
       </Section>
     </div>
   </article>

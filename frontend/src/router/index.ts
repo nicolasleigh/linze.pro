@@ -1,22 +1,18 @@
 import { createRouter, createWebHistory, RouterView } from "vue-router"
 import HomeView from "../views/HomeView.vue"
-import LoginForm from "@/views/LoginForm.vue"
-import SignupForm from "@/views/SignupForm.vue"
-import MdPreview from "@/components/MdPreview.vue"
 import Posts from "@/views/Posts.vue"
-import CreatePost from "@/views/CreatePost.vue"
 import Projects from "@/views/Projects.vue"
-import Post from "@/views/Post.vue"
-import EditPost from "@/views/EditPost.vue"
-import Cabinfy from "@/views/project/cabin/Cabinfy.vue"
-import Moviefy from "@/views/project/movie/Moviefy.vue"
-import Musicfy from "@/views/project/music/Musicfy.vue"
-import Chatify from "@/views/project/chat/Chatify.vue"
-import Petify from "@/views/project/pet/Petify.vue"
-import Blog from "@/views/project/blog/Blog.vue"
+// import LoginForm from "@/views/LoginForm.vue"
+// import SignupForm from "@/views/SignupForm.vue"
+// import Post from "@/views/Post.vue"
+// import Cabinfy from "@/views/project/cabin/Cabinfy.vue"
+// import Moviefy from "@/views/project/movie/Moviefy.vue"
+// import Musicfy from "@/views/project/music/Musicfy.vue"
+// import Chatify from "@/views/project/chat/Chatify.vue"
+// import Petify from "@/views/project/pet/Petify.vue"
+// import Blog from "@/views/project/blog/Blog.vue"
+// import AboutView from "@/views/AboutView.vue"
 import { h } from "vue"
-import AboutView from "@/views/AboutView.vue"
-import CommentView from "@/views/CommentView.vue"
 
 const activeLinkStyle = "text-accent"
 
@@ -41,17 +37,17 @@ const router = createRouter({
     {
       path: "/login",
       name: "login",
-      component: LoginForm,
+      component: () => import("@/views/LoginForm.vue"),
     },
     {
       path: "/signup",
       name: "signup",
-      component: SignupForm,
+      component: () => import("@/views/SignupForm.vue"),
     },
     {
       path: "/editor",
       name: "editor",
-      component: CreatePost,
+      component: () => import("@/views/CreatePost.vue"),
     },
     {
       path: "/posts",
@@ -65,14 +61,14 @@ const router = createRouter({
         {
           path: ":slug",
           name: "post",
-          component: Post,
+          component: () => import("@/views/Post.vue"),
         },
       ],
     },
     {
       path: "/edit-post/:slug",
       name: "edit-post",
-      component: EditPost,
+      component: () => import("@/views/EditPost.vue"),
     },
     {
       path: "/projects",
@@ -86,44 +82,44 @@ const router = createRouter({
         {
           path: "cabinfy",
           name: "cabinfy",
-          component: Cabinfy,
+          component: () => import("@/views/project/cabin/Cabinfy.vue"),
         },
         {
           path: "moviefy",
           name: "moviefy",
-          component: Moviefy,
+          component: () => import("@/views/project/movie/Moviefy.vue"),
         },
         {
           path: "musicfy",
           name: "musicfy",
-          component: Musicfy,
+          component: () => import("@/views/project/music/Musicfy.vue"),
         },
         {
           path: "chatify",
           name: "chatify",
-          component: Chatify,
+          component: () => import("@/views/project/chat/Chatify.vue"),
         },
         {
           path: "petify",
           name: "petify",
-          component: Petify,
+          component: () => import("@/views/project/pet/Petify.vue"),
         },
         {
           path: "blog",
           name: "blog",
-          component: Blog,
+          component: () => import("@/views/project/blog/Blog.vue"),
         },
       ],
     },
     {
       path: "/about",
       name: "about",
-      component: AboutView,
+      component: () => import("@/views/AboutView.vue"),
     },
     {
       path: "/comments",
       name: "comments",
-      component: CommentView,
+      component: () => import("@/views/CommentView.vue"),
     },
   ],
 })

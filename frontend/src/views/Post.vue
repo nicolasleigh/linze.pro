@@ -1,11 +1,12 @@
 <script setup lang="ts">
-import MdPreview from "@/components/MdPreview.vue"
+const MdPreview = defineAsyncComponent(() => import("@/components/MdPreview.vue"))
+// import MdPreview from "@/components/MdPreview.vue"
 import PostTag from "@/components/PostTag.vue"
 import { usePost } from "@/hooks/usePost"
 import { useGetPostLike, usePostLike, usePostView } from "@/hooks/useLikeAndView"
 import { dateFormat } from "@/utils/helper"
 import { BookOpen, Calendar, CalendarDays, ChevronRight, Eye, Heart } from "lucide-vue-next"
-import { computed, ref, watch } from "vue"
+import { computed, defineAsyncComponent, ref, watch } from "vue"
 import { useRoute } from "vue-router"
 import { useTranslation } from "i18next-vue"
 import LikedButton from "@/components/LikedButton.vue"

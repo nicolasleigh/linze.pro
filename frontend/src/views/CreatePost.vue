@@ -1,6 +1,7 @@
 <script setup lang="ts">
-import { ref } from "vue"
-import Editor from "@/components/Editor.vue"
+import { defineAsyncComponent, ref } from "vue"
+const Editor = defineAsyncComponent(() => import("@/components/Editor.vue"))
+// import Editor from "@/components/Editor.vue"
 import InputTags from "@/components/InputTags.vue"
 import Button from "@/components/ui/button/Button.vue"
 import { Label } from "@/components/ui/label"
