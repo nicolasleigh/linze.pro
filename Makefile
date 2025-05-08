@@ -21,6 +21,10 @@ compose/up:
 backend/createdb:
 	sudo docker exec -it blog-postgres createdb -U nicolas blog
 
+.PHONY: backend/psql
+backend/psql:
+	sudo docker exec -it blog-postgres psql -U nicolas blog
+
 .PHONY: backend/migrate/up
 backend/migrate/up:
 	sudo docker exec blog-backend migrate -database ${CLOUD_DB_DSN} -path ${MIGRATIONS_PATH} up
