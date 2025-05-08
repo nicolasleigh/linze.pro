@@ -1,0 +1,54 @@
+name: blog
+
+services:
+  postgres:
+    restart: always
+    image: postgres:16.8-alpine3.20
+    container_name: blog-postgres
+    environment:
+      POSTGRES_DB: blog
+      POSTGRES_USER: nicolas
+      POSTGRES_PASSWORD_FILE: /run/secrets/db_password
+    secrets:
+      - db_password
+    networks:
+      - backend_network
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    expose:
+      - "5432"
+
+  backend:
+    restart: always
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: blog-backend
+    env_file: "./backend/.envrc"
+    environment:
+      APP_ENV: production
+    networks:
+      - backend_network
+    depends_on:
+      - postgres
+    ports:
+      - "127.0.0.1:8085:8085"
+
+  redis:
+  image: redis:6.2-alpine
+  restart: always
+  container_name: blog-redis
+  ports:
+    - "6379:6379"
+  command: redis-server --save 60 1 --loglevel warning
+
+secrets:
+  db_password:
+    file: db_password.txt
+
+volumes:
+  postgres_data:
+
+networks:
+  backend_network:
+    driver: bridge

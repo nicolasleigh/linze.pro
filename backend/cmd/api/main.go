@@ -2,6 +2,7 @@ package main
 
 import (
 	"expvar"
+	"os"
 	"runtime"
 	"time"
 
@@ -19,17 +20,25 @@ import (
 const version = "1.1.0"
 
 func main() {
+	var dsnEnv string
+	if os.Getenv("APP_ENV") == "production" {
+		dsnEnv = os.Getenv("CLOUD_DB_DSN")
+	} else {
+		dsnEnv = os.Getenv("DB_DSN")
+	}
+
 	cfg := config{
 		addr:        env.GetString("ADDR", ":8080"),
 		apiURL:      env.GetString("EXTERNAL_URL", "localhost:8080"),
 		frontendURL: env.GetString("FRONTEND_URL", "http://localhost:4000"),
 		db: dbConfig{
-			addr:         env.GetString("DB_ADDR", "postgres://admin:adminpassword@localhost:5432/social?sslmode=disable"),
+			// addr:         env.GetString("DB_ADDR", "postgres://admin:adminpassword@localhost:5432/social?sslmode=disable"),
+			addr:         dsnEnv,
 			maxOpenConns: env.GetInt("DB_MAX_OPEN_CONNS", 30),
 			maxIdleConns: env.GetInt("DB_MAX_IDLE_CONNS", 30),
 			maxIdleTime:  env.GetString("DB_MAX_IDLE_TIME", "15m"),
 		},
-		env: env.GetString("ENV", "development"),
+		env: env.GetString("APP_ENV", "development"),
 		mail: mailConfig{
 			exp:       time.Hour * 24 * 3, // 3 days
 			fromEmail: env.GetString("FROM_EMAIL", ""),
