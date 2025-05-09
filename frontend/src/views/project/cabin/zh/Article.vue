@@ -217,8 +217,7 @@ defineProps<{ demoImages: string[] }>()
               >
             </div>
             <p class="mt-2 text-sm text-neutral-200">
-              Modern cabin booking platform with multilingual support and a sleek admin dashboard
-              for seamless rental management.
+              现代化的小屋预订平台，支持多语言，并配备简洁高效的管理后台，实现无缝租赁管理。
             </p>
           </a>
         </div>

@@ -197,8 +197,8 @@ defineProps<{ demoImages: string[] }>()
               >
             </div>
             <p class="mt-2 text-sm text-neutral-200">
-              A full-stack music streaming app for mobile, built with bare React Native for maximum
-              performance and flexibility.
+              一个面向移动端的全栈音乐流媒体应用，使用纯 React Native
+              构建，兼具极致性能与高度灵活性。
             </p>
           </a>
         </div>

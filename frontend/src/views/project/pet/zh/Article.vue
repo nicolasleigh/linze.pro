@@ -267,8 +267,7 @@ defineProps<{ demoImages: string[] }>()
               >
             </div>
             <p class="mt-2 text-sm text-neutral-200">
-              A full-stack e-commerce platform for browsing and purchasing pets, featuring real-time
-              chat, advanced product filtering, and a scalable, secure backend architecture.
+              一个全栈电商平台，用于浏览和购买宠物，具备实时聊天、先进的商品筛选功能，以及可扩展且安全的后端架构。
             </p>
           </a>
         </div>

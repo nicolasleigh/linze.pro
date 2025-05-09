@@ -42,7 +42,7 @@ watch(
     <section
       class="flex w-full md:h-screen items-start pb-12 pt-12 md:pb-20 md:pt-36 bg-cover bg-no-repeat bg-[linear-gradient(to_bottom,rgba(0,0,0,0.1),rgba(0,0,0,0.9)),url(/hero.webp)]"
     >
-      <div class="mx-auto w-11/12 min-[450px]:ml-5 sm:ml-10 md:ml-20 lg:ml-24 xl:ml-40 mt-14">
+      <div class="mx-auto w-11/12 min-[450px]:ml-5 sm:ml-10 md:ml-20 lg:ml-24 xl:ml-40 mt-28">
         <div class="max-w-[29rem] text-left text-white">
           <h1 class="text-2xl sm:text-4xl md:text-6xl mt-10 font-semibold">
             {{ t("home.hero_title") }}

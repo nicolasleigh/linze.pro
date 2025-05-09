@@ -100,7 +100,6 @@ const { t } = useTranslation()
           website="https://linze.pro"
           link="/projects/blog"
           reverse
-          bright
         >
           <Current />
         </ProjectCard>

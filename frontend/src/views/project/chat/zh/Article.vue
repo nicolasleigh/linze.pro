@@ -234,9 +234,8 @@ defineProps<{ demoImages: string[] }>()
               >
             </div>
             <p class="mt-2 text-sm text-neutral-200">
-              A real-time chat app with support for audio and video calls, rebuilt with Golang and
-              PostgreSQL for high performance, efficient database operations, and scalable backend
-              architecture.
+              一个支持音频和视频通话的实时聊天应用，使用 Golang 和 PostgreSQL
+              重新构建，以实现高性能、高效的数据库操作和可扩展的后端架构。
             </p>
           </a>
         </div>

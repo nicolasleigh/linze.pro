@@ -382,7 +382,8 @@ defineProps<{ demoImages: string[] }>()
               >
             </div>
             <p class="mt-2 text-sm text-neutral-200">
-              A full-stack movie platform with user and admin interfaces
+              A full-stack movie platform with user and admin interfaces — featuring movie
+              streaming, reviews, and content management.
             </p>
           </a>
         </div>

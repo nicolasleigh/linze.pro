@@ -325,7 +325,7 @@ defineProps<{ demoImages: string[] }>()
               >
             </div>
             <p class="mt-2 text-sm text-neutral-200">
-              A full-stack movie platform with user and admin interfaces
+              一个全栈电影平台，包含用户端和管理端界面，支持电影播放、评论功能及内容管理。
             </p>
           </a>
         </div>

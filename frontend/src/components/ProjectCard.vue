@@ -12,7 +12,6 @@ const props = defineProps({
   repo: String,
   website: String,
   reverse: Boolean,
-  bright: Boolean,
   link: String,
 })
 
@@ -25,7 +24,7 @@ const { t } = useTranslation()
       <figure
         class="overflow-hidden relative isolate z-[1] pointer-events-none h-full border border-neutral-900 rounded-xl"
       >
-        <img class="absolute" :class="bright ? '' : 'brightness-50'" :src="props.image" />
+        <img class="absolute" :src="props.image" />
       </figure>
     </div>
     <div
