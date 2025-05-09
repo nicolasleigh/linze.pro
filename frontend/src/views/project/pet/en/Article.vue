@@ -12,6 +12,7 @@ import { useActiveSection } from "@/hooks/useActiveSection"
 import ImageDialog from "@/components/ImageDialog.vue"
 import IconGithub2 from "@/components/icons/IconGithub2.vue"
 import IconChrome from "@/components/icons/IconChrome.vue"
+import VideoPlayer from "@/components/VideoPlayer.vue"
 
 const sectionTitle = [
   "Project Overview",
@@ -197,9 +198,10 @@ defineProps<{ demoImages: string[] }>()
         <h2 :class="h2Style">
           {{ section[5].title }}
         </h2>
-        <video controls>
+        <VideoPlayer src="https://file.linze.pro/videos/petify/master.m3u8" />
+        <!-- <video controls>
           <source src="https://file.linze.pro/videos/petify/1.mp4" type="video/mp4" />
-        </video>
+        </video> -->
         <div class="grid grid-cols-2 gap-2 mt-2">
           <ImageDialog v-for="(item, index) in demoImages" :key="index" :url="item" />
         </div>

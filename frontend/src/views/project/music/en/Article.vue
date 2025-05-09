@@ -125,7 +125,7 @@ defineProps<{ demoImages: string[] }>()
         <h2 :class="h2Style">
           {{ section[3].title }}
         </h2>
-        <VideoPlayer src="https://file.linze.pro/videos/musicfy/index.m3u8" />
+        <VideoPlayer src="https://file.linze.pro/videos/musicfy/master.m3u8" />
         <div class="grid grid-cols-2 gap-2 mt-2">
           <img v-for="(item, index) in demoImages" :key="index" :src="item" />
         </div>

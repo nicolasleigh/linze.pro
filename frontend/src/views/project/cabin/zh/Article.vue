@@ -6,6 +6,7 @@ import Section from "../../Section.vue"
 import ImageDialog from "@/components/ImageDialog.vue"
 import IconChrome from "@/components/icons/IconChrome.vue"
 import IconGithub2 from "@/components/icons/IconGithub2.vue"
+import VideoPlayer from "@/components/VideoPlayer.vue"
 
 const { activeSection } = useActiveSection()
 
@@ -85,9 +86,10 @@ defineProps<{ demoImages: string[] }>()
         <h2 :class="h2Style">
           {{ section[2].title }}
         </h2>
-        <video controls>
+        <!-- <video controls>
           <source src="https://file.linze.pro/videos/cabinfy/1.mp4" type="video/mp4" />
-        </video>
+        </video> -->
+        <VideoPlayer src="https://file.linze.pro/videos/cabinfy/master.m3u8" />
         <div class="grid grid-cols-2 gap-2 mt-2">
           <ImageDialog v-for="(item, index) in demoImages" :key="index" :url="item" />
         </div>
