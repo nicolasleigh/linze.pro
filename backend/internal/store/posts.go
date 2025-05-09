@@ -238,9 +238,10 @@ func (s *PostStore) GetTags(ctx context.Context) (string, error) {
 }
 
 func (s *PostStore) GetByTag(ctx context.Context, limit, offset int, tag string) (*[]Post, error) {
-	query := `SELECT p.slug, u.email, u.username, p.title_en, p.title_zh, p.about_en, p.about_zh, p.created_at, p.updated_at, tags, p.photo
+	query := `SELECT p.slug, u.email, u.username, p.title_en, p.title_zh, p.about_en, p.about_zh, p.created_at, p.updated_at, tags, p.photo, l.view_num, l.like_num
 	FROM posts AS p
 	JOIN users AS u ON u.id = p.user_id
+	JOIN post_likes AS l ON l.post_slug = p.slug
 	WHERE $3 = ANY(p.tags)
 	ORDER BY p.created_at DESC
 	LIMIT $1 OFFSET $2;
@@ -274,6 +275,8 @@ func (s *PostStore) GetByTag(ctx context.Context, limit, offset int, tag string)
 			&post.UpdatedAt,
 			pq.Array(&post.Tags),
 			&post.Photo,
+			&post.ViewNum,
+			&post.LikeNum,
 		)
 		if err != nil {
 			return nil, err

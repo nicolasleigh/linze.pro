@@ -18,11 +18,11 @@ const postCtx postKey = "post"
 type CreatePostPayload struct {
 	Slug      string   `json:"slug" validate:"required,max=100"`
 	TitleEn   string   `json:"titleEn" validate:"required,max=100"`
-	AboutEn   string   `json:"aboutEn" validate:"required,max=500"`
-	ContentEn string   `json:"contentEn" validate:"required,max=5000"`
-	TitleZh   string   `json:"titleZh" validate:"required,max=100"`
-	AboutZh   string   `json:"aboutZh" validate:"required,max=500"`
-	ContentZh string   `json:"contentZh" validate:"required,max=5000"`
+	AboutEn   string   `json:"aboutEn" validate:"max=500"`
+	ContentEn string   `json:"contentEn" validate:"max=10000"`
+	TitleZh   string   `json:"titleZh" validate:"max=100"`
+	AboutZh   string   `json:"aboutZh" validate:"max=500"`
+	ContentZh string   `json:"contentZh" validate:"max=10000"`
 	Tags      []string `json:"tags" validate:"required"`
 	Photo     string   `json:"photo" validate:"required"`
 }

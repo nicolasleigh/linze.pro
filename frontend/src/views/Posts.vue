@@ -70,15 +70,10 @@ watch(
           class="grid md:grid-cols-[1fr,18rem] md:gap-8 md:[&>aside]:order-1 min-h-[calc(100vh-28rem)]"
         >
           <PostAside />
-
-          <ul class="md:border-r border-neutral-900 md:pr-8 grid gap-8 py-6">
-            <li
-              v-for="(item, index) in resultPost"
-              :key="index"
-              class="w-full rounded-md @container/blog-card transition duration-100 group"
-            >
+          <ul class="md:border-r border-neutral-900 md:pr-8 grid py-6">
+            <li v-for="(item, index) in resultPost" :key="index" class="">
               <PostCard
-                v-if="currentLanguage === 'zh'"
+                v-if="currentLanguage === 'zh' && item.aboutZh"
                 :slug="item.slug"
                 :title="item.titleZh"
                 :about="item.aboutZh"
@@ -88,8 +83,9 @@ watch(
                 :view="item.viewNum"
                 :like="item.likeNum"
               />
+
               <PostCard
-                v-else
+                v-if="currentLanguage === 'en' && item.aboutEn"
                 :slug="item.slug"
                 :title="item.titleEn"
                 :about="item.aboutEn"
@@ -99,7 +95,6 @@ watch(
                 :view="item.viewNum"
                 :like="item.likeNum"
               />
-              <hr class="border-dashed border-neutral-900 mt-8 group-last-of-type:hidden" />
             </li>
           </ul>
         </div>

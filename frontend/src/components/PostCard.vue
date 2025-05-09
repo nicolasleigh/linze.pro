@@ -80,4 +80,5 @@ const router = useRouter()
       </div>
     </div>
   </RouterLink>
+  <hr class="border-dashed border-neutral-900 my-8" />
 </template>
