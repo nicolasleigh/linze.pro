@@ -48,6 +48,7 @@ const router = createRouter({
       path: "/editor",
       name: "editor",
       component: () => import("@/views/CreatePost.vue"),
+      meta: { requiresAuth: true },
     },
     {
       path: "/posts",
@@ -69,6 +70,7 @@ const router = createRouter({
       path: "/edit-post/:slug",
       name: "edit-post",
       component: () => import("@/views/EditPost.vue"),
+      meta: { requiresAuth: true },
     },
     {
       path: "/projects",
@@ -122,6 +124,27 @@ const router = createRouter({
       component: () => import("@/views/CommentView.vue"),
     },
   ],
+})
+
+function isAuthenticated() {
+  const token = localStorage.getItem("jwt-token")
+  if (!token) {
+    return false
+  }
+  const jwtPayload = JSON.parse(window.atob(token.split(".")[1]))
+  const isExpired = Date.now() >= jwtPayload.exp * 1000
+  if (isExpired) {
+    return false
+  }
+  return true
+}
+
+router.beforeEach((to, from, next) => {
+  if (to.meta.requiresAuth && !isAuthenticated()) {
+    next("/login")
+  } else {
+    next()
+  }
 })
 
 export default router

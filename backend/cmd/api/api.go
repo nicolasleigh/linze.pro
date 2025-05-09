@@ -128,8 +128,8 @@ func (app *application) mount() http.Handler {
 		})
 		r.Group(func(r chi.Router) {
 			r.Route("/posts", func(r chi.Router) {
-				r.Use(app.UploadImageMiddleware)
 				r.Use(app.AuthTokenMiddleware)
+				r.Use(app.UploadImageMiddleware)
 				r.Post("/", app.checkPostOwnership("admin", app.createPostHandler))
 				r.Post("/image", app.checkPostOwnership("admin", app.uploadImage))
 			})
