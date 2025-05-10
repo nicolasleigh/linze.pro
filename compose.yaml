@@ -38,6 +38,8 @@ services:
     image: redis:6.2-alpine
     restart: always
     container_name: blog-redis
+    networks:
+      - backend_network
     command: redis-server --save 60 1 --loglevel warning
 
 secrets:
