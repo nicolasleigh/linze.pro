@@ -51,7 +51,7 @@ export default {
           ...props.tags,
           ...newValue
             .split(",")
-            .map((chunk) => chunk.trim())
+            .map((chunk) => chunk.trim().toLowerCase())
             .filter(Boolean),
         ])
         emit("update", Array.from(newDataPoints))
@@ -61,7 +61,7 @@ export default {
 
     const addPendingDataPoint = () => {
       if (pendingDataPoint.value) {
-        const newDataPoints = new Set([...props.tags, pendingDataPoint.value.trim()])
+        const newDataPoints = new Set([...props.tags, pendingDataPoint.value.trim().toLowerCase()])
         emit("update", Array.from(newDataPoints))
         pendingDataPoint.value = ""
       }

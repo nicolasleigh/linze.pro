@@ -43,67 +43,16 @@ const handleChineseContentUpdate = (value: string) => {
 }
 
 const handleSubmit = () => {
-  // const isMultiLang =
-  //   titleEn.value.trim() &&
-  //   aboutEn.value.trim() &&
-  //   contentEn.value.trim() &&
-  //   titleZh.value.trim() &&
-  //   aboutZh.value.trim() &&
-  //   contentZh.value.trim()
-  // const isEnglish =
-  //   titleEn.value.trim() &&
-  //   aboutEn.value.trim() &&
-  //   contentEn.value.trim() &&
-  //   !titleZh.value.trim() &&
-  //   !aboutZh.value.trim() &&
-  //   !contentZh.value.trim()
-  // const isChinese =
-  //   !titleEn.value.trim() &&
-  //   !aboutEn.value.trim() &&
-  //   !contentEn.value.trim() &&
-  //   titleZh.value.trim() &&
-  //   aboutZh.value.trim() &&
-  //   contentZh.value.trim()
-
   if (tags.value.length === 0) {
     return toast.error("Please enter tags")
   }
   if (!photo.value) {
     return toast.error("Please select cover photo")
   }
-  // if (isMultiLang) {
-  //   const slug = generatePostSlug(titleEn.value)
-  //   createPost({
-  //     slug: slug,
-  //     titleEn: titleEn.value,
-  //     titleZh: titleZh.value,
-  //     contentEn: contentEn.value,
-  //     contentZh: contentZh.value,
-  //     aboutEn: aboutEn.value,
-  //     aboutZh: aboutZh.value,
-  //     tags: tags.value,
-  //     photo: photo.value,
-  //   })
-  // }
 
   if (!titleEn.value.trim()) {
     return toast.error("Please enter English title")
   }
-  // if (!titleZh.value.trim()) {
-  //   return toast.error("Please enter Chinese title")
-  // }
-  // if (!aboutEn.value.trim()) {
-  //   return toast.error("Please enter English about")
-  // }
-  // if (!aboutZh.value.trim()) {
-  //   return toast.error("Please enter Chinese about")
-  // }
-  // if (!contentEn.value.trim()) {
-  //   return toast.error("Please enter English content")
-  // }
-  // if (!contentZh.value.trim()) {
-  //   return toast.error("Please enter Chinese content")
-  // }
 
   const slug = generatePostSlug(titleEn.value)
   createPost({
