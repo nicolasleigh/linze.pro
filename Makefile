@@ -36,3 +36,7 @@ frontend/build:
 .PHONY: frontend/send
 frontend/send:
 	@cd frontend && rsync -rP dist nicolas@106.14.126.186:~/linze.pro/vue-build && cd ..
+
+.PHONY: bs
+bs: frontend/build frontend/send
+	@echo build and send finished!

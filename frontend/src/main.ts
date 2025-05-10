@@ -13,12 +13,12 @@ i18next
   .use(Backend)
   .use(LanguageDetector)
   .init({
-    lng: "en",
+    // lng: "en",
     interpolation: {
       escapeValue: false,
     },
-    fallbackLng: false,
-    debug: true,
+    fallbackLng: "en",
+    // debug: true,
   })
 
 const app = createApp(App)
