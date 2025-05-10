@@ -16,24 +16,24 @@ type postKey string
 const postCtx postKey = "post"
 
 type CreatePostPayload struct {
-	Slug      string   `json:"slug" validate:"required,max=100"`
-	TitleEn   string   `json:"titleEn" validate:"required,max=100"`
+	Slug      string   `json:"slug" validate:"required,max=150"`
+	TitleEn   string   `json:"titleEn" validate:"required,max=150"`
 	AboutEn   string   `json:"aboutEn" validate:"max=500"`
-	ContentEn string   `json:"contentEn" validate:"max=10000"`
-	TitleZh   string   `json:"titleZh" validate:"max=100"`
+	ContentEn string   `json:"contentEn" validate:"max=50000"`
+	TitleZh   string   `json:"titleZh" validate:"max=150"`
 	AboutZh   string   `json:"aboutZh" validate:"max=500"`
-	ContentZh string   `json:"contentZh" validate:"max=10000"`
+	ContentZh string   `json:"contentZh" validate:"max=50000"`
 	Tags      []string `json:"tags" validate:"required"`
 	Photo     string   `json:"photo" validate:"required"`
 }
 
 type UpdatePostPayload struct {
-	TitleEn   string   `json:"titleEn" validate:"omitempty,max=100"`
+	TitleEn   string   `json:"titleEn" validate:"omitempty,max=150"`
 	AboutEn   string   `json:"aboutEn" validate:"omitempty,max=500"`
-	ContentEn string   `json:"contentEn" validate:"omitempty,max=5000"`
-	TitleZh   string   `json:"titleZh" validate:"omitempty,max=100"`
+	ContentEn string   `json:"contentEn" validate:"omitempty,max=50000"`
+	TitleZh   string   `json:"titleZh" validate:"omitempty,max=150"`
 	AboutZh   string   `json:"aboutZh" validate:"omitempty,max=500"`
-	ContentZh string   `json:"contentZh" validate:"omitempty,max=5000"`
+	ContentZh string   `json:"contentZh" validate:"omitempty,max=50000"`
 	Tags      []string `json:"tags" validate:"omitempty"`
 	Photo     string   `json:"photo" validate:"omitempty"`
 }
