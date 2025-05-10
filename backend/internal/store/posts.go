@@ -42,17 +42,45 @@ type PostStore struct {
 }
 
 func (s *PostStore) Create(ctx context.Context, post *Post) error {
+	return withTx(s.db, ctx, func(tx *sql.Tx) error {
+		if err := s.createPost(ctx, tx, post); err != nil {
+			return err
+		}
+
+		if err := s.createViewAndLike(ctx, tx, post.Slug); err != nil {
+			return err
+		}
+
+		return nil
+	})
+}
+
+func (s *PostStore) createPost(ctx context.Context, tx *sql.Tx, post *Post) error {
 	query := `INSERT INTO posts (title_en, title_zh, about_en, about_zh, content_en, content_zh, user_id, tags, photo, slug)
 	VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10) RETURNING id, created_at, updated_at`
 
 	ctx, cancel := context.WithTimeout(ctx, QueryTimeoutDuration)
 	defer cancel()
 
-	err := s.db.QueryRowContext(ctx, query, post.TitleEn, post.TitleZh, post.AboutEn, post.AboutZh, post.ContentEn, post.ContentZh, post.UserID, pq.Array(post.Tags), post.Photo, post.Slug).Scan(
+	err := tx.QueryRowContext(ctx, query, post.TitleEn, post.TitleZh, post.AboutEn, post.AboutZh, post.ContentEn, post.ContentZh, post.UserID, pq.Array(post.Tags), post.Photo, post.Slug).Scan(
 		&post.ID,
 		&post.CreatedAt,
 		&post.UpdatedAt,
 	)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func (s *PostStore) createViewAndLike(ctx context.Context, tx *sql.Tx, slug string) error {
+	query := `INSERT INTO post_likes (post_slug, like_num, view_num)
+	VALUES ($1, 0, 0)`
+
+	ctx, cancel := context.WithTimeout(ctx, QueryTimeoutDuration)
+	defer cancel()
+
+	_, err := tx.ExecContext(ctx, query, slug)
 	if err != nil {
 		return err
 	}

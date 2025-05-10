@@ -27,7 +27,7 @@ type ProjectLikeStore struct {
 
 func (s *PostLikeStore) UpdateLike(ctx context.Context, slug string) (int, error) {
 	query := `INSERT INTO post_likes (post_slug, like_num)
-	VALUES ($1, 1)
+	VALUES ($1, 0)
 	ON CONFLICT (post_slug)
 	DO UPDATE SET like_num = post_likes.like_num + 1
 	RETURNING post_likes.like_num;`
@@ -59,7 +59,7 @@ func (s *PostLikeStore) GetLike(ctx context.Context, slug string) (int, error) {
 
 func (s *PostLikeStore) UpdateView(ctx context.Context, slug string) (int, error) {
 	query := `INSERT INTO post_likes (post_slug, view_num)
-	VALUES ($1, 1)
+	VALUES ($1, 0)
 	ON CONFLICT (post_slug)
 	DO UPDATE SET view_num = post_likes.view_num + 1
 	RETURNING post_likes.view_num;`
