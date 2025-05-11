@@ -48,6 +48,7 @@ func (app *application) AuthTokenMiddleware(next http.Handler) http.Handler {
 			app.unauthorizedError(w, r, err)
 			return
 		}
+		// fmt.Print("userID:",userID)
 
 		var ctx = r.Context()
 
@@ -61,7 +62,7 @@ func (app *application) AuthTokenMiddleware(next http.Handler) http.Handler {
 			app.unauthorizedError(w, r, err)
 			return
 		}
-		// fmt.Print("user-middleware:",user.ID)
+		fmt.Print("user-middleware:", user.ID)
 
 		ctx = context.WithValue(ctx, userCtx, user)
 		next.ServeHTTP(w, r.WithContext(ctx))
@@ -145,11 +146,13 @@ func (app *application) getUser(ctx context.Context, userID int64) (*store.User,
 	if !app.config.redisCfg.enabled {
 		return app.store.Users.GetByID(ctx, userID)
 	}
-	app.logger.Infow("cache hit", "key", "user", "id", userID)
 
 	user, err := app.cacheStorage.Users.Get(ctx, userID)
 	if err != nil {
 		return nil, err
+	}
+	if user != nil {
+		app.logger.Infow("cache hit", "key", "user", "id", userID)
 	}
 	if user == nil {
 		app.logger.Infow("fetching from DB", "id", userID)

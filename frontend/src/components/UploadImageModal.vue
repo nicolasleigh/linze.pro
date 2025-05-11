@@ -62,7 +62,7 @@ const submit = () => {
     <DialogContent class="sm:max-w-[425px]">
       <DialogHeader>
         <DialogTitle>Upload Image</DialogTitle>
-        <DialogDescription> Upload Image </DialogDescription>
+        <DialogDescription hidden> Upload Image </DialogDescription>
       </DialogHeader>
       <div>
         <input id="image" type="file" hidden accept="image/*" @input="handleCoverPhoto" />

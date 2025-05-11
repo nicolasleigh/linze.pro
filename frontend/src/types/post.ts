@@ -39,7 +39,7 @@ export type CreatePost = {
   aboutEn: string
   aboutZh: string
   tags: string[]
-  photo: File
+  imageUrl: string
 }
 
 export type UpdatePost = {

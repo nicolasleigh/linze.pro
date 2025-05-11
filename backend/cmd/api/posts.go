@@ -179,6 +179,19 @@ func (app *application) getAllTags(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+func (app *application) getAllImages(w http.ResponseWriter, r *http.Request) {
+	images, err := app.store.Images.Get(r.Context())
+	if err != nil {
+		app.internalServerError(w, r, err)
+		return
+	}
+
+	if err := app.jsonResponse(w, http.StatusOK, images); err != nil {
+		app.internalServerError(w, r, err)
+		return
+	}
+}
+
 func (app *application) getPostByTag(w http.ResponseWriter, r *http.Request) {
 	tag := r.URL.Query().Get("tag")
 	pageStr := r.URL.Query().Get("page")

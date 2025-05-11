@@ -42,7 +42,7 @@ export const createPostApi = async (post: CreatePost) => {
   const token = localStorage.getItem("jwt-token")
   const form = new FormData()
   form.append("slug", post.slug)
-  form.append("image", post.photo)
+  form.append("imageUrl", post.imageUrl)
   form.append("titleEn", post.titleEn)
   form.append("titleZh", post.titleZh)
   form.append("aboutEn", post.aboutEn)
@@ -93,7 +93,7 @@ export const uploadImageApi = async (imageFile: File) => {
   const token = localStorage.getItem("jwt-token")
   const form = new FormData()
   form.append("image", imageFile)
-  const promise = client.post(`/posts/image`, form, {
+  const promise = client.post(`/upload-image`, form, {
     headers: {
       Authorization: `Bearer ${token}`,
     },
@@ -109,6 +109,11 @@ export const uploadImageApi = async (imageFile: File) => {
 
 export const getAllTagsApi = async (): Promise<string> => {
   const { data } = await client.get(`/posts/tags`)
+  return data.data
+}
+
+export const getAllImagesApi = async (): Promise<[{ id: string; url: string }]> => {
+  const { data } = await client.get(`/images`)
   return data.data
 }
 

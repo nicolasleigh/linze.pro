@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { defineAsyncComponent, ref } from "vue"
+import { defineAsyncComponent, ref, watch } from "vue"
 const Editor = defineAsyncComponent(() => import("@/components/Editor.vue"))
 // import Editor from "@/components/Editor.vue"
 import InputTags from "@/components/InputTags.vue"
@@ -7,9 +7,10 @@ import Button from "@/components/ui/button/Button.vue"
 import { Label } from "@/components/ui/label"
 import { toast } from "vue-sonner"
 import { useCreatePost } from "@/hooks/useCreatePost"
-import Input from "@/components/ui/input/Input.vue"
 import { NotebookPen } from "lucide-vue-next"
 import { generatePostSlug } from "@/utils/helper"
+import UploadImageModal from "@/components/UploadImageModal.vue"
+import SelectImageModal from "@/components/SelectImageModal.vue"
 
 const titleEn = ref("")
 const titleZh = ref("")
@@ -18,7 +19,7 @@ const aboutZh = ref("")
 const contentEn = ref("")
 const contentZh = ref("")
 const tags = ref<string[]>([])
-const photo = ref<File>()
+const imageUrl = ref("")
 
 const { createPost, isPending } = useCreatePost()
 
@@ -26,12 +27,9 @@ const handleUpdateTags = (data: string[]) => {
   tags.value = data
 }
 
-const handleCoverPhoto = (e: Event) => {
-  e.preventDefault()
-  const target = e.target as HTMLInputElement
-  if (target.files) {
-    photo.value = target.files[0]
-  }
+const selectImage = (url: string) => {
+  imageUrl.value = url
+  console.log(url)
 }
 
 const handleEnglishContentUpdate = (value: string) => {
@@ -46,7 +44,7 @@ const handleSubmit = () => {
   if (tags.value.length === 0) {
     return toast.error("Please enter tags")
   }
-  if (!photo.value) {
+  if (!imageUrl.value) {
     return toast.error("Please select cover photo")
   }
 
@@ -64,7 +62,7 @@ const handleSubmit = () => {
     aboutEn: aboutEn.value,
     aboutZh: aboutZh.value,
     tags: tags.value,
-    photo: photo.value,
+    imageUrl: imageUrl.value,
   })
 }
 
@@ -126,17 +124,12 @@ const inputStyle =
               <InputTags :tags="tags" @update="handleUpdateTags" :style="inputStyle" />
             </div>
             <div :class="wrapperStyle">
-              <Label for="photo">Cover Photo</Label>
-              <Input
-                id="photo"
-                class="shadow-none pl-1 h-11 text-base text-muted-foreground file:hidden"
-                :class="inputStyle"
-                accept="image/*"
-                placeholder="Click"
-                type="file"
-                ref="photo"
-                @input="handleCoverPhoto"
-              />
+              <Label>Cover Photo</Label>
+              <div class="flex items-center h-full gap-2">
+                <UploadImageModal />
+                <SelectImageModal @change="selectImage" />
+                <p v-if="imageUrl" class="text-xs">Selected</p>
+              </div>
             </div>
           </div>
 

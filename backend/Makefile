@@ -7,13 +7,13 @@ migration:
 	@migrate create -seq -ext sql -dir ${MIGRATIONS_PATH} ${name}
 
 migrate/up:
-	@migrate -path ${MIGRATIONS_PATH} -database ${DB_ADDR} up
+	@migrate -path ${MIGRATIONS_PATH} -database ${DB_DSN} up
 
 migrate/down:
-	@migrate -path ${MIGRATIONS_PATH} -database ${DB_ADDR} down ${num}
+	@migrate -path ${MIGRATIONS_PATH} -database ${DB_DSN} down ${num}
 
 migrate/force:
-	@migrate -path ${MIGRATIONS_PATH} -database ${DB_ADDR} force ${version}
+	@migrate -path ${MIGRATIONS_PATH} -database ${DB_DSN} force ${version}
 
 get-health:
 	@curl http://localhost:4000/v1/health

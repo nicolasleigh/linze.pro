@@ -138,6 +138,9 @@ func (app *application) mount() http.Handler {
 			r.Post("/upload-image", app.checkPostOwnership("admin", app.uploadImage))
 		})
 		r.Group(func(r chi.Router) {
+			r.Get("/images", app.getAllImages)
+		})
+		r.Group(func(r chi.Router) {
 			r.Get("/posts", app.getAllPostsHandler)
 			r.Get("/posts/tag", app.getPostByTag)
 			r.Get("/posts/tags", app.getAllTags)
