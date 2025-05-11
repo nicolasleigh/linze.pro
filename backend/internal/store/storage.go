@@ -56,6 +56,10 @@ type Storage struct {
 		GetLike(context.Context, string) (int, error)
 		UpdateView(context.Context, string) (int, error)
 	}
+	Images interface {
+		Create(context.Context, string) error
+		Get(context.Context) ([]Image, error)
+	}
 }
 
 func NewStorage(db *sql.DB) Storage {
@@ -67,6 +71,7 @@ func NewStorage(db *sql.DB) Storage {
 		Roles:        &RoleStore{db},
 		PostLikes:    &PostLikeStore{db},
 		ProjectLikes: &ProjectLikeStore{db},
+		Images:       &ImageStore{db},
 	}
 }
 

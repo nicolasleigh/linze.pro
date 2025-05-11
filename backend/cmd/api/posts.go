@@ -42,7 +42,6 @@ func (app *application) createPostHandler(w http.ResponseWriter, r *http.Request
 	var payload CreatePostPayload
 	var tags []string
 	json.Unmarshal([]byte(r.FormValue("tags")), &tags)
-	imageUrl := getImageUrlFromContext(r)
 	user := getUserFromContext(r)
 	payload.Slug = r.FormValue("slug")
 	payload.TitleEn = r.FormValue("titleEn")
@@ -52,19 +51,7 @@ func (app *application) createPostHandler(w http.ResponseWriter, r *http.Request
 	payload.AboutZh = r.FormValue("aboutZh")
 	payload.ContentZh = r.FormValue("contentZh")
 	payload.Tags = tags
-	payload.Photo = imageUrl
-
-	// fmt.Println("tags", tags)
-	// fmt.Println("title", r.FormValue("title"))
-	// fmt.Println("about", r.FormValue("about"))
-	// fmt.Println("content", r.FormValue("content"))
-	// fmt.Println("imageUrl", imageUrl)
-	// fmt.Println("user", user)
-
-	// if err := readJSON(w, r, &payload); err != nil {
-	// 	app.badRequestError(w, r, err)
-	// 	return
-	// }
+	payload.Photo = r.FormValue("imageUrl")
 
 	if err := Validate.Struct(payload); err != nil {
 		app.badRequestError(w, r, err)
@@ -99,6 +86,11 @@ func (app *application) createPostHandler(w http.ResponseWriter, r *http.Request
 
 func (app *application) uploadImage(w http.ResponseWriter, r *http.Request) {
 	imageUrl := getImageUrlFromContext(r)
+	err := app.store.Images.Create(r.Context(), imageUrl)
+	if err != nil {
+		app.internalServerError(w, r, err)
+		return
+	}
 	if err := app.jsonResponse(w, http.StatusOK, imageUrl); err != nil {
 		app.internalServerError(w, r, err)
 		return

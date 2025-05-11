@@ -129,14 +129,13 @@ func (app *application) mount() http.Handler {
 		r.Group(func(r chi.Router) {
 			r.Route("/posts", func(r chi.Router) {
 				r.Use(app.AuthTokenMiddleware)
-				r.Use(app.UploadImageMiddleware)
 				r.Post("/", app.checkPostOwnership("admin", app.createPostHandler))
-				r.Post("/image", app.checkPostOwnership("admin", app.uploadImage))
 			})
-			// r.Use(app.UploadImageMiddleware)
-			// r.Use(app.AuthTokenMiddleware)
-			// r.Post("/posts", app.createPostHandler)
-			// r.Post("/posts/image", app.uploadImage)
+		})
+		r.Group(func(r chi.Router) {
+			r.Use(app.AuthTokenMiddleware)
+			r.Use(app.UploadImageMiddleware)
+			r.Post("/upload-image", app.checkPostOwnership("admin", app.uploadImage))
 		})
 		r.Group(func(r chi.Router) {
 			r.Get("/posts", app.getAllPostsHandler)
