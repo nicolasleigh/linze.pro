@@ -25,7 +25,7 @@ const { isHidden } = useHideHeader(300)
     </main>
   </div>
   <Footer />
-  <!-- <VueQueryDevtools /> -->
+  <VueQueryDevtools />
 </template>
 
 <style scoped>

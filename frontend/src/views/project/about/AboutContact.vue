@@ -6,20 +6,30 @@ import IconGitHub2 from "@/components/icons/IconGithub2.vue"
 
 <template>
   <div class="space-y-4">
-    <div class="flex items-center gap-2">
+    <!-- <div class="flex items-center gap-2">
       <a target="_blank" referrerpolicy="no-referrer" href="mailto:linze201@gmail.com">
         <IconGoogle class="size-5 hover:text-accent" />
       </a>
       <span>linze201@gmail.com</span>
-    </div>
+    </div> -->
     <div class="flex items-center gap-2">
-      <a target="_blank" referrerpolicy="no-referrer" href="mailto:nicolas.leigh@qq.com">
+      <a
+        target="_blank"
+        referrerpolicy="no-referrer"
+        href="mailto:nicolas.leigh@qq.com"
+        class="cursor-newtab"
+      >
         <IconQQ class="size-5 hover:text-accent" />
       </a>
       <span>nicolas.leigh@qq.com</span>
     </div>
     <div class="flex items-center gap-2">
-      <a target="_blank" referrerpolicy="no-referrer" href="https://github.com/nicolasleigh">
+      <a
+        target="_blank"
+        referrerpolicy="no-referrer"
+        href="https://github.com/nicolasleigh"
+        class="cursor-newtab"
+      >
         <IconGitHub2 class="size-5 hover:text-accent" />
       </a>
       <a>github.com/nicolasleigh</a>

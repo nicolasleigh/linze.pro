@@ -1,8 +1,9 @@
 import { uploadImageApi } from "@/api/post"
-import { useMutation } from "@tanstack/vue-query"
-import { toast } from "vue-sonner"
+import { useMutation, useQueryClient } from "@tanstack/vue-query"
 
 export function useUploadImage() {
+  const queryClient = useQueryClient()
+
   const {
     mutate: uploadImage,
     isPending,
@@ -11,12 +12,9 @@ export function useUploadImage() {
     data: imageUrl,
   } = useMutation({
     mutationFn: uploadImageApi,
-    // onSuccess: () => {
-    //   toast.success("Image uploaded successfully")
-    // },
-    // onError: () => {
-    //   toast.error("Failed to upload image")
-    // },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["images"] })
+    },
   })
 
   return { uploadImage, isPending, imageUrl, isError, isSuccess }

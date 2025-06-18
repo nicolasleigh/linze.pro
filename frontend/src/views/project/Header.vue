@@ -59,13 +59,13 @@ defineExpose({ isLiked, handleLike })
         <Heart :size="15" :class="isLiked ? 'text-red-600' : 'text-neutral-600'" />
         <span>{{ likeNum ? likeNum : initialLike }} {{ t("projects.like") }}</span>
       </button>
-      <a
+      <!-- <a
         class="hover:underline hover:text-accent text-neutral-500 transition-colors flex items-center gap-1.5"
         :href="video"
       >
         <Play :size="15" />
         <span class="text-neutral-300"> {{ t("projects.demo") }} </span>
-      </a>
+      </a> -->
       <a
         target="_blank"
         rel="noopener noreferrer"

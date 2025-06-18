@@ -90,7 +90,7 @@ watch(
                 <Github :stroke-width="1" class="cursor-newtab" />
               </IconWithTooltip>
             </a>
-            <a
+            <!-- <a
               target="_blank"
               referrerpolicy="no-referrer"
               class="p-0.5 hover:text-neutral-400 transition-colors text-neutral-500 flex items-center justify-center rounded-sm cursor-newtab"
@@ -98,7 +98,7 @@ watch(
               <IconWithTooltip :tooltip="t('home.hero_resume')">
                 <FileUser :stroke-width="1" class="cursor-newtab" />
               </IconWithTooltip>
-            </a>
+            </a> -->
           </div>
         </div>
       </div>
