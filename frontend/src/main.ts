@@ -11,13 +11,14 @@ import router from "./router"
 
 i18next
   .use(Backend)
-  .use(LanguageDetector)
+  // .use(LanguageDetector)
   .init({
-    // lng: "en",
+    lng: "zh",
     interpolation: {
       escapeValue: false,
     },
-    fallbackLng: "en",
+    // fallbackLng: "en",
+    fallbackLng: "zh",
     // debug: true,
   })
 
