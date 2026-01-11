@@ -1,0 +1,111 @@
+{
+  "header": {
+    "home_link": "Home",
+    "posts_link": "Posts",
+    "projects_link": "Projects",
+    "about_link": "About",
+    "dropdown": {
+      "menu": "Menu",
+      "current": "Current",
+      "home": "Home",
+      "home_sub": "Welcome to my website",
+      "projects": "Projects",
+      "projects_sub": "Showcase of my projects",
+      "posts": "Posts",
+      "posts_sub": "Thoughts",
+      "about": "About",
+      "about_sub": "Learn about me",
+      "language": "Language",
+      "language_sub": "Change language",
+      "messages": "Guest Book",
+      "messages_sub": "Leave your comments"
+    }
+  },
+  "posts": {
+    "about": "Exploring the full journey from frontend to backend — and beyond with DevOps.",
+    "full_stack": "Full Stack",
+    "posts": "Posts",
+    "tag": "Choose Tag",
+    "view": "views",
+    "like": "likes",
+    "edit_button": "Edit This Post",
+    "like_button": "Like",
+    "liked_button": "Liked"
+  },
+  "projects": {
+    "about": "Showcasing real-world builds across the full development stack.",
+    "full_stack": "Full Stack",
+    "projects": "Projects",
+    "tool": "Tools:",
+    "cta": "View Project",
+    "github_link": "Repository",
+    "website_link": "Open Website",
+    "view": "views",
+    "like": "likes",
+    "team": "Personal Project",
+    "demo": "Demo Video",
+    "cabinfy_title": "CabinFy",
+    "cabinfy_about": "Modern cabin booking platform with multilingual support and sleek admin dashboard for seamless rental management.",
+    "moviefy_title": "MovieFy",
+    "moviefy_about": "Full-stack movie platform with user and admin interfaces, featuring streaming, reviews, content management and multilingual support.",
+    "musicfy_title": "MusicFy",
+    "musicfy_about": "A full-stack music app for mobile, built entirely with bare React Native for performance and flexibility.",
+    "petify_title": "Petify",
+    "petify_about": "Full-stack e-commerce platform for browsing, purchasing pets, real-time chat, product management, and scalable, secure backend architecture.",
+    "chatify_title": "Chatify",
+    "chatify_about": "Real-time chat app with audio/video calls, rebuilt with Go and PostgreSQL for high performance and efficient, scalable backend architecture.",
+    "blog_title": "Linze.pro",
+    "blog_about": "A blog app developed with Vue and Go, supporting both English and Chinese, designed to showcase my portfolio and share technical articles."
+  },
+  "footer": {
+    "about": "Craft full-stack web apps with React, Vue, Next.js, Node.js, and Go.",
+    "section_1": "Navigation",
+    "section_2": "Project Websites",
+    "section_3": "Project Repositories",
+    "section_4": "Useful Resources"
+  },
+  "about": {
+    "title_about": "About ",
+    "title_me": "Me",
+    "about": "Self-taught developer with finance background, building modern full-stack apps.",
+    "tech_languages": "Languages",
+    "tech_frontend": "Frontend",
+    "tech_backend": "Backend",
+    "tech_database": "Database",
+    "tech_devops": "DevOps"
+  },
+  "auth": {
+    "login": "Login",
+    "signup": "Signup",
+    "email": "Email",
+    "password": "Password",
+    "username": "UserName",
+    "welcome": "Welcome",
+    "email_placeholder": "Enter your email",
+    "password_placeholder": "Enter your password",
+    "username_placeholder": "Enter your username",
+    "login_loading": "Logging in...",
+    "signup_loading": "Signing up...",
+    "login_link": "Already have an account?",
+    "signup_link": "Create an account"
+  },
+  "comments": {
+    "title_comments": "Messages",
+    "about": "A place where visitors leave feedback, thoughts, or greetings publicly."
+  },
+  "home": {
+    "hero_title": "I'm Nicolas Leigh",
+    "hero_about": "A self-taught full-stack developer with a background in finance. I build modern, high-performance web applications using:",
+    "hero_resume": "Resume",
+    "about_title": "About Me",
+    "about_1": "With a background in economics and financial auditing, I discovered my passion for programming in 2021 — and haven’t looked back since.",
+    "about_2": "Today, I specialize in building fast, clean, and user-focused full-stack web applications using modern technologies and thoughtful design.",
+    "about_cta": "More About Me",
+    "project_title": "Featured Projects",
+    "project_subtitle": "A curated selection of projects I've built.",
+    "project_button": "See more projects",
+    "post_title": "Featured Posts",
+    "post_subtitle": "Insights and technical articles I've written.",
+    "post_button": "See more posts"
+  }
+}

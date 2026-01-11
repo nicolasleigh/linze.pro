@@ -1,0 +1,111 @@
+{
+  "header": {
+    "home_link": "主页",
+    "posts_link": "博文",
+    "projects_link": "项目",
+    "about_link": "关于",
+    "dropdown": {
+      "menu": "导航",
+      "current": "当前",
+      "home": "主页",
+      "home_sub": "欢迎访问我的网站",
+      "projects": "项目",
+      "projects_sub": "项目展示",
+      "posts": "博文",
+      "posts_sub": "想法与见解",
+      "about": "关于",
+      "about_sub": "关于我的信息",
+      "language": "语言",
+      "language_sub": "改变语言",
+      "messages": "访客留言",
+      "messages_sub": "留下您的评论"
+    }
+  },
+  "posts": {
+    "about": "探索从前端到后端，再到 DevOps 的完整旅程。",
+    "full_stack": "全栈",
+    "posts": "博文",
+    "tag": "选择标签",
+    "view": "次浏览",
+    "like": "个点赞",
+    "edit_button": "编辑本文",
+    "like_button": "喜欢",
+    "liked_button": "已喜欢"
+  },
+  "projects": {
+    "about": "全栈开发中的真实项目实践。",
+    "full_stack": "全栈",
+    "projects": "项目",
+    "tool": "工具：",
+    "cta": "查看项目",
+    "github_link": "GitHub仓库",
+    "website_link": "项目网站",
+    "view": "次浏览",
+    "like": "个点赞",
+    "team": "个人项目",
+    "demo": "演示视频",
+    "cabinfy_title": "CabinFy – 木屋派",
+    "cabinfy_about": "现代化的小木屋预订平台，支持多语言，并配备简洁流畅的管理后台，实现无缝租赁管理。",
+    "moviefy_title": "MovieFy – 影视派",
+    "moviefy_about": "全栈电影平台，包含用户端和管理员端界面，支持视频播放、评论、内容管理及多语言支持。",
+    "musicfy_title": "MusicFy – 音乐派",
+    "musicfy_about": "一个完全使用原生 React Native 构建的全栈移动音乐应用，具备出色的性能与灵活性。",
+    "petify_title": "Petify – 宠物派",
+    "petify_about": "全栈电子商务平台，支持浏览和购买宠物、实时聊天、商品管理，以及可扩展且安全的后端架构。",
+    "chatify_title": "Chatify – 聊天派",
+    "chatify_about": "实时聊天应用，支持音视频通话，使用 Go 和 PostgreSQL 重构，实现高性能和高效可扩展的后端架构。",
+    "blog_title": "Linze.pro – 博客派",
+    "blog_about": "一款使用 Vue 和 Go 开发的博客应用，支持英语和中文，用于展示我的作品集和分享技术文章。"
+  },
+  "footer": {
+    "about": "使用 React、Vue、Next.js、Node.js 和 Go 构建全栈 Web 应用。",
+    "section_1": "站内导航",
+    "section_2": "项目网站",
+    "section_3": "项目仓库",
+    "section_4": "其他资源"
+  },
+  "about": {
+    "title_about": "关于",
+    "title_me": "我",
+    "about": "自学开发者，拥有财经背景，专注构建现代全栈应用。",
+    "tech_languages": "语言",
+    "tech_frontend": "前端",
+    "tech_backend": "后端",
+    "tech_database": "数据库",
+    "tech_devops": "运维"
+  },
+  "auth": {
+    "login": "登录",
+    "signup": "注册",
+    "email": "电子邮箱",
+    "password": "密码",
+    "username": "用户名",
+    "welcome": "欢迎",
+    "email_placeholder": "输入你的邮箱",
+    "password_placeholder": "输入你的密码",
+    "username_placeholder": "输入你的用户名",
+    "login_loading": "正在登录...",
+    "signup_loading": "正在注册...",
+    "login_link": "已有账号？",
+    "signup_link": "创建账号"
+  },
+  "comments": {
+    "title_comments": "访客留言",
+    "about": "访客可在此公开留言、反馈或打招呼。"
+  },
+  "home": {
+    "hero_title": "我是李林泽",
+    "hero_about": "一名拥有财务背景的自学全栈开发者。擅长使用以下技术构建现代且高性能的 Web 应用：",
+    "hero_resume": "简历",
+    "about_title": "关于我",
+    "about_1": "我拥有经济学和财务审计背景，并于 2021 年发现了对编程的热情，从此全力投入。",
+    "about_2": "如今，我专注于使用现代技术和精心设计构建快速、整洁、以用户为中心的全栈 Web 应用。",
+    "about_cta": "更多关于我",
+    "project_title": "精选项目",
+    "project_subtitle": "我参与开发的一些代表性项目。",
+    "project_button": "查看更多项目",
+    "post_title": "精选文章",
+    "post_subtitle": "我撰写的部分技术文章与见解。",
+    "post_button": "查看更多文章"
+  }
+}
