@@ -71,8 +71,7 @@
 }
 
 body {
-  display: flex;
-  place-items: center;
+  display: block;
   background-color: black;
   transition: color 0.5s, background-color 0.5s;
   line-height: 1.6;

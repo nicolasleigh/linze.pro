@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom"
+import { NavLink } from "react-router-dom"
 import LanguageButton from "./LanguageButton"
 import { useTranslation } from "react-i18next"
 import { MessageSquare } from "lucide-react"
@@ -7,6 +7,7 @@ import HeaderDropdownMenu from "./HeaderDropdownMenu"
 export default function Header() {
     const { t } = useTranslation()
     const linkStyle = "py-3 px-2 hover:text-accent transition-colors font-medium"
+    const activeLinkStyle = "py-3 px-2 hover:text-accent transition-colors font-medium text-accent"
 
     return (
         <header className="pointer-events-none fixed top-0 inset-x-0 z-50 transition-opacity duration-300 opacity-100 hover:!opacity-100">
@@ -17,15 +18,15 @@ export default function Header() {
             </nav>
             <nav className="hidden min-[570px]:flex pointer-events-auto mt-8 px-3 rounded-lg bg-neutral-800/60 w-fit mx-auto text-sm md:text-base">
                 <ul className="flex items-center gap-4 text-neutral-200">
-                    <Link to="/" className={linkStyle}> {t("header.home_link")} </Link>
-                    <Link to="/projects" className={linkStyle}> {t("header.projects_link")} </Link>
-                    <Link to="/posts" className={linkStyle}> {t("header.posts_link")} </Link>
-                    <Link to="/about" className={linkStyle}> {t("header.about_link")} </Link>
+                    <NavLink to="/" className={({ isActive }) => isActive ? activeLinkStyle : linkStyle}> {t("header.home_link")} </NavLink>
+                    <NavLink to="/projects" className={({ isActive }) => isActive ? activeLinkStyle : linkStyle}> {t("header.projects_link")} </NavLink>
+                    <NavLink to="/posts" className={({ isActive }) => isActive ? activeLinkStyle : linkStyle}> {t("header.posts_link")} </NavLink>
+                    <NavLink to="/about" className={({ isActive }) => isActive ? activeLinkStyle : linkStyle}> {t("header.about_link")} </NavLink>
                     <div className="w-px bg-neutral-500 h-[18px]" />
                     <LanguageButton />
-                    <Link to="/comments" className={linkStyle}>
+                    <NavLink to="/comments" className={({ isActive }) => isActive ? activeLinkStyle : linkStyle}>
                         <MessageSquare className="mt-0.5 size-4 transition" />
-                    </Link>
+                    </NavLink>
                 </ul>
             </nav>
         </header>
