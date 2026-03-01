@@ -6,6 +6,7 @@ import Posts from "./views/Posts"
 import Post from "./views/Post"
 import Projects from "./views/Projects"
 import Comments from "./views/Comments"
+import ProjectDetail from "./views/projects/ProjectDetail"
 
 const router = createBrowserRouter([
     {
@@ -33,13 +34,12 @@ const router = createBrowserRouter([
                 element: <Projects />
             },
             {
+                path: "projects/:slug",
+                element: <ProjectDetail />
+            },
+            {
                 path: "comments",
                 element: <Comments />
-            },
-            // Placeholder for specific project routes if needed, generally handled by Projects view or specific components
-            {
-                path: "projects/:slug",
-                element: <div className="p-10 text-white">Project Detail Placeholder</div>
             }
         ],
     },

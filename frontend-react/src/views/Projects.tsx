@@ -1,9 +1,12 @@
 import { useTranslation } from "react-i18next"
-import { BriefcaseBusiness, ChevronRight } from "lucide-react"
+import { BriefcaseBusiness } from "lucide-react"
 import ProjectCard from "@/components/ProjectCard"
 import Cabinfy from "@/components/project-icons/Cabinfy"
 import Musicfy from "@/components/project-icons/Musicfy"
 import Petify from "@/components/project-icons/Petify"
+import Moviefy from "@/components/project-icons/Moviefy"
+import Chatify from "@/components/project-icons/Chatify"
+import Current from "@/components/project-icons/Current"
 
 export default function Projects() {
     const { t } = useTranslation()
@@ -38,6 +41,27 @@ export default function Projects() {
             <div className="layout">
                 <ul className="mt-6 grid gap-16">
                     <ProjectCard
+                        title={t("projects.moviefy_title")}
+                        about={t("projects.moviefy_about")}
+                        image="https://file.linze.pro/images/moviefy/1.webp"
+                        repo="https://github.com/nicolasleigh/moviefy"
+                        website="https://movie.linze.pro"
+                        link="/projects/moviefy"
+                    >
+                        <Moviefy />
+                    </ProjectCard>
+                    <ProjectCard
+                        title={t("projects.cabinfy_title")}
+                        about={t("projects.cabinfy_about")}
+                        image="https://file.linze.pro/images/cabinfy/1.webp"
+                        repo="https://github.com/nicolasleigh/cabinfy"
+                        website="https://cabin.linze.pro"
+                        link="/projects/cabinfy"
+                        reverse
+                    >
+                        <Cabinfy />
+                    </ProjectCard>
+                    <ProjectCard
                         title={t("projects.musicfy_title")}
                         about={t("projects.musicfy_about")}
                         image="https://file.linze.pro/images/musicfy/11.webp"
@@ -58,14 +82,25 @@ export default function Projects() {
                         <Petify />
                     </ProjectCard>
                     <ProjectCard
-                        title={t("projects.cabinfy_title")}
-                        about={t("projects.cabinfy_about")}
-                        image="https://file.linze.pro/images/cabinfy/1.webp"
-                        repo="https://github.com/nicolasleigh/cabinfy"
-                        website="https://cabin.linze.pro"
-                        link="/projects/cabinfy"
+                        title={t("projects.chatify_title")}
+                        about={t("projects.chatify_about")}
+                        image="https://file.linze.pro/images/chatify/2.webp"
+                        repo="https://github.com/nicolasleigh/chatify"
+                        website="https://chat.linze.pro"
+                        link="/projects/chatify"
                     >
-                        <Cabinfy />
+                        <Chatify />
+                    </ProjectCard>
+                    <ProjectCard
+                        title={t("projects.blog_title")}
+                        about={t("projects.blog_about")}
+                        image="https://file.linze.pro/images/blog/1.webp"
+                        repo="https://github.com/nicolasleigh/chatify"
+                        website="https://linze.pro"
+                        link="/projects/blog"
+                        reverse
+                    >
+                        <Current />
                     </ProjectCard>
                 </ul>
             </div>
