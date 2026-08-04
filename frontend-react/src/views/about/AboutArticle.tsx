@@ -8,7 +8,6 @@ import Section from "./Section"
 import AboutTechStack from "./AboutTechStack"
 import AboutContact from "./AboutContact"
 import { getSectionTitleAndSlug, getSectionTitleAndSlugChinese } from "@/utils/helper"
-import { useActiveSection } from "@/hooks/useActiveSection"
 
 const sectionTitleEn = [
     "Background & Education",
@@ -31,7 +30,6 @@ const sectionTitleZh = [
 export default function AboutArticle() {
     const { i18n } = useTranslation()
     const currentLanguage = i18n.language
-    const { activeSection } = useActiveSection()
 
     const section = currentLanguage === "zh"
         ? getSectionTitleAndSlugChinese(sectionTitleZh)

@@ -1,5 +1,4 @@
 import { Link } from "react-router-dom"
-import { useTranslation } from "react-i18next"
 import { ListTree } from "lucide-react"
 import { useState, useEffect } from "react"
 

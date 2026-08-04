@@ -12,7 +12,7 @@ export default function Posts() {
     const tag = searchParams.get("tag")
     const page = Number(searchParams.get("page")) || 1
 
-    const { posts: allPosts, error, isLoading } = usePosts({ page })
+    const { posts: allPosts, isLoading } = usePosts({ page })
     const { posts: postsByTag } = usePostsByTag(page, tag)
 
     const { t, i18n } = useTranslation()

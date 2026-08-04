@@ -8,11 +8,11 @@ export default function Footer() {
 
     return (
         <footer>
-            <div className="shrink-0 bg-neutral-800 h-[1px] w-full bg-gradient-to-r from-[#171717] via-[#525252] to-[#171717]"></div>
+            <div className="shrink-0 dark:bg-neutral-800 bg-neutral-300 h-[1px] w-full dark:bg-gradient-to-r from-[#171717] via-[#525252] to-[#171717] bg-gradient-to-r from-neutral-300 via-neutral-400 to-neutral-300]"></div>
             <div className="layout py-16 grid md:grid-cols-[1fr,1.8fr] gap-8 md:gap-32">
                 <div>
-                    <h3 className="text-neutral-200 font-semibold text-2xl">Nicolas Leigh</h3>
-                    <p className="mt-3 text-neutral-500 text-base">
+                    <h3 className="dark:text-neutral-200 text-neutral-800 font-semibold text-2xl">Nicolas Leigh</h3>
+                    <p className="mt-3 dark:text-neutral-500 text-neutral-600 text-base">
                         {t("footer.about")}
                     </p>
                     <div className="flex gap-5 mt-1">

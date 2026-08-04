@@ -1,12 +1,9 @@
-import { Utils } from "@/lib/utils"
-// import { computed } from "vue" // Not needed in React
+import { cn } from "@/lib/utils"
 
 interface PostTagProps {
     className?: string
     children: React.ReactNode
 }
-
-import { cn } from "@/lib/utils"
 
 export default function PostTag({ className, children }: PostTagProps) {
     const style =

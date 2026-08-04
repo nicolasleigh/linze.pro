@@ -12,17 +12,8 @@ import { usePosts } from "@/hooks/usePosts"
 // Icon Imports
 import IconWithTooltip from "@/components/IconWithTooltip"
 import IconReact from "@/components/icons/IconReact"
-import IconCaddy from "@/components/icons/IconCaddy" // Vue used IconVue? No, it used IconVue for Vue. I'll use IconReact as placeholder for now or migrate IconVue too if needed.
-// Actually Vue landing page used IconVue. I should migrate IconVue too if I want parity.
-import IconGo from "@/components/icons/IconGo" // Need this
 import IconNode from "@/components/icons/IconNode"
 import IconTailwind from "@/components/icons/IconTailwind"
-
-// Mock IconVue and IconGo for now as standard SVGs if not available, else render nothing or use placeholder
-const IconVue = ({ className }: { className?: string }) => <div className={className}>Vue</div>
-// I'll leave them as placeholders in the list for now or remove. 
-// Wait, I should implement IconVue and IconGo to be perfect.
-// Let's assume standard behavior for now and update later if critical.
 
 export default function HomeView() {
     const { t, i18n } = useTranslation()

@@ -1,12 +1,10 @@
 import { useParams } from "react-router-dom"
-import { useTranslation } from "react-i18next"
 import ProjectHeader from "./ProjectHeader"
 import Aside from "../about/Aside"
 import Section from "../about/Section"
 import { h2Style, h3Style, paragraphStyle, unorderedListStyle, orderedListStyle } from "../CommonStyle"
 import { getSectionTitleAndSlug } from "@/utils/helper"
 import { useActiveSection } from "@/hooks/useActiveSection"
-import { useState, useEffect } from "react"
 
 interface ProjectData {
     title: string
@@ -279,7 +277,6 @@ const projectsData: Record<string, ProjectData> = {
 
 export default function ProjectDetail() {
     const { slug } = useParams<{ slug: string }>()
-    const { i18n } = useTranslation()
     const { activeSection } = useActiveSection()
 
     const projectKey = slug?.toLowerCase()

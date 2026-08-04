@@ -40,7 +40,6 @@ export default function Comments() {
                     theme="dark"
                     lang={currentLanguage === "zh" ? "zh-CN" : "en"}
                     loading="eager"
-                    crossOrigin="anonymous"
                 />
             </section>
         </main>
