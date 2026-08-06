@@ -3,6 +3,7 @@ import type { LoginUser } from "@/types/user"
 import { useMutation, useQueryClient } from "@tanstack/react-query"
 import { useNavigate } from "react-router-dom"
 import { toast } from "sonner"
+import { getErrorMessage } from "@/utils/helper"
 
 export function useLogin() {
     const queryClient = useQueryClient()
@@ -22,8 +23,8 @@ export function useLogin() {
             navigate("/", { replace: true })
             // console.log(user);
         },
-        onError: () => {
-            toast.error("Email or password is incorrect")
+        onError: (error) => {
+            toast.error(getErrorMessage(error, "Email or password is incorrect"))
         },
     })
     return { login, isPending }

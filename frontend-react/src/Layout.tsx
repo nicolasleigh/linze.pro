@@ -1,3 +1,4 @@
+import { Suspense } from "react"
 import { Outlet } from "react-router-dom"
 import Header from "./components/Header"
 import Footer from "./components/Footer"
@@ -16,8 +17,9 @@ export default function Layout() {
 
             <div>
                 <main className="w-full pb-24">
-                    {/* Transition logic omitted for now */}
-                    <Outlet />
+                    <Suspense fallback={<div className="flex justify-center py-24 text-neutral-400">Loading...</div>}>
+                        <Outlet />
+                    </Suspense>
                 </main>
             </div>
             <Footer />

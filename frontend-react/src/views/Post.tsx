@@ -7,12 +7,7 @@ import { useParams, Link } from "react-router-dom"
 import { useTranslation } from "react-i18next"
 import PostTag from "@/components/PostTag"
 import LikedButton from "@/components/LikedButton"
-// Placeholder for MdPreview
-const MdPreview = ({ content, isLoading }: { content?: string, isLoading: boolean }) => (
-    <div className="prose prose-invert max-w-none mt-8 text-neutral-300">
-        {isLoading ? "Loading..." : content}
-    </div>
-)
+import MdPreview from "@/components/MdPreview"
 
 export default function Post() {
     const { slug } = useParams<{ slug: string }>()

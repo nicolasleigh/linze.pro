@@ -60,6 +60,8 @@ export const createPostApi = async (post: CreatePost) => {
         success: "Post created successfully",
         error: "Failed to create post",
     })
+    const { data } = await promise
+    return data.data
 }
 
 export const updatePostApi = async ({ slug, post }: { slug: string; post: UpdatePost }) => {
@@ -87,6 +89,8 @@ export const updatePostApi = async ({ slug, post }: { slug: string; post: Update
         success: "Post updated successfully",
         error: "Failed to update post",
     })
+    const { data } = await promise
+    return data.data
 }
 
 export const uploadImageApi = async (imageFile: File) => {
@@ -112,7 +116,7 @@ export const getAllTagsApi = async (): Promise<string> => {
     return data.data
 }
 
-export const getAllImagesApi = async (): Promise<[{ id: string; url: string }]> => {
+export const getAllImagesApi = async (): Promise<{ id: string; url: string }[]> => {
     const { data } = await client.get(`/images`)
     return data.data
 }

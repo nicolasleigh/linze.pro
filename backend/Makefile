@@ -22,13 +22,15 @@ fmt:
 	@go fmt ./...
 
 run:
-	@go run cmd/api/*.go   
+# 	@go run cmd/api/*.go   
+	@go run ./cmd/api
 
 air:
 	@air
 
 seed:
-	@go run cmd/migrate/seed/main.go
+# 	@go run cmd/migrate/seed/main.go
+	@go run ./cmd/migrate/seed/main.go
 
 gen-docs:
 	@swag init -g ./api/main.go -d cmd,internal && swag fmt

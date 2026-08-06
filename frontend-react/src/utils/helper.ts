@@ -1,4 +1,17 @@
+import { isAxiosError } from "axios"
 import { useTranslation } from "react-i18next"
+
+// Extract the `{ error: string }` message returned by the backend, falling
+// back to `fallback` for network errors or unexpected shapes.
+export const getErrorMessage = (error: unknown, fallback = "Something went wrong") => {
+    if (isAxiosError(error)) {
+        const message = error.response?.data?.error
+        if (typeof message === "string" && message.trim()) {
+            return message
+        }
+    }
+    return fallback
+}
 
 export const formatTime = (date: Date) => {
     const formattedDate =
