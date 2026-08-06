@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"net/http"
 	"strconv"
 
@@ -129,6 +130,20 @@ func (app *application) unfollowUserHandler(w http.ResponseWriter, r *http.Reque
 func getUserFromContext(r *http.Request) *store.User {
 	user, _ := r.Context().Value(userCtx).(*store.User)
 	return user
+}
+
+// getCurrentUserHandler returns the authenticated user (with role) for the
+// frontend to check permissions client-side (e.g. CreatePost).
+func (app *application) getCurrentUserHandler(w http.ResponseWriter, r *http.Request) {
+	user := getUserFromContext(r)
+	if user == nil {
+		app.unauthorizedError(w, r, fmt.Errorf("user not found in context"))
+		return
+	}
+
+	if err := app.jsonResponse(w, http.StatusOK, user); err != nil {
+		app.internalServerError(w, r, err)
+	}
 }
 
 func (app *application) activateUserHandler(w http.ResponseWriter, r *http.Request) {

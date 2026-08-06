@@ -1,5 +1,6 @@
 import { isAxiosError } from "axios"
 import { useTranslation } from "react-i18next"
+import type { User } from "@/types/user"
 
 // Extract the `{ error: string }` message returned by the backend, falling
 // back to `fallback` for network errors or unexpected shapes.
@@ -11,6 +12,12 @@ export const getErrorMessage = (error: unknown, fallback = "Something went wrong
         }
     }
     return fallback
+}
+
+// Mirrors the backend check in cmd/api/api.go: post create/edit routes are
+// wrapped in checkPostOwnership("admin", ...), which requires role level >= 3.
+export const isAdmin = (user: User | undefined) => {
+    return !!user && !!user.role && user.role.level >= 3
 }
 
 export const formatTime = (date: Date) => {

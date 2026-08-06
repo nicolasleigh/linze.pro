@@ -174,6 +174,10 @@ func (app *application) mount() http.Handler {
 			r.Post("/auth/token", app.createTokenHandler)
 		})
 		r.Group(func(r chi.Router) {
+			r.Use(app.AuthTokenMiddleware)
+			r.Get("/auth/me", app.getCurrentUserHandler)
+		})
+		r.Group(func(r chi.Router) {
 			r.Post("/like/post/{slug}", app.updatePostLike)
 			r.Get("/like/post/{slug}", app.getPostLike)
 			r.Get("/view/post/{slug}", app.updatePostView)

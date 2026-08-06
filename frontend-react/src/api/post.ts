@@ -19,12 +19,7 @@ export const getPostBySlugAndLangApi = async ({
 }
 
 export const getPostForAllLanguage = async (slug: string): Promise<Post> => {
-    const token = localStorage.getItem("jwt-token")
-    const { data } = await client.get(`/post-all/${slug}`, {
-        headers: {
-            Authorization: `Bearer ${token}`,
-        },
-    })
+    const { data } = await client.get(`/post-all/${slug}`)
     return data.data
 }
 
@@ -39,7 +34,6 @@ export const getPostsApi = async (options: GetPostsOptions): Promise<Post[]> => 
 }
 
 export const createPostApi = async (post: CreatePost) => {
-    const token = localStorage.getItem("jwt-token")
     const form = new FormData()
     form.append("slug", post.slug)
     form.append("imageUrl", post.imageUrl)
@@ -50,11 +44,7 @@ export const createPostApi = async (post: CreatePost) => {
     form.append("contentEn", post.contentEn)
     form.append("contentZh", post.contentZh)
     form.append("tags", JSON.stringify(post.tags))
-    const promise = client.post(`/posts`, form, {
-        headers: {
-            Authorization: `Bearer ${token}`,
-        },
-    })
+    const promise = client.post(`/posts`, form)
     toast.promise(promise, {
         loading: "Creating post...",
         success: "Post created successfully",
@@ -65,25 +55,16 @@ export const createPostApi = async (post: CreatePost) => {
 }
 
 export const updatePostApi = async ({ slug, post }: { slug: string; post: UpdatePost }) => {
-    const token = localStorage.getItem("jwt-token")
-    const promise = client.patch(
-        `/post/${slug}`,
-        {
-            titleEn: post.titleEn,
-            titleZh: post.titleZh,
-            aboutEn: post.aboutEn,
-            aboutZh: post.aboutZh,
-            // tags: JSON.stringify(post.tags),
-            tags: post.tags,
-            contentEn: post.contentEn,
-            contentZh: post.contentZh,
-        },
-        {
-            headers: {
-                Authorization: `Bearer ${token}`,
-            },
-        },
-    )
+    const promise = client.patch(`/post/${slug}`, {
+        titleEn: post.titleEn,
+        titleZh: post.titleZh,
+        aboutEn: post.aboutEn,
+        aboutZh: post.aboutZh,
+        // tags: JSON.stringify(post.tags),
+        tags: post.tags,
+        contentEn: post.contentEn,
+        contentZh: post.contentZh,
+    })
     toast.promise(promise, {
         loading: "Updating post...",
         success: "Post updated successfully",
@@ -94,14 +75,9 @@ export const updatePostApi = async ({ slug, post }: { slug: string; post: Update
 }
 
 export const uploadImageApi = async (imageFile: File) => {
-    const token = localStorage.getItem("jwt-token")
     const form = new FormData()
     form.append("image", imageFile)
-    const promise = client.post(`/upload-image`, form, {
-        headers: {
-            Authorization: `Bearer ${token}`,
-        },
-    })
+    const promise = client.post(`/upload-image`, form)
     toast.promise(promise, {
         loading: "Uploading image...",
         success: "Image uploaded successfully",

@@ -1,6 +1,11 @@
 .DS_Store
 resources
 
+# Go build artifacts (go build <package> drops the binary in cwd)
+/backend/api
+/backend/migrate
+/backend/seed
+
 # Logs
 logs
 *.log
