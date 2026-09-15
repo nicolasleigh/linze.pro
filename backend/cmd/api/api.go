@@ -45,6 +45,11 @@ type config struct {
 	auth        authConfig
 	redisCfg    redisConfig
 	rateLimiter ratelimiter.Config
+	visitor     visitorConfig
+}
+
+type visitorConfig struct {
+	secret string
 }
 
 type authConfig struct {
@@ -134,8 +139,10 @@ func (app *application) mount() http.Handler {
 		})
 		r.Group(func(r chi.Router) {
 			r.Use(app.AuthTokenMiddleware)
-			r.Use(app.UploadImageMiddleware)
-			r.Post("/upload-image", app.checkPostOwnership("admin", app.uploadImage))
+			// 确保权限校验优先于文件解析。如果是非管理员发起请求，会在 checkPostOwnership 阶段直接被拒绝，
+			// 避免未经授权的请求提前触发图片解析与 Cloudinary 上传，节省带宽与服务器资源
+			uploadHandler := app.UploadImageMiddleware(http.HandlerFunc(app.uploadImage))
+			r.Post("/upload-image", app.checkPostOwnership("admin", uploadHandler.ServeHTTP))
 		})
 		r.Group(func(r chi.Router) {
 			r.Get("/images", app.getAllImages)
@@ -144,6 +151,14 @@ func (app *application) mount() http.Handler {
 			r.Get("/posts", app.getAllPostsHandler)
 			r.Get("/posts/tag", app.getPostByTag)
 			r.Get("/posts/tags", app.getAllTags)
+			r.Get("/posts/{slug}/localized", app.getLocalizedPost)
+		})
+		r.Group(func(r chi.Router) {
+			r.Use(app.AuthTokenMiddleware)
+			r.Post("/posts/import", app.checkPostOwnership("admin", app.publishMarkdownTranslation))
+			r.Put("/posts/{slug}/translations/{locale}", app.checkPostOwnership("admin", app.updateMarkdownTranslation))
+			r.Get("/posts/{slug}/translations", app.checkPostOwnership("admin", app.getAllPostTranslations))
+			r.Get("/posts/{slug}/translations/{locale}/revisions", app.checkPostOwnership("admin", app.getPostTranslationRevisions))
 		})
 		r.Group(func(r chi.Router) {
 			r.Use(app.postContextMiddleware)
@@ -174,12 +189,18 @@ func (app *application) mount() http.Handler {
 			r.Post("/auth/token", app.createTokenHandler)
 		})
 		r.Group(func(r chi.Router) {
-			r.Post("/like/post/{slug}", app.updatePostLike)
 			r.Get("/like/post/{slug}", app.getPostLike)
-			r.Get("/view/post/{slug}", app.updatePostView)
 			r.Post("/like/project/{slug}", app.updateProjectLike)
 			r.Get("/like/project/{slug}", app.getProjectLike)
 			r.Get("/view/project/{slug}", app.updateProjectView)
+		})
+		r.Group(func(r chi.Router) {
+			r.Use(app.VisitorIdentityMiddleware)
+			r.Use(app.SameOriginWriteMiddleware)
+			r.Use(app.EngagementRateLimitMiddleware)
+			r.Get("/posts/{slug}/engagement", app.getPostEngagement)
+			r.Put("/posts/{slug}/engagement/like", app.likePost)
+			r.Post("/posts/{slug}/engagement/view", app.recordPostView)
 		})
 	})
 
@@ -189,7 +210,7 @@ func (app *application) mount() http.Handler {
 func (app *application) run(mux http.Handler) error {
 	docs.SwaggerInfo.Version = version
 	docs.SwaggerInfo.Host = app.config.apiURL
-	docs.SwaggerInfo.BasePath = "/v1"
+	docs.SwaggerInfo.BasePath = "/api/v1"
 	srv := http.Server{
 		Addr:         app.config.addr,
 		Handler:      mux,
