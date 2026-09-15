@@ -3,7 +3,6 @@ package main
 import (
 	"crypto/sha256"
 	"encoding/hex"
-	"fmt"
 	"net/http"
 	"time"
 
@@ -29,7 +28,6 @@ func (app *application) registerUserHandler(w http.ResponseWriter, r *http.Reque
 		app.badRequestError(w, r, err)
 		return
 	}
-	fmt.Print(payload)
 
 	if err := Validate.Struct(payload); err != nil {
 		app.badRequestError(w, r, err)
