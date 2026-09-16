@@ -16,13 +16,13 @@ migrate/force:
 	@migrate -path ${MIGRATIONS_PATH} -database ${DB_DSN} force ${version}
 
 get-health:
-	@curl http://localhost:4000/v1/health
+	@curl http://localhost:8080/api/v1/health
 
 fmt:
 	@go fmt ./...
 
 run:
-	@go run cmd/api/*.go   
+	@go run ./cmd/api
 
 air:
 	@air
