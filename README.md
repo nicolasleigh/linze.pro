@@ -159,6 +159,27 @@ optimistic locking, cache revalidation, and translation revision history.
 
 ------
 
+## 🚀 CI/CD & Deployment
+
+This project uses **GitHub Actions** for continuous integration and automated deployment:
+
+- **Backend CI (`.github/workflows/ci-backend.yml`)**: Runs `go mod verify`, `go vet`, race detector tests (`go test -race`), and binary compilation on pull requests and pushes to `main`/`develop`.
+- **Frontend CI (`.github/workflows/ci-frontend.yml`)**: Runs ESLint, TypeScript typecheck, and production Next.js standalone build on pull requests and pushes to `main`/`develop`.
+- **Production CD (`.github/workflows/cd-deploy.yml`)**: Triggered on push to `main` (or manual trigger). Validates tests and builds before securely SSHing into the cloud server to pull the latest code, build/restart Docker containers (`blog-backend` and `blog-frontend`), and apply database migrations.
+
+### Required GitHub Secrets
+
+Configure these secrets in your repository settings (**Settings > Secrets and variables > Actions**):
+
+| Secret | Description | Example |
+| :--- | :--- | :--- |
+| `SERVER_HOST` | Remote server IP / domain | `106.14.126.186` |
+| `SERVER_USER` | SSH user | `nicolas` |
+| `SERVER_SSH_KEY` | Private SSH key (ED25519 or RSA) | `-----BEGIN OPENSSH PRIVATE KEY----- ...` |
+| `SERVER_PORT` | SSH port (optional, default: 22) | `22` |
+
+------
+
 ## 📌 Summary
 
 **Linze.pro** is more than just a blog — it’s a dynamic platform for content publishing, a portfolio hub, and a real-world demonstration of my full-stack development capabilities.

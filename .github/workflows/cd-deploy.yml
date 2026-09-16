@@ -1,0 +1,101 @@
+name: CD Deploy
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  test-backend:
+    name: Validate Backend
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: backend
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Set up Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: '1.23.4'
+          cache: true
+          cache-dependency-path: backend/go.sum
+
+      - name: Verify Dependencies
+        run: go mod verify
+
+      - name: Run Tests
+        run: go test -v -race ./...
+
+      - name: Build Binary
+        run: go build -v ./cmd/api
+
+  test-frontend:
+    name: Validate Frontend
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: frontend-next
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: frontend-next/package-lock.json
+
+      - name: Install Dependencies
+        run: npm ci
+
+      - name: Run Lint
+        run: npm run lint
+
+      - name: Run Typecheck
+        run: npm run typecheck
+
+      - name: Build Next.js
+        run: npm run build
+        env:
+          NEXT_TELEMETRY_DISABLED: 1
+
+  deploy:
+    name: Deploy to Production
+    runs-on: ubuntu-latest
+    needs: [test-backend, test-frontend]
+    steps:
+      - name: Execute Remote SSH Deploy
+        uses: appleboy/ssh-action@v1.2.0
+        with:
+          host: ${{ secrets.SERVER_HOST }}
+          username: ${{ secrets.SERVER_USER }}
+          key: ${{ secrets.SERVER_SSH_KEY }}
+          port: ${{ secrets.SERVER_PORT || 22 }}
+          script: |
+            set -e
+            echo "===> Navigating to application directory..."
+            cd ~/linze.pro
+
+            echo "===> Fetching latest code from main..."
+            git pull origin main
+
+            echo "===> Building and restarting Docker containers..."
+            sudo docker compose up -d --build backend frontend
+
+            echo "===> Running database migrations if needed..."
+            if [ -f ./backend/.envrc ]; then
+              set -a
+              . ./backend/.envrc
+              set +a
+            fi
+            sudo docker exec blog-backend migrate -database "$CLOUD_DB_DSN" -path ./cmd/migrate/migrations up || true
+
+            echo "===> Cleaning up dangling Docker images..."
+            sudo docker image prune -f
+
+            echo "===> Deployment finished successfully!"

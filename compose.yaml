@@ -42,6 +42,23 @@ services:
       - backend_network
     command: redis-server --save 60 1 --loglevel warning
 
+  frontend:
+    restart: always
+    build:
+      context: ./frontend-next
+      dockerfile: Dockerfile
+    container_name: blog-frontend
+    environment:
+      NODE_ENV: production
+      BLOG_API_URL: http://backend:8085/api/v1
+      NEXT_PUBLIC_SITE_URL: https://linze.pro
+    networks:
+      - backend_network
+    depends_on:
+      - backend
+    ports:
+      - "127.0.0.1:3000:3000"
+
 secrets:
   db_password:
     file: db_password.txt
