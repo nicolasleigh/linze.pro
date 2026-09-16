@@ -1,0 +1,8 @@
+DROP TABLE IF EXISTS post_view_visitors;
+DROP TABLE IF EXISTS post_like_visitors;
+
+ALTER TABLE post_likes
+  ALTER COLUMN like_num TYPE INTEGER,
+  ALTER COLUMN view_num TYPE INTEGER,
+  ALTER COLUMN like_num SET DEFAULT 1,
+  ALTER COLUMN view_num SET DEFAULT 1;
