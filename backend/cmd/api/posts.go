@@ -36,6 +36,7 @@ type UpdatePostPayload struct {
 	ContentZh string   `json:"contentZh" validate:"omitempty,max=50000"`
 	Tags      []string `json:"tags" validate:"omitempty"`
 	Photo     string   `json:"photo" validate:"omitempty"`
+	Version   *int     `json:"version" validate:"omitempty,gte=0"`
 }
 
 func (app *application) createPostHandler(w http.ResponseWriter, r *http.Request) {
@@ -291,9 +292,17 @@ func (app *application) updatePostHandler(w http.ResponseWriter, r *http.Request
 	if len(payload.Tags) != 0 {
 		post.Tags = payload.Tags
 	}
+	if payload.Photo != "" {
+		post.Photo = payload.Photo
+	}
+	if payload.Version != nil {
+		post.Version = *payload.Version
+	}
 
 	if err := app.store.Posts.Update(r.Context(), post); err != nil {
 		switch {
+		case errors.Is(err, store.ErrVersionConflict):
+			app.conflictError(w, r, err)
 		case errors.Is(err, store.ErrNotFound):
 			app.notFoundError(w, r, err)
 		default:

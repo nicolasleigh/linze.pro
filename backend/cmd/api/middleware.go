@@ -3,7 +3,9 @@ package main
 import (
 	"context"
 	"encoding/base64"
+	"errors"
 	"fmt"
+	"io"
 	"net/http"
 	"os"
 	"strconv"
@@ -18,6 +20,8 @@ import (
 type imageUrlKey string
 
 const imageUrlCtx imageUrlKey = "imageUrl"
+
+const maxImageUploadBytes int64 = 10 << 20
 
 func (app *application) AuthTokenMiddleware(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
@@ -62,8 +66,6 @@ func (app *application) AuthTokenMiddleware(next http.Handler) http.Handler {
 			app.unauthorizedError(w, r, err)
 			return
 		}
-		fmt.Print("user-middleware:", user.ID)
-
 		ctx = context.WithValue(ctx, userCtx, user)
 		next.ServeHTTP(w, r.WithContext(ctx))
 	})
@@ -184,24 +186,40 @@ func (app *application) RateLimiterMiddleware(next http.Handler) http.Handler {
 
 func (app *application) UploadImageMiddleware(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		r.Body = http.MaxBytesReader(w, r.Body, maxImageUploadBytes)
+
 		var cld, err = cloudinary.NewFromURL(os.Getenv("CLOUDINARY_URL"))
 		if err != nil {
 			app.internalServerError(w, r, err)
 			return
 		}
-		err = r.ParseMultipartForm(10 << 20) //10 MB
+		err = r.ParseMultipartForm(maxImageUploadBytes)
 		if err != nil {
-			app.internalServerError(w, r, err)
+			app.badRequestError(w, r, err)
 			return
 		}
 		file, _, err := r.FormFile("image")
 		if err != nil {
-			app.internalServerError(w, r, err)
+			app.badRequestError(w, r, err)
 			return
 		}
 		defer file.Close()
 
-		// var ctx = context.Background()
+		header := make([]byte, 512)
+		n, err := file.Read(header)
+		if err != nil && !errors.Is(err, io.EOF) {
+			app.badRequestError(w, r, err)
+			return
+		}
+		if !strings.HasPrefix(http.DetectContentType(header[:n]), "image/") {
+			app.badRequestError(w, r, fmt.Errorf("uploaded file must be an image"))
+			return
+		}
+		if _, err := file.Seek(0, io.SeekStart); err != nil {
+			app.internalServerError(w, r, err)
+			return
+		}
+
 		var ctx = r.Context()
 		uploadResult, err := cld.Upload.Upload(
 			ctx,

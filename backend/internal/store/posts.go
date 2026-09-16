@@ -4,6 +4,7 @@ import (
 	"context"
 	"database/sql"
 	"errors"
+	"strings"
 
 	"github.com/lib/pq"
 )
@@ -14,22 +15,23 @@ type Post struct {
 	// Content string `json:"content"`
 	// Title   string `json:"title"`
 	// About   string `json:"about"`
-	ContentEn string    `json:"contentEn"`
-	TitleEn   string    `json:"titleEn"`
-	AboutEn   string    `json:"aboutEn"`
-	ContentZh string    `json:"contentZh"`
-	TitleZh   string    `json:"titleZh"`
-	AboutZh   string    `json:"aboutZh"`
-	Photo     string    `json:"photo"`
-	UserID    int64     `json:"user_id"`
-	Tags      []string  `json:"tags"`
-	CreatedAt string    `json:"created_at"`
-	UpdatedAt string    `json:"updated_at"`
-	Version   int       `json:"version"`
-	Comments  []Comment `json:"comments"`
-	User      User      `json:"user"`
-	ViewNum   int       `json:"viewNum"`
-	LikeNum   int       `json:"likeNum"`
+	ContentEn        string    `json:"contentEn"`
+	TitleEn          string    `json:"titleEn"`
+	AboutEn          string    `json:"aboutEn"`
+	ContentZh        string    `json:"contentZh"`
+	TitleZh          string    `json:"titleZh"`
+	AboutZh          string    `json:"aboutZh"`
+	Photo            string    `json:"photo"`
+	UserID           int64     `json:"user_id"`
+	Tags             []string  `json:"tags"`
+	CreatedAt        string    `json:"created_at"`
+	UpdatedAt        string    `json:"updated_at"`
+	Version          int       `json:"version"`
+	Comments         []Comment `json:"comments"`
+	User             User      `json:"user"`
+	ViewNum          int64     `json:"viewNum"`
+	LikeNum          int64     `json:"likeNum"`
+	AvailableLocales []string  `json:"availableLocales"`
 }
 
 type PostWithMetadata struct {
@@ -48,6 +50,9 @@ func (s *PostStore) Create(ctx context.Context, post *Post) error {
 		}
 
 		if err := s.createViewAndLike(ctx, tx, post.Slug); err != nil {
+			return err
+		}
+		if err := syncLegacyPostTranslations(ctx, tx, post); err != nil {
 			return err
 		}
 
@@ -90,15 +95,19 @@ func (s *PostStore) createViewAndLike(ctx context.Context, tx *sql.Tx, slug stri
 func (s *PostStore) GetBySlug(ctx context.Context, slug, lang string) (*Post, error) {
 	var query string
 	if lang == "zh" {
-		query = `SELECT posts.slug, username, email, posts.title_zh, posts.content_zh, posts.created_at, posts.updated_at, posts.tags, posts.version, posts.about_zh, posts.photo
+		query = `SELECT posts.slug, username, email, posts.title_zh, posts.content_zh, posts.created_at, posts.updated_at, posts.tags, posts.version, posts.about_zh, posts.photo, likes.view_num, likes.like_num,
+		ARRAY(SELECT locale FROM post_translations t WHERE t.post_slug = posts.slug ORDER BY locale)
 		FROM posts
 		JOIN users ON users.id = posts.user_id
+		JOIN post_likes AS likes ON likes.post_slug = posts.slug
 		WHERE posts.slug = $1;
 	`
 	} else {
-		query = `SELECT posts.slug, username, email, posts.title_en, posts.content_en, posts.created_at, posts.updated_at, posts.tags, posts.version, posts.about_en, posts.photo
+		query = `SELECT posts.slug, username, email, posts.title_en, posts.content_en, posts.created_at, posts.updated_at, posts.tags, posts.version, posts.about_en, posts.photo, likes.view_num, likes.like_num,
+		ARRAY(SELECT locale FROM post_translations t WHERE t.post_slug = posts.slug ORDER BY locale)
 		FROM posts
 		JOIN users ON users.id = posts.user_id
+		JOIN post_likes AS likes ON likes.post_slug = posts.slug
 		WHERE posts.slug = $1;
 	`
 	}
@@ -121,6 +130,9 @@ func (s *PostStore) GetBySlug(ctx context.Context, slug, lang string) (*Post, er
 			&post.Version,
 			&post.AboutZh,
 			&post.Photo,
+			&post.ViewNum,
+			&post.LikeNum,
+			pq.Array(&post.AvailableLocales),
 		)
 	} else {
 		err = s.db.QueryRowContext(ctx, query, slug).Scan(
@@ -135,6 +147,9 @@ func (s *PostStore) GetBySlug(ctx context.Context, slug, lang string) (*Post, er
 			&post.Version,
 			&post.AboutEn,
 			&post.Photo,
+			&post.ViewNum,
+			&post.LikeNum,
+			pq.Array(&post.AvailableLocales),
 		)
 	}
 
@@ -192,7 +207,8 @@ func (s *PostStore) GetAllLang(ctx context.Context, slug string) (*Post, error) 
 }
 
 func (s *PostStore) GetAll(ctx context.Context, limit, offset int) (*[]Post, error) {
-	query := `SELECT p.slug, u.email, u.username, p.title_en, p.title_zh, p.about_en, p.about_zh, p.created_at, p.updated_at, tags, p.photo, l.view_num, l.like_num
+	query := `SELECT p.slug, u.email, u.username, p.title_en, p.title_zh, p.about_en, p.about_zh, p.created_at, p.updated_at, tags, p.photo, l.view_num, l.like_num,
+		ARRAY(SELECT locale FROM post_translations t WHERE t.post_slug = p.slug ORDER BY locale)
 		FROM posts AS p
 		JOIN users AS u ON u.id = p.user_id
 		JOIN post_likes AS l ON l.post_slug = p.slug
@@ -230,6 +246,7 @@ func (s *PostStore) GetAll(ctx context.Context, limit, offset int) (*[]Post, err
 			&post.Photo,
 			&post.ViewNum,
 			&post.LikeNum,
+			pq.Array(&post.AvailableLocales),
 		)
 		if err != nil {
 			return nil, err
@@ -266,7 +283,8 @@ func (s *PostStore) GetTags(ctx context.Context) (string, error) {
 }
 
 func (s *PostStore) GetByTag(ctx context.Context, limit, offset int, tag string) (*[]Post, error) {
-	query := `SELECT p.slug, u.email, u.username, p.title_en, p.title_zh, p.about_en, p.about_zh, p.created_at, p.updated_at, tags, p.photo, l.view_num, l.like_num
+	query := `SELECT p.slug, u.email, u.username, p.title_en, p.title_zh, p.about_en, p.about_zh, p.created_at, p.updated_at, tags, p.photo, l.view_num, l.like_num,
+	ARRAY(SELECT locale FROM post_translations t WHERE t.post_slug = p.slug ORDER BY locale)
 	FROM posts AS p
 	JOIN users AS u ON u.id = p.user_id
 	JOIN post_likes AS l ON l.post_slug = p.slug
@@ -305,6 +323,7 @@ func (s *PostStore) GetByTag(ctx context.Context, limit, offset int, tag string)
 			&post.Photo,
 			&post.ViewNum,
 			&post.LikeNum,
+			pq.Array(&post.AvailableLocales),
 		)
 		if err != nil {
 			return nil, err
@@ -336,20 +355,67 @@ func (s *PostStore) Delete(ctx context.Context, slug string) error {
 }
 
 func (s *PostStore) Update(ctx context.Context, post *Post) error {
-	query := `UPDATE posts
-	SET title_en = $1, title_zh = $2, about_en = $3, about_zh = $4, content_en = $5, content_zh = $6, tags = $7, version = version + 1
-	WHERE slug = $8 AND version = $9
-	RETURNING version`
+	return withTx(s.db, ctx, func(tx *sql.Tx) error {
+		query := `UPDATE posts
+		SET title_en = $1, title_zh = $2, about_en = $3, about_zh = $4, content_en = $5, content_zh = $6, tags = $7, photo = $8, updated_at = NOW(), version = version + 1
+		WHERE slug = $9 AND version = $10
+		RETURNING version, updated_at`
 
-	ctx, cancel := context.WithTimeout(ctx, QueryTimeoutDuration)
-	defer cancel()
+		queryCtx, cancel := context.WithTimeout(ctx, QueryTimeoutDuration)
+		defer cancel()
 
-	err := s.db.QueryRowContext(ctx, query, post.TitleEn, post.TitleZh, post.AboutEn, post.AboutZh, post.ContentEn, post.ContentZh, pq.Array(post.Tags), post.Slug, post.Version).Scan(&post.Version)
-	if err != nil {
-		switch {
-		case errors.Is(err, sql.ErrNoRows):
-			return ErrNotFound
-		default:
+		err := tx.QueryRowContext(queryCtx, query,
+			post.TitleEn, post.TitleZh, post.AboutEn, post.AboutZh,
+			post.ContentEn, post.ContentZh, pq.Array(post.Tags), post.Photo,
+			post.Slug, post.Version,
+		).Scan(&post.Version, &post.UpdatedAt)
+		if errors.Is(err, sql.ErrNoRows) {
+			return ErrVersionConflict
+		}
+		if err != nil {
+			return err
+		}
+		return syncLegacyPostTranslations(queryCtx, tx, post)
+	})
+}
+
+func syncLegacyPostTranslations(ctx context.Context, tx *sql.Tx, post *Post) error {
+	translations := []struct {
+		locale      string
+		title       string
+		description string
+		content     string
+	}{
+		{LocaleZhCN, post.TitleZh, post.AboutZh, post.ContentZh},
+		{LocaleEnUS, post.TitleEn, post.AboutEn, post.ContentEn},
+	}
+
+	for _, translation := range translations {
+		// An empty optional language is not a translation. Skipping it keeps
+		// localized reads on the explicit fallback path instead of returning an
+		// empty article that merely contains whitespace.
+		if strings.TrimSpace(translation.title) == "" && strings.TrimSpace(translation.content) == "" {
+			continue
+		}
+		query := `WITH upserted AS (
+			INSERT INTO post_translations (
+				post_slug, locale, title, description, content, source_updated_at
+			) VALUES ($1,$2,$3,$4,$5,NOW())
+			ON CONFLICT (post_slug, locale) DO UPDATE SET
+				title=EXCLUDED.title, description=EXCLUDED.description,
+				content=EXCLUDED.content, source_updated_at=NOW(),
+				updated_at=NOW(), version=post_translations.version+1
+			RETURNING post_slug, locale, version, title, description, content, source_updated_at
+		)
+		INSERT INTO post_translation_revisions (
+			post_slug, locale, version, title, description, content, source_updated_at
+		)
+		SELECT post_slug, locale, version, title, description, content, source_updated_at
+		FROM upserted;`
+		if _, err := tx.ExecContext(ctx, query,
+			post.Slug, translation.locale, translation.title,
+			translation.description, translation.content,
+		); err != nil {
 			return err
 		}
 	}

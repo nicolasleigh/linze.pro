@@ -94,6 +94,71 @@ I was the **sole designer and developer** of the entire project, responsible for
 
 ------
 
+## 🔐 Anonymous engagement configuration
+
+The Go API requires a private `VISITOR_SECRET` in production. It signs the anonymous,
+HttpOnly visitor cookie and hashes visitor identifiers before they are persisted. Use
+a long random value and keep it out of source control. Development falls back to a
+development-only value when the variable is omitted.
+
+After updating the environment, apply the latest database migration before starting
+the API. Browser traffic should reach `/api/v1` through the same-origin Caddy proxy;
+the Next.js development server proxies that path to `BLOG_API_URL`.
+
+------
+
+## 📝 Markdown articles and translations
+
+Each article keeps shared identity and metrics in `posts`, while localized Markdown
+content lives in `post_translations`. Chinese and English are independent versions
+of the same slug and every save creates a row in `post_translation_revisions`.
+
+```md
+---
+slug: building-go-agents
+locale: zh-CN
+title: 使用 Go 构建 Agent
+description: 从工具调用到执行循环
+tags: [Go, AI Agent]
+photo: https://example.com/cover.webp
+updated: 2026-09-12
+---
+
+# 正文
+```
+
+Public articles use `/{locale}/posts/{slug}`. When the requested translation is
+missing, the API falls back to Chinese and then to any available translation while
+returning the requested and resolved locales explicitly.
+
+The public Next.js site also has localized home, writing, projects, case-study,
+about, error, and RSS pages under `/zh-CN` and `/en-US`. The site-wide language
+control replaces the current history entry and preserves search filters. Legacy
+unprefixed URLs redirect according to `Accept-Language`; locale-specific URLs are
+the canonical, indexable pages. The sitemap includes localized alternates, while
+article alternates include only translations that actually exist. The admin area
+remains at `/admin` with its existing Chinese editorial UI.
+
+Authenticated management endpoints:
+
+```text
+POST /api/v1/posts/import
+PUT  /api/v1/posts/{slug}/translations/{locale}
+GET  /api/v1/posts/{slug}/translations
+```
+
+The Next.js content backend is available at `/admin/login`. It authenticates
+against the Go API, verifies the `admin` role, and stores the short-lived JWT in
+an HttpOnly, same-site cookie. Browser-side article requests go through protected
+Next.js route handlers, so the bearer token is never exposed to client code.
+
+After signing in, `/admin` shows content and translation completeness metrics,
+`/admin/articles` provides the searchable article index, and the create/edit
+workbench supports Markdown upload, independent Chinese/English versions,
+optimistic locking, cache revalidation, and translation revision history.
+
+------
+
 ## 📌 Summary
 
 **Linze.pro** is more than just a blog — it’s a dynamic platform for content publishing, a portfolio hub, and a real-world demonstration of my full-stack development capabilities.

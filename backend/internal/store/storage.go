@@ -11,6 +11,7 @@ var (
 	ErrNotFound          = errors.New("resource not found")
 	QueryTimeoutDuration = time.Second * 5
 	ErrConflict          = errors.New("resource already exists")
+	ErrVersionConflict   = errors.New("resource was modified by another request")
 	ErrEmailOrPassError  = errors.New("password is incorrect")
 )
 
@@ -26,6 +27,13 @@ type Storage struct {
 		GetAllLang(context.Context, string) (*Post, error)
 		GetTags(context.Context) (string, error)
 		GetByTag(context.Context, int, int, string) (*[]Post, error)
+	}
+	PostTranslations interface {
+		Publish(context.Context, *TranslationDraft) (*PostTranslation, error)
+		Update(context.Context, *TranslationDraft) (*PostTranslation, error)
+		GetLocalized(context.Context, string, string) (*LocalizedPost, error)
+		GetAll(context.Context, string) ([]PostTranslation, error)
+		GetRevisions(context.Context, string, string) ([]PostTranslationRevision, error)
 	}
 	Users interface {
 		Create(context.Context, *sql.Tx, *User) error
@@ -51,6 +59,11 @@ type Storage struct {
 		GetLike(context.Context, string) (int, error)
 		UpdateView(context.Context, string) (int, error)
 	}
+	PostEngagements interface {
+		Get(context.Context, string, string) (*PostEngagement, error)
+		Like(context.Context, string, string) (*PostEngagement, bool, error)
+		RecordView(context.Context, string, string, time.Time) (*PostEngagement, bool, error)
+	}
 	ProjectLikes interface {
 		UpdateLike(context.Context, string) (int, error)
 		GetLike(context.Context, string) (int, error)
@@ -64,14 +77,16 @@ type Storage struct {
 
 func NewStorage(db *sql.DB) Storage {
 	return Storage{
-		Posts:        &PostStore{db},
-		Users:        &UserStore{db},
-		Comments:     &CommentStore{db},
-		Followers:    &FollowerStore{db},
-		Roles:        &RoleStore{db},
-		PostLikes:    &PostLikeStore{db},
-		ProjectLikes: &ProjectLikeStore{db},
-		Images:       &ImageStore{db},
+		Posts:            &PostStore{db},
+		PostTranslations: &PostTranslationStore{db},
+		Users:            &UserStore{db},
+		Comments:         &CommentStore{db},
+		Followers:        &FollowerStore{db},
+		Roles:            &RoleStore{db},
+		PostLikes:        &PostLikeStore{db},
+		PostEngagements:  &PostEngagementStore{db},
+		ProjectLikes:     &ProjectLikeStore{db},
+		Images:           &ImageStore{db},
 	}
 }
 

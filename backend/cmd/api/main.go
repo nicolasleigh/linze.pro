@@ -68,11 +68,20 @@ func main() {
 			TimeFrame:            time.Second * 5,
 			Enabled:              env.GetBool("RATE_LIMITER_ENABLED", true),
 		},
+		visitor: visitorConfig{
+			secret: env.GetString("VISITOR_SECRET", env.GetString("AUTH_TOKEN_SECRET", "")),
+		},
 	}
 
 	// Logger
 	logger := zap.Must(zap.NewProduction()).Sugar()
 	defer logger.Sync()
+	if cfg.visitor.secret == "" {
+		if cfg.env == "production" {
+			logger.Fatal("VISITOR_SECRET must be configured in production")
+		}
+		cfg.visitor.secret = "development-only-visitor-secret"
+	}
 
 	// Database
 	db, err := db.New(cfg.db.addr, cfg.db.maxOpenConns, cfg.db.maxIdleConns, cfg.db.maxIdleTime)
