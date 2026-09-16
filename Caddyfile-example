@@ -3,6 +3,9 @@ linze.pro {
 		reverse_proxy localhost:8085
 	}
 	handle {
+		root * /home/nicolas/linze.pro/vue-build/dist
+		try_files {path} /index.html
+		file_server
 		reverse_proxy localhost:3000
 	}
 }

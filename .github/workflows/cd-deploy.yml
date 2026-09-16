@@ -85,7 +85,7 @@ jobs:
             git pull origin main
 
             echo "===> Building and restarting Docker containers..."
-            sudo docker compose up -d --build backend frontend
+            docker compose up -d --build backend frontend
 
             echo "===> Running database migrations if needed..."
             if [ -f ./backend/.envrc ]; then
@@ -93,9 +93,9 @@ jobs:
               . ./backend/.envrc
               set +a
             fi
-            sudo docker exec blog-backend migrate -database "$CLOUD_DB_DSN" -path ./cmd/migrate/migrations up || true
+            docker exec blog-backend migrate -database "$CLOUD_DB_DSN" -path ./cmd/migrate/migrations up || true
 
             echo "===> Cleaning up dangling Docker images..."
-            sudo docker image prune -f
+            docker image prune -f
 
             echo "===> Deployment finished successfully!"

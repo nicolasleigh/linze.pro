@@ -2,7 +2,7 @@
 
 **A modern, multilingual blog app built with Vue and Go to showcase my portfolio and share technical articles.**
 
-------
+---
 
 ## 📖 Project Overview
 
@@ -10,34 +10,34 @@
 
 As the admin, I can create and manage blog content via a secure backend interface. The platform is designed with a clean, responsive UI and built on a scalable architecture optimized for performance and security.
 
-------
+---
 
 ## 🎯 Motivation
 
 I created Linze.pro as a personal platform to:
 
-* **Showcase my portfolio** in a centralized, accessible format
-* **Share technical insights** and experiences with a broader audience
-* **Practice full-stack development** using modern technologies and real-world requirements
-* **Explore multilingual content handling** for better accessibility
+- **Showcase my portfolio** in a centralized, accessible format
+- **Share technical insights** and experiences with a broader audience
+- **Practice full-stack development** using modern technologies and real-world requirements
+- **Explore multilingual content handling** for better accessibility
 
 This project reflects my commitment to clean code, performance optimization, and elegant user experiences.
 
-------
+---
 
 ## 👨‍💻 My Role
 
 I was the **sole designer and developer** of the entire project, responsible for:
 
-* UI/UX design and responsive layout with **Vue.js** and **Tailwind CSS**
-* Backend architecture, API design, and implementation using **Golang** and **chi**
-* Database modeling and management with **PostgreSQL**
-* Security implementations, including **JWT authentication**, **rate limiting**, and **CORS**
-* Caching with **Redis** for better performance
-* CI/CD setup with **GitHub Actions**
-* **Dockerization** and deployment with **Docker Compose** and **Caddy**
+- UI/UX design and responsive layout with **Vue.js** and **Tailwind CSS**
+- Backend architecture, API design, and implementation using **Golang** and **chi**
+- Database modeling and management with **PostgreSQL**
+- Security implementations, including **JWT authentication**, **rate limiting**, and **CORS**
+- Caching with **Redis** for better performance
+- CI/CD setup with **GitHub Actions**
+- **Dockerization** and deployment with **Docker Compose** and **Caddy**
 
-------
+---
 
 ## ⚙️ Development Process
 
@@ -47,7 +47,7 @@ I was the **sole designer and developer** of the entire project, responsible for
 4. **DevOps**: Containerized the app using Docker and managed deployments via Docker Compose and Caddy.
 5. **CI/CD & Testing**: Implemented automated GitHub Actions workflows and wrote unit/integration tests.
 
-------
+---
 
 ## 🛠️ Tech Stack
 
@@ -60,39 +60,39 @@ I was the **sole designer and developer** of the entire project, responsible for
 | **DevOps**     | Docker, Docker Compose, GitHub Actions, Caddy |
 | **Docs**       | Swagger (for backend API documentation)       |
 
-------
+---
 
 ## ✨ Key Features
 
-* **🌍 Multilingual Support**: English and Chinese content with proper i18n structure
-* **🏷️ Tag Filtering**: Users can filter posts by tags for easier content discovery
-* **📊 Blog Analytics**: View and like counters provide insight into post popularity
-* **🛠 Admin Interface**: Secure admin panel for creating, editing, and managing posts
+- **🌍 Multilingual Support**: English and Chinese content with proper i18n structure
+- **🏷️ Tag Filtering**: Users can filter posts by tags for easier content discovery
+- **📊 Blog Analytics**: View and like counters provide insight into post popularity
+- **🛠 Admin Interface**: Secure admin panel for creating, editing, and managing posts
 
-------
+---
 
 ## 🧠 Challenges & Solutions
 
-* **Multilingual Support**: Designed a flexible schema in PostgreSQL to support multiple languages without redundancy.
-* **Security**: Applied JWT-based authentication, strict CORS settings, and rate-limiting to protect the API.
-* **Performance**: Integrated Redis caching to minimize database load and improve response times.
+- **Multilingual Support**: Designed a flexible schema in PostgreSQL to support multiple languages without redundancy.
+- **Security**: Applied JWT-based authentication, strict CORS settings, and rate-limiting to protect the API.
+- **Performance**: Integrated Redis caching to minimize database load and improve response times.
 
-------
+---
 
 ## 📚 What I Learned
 
-* Gained hands-on experience in building and deploying full-stack apps with **Golang and Vue**
-* Learned best practices for building **multilingual apps**
-* Improved skills in **containerization**, **CI/CD**, and **backend optimization**
-* Understood how to design **secure, scalable APIs** with production-readiness in mind
+- Gained hands-on experience in building and deploying full-stack apps with **Golang and Vue**
+- Learned best practices for building **multilingual apps**
+- Improved skills in **containerization**, **CI/CD**, and **backend optimization**
+- Understood how to design **secure, scalable APIs** with production-readiness in mind
 
-------
+---
 
 ## 🚀 Future Improvements
 
-* 🔍 **SEO Optimization** – Improve visibility and ranking of posts in search engines
+- 🔍 **SEO Optimization** – Improve visibility and ranking of posts in search engines
 
-------
+---
 
 ## 🔐 Anonymous engagement configuration
 
@@ -105,7 +105,7 @@ After updating the environment, apply the latest database migration before start
 the API. Browser traffic should reach `/api/v1` through the same-origin Caddy proxy;
 the Next.js development server proxies that path to `BLOG_API_URL`.
 
-------
+---
 
 ## 📝 Markdown articles and translations
 
@@ -157,7 +157,7 @@ After signing in, `/admin` shows content and translation completeness metrics,
 workbench supports Markdown upload, independent Chinese/English versions,
 optimistic locking, cache revalidation, and translation revision history.
 
-------
+---
 
 ## 🚀 CI/CD & Deployment
 
@@ -171,14 +171,14 @@ This project uses **GitHub Actions** for continuous integration and automated de
 
 Configure these secrets in your repository settings (**Settings > Secrets and variables > Actions**):
 
-| Secret | Description | Example |
-| :--- | :--- | :--- |
-| `SERVER_HOST` | Remote server IP / domain | `106.14.126.186` |
-| `SERVER_USER` | SSH user | `nicolas` |
+| Secret           | Description                      | Example                                   |
+| :--------------- | :------------------------------- | :---------------------------------------- |
+| `SERVER_HOST`    | Remote server IP / domain        | `106.14.126.186`                          |
+| `SERVER_USER`    | SSH user                         | `nicolas`                                 |
 | `SERVER_SSH_KEY` | Private SSH key (ED25519 or RSA) | `-----BEGIN OPENSSH PRIVATE KEY----- ...` |
-| `SERVER_PORT` | SSH port (optional, default: 22) | `22` |
+| `SERVER_PORT`    | SSH port (optional, default: 22) | `22`                                      |
 
-------
+---
 
 ## 📌 Summary
 
@@ -186,10 +186,10 @@ Configure these secrets in your repository settings (**Settings > Secrets and va
 
 By combining a performant Go backend with a clean Vue frontend and robust DevOps practices, I’ve built a secure, scalable, and user-friendly application ready for real-world use.
 
-------
+---
 
 ## 📬 Contact
 
 **Author**: Nicolas Leigh
- **Website**: [https://linze.pro](https://linze.pro/)
- **GitHub**: [@nicolasleigh](https://github.com/nicolasleigh)
+**Website**: [https://linze.pro](https://linze.pro/)
+**GitHub**: [@nicolasleigh](https://github.com/nicolasleigh)

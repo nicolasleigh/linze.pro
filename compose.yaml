@@ -16,7 +16,7 @@ services:
     volumes:
       - postgres_data:/var/lib/postgresql/data
     expose:
-      - "5432"
+      - '5432'
 
   backend:
     restart: always
@@ -24,7 +24,7 @@ services:
       context: ./backend
       dockerfile: Dockerfile
     container_name: blog-backend
-    env_file: "./backend/.envrc"
+    env_file: './backend/.envrc'
     environment:
       APP_ENV: production
     networks:
@@ -32,7 +32,7 @@ services:
     depends_on:
       - postgres
     ports:
-      - "127.0.0.1:8085:8085"
+      - '127.0.0.1:8085:8085'
 
   redis:
     image: redis:6.2-alpine
@@ -57,7 +57,7 @@ services:
     depends_on:
       - backend
     ports:
-      - "127.0.0.1:3000:3000"
+      - '127.0.0.1:3000:3000'
 
 secrets:
   db_password:

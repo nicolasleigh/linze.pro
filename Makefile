@@ -110,7 +110,7 @@ bs: frontend/build frontend/send
 .PHONY: deploy/prod
 deploy/prod:
 	git pull origin main
-	sudo docker compose up -d --build backend frontend
-	-sudo docker exec blog-backend migrate -database ${CLOUD_DB_DSN} -path ${MIGRATIONS_PATH} up
-	sudo docker image prune -f
+	docker compose up -d --build backend frontend
+	-docker exec blog-backend migrate -database ${CLOUD_DB_DSN} -path ${MIGRATIONS_PATH} up
+	docker image prune -f
 
