@@ -1,4 +1,4 @@
-import { cache } from "react";
+import { cache } from 'react';
 
 import type {
   BlogLocale,
@@ -9,13 +9,11 @@ import type {
   PostSummary,
   PostsResult,
   TagsResult,
-} from "@/types/post";
+} from '@/types/post';
 
-const defaultApiBaseUrl = "https://linze.pro/api/v1";
-const apiBaseUrl = (process.env.BLOG_API_URL ?? defaultApiBaseUrl).replace(
-  /\/$/,
-  "",
-);
+const defaultApiBaseUrl =
+  process.env.NODE_ENV === 'development' ? 'http://localhost:8085/api/v1' : 'https://linze.pro/api/v1';
+const apiBaseUrl = (process.env.BLOG_API_URL ?? defaultApiBaseUrl).replace(/\/$/, '');
 
 type ApiPost = {
   slug: string;
@@ -62,28 +60,27 @@ type ApiLocalizedPost = {
 };
 
 function isRecord(value: unknown): value is Record<string, unknown> {
-  return typeof value === "object" && value !== null;
+  return typeof value === 'object' && value !== null;
 }
 
 function isApiPost(value: unknown): value is ApiPost {
   if (!isRecord(value)) return false;
 
   return (
-    typeof value.slug === "string" &&
-    typeof value.titleEn === "string" &&
-    typeof value.titleZh === "string" &&
-    typeof value.aboutEn === "string" &&
-    typeof value.aboutZh === "string" &&
+    typeof value.slug === 'string' &&
+    typeof value.titleEn === 'string' &&
+    typeof value.titleZh === 'string' &&
+    typeof value.aboutEn === 'string' &&
+    typeof value.aboutZh === 'string' &&
     Array.isArray(value.tags) &&
-    value.tags.every((tag) => typeof tag === "string") &&
-    typeof value.created_at === "string" &&
-    typeof value.updated_at === "string" &&
-    typeof value.photo === "string" &&
-    typeof value.viewNum === "number" &&
-    typeof value.likeNum === "number" &&
+    value.tags.every((tag) => typeof tag === 'string') &&
+    typeof value.created_at === 'string' &&
+    typeof value.updated_at === 'string' &&
+    typeof value.photo === 'string' &&
+    typeof value.viewNum === 'number' &&
+    typeof value.likeNum === 'number' &&
     (value.availableLocales === undefined ||
-      (Array.isArray(value.availableLocales) &&
-        value.availableLocales.every(isBlogLocale)))
+      (Array.isArray(value.availableLocales) && value.availableLocales.every(isBlogLocale)))
   );
 }
 
@@ -93,64 +90,62 @@ function isApiPostDetail(value: unknown): value is ApiPostDetail {
   const detail = value as unknown as Record<string, unknown>;
 
   return (
-    typeof detail.contentZh === "string" &&
-    typeof detail.version === "number" &&
+    typeof detail.contentZh === 'string' &&
+    typeof detail.version === 'number' &&
     isRecord(detail.user) &&
-    typeof detail.user.username === "string"
+    typeof detail.user.username === 'string'
   );
 }
 
 function isBlogLocale(value: unknown): value is BlogLocale {
-  return value === "zh-CN" || value === "en-US";
+  return value === 'zh-CN' || value === 'en-US';
 }
 
 function isApiLocalizedPost(value: unknown): value is ApiLocalizedPost {
   if (!isRecord(value)) return false;
 
   return (
-    typeof value.postSlug === "string" &&
+    typeof value.postSlug === 'string' &&
     isBlogLocale(value.locale) &&
-    typeof value.title === "string" &&
-    typeof value.description === "string" &&
-    typeof value.content === "string" &&
-    typeof value.version === "number" &&
-    typeof value.updatedAt === "string" &&
+    typeof value.title === 'string' &&
+    typeof value.description === 'string' &&
+    typeof value.content === 'string' &&
+    typeof value.version === 'number' &&
+    typeof value.updatedAt === 'string' &&
     isBlogLocale(value.requestedLocale) &&
     isBlogLocale(value.resolvedLocale) &&
-    typeof value.fallback === "boolean" &&
+    typeof value.fallback === 'boolean' &&
     Array.isArray(value.availableLocales) &&
     value.availableLocales.every(isBlogLocale) &&
     Array.isArray(value.tags) &&
-    value.tags.every((tag) => typeof tag === "string") &&
-    typeof value.photo === "string" &&
-    typeof value.author === "string" &&
-    typeof value.publishedAt === "string" &&
-    typeof value.viewCount === "number" &&
-    typeof value.likeCount === "number"
+    value.tags.every((tag) => typeof tag === 'string') &&
+    typeof value.photo === 'string' &&
+    typeof value.author === 'string' &&
+    typeof value.publishedAt === 'string' &&
+    typeof value.viewCount === 'number' &&
+    typeof value.likeCount === 'number'
   );
 }
 
 function parsePosts(payload: unknown, locale: BlogLocale): PostSummary[] | null {
-  if (
-    !isRecord(payload) ||
-    !Array.isArray(payload.data) ||
-    !payload.data.every(isApiPost)
-  ) {
+  if (!isRecord(payload) || !Array.isArray(payload.data) || !payload.data.every(isApiPost)) {
     return null;
   }
 
   return payload.data.map((post) => {
-    const inferredLocales: BlogLocale[] = ["zh-CN"];
-    if (post.titleEn) inferredLocales.push("en-US");
+    const inferredLocales: BlogLocale[] = ['zh-CN'];
+    if (post.titleEn) inferredLocales.push('en-US');
 
     return {
       slug: post.slug,
-      title: locale === "en-US" && (post.availableLocales ?? inferredLocales).includes("en-US")
-        ? post.titleEn || post.titleZh || post.slug
-        : post.titleZh || post.titleEn || post.slug,
-      description: locale === "en-US" && (post.availableLocales ?? inferredLocales).includes("en-US")
-        ? post.aboutEn || post.aboutZh
-        : post.aboutZh || post.aboutEn,
+      title:
+        locale === 'en-US' && (post.availableLocales ?? inferredLocales).includes('en-US')
+          ? post.titleEn || post.titleZh || post.slug
+          : post.titleZh || post.titleEn || post.slug,
+      description:
+        locale === 'en-US' && (post.availableLocales ?? inferredLocales).includes('en-US')
+          ? post.aboutEn || post.aboutZh
+          : post.aboutZh || post.aboutEn,
       tags: post.tags,
       publishedAt: post.created_at,
       updatedAt: post.updated_at,
@@ -158,59 +153,55 @@ function parsePosts(payload: unknown, locale: BlogLocale): PostSummary[] | null 
       viewCount: post.viewNum,
       likeCount: post.likeNum,
       availableLocales:
-        post.availableLocales && post.availableLocales.length > 0
-          ? post.availableLocales
-          : inferredLocales,
+        post.availableLocales && post.availableLocales.length > 0 ? post.availableLocales : inferredLocales,
     };
   });
 }
 
-export async function getRecentPosts(limit = 12, locale: BlogLocale = "zh-CN"): Promise<PostsResult> {
-  const searchParams = new URLSearchParams({ page: "1", limit: String(limit) });
+export async function getRecentPosts(limit = 12, locale: BlogLocale = 'zh-CN'): Promise<PostsResult> {
+  const searchParams = new URLSearchParams({ page: '1', limit: String(limit) });
 
   try {
     const response = await fetch(`${apiBaseUrl}/posts?${searchParams}`, {
-      headers: { Accept: "application/json" },
+      headers: { Accept: 'application/json' },
       signal: AbortSignal.timeout(5000),
-      next: { revalidate: 300, tags: ["posts"] },
+      next: { revalidate: 300, tags: ['posts'] },
     });
 
     if (!response.ok) {
-      return { ok: false, reason: "request-failed" };
+      return { ok: false, reason: 'request-failed' };
     }
 
     const posts = parsePosts(await response.json(), locale);
 
-    return posts
-      ? { ok: true, posts }
-      : { ok: false, reason: "invalid-response" };
+    return posts ? { ok: true, posts } : { ok: false, reason: 'invalid-response' };
   } catch {
-    return { ok: false, reason: "request-failed" };
+    return { ok: false, reason: 'request-failed' };
   }
 }
 
 export async function getAllTags(): Promise<TagsResult> {
   try {
     const response = await fetch(`${apiBaseUrl}/posts/tags`, {
-      headers: { Accept: "application/json" },
+      headers: { Accept: 'application/json' },
       signal: AbortSignal.timeout(5000),
-      next: { revalidate: 300, tags: ["posts", "post-tags"] },
+      next: { revalidate: 300, tags: ['posts', 'post-tags'] },
     });
 
     if (!response.ok) {
-      return { ok: false, reason: "request-failed" };
+      return { ok: false, reason: 'request-failed' };
     }
 
     const payload: unknown = await response.json();
 
-    if (!isRecord(payload) || typeof payload.data !== "string") {
-      return { ok: false, reason: "invalid-response" };
+    if (!isRecord(payload) || typeof payload.data !== 'string') {
+      return { ok: false, reason: 'invalid-response' };
     }
 
     const tags = [
       ...new Set(
         payload.data
-          .split(",")
+          .split(',')
           .map((tag) => tag.trim())
           .filter(Boolean),
       ),
@@ -218,33 +209,33 @@ export async function getAllTags(): Promise<TagsResult> {
 
     return { ok: true, tags };
   } catch {
-    return { ok: false, reason: "request-failed" };
+    return { ok: false, reason: 'request-failed' };
   }
 }
 
 export async function getPostBySlug(slug: string): Promise<PostResult> {
   const postUrl = new URL(`${apiBaseUrl}/post/${encodeURIComponent(slug)}`);
-  postUrl.searchParams.set("lang", "zh");
+  postUrl.searchParams.set('lang', 'zh');
 
   try {
     const response = await fetch(postUrl, {
-      headers: { Accept: "application/json" },
+      headers: { Accept: 'application/json' },
       signal: AbortSignal.timeout(5000),
-      next: { revalidate: 300, tags: ["posts", `post:${slug}`] },
+      next: { revalidate: 300, tags: ['posts', `post:${slug}`] },
     });
 
     if (response.status === 404) {
-      return { ok: false, reason: "not-found" };
+      return { ok: false, reason: 'not-found' };
     }
 
     if (!response.ok) {
-      return { ok: false, reason: "request-failed" };
+      return { ok: false, reason: 'request-failed' };
     }
 
     const payload: unknown = await response.json();
 
     if (!isRecord(payload) || !isApiPostDetail(payload.data)) {
-      return { ok: false, reason: "invalid-response" };
+      return { ok: false, reason: 'invalid-response' };
     }
 
     const post = payload.data;
@@ -259,31 +250,28 @@ export async function getPostBySlug(slug: string): Promise<PostResult> {
       photo: post.photo,
       viewCount: post.viewNum,
       likeCount: post.likeNum,
-      availableLocales: post.availableLocales ?? ["zh-CN"],
+      availableLocales: post.availableLocales ?? ['zh-CN'],
       author: post.user.username,
       version: post.version,
     };
 
     return { ok: true, post: detail };
   } catch {
-    return { ok: false, reason: "request-failed" };
+    return { ok: false, reason: 'request-failed' };
   }
 }
 
-async function getLegacyLocalizedPost(
-  slug: string,
-  requestedLocale: BlogLocale,
-): Promise<LocalizedPostResult> {
+async function getLegacyLocalizedPost(slug: string, requestedLocale: BlogLocale): Promise<LocalizedPostResult> {
   const load = async (locale: BlogLocale) => {
     const url = new URL(`${apiBaseUrl}/post/${encodeURIComponent(slug)}`);
-    url.searchParams.set("lang", locale === "zh-CN" ? "zh" : "en");
+    url.searchParams.set('lang', locale === 'zh-CN' ? 'zh' : 'en');
     const response = await fetch(url, {
-      headers: { Accept: "application/json" },
+      headers: { Accept: 'application/json' },
       signal: AbortSignal.timeout(5000),
-      next: { revalidate: 300, tags: ["posts", `post:${slug}`] },
+      next: { revalidate: 300, tags: ['posts', `post:${slug}`] },
     });
     if (response.status === 404) return null;
-    if (!response.ok) throw new Error("legacy post request failed");
+    if (!response.ok) throw new Error('legacy post request failed');
 
     const payload: unknown = await response.json();
     if (!isRecord(payload) || !isRecord(payload.data)) return null;
@@ -293,47 +281,40 @@ async function getLegacyLocalizedPost(
   try {
     let resolvedLocale = requestedLocale;
     let post = await load(requestedLocale);
-    const requestedContentKey =
-      requestedLocale === "zh-CN" ? "contentZh" : "contentEn";
+    const requestedContentKey = requestedLocale === 'zh-CN' ? 'contentZh' : 'contentEn';
 
-    if (
-      !post ||
-      typeof post[requestedContentKey] !== "string" ||
-      post[requestedContentKey] === ""
-    ) {
-      resolvedLocale = requestedLocale === "zh-CN" ? "en-US" : "zh-CN";
+    if (!post || typeof post[requestedContentKey] !== 'string' || post[requestedContentKey] === '') {
+      resolvedLocale = requestedLocale === 'zh-CN' ? 'en-US' : 'zh-CN';
       post = await load(resolvedLocale);
     }
-    if (!post) return { ok: false, reason: "not-found" };
+    if (!post) return { ok: false, reason: 'not-found' };
 
-    const titleKey = resolvedLocale === "zh-CN" ? "titleZh" : "titleEn";
-    const descriptionKey = resolvedLocale === "zh-CN" ? "aboutZh" : "aboutEn";
-    const contentKey = resolvedLocale === "zh-CN" ? "contentZh" : "contentEn";
+    const titleKey = resolvedLocale === 'zh-CN' ? 'titleZh' : 'titleEn';
+    const descriptionKey = resolvedLocale === 'zh-CN' ? 'aboutZh' : 'aboutEn';
+    const contentKey = resolvedLocale === 'zh-CN' ? 'contentZh' : 'contentEn';
     const user = post.user;
     if (
-      typeof post.slug !== "string" ||
-      typeof post[titleKey] !== "string" ||
-      typeof post[descriptionKey] !== "string" ||
-      typeof post[contentKey] !== "string" ||
+      typeof post.slug !== 'string' ||
+      typeof post[titleKey] !== 'string' ||
+      typeof post[descriptionKey] !== 'string' ||
+      typeof post[contentKey] !== 'string' ||
       !Array.isArray(post.tags) ||
-      !post.tags.every((tag) => typeof tag === "string") ||
-      typeof post.created_at !== "string" ||
-      typeof post.updated_at !== "string" ||
-      typeof post.photo !== "string" ||
-      typeof post.viewNum !== "number" ||
-      typeof post.likeNum !== "number" ||
-      typeof post.version !== "number" ||
+      !post.tags.every((tag) => typeof tag === 'string') ||
+      typeof post.created_at !== 'string' ||
+      typeof post.updated_at !== 'string' ||
+      typeof post.photo !== 'string' ||
+      typeof post.viewNum !== 'number' ||
+      typeof post.likeNum !== 'number' ||
+      typeof post.version !== 'number' ||
       !isRecord(user) ||
-      typeof user.username !== "string"
+      typeof user.username !== 'string'
     ) {
-      return { ok: false, reason: "invalid-response" };
+      return { ok: false, reason: 'invalid-response' };
     }
 
     const availableLocales: BlogLocale[] = [];
-    if (typeof post.titleZh === "string" && post.titleZh)
-      availableLocales.push("zh-CN");
-    if (typeof post.titleEn === "string" && post.titleEn)
-      availableLocales.push("en-US");
+    if (typeof post.titleZh === 'string' && post.titleZh) availableLocales.push('zh-CN');
+    if (typeof post.titleEn === 'string' && post.titleEn) availableLocales.push('en-US');
 
     return {
       ok: true,
@@ -357,7 +338,7 @@ async function getLegacyLocalizedPost(
       },
     };
   } catch {
-    return { ok: false, reason: "request-failed" };
+    return { ok: false, reason: 'request-failed' };
   }
 }
 
@@ -365,18 +346,16 @@ export const getLocalizedPostBySlug = cache(async function getLocalizedPostBySlu
   slug: string,
   locale: BlogLocale,
 ): Promise<LocalizedPostResult> {
-  const postUrl = new URL(
-    `${apiBaseUrl}/posts/${encodeURIComponent(slug)}/localized`,
-  );
-  postUrl.searchParams.set("lang", locale);
+  const postUrl = new URL(`${apiBaseUrl}/posts/${encodeURIComponent(slug)}/localized`);
+  postUrl.searchParams.set('lang', locale);
 
   try {
     const response = await fetch(postUrl, {
-      headers: { Accept: "application/json" },
+      headers: { Accept: 'application/json' },
       signal: AbortSignal.timeout(5000),
       next: {
         revalidate: 300,
-        tags: ["posts", `post:${slug}`, `post:${slug}:${locale}`],
+        tags: ['posts', `post:${slug}`, `post:${slug}:${locale}`],
       },
     });
 
@@ -384,12 +363,12 @@ export const getLocalizedPostBySlug = cache(async function getLocalizedPostBySlu
       return getLegacyLocalizedPost(slug, locale);
     }
     if (!response.ok) {
-      return { ok: false, reason: "request-failed" };
+      return { ok: false, reason: 'request-failed' };
     }
 
     const payload: unknown = await response.json();
     if (!isRecord(payload) || !isApiLocalizedPost(payload.data)) {
-      return { ok: false, reason: "invalid-response" };
+      return { ok: false, reason: 'invalid-response' };
     }
 
     const post = payload.data;
@@ -414,6 +393,6 @@ export const getLocalizedPostBySlug = cache(async function getLocalizedPostBySlu
 
     return { ok: true, post: detail };
   } catch {
-    return { ok: false, reason: "request-failed" };
+    return { ok: false, reason: 'request-failed' };
   }
 });
