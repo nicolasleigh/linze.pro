@@ -1,6 +1,8 @@
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
+import { Suspense } from 'react';
 
+import { HomeLatestPosts, HomeLatestPostsSkeleton } from '@/components/home-latest-posts';
 import { PageTransition } from '@/components/page-transition';
 import { getPortfolioProjects, getSiteContent } from '@/content/localized';
 import { isBlogLocale, localizedPath } from '@/lib/i18n';
@@ -97,9 +99,31 @@ export default async function HomePage({ params }: Props) {
           </div>
         </section>
 
+        <section id='latest-writing' className='latest-writing-section page-shell motion-section' aria-labelledby='latest-writing-title'>
+          <div className='section-heading'>
+            <p className='section-kicker'>02 / LATEST WRITING</p>
+            <div className='latest-writing-heading'>
+              <h2 id='latest-writing-title'>{en ? 'Latest writing' : '最新文章'}</h2>
+              <p>
+                {en
+                  ? 'Notes on architecture, implementation details and lessons learned while building real products.'
+                  : '记录真实项目中的架构取舍、实现细节与问题复盘。'}
+              </p>
+            </div>
+          </div>
+
+          <Suspense fallback={<HomeLatestPostsSkeleton locale={locale} />}>
+            <HomeLatestPosts locale={locale} />
+          </Suspense>
+
+          <Link className='work-index-link' href={localizedPath(locale, '/posts')}>
+            {en ? 'Browse all writing' : '查看全部文章'} <span aria-hidden='true'>↗</span>
+          </Link>
+        </section>
+
         <section id='work' className='work-section page-shell motion-section' aria-labelledby='work-title'>
           <div className='section-heading'>
-            <p className='section-kicker'>02 / SELECTED WORK</p>
+            <p className='section-kicker'>03 / SELECTED WORK</p>
             <h2 id='work-title'>{en ? 'Selected projects' : '代表项目'}</h2>
           </div>
 
