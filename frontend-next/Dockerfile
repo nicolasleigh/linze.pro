@@ -2,11 +2,13 @@ FROM node:22-alpine AS base
 
 # Step 1: Install dependencies
 FROM base AS deps
-RUN apk add --no-cache libc6-compat
+RUN sed -i 's/dl-cdn.alpinelinux.org/mirrors.aliyun.com/g' /etc/apk/repositories && \
+    apk add --no-cache libc6-compat
 WORKDIR /app
 
 COPY package.json package-lock.json ./
-RUN npm ci
+RUN npm config set registry https://registry.npmmirror.com && \
+    npm ci
 
 # Step 2: Build the application
 FROM base AS builder
