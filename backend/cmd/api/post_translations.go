@@ -102,6 +102,7 @@ func (app *application) publishMarkdownTranslation(w http.ResponseWriter, r *htt
 		Photo:           parsed.frontMatter.Photo,
 		UserID:          user.ID,
 		SourceUpdatedAt: parsed.updatedAt,
+		CreatedAt:       parsed.createdAt,
 	})
 	if err != nil {
 		if app.metrics != nil {
@@ -114,6 +115,7 @@ func (app *application) publishMarkdownTranslation(w http.ResponseWriter, r *htt
 		app.handleTranslationError(w, r, err)
 		return
 	}
+
 	if app.metrics != nil {
 		app.metrics.TranslationEvent("publish", "success", locale)
 	}
@@ -187,6 +189,7 @@ func (app *application) updateMarkdownTranslation(w http.ResponseWriter, r *http
 		Photo:           parsed.frontMatter.Photo,
 		Version:         *payload.Version,
 		SourceUpdatedAt: parsed.updatedAt,
+		CreatedAt:       parsed.createdAt,
 	})
 	if err != nil {
 		if app.metrics != nil {
