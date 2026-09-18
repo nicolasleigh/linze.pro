@@ -178,6 +178,28 @@ Configure these secrets in your repository settings (**Settings > Secrets and va
 | `SERVER_SSH_KEY` | Private SSH key (ED25519 or RSA) | `-----BEGIN OPENSSH PRIVATE KEY----- ...` |
 | `SERVER_PORT`    | SSH port (optional, default: 22) | `22`                                      |
 
+## 📈 Observability
+
+The Go API exposes low-cardinality Prometheus metrics at `/metrics` and emits
+OpenTelemetry traces when enabled. For local development, start the optional
+monitoring profile:
+
+```bash
+docker compose --profile observability up -d
+```
+
+Set the following API environment variables to send traces directly to Jaeger:
+
+```text
+OTEL_ENABLED=true
+OTEL_SERVICE_NAME=linze-blog-api
+OTEL_EXPORTER_OTLP_ENDPOINT=jaeger:4317
+OTEL_EXPORTER_OTLP_INSECURE=true
+OTEL_TRACES_SAMPLER_ARG=1.0
+```
+
+Grafana is available at `http://localhost:3001` (pre-provisioned with Prometheus & Jaeger datasources + dashboard), Prometheus at `http://localhost:9090`, and Jaeger at `http://localhost:16686`. The metrics endpoint is scraped over the private Compose network and is not exposed through the public Caddy routes.
+
 ---
 
 ## 📌 Summary
