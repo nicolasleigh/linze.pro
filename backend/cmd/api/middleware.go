@@ -14,7 +14,9 @@ import (
 	"github.com/cloudinary/cloudinary-go/v2"
 	"github.com/cloudinary/cloudinary-go/v2/api/uploader"
 	"github.com/golang-jwt/jwt/v5"
+	"github.com/nicolasleigh/social/internal/observability"
 	"github.com/nicolasleigh/social/internal/store"
+	"go.opentelemetry.io/otel/attribute"
 )
 
 type imageUrlKey string
@@ -145,11 +147,17 @@ func (app *application) checkRolePrecedence(ctx context.Context, user *store.Use
 }
 
 func (app *application) getUser(ctx context.Context, userID int64) (*store.User, error) {
+	ctx, span := observability.StartSpan(ctx, "user.get")
+	span.SetAttributes(attribute.Int64("user.id", userID))
+	defer span.End()
+
 	if !app.config.redisCfg.enabled {
 		return app.store.Users.GetByID(ctx, userID)
 	}
 
-	user, err := app.cacheStorage.Users.Get(ctx, userID)
+	cacheCtx, cacheSpan := observability.StartSpan(ctx, "redis.user_cache.get")
+	user, err := app.cacheStorage.Users.Get(cacheCtx, userID)
+	cacheSpan.End()
 	if err != nil {
 		return nil, err
 	}
@@ -163,9 +171,12 @@ func (app *application) getUser(ctx context.Context, userID int64) (*store.User,
 			return nil, err
 		}
 
-		if err := app.cacheStorage.Users.Set(ctx, user); err != nil {
+		cacheCtx, cacheSpan := observability.StartSpan(ctx, "redis.user_cache.set")
+		if err := app.cacheStorage.Users.Set(cacheCtx, user); err != nil {
+			cacheSpan.End()
 			return nil, err
 		}
+		cacheSpan.End()
 	}
 
 	return user, nil
@@ -175,6 +186,9 @@ func (app *application) RateLimiterMiddleware(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		if app.config.rateLimiter.Enabled {
 			if allow, retryAfter := app.rateLimiter.Allow(r.RemoteAddr); !allow {
+				if app.metrics != nil {
+					app.metrics.RateLimitRejected("global")
+				}
 				app.rateLimitExceededResponse(w, r, retryAfter.String())
 				return
 			}

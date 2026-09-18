@@ -1,15 +1,18 @@
 package main
 
 import (
+	"context"
 	"expvar"
 	"os"
 	"runtime"
+	"strconv"
 	"time"
 
 	"github.com/nicolasleigh/social/internal/auth"
 	"github.com/nicolasleigh/social/internal/db"
 	"github.com/nicolasleigh/social/internal/env"
 	"github.com/nicolasleigh/social/internal/mailer"
+	"github.com/nicolasleigh/social/internal/observability"
 	"github.com/nicolasleigh/social/internal/ratelimiter"
 	"github.com/nicolasleigh/social/internal/store"
 	"github.com/nicolasleigh/social/internal/store/cache"
@@ -91,6 +94,26 @@ func main() {
 
 	defer db.Close()
 	logger.Info("database connection pool established!")
+	metrics := observability.NewMetrics()
+	metrics.RegisterDB(db)
+
+	tracing, err := observability.SetupTracing(context.Background(), observability.TracingConfig{
+		Enabled:        env.GetBool("OTEL_ENABLED", false),
+		ServiceName:    env.GetString("OTEL_SERVICE_NAME", "linze-blog-api"),
+		ServiceVersion: version,
+		Environment:    cfg.env,
+		Endpoint:       env.GetString("OTEL_EXPORTER_OTLP_ENDPOINT", ""),
+		Insecure:       env.GetBool("OTEL_EXPORTER_OTLP_INSECURE", cfg.env != "production"),
+		SampleRatio:    getTraceSampleRatio(env.GetString("OTEL_TRACES_SAMPLER_ARG", "0.05")),
+	})
+	if err != nil {
+		logger.Fatalw("telemetry initialization failed", "error", err)
+	}
+	defer func() {
+		if err := tracing.Shutdown(context.Background()); err != nil {
+			logger.Errorw("telemetry shutdown failed", "error", err)
+		}
+	}()
 
 	// Cache - redis
 	var rdb *redis.Client
@@ -120,6 +143,8 @@ func main() {
 		mailer:        mailer,
 		authenticator: jwtAuthenticator,
 		rateLimiter:   rateLimiter,
+		metrics:       metrics,
+		tracing:       tracing,
 	}
 
 	// Metrics collected
@@ -131,5 +156,15 @@ func main() {
 		return runtime.NumGoroutine()
 	}))
 
-	logger.Fatal(app.run(app.mount()))
+	if err := app.run(app.mount()); err != nil {
+		logger.Fatal(err)
+	}
+}
+
+func getTraceSampleRatio(value string) float64 {
+	ratio, err := strconv.ParseFloat(value, 64)
+	if err != nil || ratio <= 0 || ratio > 1 {
+		return 0.05
+	}
+	return ratio
 }

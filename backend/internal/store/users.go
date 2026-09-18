@@ -8,6 +8,7 @@ import (
 	"errors"
 	"time"
 
+	"github.com/nicolasleigh/social/internal/observability"
 	"golang.org/x/crypto/bcrypt"
 )
 
@@ -83,6 +84,8 @@ func (s *UserStore) Create(ctx context.Context, tx *sql.Tx, user *User) error {
 }
 
 func (s *UserStore) GetByID(ctx context.Context, userID int64) (*User, error) {
+	ctx, span := observability.StartSpan(ctx, "db.user.get_by_id")
+	defer span.End()
 	query := `SELECT u.id, u.username, u.email, u.password, u.created_at, u.is_active, u.role_id, r.id, r.name, r.level, r.description
 	FROM users u
 	JOIN roles r ON (u.role_id = r.id)
@@ -247,6 +250,8 @@ func (s *UserStore) delete(ctx context.Context, tx *sql.Tx, id int64) error {
 }
 
 func (s *UserStore) GetByEmail(ctx context.Context, email string, password string) (*User, error) {
+	ctx, span := observability.StartSpan(ctx, "db.user.get_by_email")
+	defer span.End()
 	query := `SELECT id, username, email, password, created_at FROM users
 	WHERE email = $1`
 

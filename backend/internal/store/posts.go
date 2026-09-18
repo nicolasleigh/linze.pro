@@ -7,6 +7,7 @@ import (
 	"strings"
 
 	"github.com/lib/pq"
+	"github.com/nicolasleigh/social/internal/observability"
 )
 
 type Post struct {
@@ -44,6 +45,8 @@ type PostStore struct {
 }
 
 func (s *PostStore) Create(ctx context.Context, post *Post) error {
+	ctx, span := observability.StartSpan(ctx, "db.post.create")
+	defer span.End()
 	return withTx(s.db, ctx, func(tx *sql.Tx) error {
 		if err := s.createPost(ctx, tx, post); err != nil {
 			return err
@@ -93,6 +96,8 @@ func (s *PostStore) createViewAndLike(ctx context.Context, tx *sql.Tx, slug stri
 }
 
 func (s *PostStore) GetBySlug(ctx context.Context, slug, lang string) (*Post, error) {
+	ctx, span := observability.StartSpan(ctx, "db.post.get_by_slug")
+	defer span.End()
 	var query string
 	if lang == "zh" {
 		query = `SELECT posts.slug, username, email, posts.title_zh, posts.content_zh, posts.created_at, posts.updated_at, posts.tags, posts.version, posts.about_zh, posts.photo, likes.view_num, likes.like_num,
@@ -166,6 +171,8 @@ func (s *PostStore) GetBySlug(ctx context.Context, slug, lang string) (*Post, er
 }
 
 func (s *PostStore) GetAllLang(ctx context.Context, slug string) (*Post, error) {
+	ctx, span := observability.StartSpan(ctx, "db.post.get_all_languages")
+	defer span.End()
 	query := `SELECT posts.slug, username, email, posts.title_zh, posts.title_en, posts.content_zh, posts.content_en, posts.created_at, posts.updated_at, posts.tags, posts.version, posts.about_zh, posts.about_en, posts.photo
 		FROM posts
 		JOIN users ON users.id = posts.user_id
@@ -207,6 +214,8 @@ func (s *PostStore) GetAllLang(ctx context.Context, slug string) (*Post, error) 
 }
 
 func (s *PostStore) GetAll(ctx context.Context, limit, offset int) (*[]Post, error) {
+	ctx, span := observability.StartSpan(ctx, "db.post.list")
+	defer span.End()
 	query := `SELECT p.slug, u.email, u.username, p.title_en, p.title_zh, p.about_en, p.about_zh, p.created_at, p.updated_at, tags, p.photo, l.view_num, l.like_num,
 		ARRAY(SELECT locale FROM post_translations t WHERE t.post_slug = p.slug ORDER BY locale)
 		FROM posts AS p
@@ -283,6 +292,8 @@ func (s *PostStore) GetTags(ctx context.Context) (string, error) {
 }
 
 func (s *PostStore) GetByTag(ctx context.Context, limit, offset int, tag string) (*[]Post, error) {
+	ctx, span := observability.StartSpan(ctx, "db.post.list_by_tag")
+	defer span.End()
 	query := `SELECT p.slug, u.email, u.username, p.title_en, p.title_zh, p.about_en, p.about_zh, p.created_at, p.updated_at, tags, p.photo, l.view_num, l.like_num,
 	ARRAY(SELECT locale FROM post_translations t WHERE t.post_slug = p.slug ORDER BY locale)
 	FROM posts AS p
@@ -355,6 +366,8 @@ func (s *PostStore) Delete(ctx context.Context, slug string) error {
 }
 
 func (s *PostStore) Update(ctx context.Context, post *Post) error {
+	ctx, span := observability.StartSpan(ctx, "db.post.update")
+	defer span.End()
 	return withTx(s.db, ctx, func(tx *sql.Tx) error {
 		query := `UPDATE posts
 		SET title_en = $1, title_zh = $2, about_en = $3, about_zh = $4, content_en = $5, content_zh = $6, tags = $7, photo = $8, updated_at = NOW(), version = version + 1

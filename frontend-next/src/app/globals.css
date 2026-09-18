@@ -1,4 +1,4 @@
-@import "tailwindcss";
+@import 'tailwindcss';
 
 :root {
   --background: #eef2f7;
@@ -43,12 +43,7 @@ html {
 body {
   margin: 0;
   background:
-    linear-gradient(
-      90deg,
-      transparent calc(50% - 0.5px),
-      var(--line) 50%,
-      transparent calc(50% + 0.5px)
-    ),
+    linear-gradient(90deg, transparent calc(50% - 0.5px), var(--line) 50%, transparent calc(50% + 0.5px)),
     var(--background);
   color: var(--foreground);
   font-family:
@@ -57,7 +52,7 @@ body {
     system-ui,
     -apple-system,
     BlinkMacSystemFont,
-    "Segoe UI",
+    'Segoe UI',
     sans-serif;
   font-size: 1rem;
   line-height: 1.6;
@@ -72,7 +67,7 @@ body::before {
   left: 0;
   z-index: 90;
   height: 2px;
-  content: "";
+  content: '';
   background: var(--accent);
   pointer-events: none;
   transform: scaleX(0);
@@ -121,7 +116,7 @@ a {
 .brand-mark {
   display: inline-flex;
   gap: 0.28rem;
-  font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+  font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', monospace;
   font-size: 0.84rem;
   font-weight: 700;
   letter-spacing: 0.07em;
@@ -145,7 +140,7 @@ a {
   bottom: -0.35rem;
   left: 0;
   height: 1px;
-  content: "";
+  content: '';
   background: currentColor;
   transform: scaleX(0);
   transform-origin: right;
@@ -182,7 +177,7 @@ a {
   bottom: 0;
   left: calc(5rem + clamp(1.25rem, 3.6vw, 3.5rem));
   width: 1px;
-  content: "";
+  content: '';
   background: var(--line);
 }
 
@@ -191,7 +186,7 @@ a {
   display: flex;
   justify-content: space-between;
   color: var(--faint);
-  font-family: "SFMono-Regular", Consolas, monospace;
+  font-family: 'SFMono-Regular', Consolas, monospace;
   font-size: 0.68rem;
   letter-spacing: 0.12em;
   writing-mode: vertical-rl;
@@ -208,7 +203,7 @@ a {
 .section-kicker {
   margin: 0;
   color: var(--accent);
-  font-family: "SFMono-Regular", Consolas, monospace;
+  font-family: 'SFMono-Regular', Consolas, monospace;
   font-size: 0.74rem;
   font-weight: 700;
   letter-spacing: 0.09em;
@@ -324,7 +319,7 @@ a {
 
 .signal-panel dt {
   color: var(--faint);
-  font-family: "SFMono-Regular", Consolas, monospace;
+  font-family: 'SFMono-Regular', Consolas, monospace;
   font-size: 0.66rem;
   letter-spacing: 0.08em;
 }
@@ -349,7 +344,7 @@ a {
   border-radius: 999px;
   color: var(--muted);
   padding: 0.3rem 0.55rem;
-  font-family: "SFMono-Regular", Consolas, monospace;
+  font-family: 'SFMono-Regular', Consolas, monospace;
   font-size: 0.66rem;
 }
 
@@ -405,6 +400,205 @@ a {
   padding: clamp(5rem, 10vw, 9rem) clamp(1.25rem, 3.6vw, 3.5rem);
 }
 
+.latest-writing-section {
+  border-right: 1px solid var(--line);
+  border-left: 1px solid var(--line);
+  padding: clamp(5rem, 10vw, 9rem) clamp(1.25rem, 3.6vw, 3.5rem);
+}
+
+.latest-writing-heading {
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) minmax(16rem, 0.55fr);
+  align-items: end;
+  gap: clamp(2rem, 7vw, 7rem);
+}
+
+.latest-writing-heading h2 {
+  margin: 0;
+  font-size: clamp(2rem, 4vw, 4.2rem);
+  font-weight: 620;
+  letter-spacing: -0.05em;
+  line-height: 1.08;
+}
+
+.latest-writing-heading p {
+  margin: 0;
+  color: var(--muted);
+  line-height: 1.8;
+}
+
+.home-post-list {
+  margin: 0;
+  padding: 0;
+  border-top: 1px solid var(--line-strong);
+  list-style: none;
+}
+
+.home-post-list > li {
+  border-bottom: 1px solid var(--line);
+}
+
+.home-post-list article {
+  display: grid;
+  grid-template-columns: 4rem minmax(0, 1fr) 2rem;
+  gap: 1.25rem;
+  padding: clamp(1.8rem, 4vw, 3rem) 0.6rem;
+  transition:
+    background-color 180ms ease,
+    padding 180ms ease;
+}
+
+.home-post-list article:has(a:hover),
+.home-post-list article:has(a:focus-visible) {
+  background: var(--surface);
+  padding-inline: 1rem;
+}
+
+.home-post-index,
+.home-post-meta,
+.home-post-tags,
+.home-post-arrow {
+  font-family: 'SFMono-Regular', Consolas, monospace;
+}
+
+.home-post-index,
+.home-post-arrow {
+  color: var(--faint);
+  font-size: 0.7rem;
+  letter-spacing: 0.06em;
+}
+
+.home-post-copy {
+  max-width: 52rem;
+}
+
+.home-post-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem 1.15rem;
+  color: var(--faint);
+  font-size: 0.68rem;
+}
+
+.home-post-meta em {
+  color: var(--accent);
+  font-style: normal;
+}
+
+.home-post-copy h3 {
+  max-width: 28ch;
+  margin: 0.7rem 0 0;
+  font-size: clamp(1.65rem, 3.2vw, 3rem);
+  font-weight: 610;
+  letter-spacing: -0.045em;
+  line-height: 1.16;
+  text-wrap: balance;
+}
+
+.home-post-copy h3 a {
+  text-decoration-color: transparent;
+  text-decoration-line: underline;
+  text-decoration-thickness: 0.08em;
+  text-underline-offset: 0.14em;
+  transition:
+    color 180ms ease,
+    text-decoration-color 180ms ease;
+}
+
+.home-post-copy h3 a:hover,
+.home-post-copy h3 a:focus-visible {
+  color: var(--accent);
+  text-decoration-color: currentColor;
+}
+
+.home-post-copy > p {
+  max-width: 62ch;
+  margin: 0.75rem 0 0;
+  color: var(--muted);
+}
+
+.home-post-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.65rem;
+  margin: 1rem 0 0;
+  padding: 0;
+  color: var(--accent);
+  font-size: 0.7rem;
+  list-style: none;
+}
+
+.home-post-arrow {
+  justify-self: end;
+  color: var(--accent);
+  font-size: 1.2rem;
+  transition: transform 180ms ease;
+}
+
+.home-post-list article:has(a:hover) .home-post-arrow,
+.home-post-list article:has(a:focus-visible) .home-post-arrow {
+  transform: translate(0.2rem, -0.2rem);
+}
+
+.home-post-state {
+  display: grid;
+  grid-template-columns: 4rem minmax(0, 1fr);
+  gap: 1.25rem;
+  border-block: 1px solid var(--line);
+  padding: 2.25rem 0.6rem;
+}
+
+.home-post-state > span {
+  color: var(--faint);
+  font-family: 'SFMono-Regular', Consolas, monospace;
+  font-size: 0.65rem;
+}
+
+.home-post-state h3,
+.home-post-state p {
+  margin: 0;
+}
+
+.home-post-state h3 {
+  font-size: 1.25rem;
+}
+
+.home-post-state p {
+  margin-top: 0.35rem;
+  color: var(--muted);
+}
+
+.home-post-skeleton {
+  border-top: 1px solid var(--line-strong);
+}
+
+.home-post-skeleton > div {
+  display: grid;
+  gap: 0.75rem;
+  border-bottom: 1px solid var(--line);
+  padding: 2.25rem 4.6rem;
+}
+
+.home-post-skeleton span {
+  display: block;
+  height: 0.7rem;
+  background: color-mix(in srgb, var(--line) 72%, transparent);
+  animation: skeleton-pulse 1.4s ease-in-out infinite alternate;
+}
+
+.home-post-skeleton span:nth-child(1) {
+  width: 28%;
+}
+
+.home-post-skeleton span:nth-child(2) {
+  width: min(76%, 34rem);
+  height: 1.8rem;
+}
+
+.home-post-skeleton span:nth-child(3) {
+  width: min(58%, 26rem);
+}
+
 .section-heading {
   display: grid;
   grid-template-columns: 5rem minmax(0, 1fr);
@@ -443,7 +637,7 @@ a {
 .project-index,
 .project-stack {
   color: var(--faint);
-  font-family: "SFMono-Regular", Consolas, monospace;
+  font-family: 'SFMono-Regular', Consolas, monospace;
   font-size: 0.7rem;
   letter-spacing: 0.04em;
 }
@@ -493,10 +687,7 @@ a {
 
 .global-footer {
   display: grid;
-  grid-template-columns: minmax(0, 1.4fr) minmax(9rem, 0.45fr) minmax(
-      9rem,
-      0.45fr
-    );
+  grid-template-columns: minmax(0, 1.4fr) minmax(9rem, 0.45fr) minmax(9rem, 0.45fr);
   gap: clamp(2rem, 7vw, 7rem);
   border: 1px solid var(--line);
   padding: clamp(3rem, 6vw, 5rem) clamp(1.25rem, 3.6vw, 3.5rem) 1.5rem;
@@ -506,7 +697,7 @@ a {
 
 .footer-identity > a {
   color: var(--foreground);
-  font-family: "SFMono-Regular", Consolas, monospace;
+  font-family: 'SFMono-Regular', Consolas, monospace;
   font-size: clamp(1.4rem, 2.7vw, 2.4rem);
   font-weight: 750;
   letter-spacing: -0.05em;
@@ -520,7 +711,7 @@ a {
 .footer-label {
   margin: 0 0 0.85rem;
   color: var(--faint);
-  font-family: "SFMono-Regular", Consolas, monospace;
+  font-family: 'SFMono-Regular', Consolas, monospace;
   font-size: 0.65rem;
   font-weight: 700;
   letter-spacing: 0.1em;
@@ -559,7 +750,7 @@ a {
   border-top: 1px solid var(--line);
   padding-top: 1.25rem;
   color: var(--faint);
-  font-family: "SFMono-Regular", Consolas, monospace;
+  font-family: 'SFMono-Regular', Consolas, monospace;
   font-size: 0.65rem;
   letter-spacing: 0.04em;
 }
@@ -612,7 +803,7 @@ a {
 .about-profile dt,
 .about-profile dd {
   margin: 0;
-  font-family: "SFMono-Regular", Consolas, monospace;
+  font-family: 'SFMono-Regular', Consolas, monospace;
   font-size: 0.68rem;
 }
 
@@ -647,44 +838,20 @@ a {
   text-wrap: balance;
 }
 
-.about-journey > ol {
-  margin: clamp(3rem, 7vw, 6rem) 0 0 calc(5rem + clamp(2rem, 5vw, 5.5rem));
-  padding: 0;
-  border-top: 1px solid var(--line-strong);
-  list-style: none;
-}
-
-.about-journey > ol > li {
-  display: grid;
-  grid-template-columns: minmax(5rem, 0.35fr) minmax(0, 1fr);
-  gap: 2rem;
-  border-bottom: 1px solid var(--line);
-  padding: 1.75rem 0;
-}
-
-.about-journey > ol > li > span,
 .capability-index,
 .about-principles li > span {
   color: var(--accent);
-  font-family: "SFMono-Regular", Consolas, monospace;
+  font-family: 'SFMono-Regular', Consolas, monospace;
   font-size: 0.7rem;
   font-weight: 700;
   letter-spacing: 0.07em;
 }
 
-.about-journey h3,
 .capability-copy h3,
 .about-principles h3 {
   margin: 0;
   font-size: 1.15rem;
   letter-spacing: -0.02em;
-}
-
-.about-journey li p {
-  max-width: 45rem;
-  margin: 0.55rem 0 0;
-  color: var(--muted);
-  line-height: 1.85;
 }
 
 .about-capabilities > header > p:last-child {
@@ -694,14 +861,16 @@ a {
   color: var(--muted);
 }
 
-.about-capabilities > ol {
+.about-capabilities > ol,
+.about-education > ol {
   margin: clamp(3rem, 7vw, 6rem) 0 0;
   padding: 0;
   border-top: 1px solid var(--line-strong);
   list-style: none;
 }
 
-.about-capabilities > ol > li {
+.about-capabilities > ol > li,
+.about-education > ol > li {
   display: grid;
   grid-template-columns: 5rem minmax(0, 1fr) minmax(15rem, 0.55fr);
   gap: clamp(2rem, 5vw, 5.5rem);
@@ -716,7 +885,16 @@ a {
   line-height: 1.8;
 }
 
-.about-capabilities > ol > li > ul {
+.capability-copy .education-subtitle {
+  margin: 0.25rem 0 0.5rem;
+  color: var(--foreground);
+  font-family: 'SFMono-Regular', Consolas, monospace;
+  font-size: 0.78rem;
+  letter-spacing: 0.02em;
+}
+
+.about-capabilities > ol > li > ul,
+.about-education > ol > li > ul {
   display: flex;
   align-content: flex-start;
   flex-wrap: wrap;
@@ -726,13 +904,14 @@ a {
   list-style: none;
 }
 
-.about-capabilities > ol > li > ul > li {
+.about-capabilities > ol > li > ul > li,
+.about-education > ol > li > ul > li {
   height: fit-content;
   border: 1px solid var(--line);
   border-radius: 999px;
   color: var(--muted);
   padding: 0.3rem 0.55rem;
-  font-family: "SFMono-Regular", Consolas, monospace;
+  font-family: 'SFMono-Regular', Consolas, monospace;
   font-size: 0.66rem;
 }
 
@@ -790,7 +969,7 @@ a {
   border-bottom: 1px solid var(--line-strong);
   padding-bottom: 0.25rem;
   color: var(--muted);
-  font-family: "SFMono-Regular", Consolas, monospace;
+  font-family: 'SFMono-Regular', Consolas, monospace;
   font-size: 0.8rem;
   transition:
     color 180ms ease,
@@ -848,7 +1027,7 @@ a {
 .projects-hero dt,
 .projects-hero dd {
   margin: 0;
-  font-family: "SFMono-Regular", Consolas, monospace;
+  font-family: 'SFMono-Regular', Consolas, monospace;
   font-size: 0.69rem;
 }
 
@@ -900,7 +1079,7 @@ a {
 
 .case-number {
   color: var(--faint);
-  font-family: "SFMono-Regular", Consolas, monospace;
+  font-family: 'SFMono-Regular', Consolas, monospace;
   font-size: 0.7rem;
   letter-spacing: 0.08em;
 }
@@ -917,7 +1096,7 @@ a {
 .case-title > div span {
   margin: 0;
   color: var(--faint);
-  font-family: "SFMono-Regular", Consolas, monospace;
+  font-family: 'SFMono-Regular', Consolas, monospace;
   font-size: 0.69rem;
 }
 
@@ -974,7 +1153,7 @@ a {
 }
 
 .case-detail li::before {
-  content: "— ";
+  content: '— ';
   color: var(--accent);
 }
 
@@ -1002,7 +1181,7 @@ a {
   border-radius: 999px;
   color: var(--muted);
   padding: 0.25rem 0.5rem;
-  font-family: "SFMono-Regular", Consolas, monospace;
+  font-family: 'SFMono-Regular', Consolas, monospace;
   font-size: 0.66rem;
 }
 
@@ -1069,7 +1248,7 @@ a {
 .project-case-status {
   margin: 0 0 1rem;
   color: var(--accent);
-  font-family: "SFMono-Regular", Consolas, monospace;
+  font-family: 'SFMono-Regular', Consolas, monospace;
   font-size: 0.72rem;
   font-weight: 700;
 }
@@ -1166,7 +1345,7 @@ a {
 }
 
 .case-problem li::before {
-  content: "→ ";
+  content: '→ ';
   color: var(--accent);
 }
 
@@ -1213,13 +1392,13 @@ a {
   width: 0.55rem;
   height: 0.55rem;
   border-radius: 999px;
-  content: "";
+  content: '';
   background: var(--accent);
 }
 
 .system-flow span {
   color: var(--faint);
-  font-family: "SFMono-Regular", Consolas, monospace;
+  font-family: 'SFMono-Regular', Consolas, monospace;
   font-size: 0.68rem;
 }
 
@@ -1252,7 +1431,7 @@ a {
 
 .case-decisions > ol > li > span {
   color: var(--faint);
-  font-family: "SFMono-Regular", Consolas, monospace;
+  font-family: 'SFMono-Regular', Consolas, monospace;
   font-size: 0.68rem;
 }
 
@@ -1315,13 +1494,13 @@ a {
   border-right: 0;
 }
 
-.case-boundaries li[data-level="高"] {
+.case-boundaries li[data-level='高'] {
   background: color-mix(in srgb, var(--accent) 6%, transparent);
 }
 
 .case-boundaries li > span {
   color: var(--accent);
-  font-family: "SFMono-Regular", Consolas, monospace;
+  font-family: 'SFMono-Regular', Consolas, monospace;
   font-size: 0.68rem;
   font-weight: 700;
 }
@@ -1357,7 +1536,7 @@ a {
 
 .case-next li span {
   color: var(--faint);
-  font-family: "SFMono-Regular", Consolas, monospace;
+  font-family: 'SFMono-Regular', Consolas, monospace;
   font-size: 0.68rem;
 }
 
@@ -1386,7 +1565,7 @@ a {
 .system-state-code {
   margin: 0;
   color: transparent;
-  font-family: "SFMono-Regular", Consolas, monospace;
+  font-family: 'SFMono-Regular', Consolas, monospace;
   font-size: clamp(8rem, 19vw, 17rem);
   font-weight: 800;
   letter-spacing: -0.12em;
@@ -1481,7 +1660,7 @@ a {
 .system-state-suggestions p {
   margin: 0;
   color: var(--faint);
-  font-family: "SFMono-Regular", Consolas, monospace;
+  font-family: 'SFMono-Regular', Consolas, monospace;
   font-size: 0.68rem;
   letter-spacing: 0.06em;
   text-transform: uppercase;
@@ -1538,10 +1717,7 @@ a {
 
 .discovery-panel {
   display: grid;
-  grid-template-columns: minmax(16rem, 1.25fr) minmax(12rem, 0.8fr) minmax(
-      10rem,
-      0.55fr
-    );
+  grid-template-columns: minmax(16rem, 1.25fr) minmax(12rem, 0.8fr) minmax(10rem, 0.55fr);
   gap: clamp(1.5rem, 4vw, 4rem);
   border-bottom: 1px solid var(--line-strong);
   padding: 2rem 0;
@@ -1557,7 +1733,7 @@ a {
   display: block;
   margin: 0 0 0.75rem;
   color: var(--faint);
-  font-family: "SFMono-Regular", Consolas, monospace;
+  font-family: 'SFMono-Regular', Consolas, monospace;
   font-size: 0.68rem;
   font-weight: 700;
   letter-spacing: 0.06em;
@@ -1611,7 +1787,7 @@ a {
   border-radius: 999px;
   color: var(--muted);
   padding: 0.32rem 0.58rem;
-  font-family: "SFMono-Regular", Consolas, monospace;
+  font-family: 'SFMono-Regular', Consolas, monospace;
   font-size: 0.7rem;
   transition:
     border-color 180ms ease,
@@ -1621,7 +1797,7 @@ a {
 
 .filter-group a:hover,
 .filter-group a:focus-visible,
-.filter-group a[aria-current="page"] {
+.filter-group a[aria-current='page'] {
   border-color: var(--accent);
   background: color-mix(in srgb, var(--accent) 10%, transparent);
   color: var(--accent);
@@ -1646,7 +1822,7 @@ a {
 
 .collection-toolbar p {
   color: var(--faint);
-  font-family: "SFMono-Regular", Consolas, monospace;
+  font-family: 'SFMono-Regular', Consolas, monospace;
   font-size: 0.72rem;
 }
 
@@ -1672,7 +1848,7 @@ a {
 .article-status,
 .article-meta,
 .article-tags {
-  font-family: "SFMono-Regular", Consolas, monospace;
+  font-family: 'SFMono-Regular', Consolas, monospace;
 }
 
 .article-index,
@@ -1766,7 +1942,7 @@ a {
 .archive-group > header h3,
 .archive-group > header span {
   margin: 0;
-  font-family: "SFMono-Regular", Consolas, monospace;
+  font-family: 'SFMono-Regular', Consolas, monospace;
 }
 
 .archive-group > header h3 {
@@ -1793,7 +1969,7 @@ a {
 
 .collection-state > span {
   color: var(--faint);
-  font-family: "SFMono-Regular", Consolas, monospace;
+  font-family: 'SFMono-Regular', Consolas, monospace;
   font-size: 0.68rem;
 }
 
@@ -1867,7 +2043,7 @@ a {
   flex-wrap: wrap;
   gap: 0.55rem;
   color: var(--faint);
-  font-family: "SFMono-Regular", Consolas, monospace;
+  font-family: 'SFMono-Regular', Consolas, monospace;
   font-size: 0.72rem;
 }
 
@@ -1915,7 +2091,7 @@ a {
   place-items: center;
   border-radius: 999px;
   color: var(--faint);
-  font-family: "SFMono-Regular", Consolas, monospace;
+  font-family: 'SFMono-Regular', Consolas, monospace;
   font-size: 0.68rem;
   transition:
     background-color 180ms ease,
@@ -1930,12 +2106,12 @@ a {
   transform: translateY(-1px);
 }
 
-.article-language-switch [data-state="current"] {
+.article-language-switch [data-state='current'] {
   background: var(--foreground);
   color: var(--background);
 }
 
-.article-language-switch [data-state="disabled"] {
+.article-language-switch [data-state='disabled'] {
   cursor: not-allowed;
   opacity: 0.38;
   text-decoration: line-through;
@@ -1983,7 +2159,7 @@ a {
 
 .article-facts dd {
   margin: 0;
-  font-family: "SFMono-Regular", Consolas, monospace;
+  font-family: 'SFMono-Regular', Consolas, monospace;
   font-size: 0.76rem;
 }
 
@@ -2010,7 +2186,7 @@ a {
 
 .article-engagement-stat strong,
 .article-like-button strong {
-  font-family: "SFMono-Regular", Consolas, monospace;
+  font-family: 'SFMono-Regular', Consolas, monospace;
   font-size: 1.5rem;
   font-weight: 550;
   letter-spacing: -0.05em;
@@ -2026,7 +2202,7 @@ a {
 
 .article-engagement-label {
   color: var(--faint);
-  font-family: "SFMono-Regular", Consolas, monospace;
+  font-family: 'SFMono-Regular', Consolas, monospace;
   font-size: 0.62rem;
   letter-spacing: 0.12em;
 }
@@ -2084,7 +2260,7 @@ a {
   position: absolute;
   border: 1px solid var(--accent);
   border-radius: 50%;
-  content: "";
+  content: '';
   opacity: 0;
   pointer-events: none;
 }
@@ -2105,28 +2281,28 @@ a {
   transform: scale(1.08) rotate(-5deg);
 }
 
-.article-like-button[data-liked="true"] {
+.article-like-button[data-liked='true'] {
   color: var(--accent);
   cursor: default;
 }
 
-.article-like-button[data-liked="true"] .article-like-icon {
+.article-like-button[data-liked='true'] .article-like-icon {
   border-color: var(--accent);
   background: color-mix(in srgb, var(--accent) 12%, transparent);
   animation: article-heart-pop 520ms cubic-bezier(0.2, 1.6, 0.35, 1);
 }
 
-.article-like-button[data-liked="true"] .article-like-icon::before {
+.article-like-button[data-liked='true'] .article-like-icon::before {
   inset: -0.55rem;
   animation: article-heart-ring 620ms ease-out;
 }
 
-.article-like-button[data-liked="true"] .article-like-icon::after {
+.article-like-button[data-liked='true'] .article-like-icon::after {
   inset: -1rem;
   animation: article-heart-ring 720ms 80ms ease-out;
 }
 
-.article-like-button[data-liked="true"] svg {
+.article-like-button[data-liked='true'] svg {
   fill: currentColor;
   transform: scale(1.08);
 }
@@ -2222,7 +2398,7 @@ body:has(.admin-workspace, .admin-login-page) > .skip-link {
 .admin-login-panel > header span,
 .admin-login-form label span {
   color: var(--faint);
-  font-family: "SFMono-Regular", Consolas, monospace;
+  font-family: 'SFMono-Regular', Consolas, monospace;
   font-size: 0.66rem;
   letter-spacing: 0.1em;
 }
@@ -2318,7 +2494,7 @@ body:has(.admin-workspace, .admin-login-page) > .skip-link {
 }
 
 .admin-workspace-brand span {
-  font-family: "SFMono-Regular", Consolas, monospace;
+  font-family: 'SFMono-Regular', Consolas, monospace;
   font-size: 0.78rem;
   font-weight: 700;
   letter-spacing: 0.08em;
@@ -2429,7 +2605,7 @@ body:has(.admin-workspace, .admin-login-page) > .skip-link {
 .admin-metrics span,
 .admin-list-toolbar label > span {
   color: var(--faint);
-  font-family: "SFMono-Regular", Consolas, monospace;
+  font-family: 'SFMono-Regular', Consolas, monospace;
   font-size: 0.65rem;
   letter-spacing: 0.08em;
 }
@@ -2448,7 +2624,7 @@ body:has(.admin-workspace, .admin-login-page) > .skip-link {
   font-size: 0.8rem;
 }
 
-.admin-metrics > div[data-warning="true"] strong {
+.admin-metrics > div[data-warning='true'] strong {
   color: #e28c51;
 }
 
@@ -2499,7 +2675,7 @@ body:has(.admin-workspace, .admin-login-page) > .skip-link {
 .admin-recent li > span,
 .admin-row-index {
   color: var(--faint);
-  font-family: "SFMono-Regular", Consolas, monospace;
+  font-family: 'SFMono-Regular', Consolas, monospace;
   font-size: 0.7rem;
 }
 
@@ -2557,7 +2733,7 @@ body:has(.admin-workspace, .admin-login-page) > .skip-link {
   place-items: center;
   background: var(--background);
   color: var(--muted);
-  font-family: "SFMono-Regular", Consolas, monospace;
+  font-family: 'SFMono-Regular', Consolas, monospace;
   font-size: 0.7rem;
 }
 
@@ -2587,7 +2763,7 @@ body:has(.admin-workspace, .admin-login-page) > .skip-link {
 
 .admin-row-copy > p {
   color: var(--faint);
-  font-family: "SFMono-Regular", Consolas, monospace;
+  font-family: 'SFMono-Regular', Consolas, monospace;
   font-size: 0.65rem;
 }
 
@@ -2617,11 +2793,11 @@ body:has(.admin-workspace, .admin-login-page) > .skip-link {
   border: 1px solid var(--line);
   color: var(--faint);
   padding: 0.5rem 0.65rem;
-  font-family: "SFMono-Regular", Consolas, monospace;
+  font-family: 'SFMono-Regular', Consolas, monospace;
   font-size: 0.67rem;
 }
 
-.admin-locale-status > span[data-available="true"] {
+.admin-locale-status > span[data-available='true'] {
   border-color: color-mix(in srgb, var(--accent) 45%, var(--line));
   color: var(--foreground);
 }
@@ -2728,7 +2904,7 @@ body:has(.admin-workspace, .admin-login-page) > .skip-link {
 .article-manager-editor-heading p {
   margin: 0;
   color: var(--faint);
-  font-family: "SFMono-Regular", Consolas, monospace;
+  font-family: 'SFMono-Regular', Consolas, monospace;
   font-size: 0.66rem;
   letter-spacing: 0.1em;
 }
@@ -2747,7 +2923,7 @@ body:has(.admin-workspace, .admin-login-page) > .skip-link {
   border: 0;
   outline: 0;
   background: transparent;
-  font-family: "SFMono-Regular", Consolas, monospace;
+  font-family: 'SFMono-Regular', Consolas, monospace;
   font-size: 0.84rem;
 }
 
@@ -2826,7 +3002,7 @@ body:has(.admin-workspace, .admin-login-page) > .skip-link {
   outline: 0;
   background: transparent;
   padding: clamp(1rem, 3vw, 2rem);
-  font-family: "SFMono-Regular", Consolas, monospace;
+  font-family: 'SFMono-Regular', Consolas, monospace;
   font-size: 0.88rem;
   line-height: 1.75;
   tab-size: 2;
@@ -2854,7 +3030,7 @@ body:has(.admin-workspace, .admin-login-page) > .skip-link {
 
 .article-revision-panel header p {
   color: var(--faint);
-  font-family: "SFMono-Regular", Consolas, monospace;
+  font-family: 'SFMono-Regular', Consolas, monospace;
   font-size: 0.65rem;
   letter-spacing: 0.1em;
 }
@@ -2897,7 +3073,7 @@ body:has(.admin-workspace, .admin-login-page) > .skip-link {
 
 .article-revision-panel li > strong {
   color: var(--accent);
-  font-family: "SFMono-Regular", Consolas, monospace;
+  font-family: 'SFMono-Regular', Consolas, monospace;
   font-size: 0.75rem;
 }
 
@@ -3056,7 +3232,7 @@ body:has(.admin-workspace, .admin-login-page) > .skip-link {
   border-radius: 999px;
   color: var(--muted);
   padding: 0.28rem 0.55rem;
-  font-family: "SFMono-Regular", Consolas, monospace;
+  font-family: 'SFMono-Regular', Consolas, monospace;
   font-size: 0.7rem;
   transition:
     border-color 180ms ease,
@@ -3109,7 +3285,7 @@ body:has(.admin-workspace, .admin-login-page) > .skip-link {
 
 .article-toc-heading > span {
   color: var(--faint);
-  font-family: "SFMono-Regular", Consolas, monospace;
+  font-family: 'SFMono-Regular', Consolas, monospace;
   font-size: 0.65rem;
   letter-spacing: 0.05em;
 }
@@ -3141,29 +3317,29 @@ body:has(.admin-workspace, .admin-login-page) > .skip-link {
   bottom: 0;
   left: -1px;
   width: 2px;
-  content: "";
+  content: '';
   background: var(--accent);
   transform: scaleY(0);
   transform-origin: center;
   transition: transform 260ms cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.article-toc li[data-level="3"] {
+.article-toc li[data-level='3'] {
   padding-left: 1.55rem;
 }
 
-.article-toc li[data-active="true"] {
+.article-toc li[data-active='true'] {
   border-color: transparent;
   color: var(--foreground);
   font-weight: 680;
   transform: translateX(0.35rem);
 }
 
-.article-toc li[data-active="true"]::before {
+.article-toc li[data-active='true']::before {
   transform: scaleY(1);
 }
 
-.article-toc li[data-active="true"] a {
+.article-toc li[data-active='true'] a {
   color: var(--accent);
 }
 
@@ -3224,7 +3400,7 @@ body:has(.admin-workspace, .admin-login-page) > .skip-link {
 .article-prose h2 > a:hover::after,
 .article-prose h3 > a:hover::after,
 .article-prose h4 > a:hover::after {
-  content: " #";
+  content: ' #';
   color: var(--accent);
 }
 
@@ -3271,7 +3447,7 @@ body:has(.admin-workspace, .admin-login-page) > .skip-link {
   border-radius: var(--radius-sm);
   background: var(--surface);
   padding: 0.12em 0.35em;
-  font-family: "SFMono-Regular", Consolas, monospace;
+  font-family: 'SFMono-Regular', Consolas, monospace;
   font-size: 0.88em;
 }
 
@@ -3307,7 +3483,7 @@ body:has(.admin-workspace, .admin-login-page) > .skip-link {
   overflow-x: auto;
   margin: 0;
   padding: 2.8rem 1.25rem 1.25rem;
-  font-family: "SFMono-Regular", Consolas, monospace;
+  font-family: 'SFMono-Regular', Consolas, monospace;
   font-size: 0.83rem;
   line-height: 1.7;
   tab-size: 2;
@@ -3693,7 +3869,7 @@ body:has(.admin-workspace, .admin-login-page) > .skip-link {
   .case-list > li,
   .project-list > li,
   .article-list > li,
-  .about-journey > ol > li,
+  .about-education > ol > li,
   .about-capabilities > ol > li,
   .about-principles > ol > li,
   .system-flow > li,
@@ -3707,7 +3883,7 @@ body:has(.admin-workspace, .admin-login-page) > .skip-link {
   .case-list > li:nth-child(even),
   .project-list > li:nth-child(even),
   .article-list > li:nth-child(even),
-  .about-journey > ol > li:nth-child(even),
+  .about-education > ol > li:nth-child(even),
   .about-capabilities > ol > li:nth-child(even),
   .about-principles > ol > li:nth-child(even),
   .system-flow > li:nth-child(even),
@@ -3805,16 +3981,17 @@ body:has(.admin-workspace, .admin-login-page) > .skip-link {
     width: min(100%, 38rem);
   }
 
-  .about-journey > ol,
   .about-principles > ol {
     margin-left: 0;
   }
 
-  .about-capabilities > ol > li {
+  .about-capabilities > ol > li,
+  .about-education > ol > li {
     grid-template-columns: 3rem minmax(0, 1fr);
   }
 
-  .about-capabilities > ol > li > ul {
+  .about-capabilities > ol > li > ul,
+  .about-education > ol > li > ul {
     grid-column: 2;
   }
 
@@ -3916,6 +4093,34 @@ body:has(.admin-workspace, .admin-login-page) > .skip-link {
 
   .section-heading {
     gap: 0.9rem;
+  }
+
+  .latest-writing-heading {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  .home-post-list article {
+    grid-template-columns: 2rem minmax(0, 1fr) 1.25rem;
+    gap: 0.75rem;
+    padding-block: 1.7rem;
+  }
+
+  .home-post-copy h3 {
+    font-size: clamp(1.45rem, 7vw, 2rem);
+  }
+
+  .home-post-meta span:nth-of-type(n + 2) {
+    display: none;
+  }
+
+  .home-post-state {
+    grid-template-columns: 1fr;
+    gap: 0.7rem;
+  }
+
+  .home-post-skeleton > div {
+    padding-inline: 0;
   }
 
   .project-list a {
@@ -4051,13 +4256,14 @@ body:has(.admin-workspace, .admin-login-page) > .skip-link {
     grid-column: 1;
   }
 
-  .about-journey > ol > li,
-  .about-capabilities > ol > li {
+  .about-capabilities > ol > li,
+  .about-education > ol > li {
     grid-template-columns: 2.5rem minmax(0, 1fr);
     gap: 0.8rem;
   }
 
-  .about-capabilities > ol > li > ul {
+  .about-capabilities > ol > li > ul,
+  .about-education > ol > li > ul {
     grid-column: 2;
   }
 
@@ -4211,7 +4417,7 @@ body:has(.admin-workspace, .admin-login-page) > .skip-link {
   .case-list > li,
   .project-list > li,
   .article-list > li,
-  .about-journey > ol > li,
+  .about-education > ol > li,
   .about-capabilities > ol > li,
   .about-principles > ol > li,
   .system-flow > li,
@@ -4259,7 +4465,7 @@ body:has(.admin-workspace, .admin-login-page) > .skip-link {
   cursor: pointer;
 }
 
-.site-language-switch button[aria-pressed="true"] {
+.site-language-switch button[aria-pressed='true'] {
   color: var(--background);
   background: var(--foreground);
 }
