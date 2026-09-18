@@ -6,6 +6,7 @@ import (
 	"expvar"
 	"fmt"
 	"net/http"
+	"sync"
 	"time"
 
 	"github.com/go-chi/chi/v5"
@@ -220,6 +221,9 @@ func (app *application) mount() http.Handler {
 	return observability.HTTPMiddleware(observability.RoutePattern, handler)
 }
 
+// run 启动 HTTP 服务器并统一协调监听生命周期与优雅停机（Graceful Shutdown）。
+// - rootCtx: 根级上下文（通常关联操作系统 SIGINT/SIGTERM 信号），当收到停机信号时取消。
+// - mux: 包含全量路由与中间件链路的 HTTP 处理器。
 func (app *application) run(rootCtx context.Context, mux http.Handler) error {
 	docs.SwaggerInfo.Version = version
 	docs.SwaggerInfo.Host = app.config.apiURL
@@ -234,35 +238,56 @@ func (app *application) run(rootCtx context.Context, mux http.Handler) error {
 		MaxHeaderBytes:    1 << 20, // 1 MiB
 	}
 
-	shutdown := make(chan error, 1)
+	// serveErr 用于接收 ListenAndServe 的退出错误（容量为 1 避免协程阻塞）
+	serveErr := make(chan error, 1)
+	// serveWG 显式追踪服务监听协程的生命周期，保证停机退出时该协程已被妥善回收
+	var serveWG sync.WaitGroup
+	serveWG.Add(1)
 
+	// 异步启动 HTTP 服务监听
 	go func() {
-		<-rootCtx.Done()
+		defer serveWG.Done()
+		serveErr <- srv.ListenAndServe()
+	}()
 
-		ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
-		defer cancel()
+	app.logger.Infow("server has started", "addr", app.config.addr, "env", app.config.env)
 
+	// 通过 select 多路复用统一协调两类事件：
+	// 1. 服务自身意外崩溃或启动失败（如端口被占用）
+	// 2. 收到操作系统终止信号进行优雅停机
+	select {
+	case err := <-serveErr:
+		// 分支 1：服务启动即失败（如端口占用）或运行时突发异常
+		// 此时等待服务协程退出后立即返回错误，避免遗留悬挂的信号监听协程导致泄漏
+		serveWG.Wait()
+		if !errors.Is(err, http.ErrServerClosed) {
+			return err
+		}
+	case <-rootCtx.Done():
+		// 分支 2：捕获到系统的终止信号（SIGINT/SIGTERM），开始执行优雅停机
 		app.logger.Infow(
 			"shutdown signal caught",
 			"signal", "SIGINT/SIGTERM",
 			"reason", rootCtx.Err(),
 		)
 
-		shutdown <- srv.Shutdown(ctx)
-	}()
+		// 分配 5 秒超时时间给正在处理中的存量请求
+		ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+		shutdownErr := srv.Shutdown(ctx)
+		cancel()
 
-	// log.Printf("server has started at %s", app.config.addr)
-	app.logger.Infow("server has started", "addr", app.config.addr, "env", app.config.env)
+		// 等待后台 ListenAndServe 协程彻底完成退出，确保底层 socket 与端口已完全释放
+		serveWG.Wait()
+		if shutdownErr != nil {
+			return shutdownErr
+		}
 
-	err := srv.ListenAndServe()
-	if !errors.Is(err, http.ErrServerClosed) {
-		return err
+		// 检查 ListenAndServe 返回的最终错误；若非预期的 ErrServerClosed（正常停机标志），则向上层传播真实错误
+		if err := <-serveErr; err != nil && !errors.Is(err, http.ErrServerClosed) {
+			return err
+		}
 	}
 
-	err = <-shutdown
-	if err != nil {
-		return err
-	}
 	app.logger.Infow("server has stopped", "addr", app.config.addr, "env", app.config.env)
 	return nil
 }
