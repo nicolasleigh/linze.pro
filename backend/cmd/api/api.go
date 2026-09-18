@@ -40,16 +40,17 @@ type application struct {
 }
 
 type config struct {
-	addr        string
-	db          dbConfig
-	env         string
-	apiURL      string
-	mail        mailConfig
-	frontendURL string
-	auth        authConfig
-	redisCfg    redisConfig
-	rateLimiter ratelimiter.Config
-	visitor     visitorConfig
+	addr            string
+	db              dbConfig
+	env             string
+	apiURL          string
+	shutdownTimeout time.Duration
+	mail            mailConfig
+	frontendURL     string
+	auth            authConfig
+	redisCfg        redisConfig
+	rateLimiter     ratelimiter.Config
+	visitor         visitorConfig
 }
 
 type visitorConfig struct {
@@ -285,8 +286,12 @@ func (app *application) run(rootCtx context.Context, mux http.Handler) error {
 			"reason", rootCtx.Err(),
 		)
 
-		// 分配 5 秒超时时间给正在处理中的存量请求
-		ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+		// 给正在处理中的存量请求预留可配置的退出窗口。
+		shutdownTimeout := app.config.shutdownTimeout
+		if shutdownTimeout <= 0 {
+			shutdownTimeout = 15 * time.Second
+		}
+		ctx, cancel := context.WithTimeout(context.Background(), shutdownTimeout)
 		shutdownErr := srv.Shutdown(ctx)
 		cancel()
 

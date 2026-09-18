@@ -40,9 +40,10 @@ func main() {
 	}
 
 	cfg := config{
-		addr:        env.GetString("ADDR", ":8080"),
-		apiURL:      env.GetString("EXTERNAL_URL", "localhost:8080"),
-		frontendURL: env.GetString("FRONTEND_URL", "http://localhost:4000"),
+		addr:            env.GetString("ADDR", ":8080"),
+		apiURL:          env.GetString("EXTERNAL_URL", "localhost:8080"),
+		shutdownTimeout: getDuration("SHUTDOWN_TIMEOUT", 15*time.Second),
+		frontendURL:     env.GetString("FRONTEND_URL", "http://localhost:4000"),
 		db: dbConfig{
 			// addr:         env.GetString("DB_ADDR", "postgres://admin:adminpassword@localhost:5432/social?sslmode=disable"),
 			addr:         dsnEnv,
@@ -174,6 +175,19 @@ func main() {
 	if err := app.run(rootCtx, app.mount()); err != nil {
 		logger.Fatal(err)
 	}
+}
+
+func getDuration(key string, fallback time.Duration) time.Duration {
+	value := env.GetString(key, "")
+	if value == "" {
+		return fallback
+	}
+
+	duration, err := time.ParseDuration(value)
+	if err != nil || duration <= 0 {
+		return fallback
+	}
+	return duration
 }
 
 func getTraceSampleRatio(value string) float64 {
