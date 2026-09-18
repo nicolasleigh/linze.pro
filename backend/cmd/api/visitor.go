@@ -13,6 +13,8 @@ import (
 	"net/url"
 	"strings"
 	"time"
+
+	"github.com/nicolasleigh/social/internal/observability"
 )
 
 // visitorKey 是用于在 request context 中存储访客信息的私有类型，避免与其他包的 context key 发生冲突。
@@ -84,10 +86,11 @@ func (app *application) hashVisitorID(visitorID string) string {
 // VisitorIdentityMiddleware 访客身份识别中间件：
 // 1. 尝试从 Cookie 中读取并验签访客令牌；
 // 2. 若 Cookie 不存在或验签失败（被篡改），则新生成一个随机 visitorID，并通过 Set-Cookie 写回客户端；
-//    - HttpOnly: 阻止客户端 JavaScript 脚本读取，防御 XSS 窃取；
-//    - Secure: 生产环境下强制仅 HTTPS 发送；
-//    - SameSite: Lax 模式，抵御大部分跨站请求伪造（CSRF）；
-//    - MaxAge: 1 年有效期；
+//   - HttpOnly: 阻止客户端 JavaScript 脚本读取，防御 XSS 窃取；
+//   - Secure: 生产环境下强制仅 HTTPS 发送；
+//   - SameSite: Lax 模式，抵御大部分跨站请求伪造（CSRF）；
+//   - MaxAge: 1 年有效期；
+//
 // 3. 将脱敏后的 visitorHash 注入到 request context 中，供后续 Handler 和限流中间件使用。
 func (app *application) VisitorIdentityMiddleware(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
@@ -185,18 +188,30 @@ func (app *application) EngagementRateLimitMiddleware(next http.Handler) http.Ha
 		ipRiskKey := app.hashVisitorID("ip:" + host)
 		window := time.Minute
 
+		visitorCtx, visitorSpan := observability.StartSpan(r.Context(), "redis.rate_limit.visitor")
 		visitorAllowed, visitorErr := app.cacheStorage.RateLimits.Allow(
-			r.Context(), "visitor:"+getVisitorHash(r), 30, window,
+			visitorCtx, "visitor:"+getVisitorHash(r), 30, window,
 		)
+		visitorSpan.End()
+		ipCtx, ipSpan := observability.StartSpan(r.Context(), "redis.rate_limit.ip")
 		ipAllowed, ipErr := app.cacheStorage.RateLimits.Allow(
-			r.Context(), "ip:"+ipRiskKey, 120, window,
+			ipCtx, "ip:"+ipRiskKey, 120, window,
 		)
+		ipSpan.End()
 		if visitorErr != nil || ipErr != nil {
 			app.logger.Warnw("engagement rate limit unavailable", "error", errors.Join(visitorErr, ipErr))
 			next.ServeHTTP(w, r)
 			return
 		}
 		if !visitorAllowed || !ipAllowed {
+			if app.metrics != nil {
+				if !visitorAllowed {
+					app.metrics.RateLimitRejected("engagement_visitor")
+				}
+				if !ipAllowed {
+					app.metrics.RateLimitRejected("engagement_ip")
+				}
+			}
 			app.rateLimitExceededResponse(w, r, window.String())
 			return
 		}
