@@ -114,3 +114,6 @@ deploy/prod:
 	-docker exec blog-backend migrate -database ${CLOUD_DB_DSN} -path ${MIGRATIONS_PATH} up
 	docker image prune -f
 
+.PHONY: envrc
+envrc:
+	scp backend/.envrc nicolas@106.14.126.186:~/linze.pro/backend/.envrc
