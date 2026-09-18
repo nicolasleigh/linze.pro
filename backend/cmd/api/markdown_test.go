@@ -12,6 +12,7 @@ tags:
   - Go
   - Agent
   - Go
+date: 2025-05-20
 updated: 2026-09-12
 ---
 # 正文
@@ -27,6 +28,9 @@ updated: 2026-09-12
 	}
 	if len(parsed.frontMatter.Tags) != 2 {
 		t.Fatalf("expected deduplicated tags, got %#v", parsed.frontMatter.Tags)
+	}
+	if parsed.createdAt == nil || parsed.createdAt.Format("2006-01-02") != "2025-05-20" {
+		t.Fatalf("unexpected created time %#v", parsed.createdAt)
 	}
 	if parsed.updatedAt == nil || parsed.updatedAt.Format("2006-01-02") != "2026-09-12" {
 		t.Fatalf("unexpected updated time %#v", parsed.updatedAt)
@@ -44,7 +48,8 @@ func TestParseMarkdownDocumentRejectsInvalidInput(t *testing.T) {
 		{name: "missing front matter", document: "# title"},
 		{name: "missing title", document: "---\nlocale: en-US\n---\ncontent"},
 		{name: "missing content", document: "---\ntitle: Empty\n---\n"},
-		{name: "invalid date", document: "---\ntitle: Date\nupdated: yesterday\n---\ncontent"},
+		{name: "invalid updated date", document: "---\ntitle: Date\nupdated: yesterday\n---\ncontent"},
+		{name: "invalid publish date", document: "---\ntitle: Date\ndate: invalid-date\n---\ncontent"},
 	}
 
 	for _, test := range tests {

@@ -26,6 +26,7 @@ type markdownFrontMatter struct {
 	Summary     string   `yaml:"summary"`     // 文章摘要（若 description 未提供时的备选回退字段）
 	Tags        []string `yaml:"tags"`        // 标签列表
 	Photo       string   `yaml:"photo"`       // 封面图 URL
+	Date        string   `yaml:"date"`        // 文章发布日期（支持 RFC3339 或 YYYY-MM-DD 格式，决定博客前台排序与归档年份）
 	Updated     string   `yaml:"updated"`     // 文章更新日期（支持 RFC3339 或 YYYY-MM-DD 格式）
 }
 
@@ -33,6 +34,7 @@ type markdownFrontMatter struct {
 type parsedMarkdown struct {
 	frontMatter markdownFrontMatter // 解析出的 YAML 元数据
 	content     string              // 剥离 Front-Matter 后的 Markdown 正文内容
+	createdAt   *time.Time          // 转换后的标准发布时间对象（若未提供 date 则为 nil）
 	updatedAt   *time.Time          // 转换后的标准更新时间对象（若未提供 updated 则为 nil）
 }
 
@@ -95,12 +97,22 @@ func parseMarkdownDocument(document string) (*parsedMarkdown, error) {
 		return nil, fmt.Errorf("a post can have at most 12 tags")
 	}
 
+	// 解析发布时间（若有）
+	var createdAt *time.Time
+	if metadata.Date != "" {
+		parsed, err := parseMarkdownTime(metadata.Date)
+		if err != nil {
+			return nil, fmt.Errorf("front-matter date must be RFC3339 or YYYY-MM-DD")
+		}
+		createdAt = &parsed
+	}
+
 	// 解析更新时间（若有）
 	var updatedAt *time.Time
 	if metadata.Updated != "" {
 		parsed, err := parseMarkdownTime(metadata.Updated)
 		if err != nil {
-			return nil, err
+			return nil, fmt.Errorf("front-matter updated must be RFC3339 or YYYY-MM-DD")
 		}
 		updatedAt = &parsed
 	}
@@ -108,6 +120,7 @@ func parseMarkdownDocument(document string) (*parsedMarkdown, error) {
 	return &parsedMarkdown{
 		frontMatter: metadata,
 		content:     content,
+		createdAt:   createdAt,
 		updatedAt:   updatedAt,
 	}, nil
 }
@@ -120,7 +133,7 @@ func parseMarkdownTime(value string) (time.Time, error) {
 			return parsed, nil
 		}
 	}
-	return time.Time{}, fmt.Errorf("front-matter updated must be RFC3339 or YYYY-MM-DD")
+	return time.Time{}, fmt.Errorf("invalid time format")
 }
 
 // normalizeTags 对传入的标签列表进行清洗和去重：
