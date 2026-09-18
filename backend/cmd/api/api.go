@@ -227,11 +227,13 @@ func (app *application) run(mux http.Handler) error {
 	docs.SwaggerInfo.Host = app.config.apiURL
 	docs.SwaggerInfo.BasePath = "/api/v1"
 	srv := http.Server{
-		Addr:         app.config.addr,
-		Handler:      mux,
-		WriteTimeout: time.Second * 30,
-		ReadTimeout:  time.Second * 10,
-		IdleTimeout:  time.Minute,
+		Addr:              app.config.addr,
+		Handler:           mux,
+		ReadHeaderTimeout: 5 * time.Second,
+		WriteTimeout:      time.Second * 30,
+		ReadTimeout:       time.Second * 10,
+		IdleTimeout:       time.Minute,
+		MaxHeaderBytes:    1 << 20, // 1 MiB
 	}
 
 	// NotifyContext 将 SIGINT/SIGTERM 转换为可向下传播的取消信号。
