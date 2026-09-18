@@ -84,7 +84,7 @@ func (app *application) registerUserHandler(w http.ResponseWriter, r *http.Reque
 	// }
 
 	// // send email
-	// err = app.mailer.Send(mailer.UserWelcomeTemplate, user.Username, user.Email, vars, !isProdEnv)
+	// err = app.mailer.Send(ctx, mailer.UserWelcomeTemplate, user.Username, user.Email, vars, !isProdEnv)
 	// if err != nil {
 	// 	app.logger.Errorw("error sending welcome email", "error", err)
 

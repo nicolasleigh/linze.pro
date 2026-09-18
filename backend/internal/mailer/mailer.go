@@ -1,6 +1,9 @@
 package mailer
 
-import "embed"
+import (
+	"context"
+	"embed"
+)
 
 const (
 	FromName            = "GopherSocial"
@@ -12,5 +15,5 @@ const (
 var FS embed.FS
 
 type Client interface {
-	Send(templateFile, username, email string, data any, isSandbox bool) error
+	Send(ctx context.Context, templateFile, username, email string, data any, isSandbox bool) error
 }

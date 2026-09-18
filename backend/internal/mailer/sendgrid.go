@@ -2,6 +2,7 @@ package mailer
 
 import (
 	"bytes"
+	"context"
 	"fmt"
 	"html/template"
 	"log"
@@ -27,7 +28,7 @@ func NewSendgrid(apiKey, fromEmail string) *SendGridMailer {
 	}
 }
 
-func (m *SendGridMailer) Send(templateFile, username, email string, data any, isSandbox bool) error {
+func (m *SendGridMailer) Send(ctx context.Context, templateFile, username, email string, data any, isSandbox bool) error {
 	from := mail.NewEmail(FromName, m.fromEmail)
 	to := mail.NewEmail(username, email)
 
@@ -55,13 +56,23 @@ func (m *SendGridMailer) Send(templateFile, username, email string, data any, is
 		},
 	})
 	for i := 0; i < maxRetries; i++ {
-		response, err := m.client.Send(message)
+		if err := ctx.Err(); err != nil {
+			return fmt.Errorf("send email canceled: %w", err)
+		}
+
+		response, err := m.client.SendWithContext(ctx, message)
 		if err != nil {
 			log.Printf("Failed to send email to %v, attempt %d of %d", email, i+1, maxRetries)
 			log.Printf("Error: %v", err.Error())
 
 			// exponential backoff
-			time.Sleep(time.Second * time.Duration(i+1))
+			timer := time.NewTimer(time.Second * time.Duration(i+1))
+			select {
+			case <-ctx.Done():
+				timer.Stop()
+				return fmt.Errorf("send email canceled: %w", ctx.Err())
+			case <-timer.C:
+			}
 			continue
 		}
 		log.Printf("Email sent with status code %v", response.StatusCode)
