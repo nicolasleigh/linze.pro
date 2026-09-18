@@ -18,6 +18,7 @@ import (
 	"github.com/nicolasleigh/social/internal/auth"
 	"github.com/nicolasleigh/social/internal/env"
 	"github.com/nicolasleigh/social/internal/mailer"
+	"github.com/nicolasleigh/social/internal/observability"
 	"github.com/nicolasleigh/social/internal/ratelimiter"
 	"github.com/nicolasleigh/social/internal/store"
 	"github.com/nicolasleigh/social/internal/store/cache"
@@ -33,6 +34,8 @@ type application struct {
 	mailer        mailer.Client
 	authenticator auth.Authenticator
 	rateLimiter   ratelimiter.Limiter
+	metrics       *observability.Metrics
+	tracing       *observability.Tracing
 }
 
 type config struct {
@@ -119,6 +122,16 @@ func (app *application) mount() http.Handler {
 	// processing should be stopped.
 	router.Use(middleware.Timeout(60 * time.Second))
 
+	metrics := app.metrics
+	if metrics == nil {
+		metrics = observability.NewMetrics()
+		app.metrics = metrics
+	}
+	// Prometheus scrapes this endpoint over the private Docker network. The
+	// production compose file binds the API port to localhost, so it is not
+	// exposed through the public Caddy routes.
+	router.Get("/metrics", metrics.Handler().ServeHTTP)
+
 	router.Route("/api/v1", func(r chi.Router) {
 		r.Group(func(r chi.Router) {
 			r.Get("/health", app.healthCheckHandler)
@@ -204,7 +217,10 @@ func (app *application) mount() http.Handler {
 		})
 	})
 
-	return router
+	// Metrics wrap the complete router so rejected requests (for example 401,
+	// 403 and 429 responses from middleware) are included in the measurements.
+	handler := metrics.HTTPMiddleware(observability.RoutePattern, router)
+	return observability.HTTPMiddleware(observability.RoutePattern, handler)
 }
 
 func (app *application) run(mux http.Handler) error {
