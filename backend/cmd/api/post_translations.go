@@ -16,7 +16,7 @@ const maxMarkdownUploadBytes int64 = 2 << 20
 
 // updateTranslationPayload 定义更新文章翻译时的请求体结构。
 type updateTranslationPayload struct {
-	Markdown string `json:"markdown" validate:"required"`       // 包含 YAML Front-Matter 的 Markdown 文档全文
+	Markdown string `json:"markdown" validate:"required"`      // 包含 YAML Front-Matter 的 Markdown 文档全文
 	Version  *int   `json:"version" validate:"required,gte=1"` // 目标更新的基准版本号（用于乐观并发控制，必须 >= 1）
 }
 
@@ -104,8 +104,18 @@ func (app *application) publishMarkdownTranslation(w http.ResponseWriter, r *htt
 		SourceUpdatedAt: parsed.updatedAt,
 	})
 	if err != nil {
+		if app.metrics != nil {
+			result := "error"
+			if errors.Is(err, store.ErrConflict) {
+				result = "conflict"
+			}
+			app.metrics.TranslationEvent("publish", result, locale)
+		}
 		app.handleTranslationError(w, r, err)
 		return
+	}
+	if app.metrics != nil {
+		app.metrics.TranslationEvent("publish", "success", locale)
 	}
 
 	if err := app.jsonResponse(w, http.StatusCreated, translation); err != nil {
@@ -179,8 +189,18 @@ func (app *application) updateMarkdownTranslation(w http.ResponseWriter, r *http
 		SourceUpdatedAt: parsed.updatedAt,
 	})
 	if err != nil {
+		if app.metrics != nil {
+			result := "error"
+			if errors.Is(err, store.ErrVersionConflict) {
+				result = "version_conflict"
+			}
+			app.metrics.TranslationEvent("update", result, locale)
+		}
 		app.handleTranslationError(w, r, err)
 		return
+	}
+	if app.metrics != nil {
+		app.metrics.TranslationEvent("update", "success", locale)
 	}
 
 	if err := app.jsonResponse(w, http.StatusOK, translation); err != nil {
@@ -192,8 +212,9 @@ func (app *application) updateMarkdownTranslation(w http.ResponseWriter, r *http
 // 1. 从 URL 查询参数 "lang" 中提取并归一化请求语言代码；
 // 2. 调用存储层 GetLocalized 查询文章，支持三级智能降级（Fallback Strategy）；
 // 3. 设置响应头：
-//    - "Content-Language": 标识实际返回内容的语言；
-//    - "X-Content-Fallback": 当发生降级回退时，通过该响应头显式通知客户端当前并非请求的原语言；
+//   - "Content-Language": 标识实际返回内容的语言；
+//   - "X-Content-Fallback": 当发生降级回退时，通过该响应头显式通知客户端当前并非请求的原语言；
+//
 // 4. 返回 200 OK 及 LocalizedPost 聚合数据。
 func (app *application) getLocalizedPost(w http.ResponseWriter, r *http.Request) {
 	locale, err := normalizeLocale(r.URL.Query().Get("lang"))
@@ -206,6 +227,9 @@ func (app *application) getLocalizedPost(w http.ResponseWriter, r *http.Request)
 	if err != nil {
 		app.handleTranslationError(w, r, err)
 		return
+	}
+	if app.metrics != nil && post.Fallback {
+		app.metrics.TranslationFallback(post.RequestedLocale, post.ResolvedLocale)
 	}
 
 	// 设置标准语言响应头
