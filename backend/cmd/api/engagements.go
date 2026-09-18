@@ -6,6 +6,7 @@ import (
 	"time"
 
 	"github.com/go-chi/chi/v5"
+	"github.com/nicolasleigh/social/internal/observability"
 	"github.com/nicolasleigh/social/internal/store"
 )
 
@@ -31,8 +32,9 @@ func newEngagementResponse(value *store.PostEngagement) engagementResponse {
 // 1. 从 URL 路径中提取文章 slug，并从请求上下文提取当前访客的脱敏哈希（visitorHash）；
 // 2. 调用存储层查询该文章的累计浏览量、点赞量，以及当前访客是否已点赞；
 // 3. 设置 HTTP 缓存响应头：
-//    - "Cache-Control: private, no-store"：禁止公共 CDN / 中间代理缓存含有访客个性化状态（liked）的响应；
-//    - "Vary: Cookie"：提示客户端和缓存层响应内容依赖访客 Cookie 凭证；
+//   - "Cache-Control: private, no-store"：禁止公共 CDN / 中间代理缓存含有访客个性化状态（liked）的响应；
+//   - "Vary: Cookie"：提示客户端和缓存层响应内容依赖访客 Cookie 凭证；
+//
 // 4. 返回 200 OK 及 JSON 数据。
 func (app *application) getPostEngagement(w http.ResponseWriter, r *http.Request) {
 	value, err := app.store.PostEngagements.Get(
@@ -55,18 +57,32 @@ func (app *application) getPostEngagement(w http.ResponseWriter, r *http.Request
 // likePost 处理访客点赞请求（PUT /posts/{slug}/engagement/like）：
 // 1. 经过前置中间件校验（访客身份 VisitorIdentityMiddleware、同源检查 SameOriginWriteMiddleware 及频率限制）；
 // 2. 调用存储层执行原子幂等点赞：
-//    - 若首次点赞，数据库插入点赞明细并将文章点赞数 +1，created 返回 true；
-//    - 若重复点赞，触发 ON CONFLICT 静默忽略，点赞数不增加，created 返回 false；
+//   - 若首次点赞，数据库插入点赞明细并将文章点赞数 +1，created 返回 true；
+//   - 若重复点赞，触发 ON CONFLICT 静默忽略，点赞数不增加，created 返回 false；
+//
 // 3. 返回 200 OK，包含最新互动数据和 created 标记。
 func (app *application) likePost(w http.ResponseWriter, r *http.Request) {
+	if app.metrics != nil {
+		app.metrics.LikeAttempt("request")
+	}
 	value, created, err := app.store.PostEngagements.Like(
 		r.Context(),
 		chi.URLParam(r, "slug"),
 		getVisitorHash(r),
 	)
 	if err != nil {
+		if app.metrics != nil {
+			app.metrics.LikeAttempt("error")
+		}
 		app.handleEngagementError(w, r, err)
 		return
+	}
+	if app.metrics != nil {
+		if created {
+			app.metrics.LikeCreated()
+		} else {
+			app.metrics.LikeDuplicate()
+		}
 	}
 
 	response := newEngagementResponse(value)
@@ -81,14 +97,20 @@ func (app *application) likePost(w http.ResponseWriter, r *http.Request) {
 // 采用「Redis 缓存前置拦截 + PostgreSQL 数据库保底」的高性能防刷架构：
 // 1. 获取当前 UTC 日期（YYYY-MM-DD）；
 // 2. Redis 快速过滤（Read Cache）：
-//    - 若开启 Redis，先检查缓存中当前访客今日是否已阅读过该文章；
-//    - 若已记录过（seen == true），直接从数据库读取当前互动数据并返回 counted=false，跳过昂贵的数据库写入，避免锁竞争；
+//   - 若开启 Redis，先检查缓存中当前访客今日是否已阅读过该文章；
+//   - 若已记录过（seen == true），直接从数据库读取当前互动数据并返回 counted=false，跳过昂贵的数据库写入，避免锁竞争；
+//
 // 3. 数据库原子记录（Database Fallback/Write）：
-//    - 若缓存未命中或 Redis 未开启，调用存储层 RecordView 执行自然日 UV 去重写入；
+//   - 若缓存未命中或 Redis 未开启，调用存储层 RecordView 执行自然日 UV 去重写入；
+//
 // 4. 回写缓存（Write Cache）：
-//    - 数据库写入成功后，在 Redis 中标记该访客今日已阅读；
+//   - 数据库写入成功后，在 Redis 中标记该访客今日已阅读；
+//
 // 5. 返回 200 OK，并携带 counted 标记说明本次是否新增了有效浏览量。
 func (app *application) recordPostView(w http.ResponseWriter, r *http.Request) {
+	if app.metrics != nil {
+		app.metrics.ViewAttempt("request")
+	}
 	slug := chi.URLParam(r, "slug")
 	visitorHash := getVisitorHash(r)
 	viewedOn := time.Now().UTC()
@@ -96,17 +118,25 @@ func (app *application) recordPostView(w http.ResponseWriter, r *http.Request) {
 
 	// 1. Redis 缓存层前置快速去重拦截，减轻数据库写压力
 	if app.config.redisCfg.enabled && app.cacheStorage.Views != nil {
-		seen, err := app.cacheStorage.Views.Seen(r.Context(), slug, visitorHash, date)
+		cacheCtx, cacheSpan := observability.StartSpan(r.Context(), "redis.view_cache.seen")
+		seen, err := app.cacheStorage.Views.Seen(cacheCtx, slug, visitorHash, date)
+		cacheSpan.End()
 		if err != nil {
 			app.logger.Warnw("view cache read failed", "slug", slug, "error", err)
 		} else if seen {
 			// 今日已计过浏览量，跳过数据库写操作，直接查询当前数据并返回 counted = false
 			value, err := app.store.PostEngagements.Get(r.Context(), slug, visitorHash)
 			if err != nil {
+				if app.metrics != nil {
+					app.metrics.ViewAttempt("error")
+				}
 				app.handleEngagementError(w, r, err)
 				return
 			}
 			counted := false
+			if app.metrics != nil {
+				app.metrics.ViewDuplicate()
+			}
 			response := newEngagementResponse(value)
 			response.Counted = &counted
 			w.Header().Set("Cache-Control", "private, no-store")
@@ -122,15 +152,27 @@ func (app *application) recordPostView(w http.ResponseWriter, r *http.Request) {
 		r.Context(), slug, visitorHash, viewedOn,
 	)
 	if err != nil {
+		if app.metrics != nil {
+			app.metrics.ViewAttempt("error")
+		}
 		app.handleEngagementError(w, r, err)
 		return
+	}
+	if app.metrics != nil {
+		if counted {
+			app.metrics.ViewCounted()
+		} else {
+			app.metrics.ViewDuplicate()
+		}
 	}
 
 	// 3. 异步回写 Redis 缓存，供后续请求快速命中
 	if app.config.redisCfg.enabled && app.cacheStorage.Views != nil {
-		if err := app.cacheStorage.Views.MarkSeen(r.Context(), slug, visitorHash, date); err != nil {
+		cacheCtx, cacheSpan := observability.StartSpan(r.Context(), "redis.view_cache.mark_seen")
+		if err := app.cacheStorage.Views.MarkSeen(cacheCtx, slug, visitorHash, date); err != nil {
 			app.logger.Warnw("view cache write failed", "slug", slug, "error", err)
 		}
+		cacheSpan.End()
 	}
 
 	response := newEngagementResponse(value)
