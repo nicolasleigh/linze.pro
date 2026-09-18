@@ -5,6 +5,8 @@ import (
 	"database/sql"
 	"errors"
 	"time"
+
+	"github.com/nicolasleigh/social/internal/observability"
 )
 
 // PostEngagement 表示文章互动统计与当前访客的交互状态聚合数据。
@@ -24,6 +26,8 @@ type PostEngagementStore struct {
 // 2. 通过 EXISTS 子查询高效检查 post_like_visitors 明细表中是否存在当前访客的记录；
 // 3. 若文章不存在（sql.ErrNoRows），返回 ErrNotFound 错误。
 func (s *PostEngagementStore) Get(ctx context.Context, slug, visitorHash string) (*PostEngagement, error) {
+	ctx, span := observability.StartSpan(ctx, "db.engagement.get")
+	defer span.End()
 	query := `SELECT l.view_num, l.like_num,
 		EXISTS (
 			SELECT 1 FROM post_like_visitors v
@@ -58,6 +62,8 @@ func (s *PostEngagementStore) Get(ctx context.Context, slug, visitorHash string)
 // 4. 原子自增：若本次为首次点赞，inserted 返回 1 行，like_num + 1；若为重复点赞，COUNT(*) 为 0，like_num 保持不变；
 // 5. 返回值：返回最新的 PostEngagement 数据，以及布尔值 created（true 表示本次为新点赞，false 表示此前已点过赞）。
 func (s *PostEngagementStore) Like(ctx context.Context, slug, visitorHash string) (*PostEngagement, bool, error) {
+	ctx, span := observability.StartSpan(ctx, "db.engagement.like")
+	defer span.End()
 	var engagement *PostEngagement
 	var created bool
 
@@ -106,6 +112,8 @@ func (s *PostEngagementStore) Like(ctx context.Context, slug, visitorHash string
 // 4. 在同一事务中查询当前访客的点赞状态（likedQuery），组合成完整的互动数据返回；
 // 5. 返回值：返回最新的 PostEngagement 数据，以及布尔值 counted（true 表示本次计入了新增浏览量，false 表示当日已计过）。
 func (s *PostEngagementStore) RecordView(ctx context.Context, slug, visitorHash string, viewedOn time.Time) (*PostEngagement, bool, error) {
+	ctx, span := observability.StartSpan(ctx, "db.engagement.record_view")
+	defer span.End()
 	var engagement *PostEngagement
 	var counted bool
 
