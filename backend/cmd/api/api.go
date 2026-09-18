@@ -5,8 +5,10 @@ import (
 	"errors"
 	"expvar"
 	"fmt"
+	"net"
 	"net/http"
 	"sync"
+	"sync/atomic"
 	"time"
 
 	"github.com/go-chi/chi/v5"
@@ -34,6 +36,7 @@ type application struct {
 	rateLimiter   ratelimiter.Limiter
 	metrics       *observability.Metrics
 	tracing       *observability.Tracing
+	ready         atomic.Bool
 }
 
 type config struct {
@@ -133,6 +136,7 @@ func (app *application) mount() http.Handler {
 	router.Route("/api/v1", func(r chi.Router) {
 		r.Group(func(r chi.Router) {
 			r.Get("/health", app.healthCheckHandler)
+			r.Get("/ready", app.readinessCheckHandler)
 		})
 		r.Group(func(r chi.Router) {
 			r.Use(app.BasicAuthMiddleware())
@@ -238,7 +242,15 @@ func (app *application) run(rootCtx context.Context, mux http.Handler) error {
 		MaxHeaderBytes:    1 << 20, // 1 MiB
 	}
 
-	// serveErr 用于接收 ListenAndServe 的退出错误（容量为 1 避免协程阻塞）
+	listener, err := net.Listen("tcp", srv.Addr)
+	if err != nil {
+		return err
+	}
+
+	// 只有端口成功绑定后才报告 ready，避免启动失败时短暂返回 200。
+	app.ready.Store(true)
+
+	// serveErr 用于接收 Server.Serve 的退出错误（容量为 1 避免协程阻塞）
 	serveErr := make(chan error, 1)
 	// serveWG 显式追踪服务监听协程的生命周期，保证停机退出时该协程已被妥善回收
 	var serveWG sync.WaitGroup
@@ -247,7 +259,7 @@ func (app *application) run(rootCtx context.Context, mux http.Handler) error {
 	// 异步启动 HTTP 服务监听
 	go func() {
 		defer serveWG.Done()
-		serveErr <- srv.ListenAndServe()
+		serveErr <- srv.Serve(listener)
 	}()
 
 	app.logger.Infow("server has started", "addr", app.config.addr, "env", app.config.env)
@@ -265,6 +277,8 @@ func (app *application) run(rootCtx context.Context, mux http.Handler) error {
 		}
 	case <-rootCtx.Done():
 		// 分支 2：捕获到系统的终止信号（SIGINT/SIGTERM），开始执行优雅停机
+		// 先进入 draining 状态，让上游负载均衡器停止发送新流量。
+		app.ready.Store(false)
 		app.logger.Infow(
 			"shutdown signal caught",
 			"signal", "SIGINT/SIGTERM",
