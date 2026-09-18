@@ -6,8 +6,6 @@ import (
 	"expvar"
 	"fmt"
 	"net/http"
-	"os/signal"
-	"syscall"
 	"time"
 
 	"github.com/go-chi/chi/v5"
@@ -222,7 +220,7 @@ func (app *application) mount() http.Handler {
 	return observability.HTTPMiddleware(observability.RoutePattern, handler)
 }
 
-func (app *application) run(mux http.Handler) error {
+func (app *application) run(rootCtx context.Context, mux http.Handler) error {
 	docs.SwaggerInfo.Version = version
 	docs.SwaggerInfo.Host = app.config.apiURL
 	docs.SwaggerInfo.BasePath = "/api/v1"
@@ -236,20 +234,10 @@ func (app *application) run(mux http.Handler) error {
 		MaxHeaderBytes:    1 << 20, // 1 MiB
 	}
 
-	// NotifyContext 将 SIGINT/SIGTERM 转换为可向下传播的取消信号。
-	// 当前先在 run 内部使用；后续统一 root context 时，可将该 Context
-	// 作为整个应用生命周期的父 Context 传入。
-	signalCtx, stopSignal := signal.NotifyContext(
-		context.Background(),
-		syscall.SIGINT,
-		syscall.SIGTERM,
-	)
-	defer stopSignal()
-
 	shutdown := make(chan error, 1)
 
 	go func() {
-		<-signalCtx.Done()
+		<-rootCtx.Done()
 
 		ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 		defer cancel()
@@ -257,7 +245,7 @@ func (app *application) run(mux http.Handler) error {
 		app.logger.Infow(
 			"shutdown signal caught",
 			"signal", "SIGINT/SIGTERM",
-			"reason", signalCtx.Err(),
+			"reason", rootCtx.Err(),
 		)
 
 		shutdown <- srv.Shutdown(ctx)

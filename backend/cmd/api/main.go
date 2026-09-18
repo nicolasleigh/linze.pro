@@ -4,8 +4,10 @@ import (
 	"context"
 	"expvar"
 	"os"
+	"os/signal"
 	"runtime"
 	"strconv"
+	"syscall"
 	"time"
 
 	"github.com/nicolasleigh/social/internal/auth"
@@ -23,6 +25,13 @@ import (
 const version = "1.1.0"
 
 func main() {
+	rootCtx, stop := signal.NotifyContext(
+		context.Background(),
+		syscall.SIGINT,
+		syscall.SIGTERM,
+	)
+	defer stop()
+
 	var dsnEnv string
 	if os.Getenv("APP_ENV") == "production" {
 		dsnEnv = os.Getenv("CLOUD_DB_DSN")
@@ -97,7 +106,7 @@ func main() {
 	metrics := observability.NewMetrics()
 	metrics.RegisterDB(db)
 
-	tracing, err := observability.SetupTracing(context.Background(), observability.TracingConfig{
+	tracing, err := observability.SetupTracing(rootCtx, observability.TracingConfig{
 		Enabled:        env.GetBool("OTEL_ENABLED", false),
 		ServiceName:    env.GetString("OTEL_SERVICE_NAME", "linze-blog-api"),
 		ServiceVersion: version,
@@ -161,7 +170,7 @@ func main() {
 		return runtime.NumGoroutine()
 	}))
 
-	if err := app.run(app.mount()); err != nil {
+	if err := app.run(rootCtx, app.mount()); err != nil {
 		logger.Fatal(err)
 	}
 }
