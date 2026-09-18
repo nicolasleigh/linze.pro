@@ -120,6 +120,11 @@ func main() {
 	if cfg.redisCfg.enabled {
 		rdb = cache.NewRedisClient(cfg.redisCfg.addr, cfg.redisCfg.pw, cfg.redisCfg.db)
 		logger.Info("redis cache connection established")
+		defer func() {
+			if err := rdb.Close(); err != nil {
+				logger.Errorw("redis connection close failed", "error", err)
+			}
+		}()
 	}
 
 	// Rate limiter
