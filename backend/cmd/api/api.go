@@ -6,7 +6,6 @@ import (
 	"expvar"
 	"fmt"
 	"net/http"
-	"os"
 	"os/signal"
 	"syscall"
 	"time"
@@ -235,17 +234,29 @@ func (app *application) run(mux http.Handler) error {
 		IdleTimeout:  time.Minute,
 	}
 
-	shutdown := make(chan error)
+	// NotifyContext 将 SIGINT/SIGTERM 转换为可向下传播的取消信号。
+	// 当前先在 run 内部使用；后续统一 root context 时，可将该 Context
+	// 作为整个应用生命周期的父 Context 传入。
+	signalCtx, stopSignal := signal.NotifyContext(
+		context.Background(),
+		syscall.SIGINT,
+		syscall.SIGTERM,
+	)
+	defer stopSignal()
+
+	shutdown := make(chan error, 1)
 
 	go func() {
-		quit := make(chan os.Signal, 1)
-		signal.Notify(quit, syscall.SIGINT, syscall.SIGTERM)
-		s := <-quit
+		<-signalCtx.Done()
 
 		ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 		defer cancel()
 
-		app.logger.Infow("signal caught", "signal", s.String())
+		app.logger.Infow(
+			"shutdown signal caught",
+			"signal", "SIGINT/SIGTERM",
+			"reason", signalCtx.Err(),
+		)
 
 		shutdown <- srv.Shutdown(ctx)
 	}()
