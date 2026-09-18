@@ -7,6 +7,7 @@ import (
 	"time"
 
 	"github.com/lib/pq"
+	"github.com/nicolasleigh/social/internal/observability"
 )
 
 // 系统支持的标准多语言标识常量。
@@ -83,6 +84,8 @@ type PostTranslationStore struct {
 // 5. 调用 insertTranslationRevision 将第 1 版快照记录存入 post_translation_revisions 历史表；
 // 6. 调用 syncLegacyTranslation 双写同步更新旧版 posts 主表对应语言字段，保持向后兼容。
 func (s *PostTranslationStore) Publish(ctx context.Context, draft *TranslationDraft) (*PostTranslation, error) {
+	ctx, span := observability.StartSpan(ctx, "db.translation.publish")
+	defer span.End()
 	var translation PostTranslation
 	err := withTx(s.db, ctx, func(tx *sql.Tx) error {
 		legacyTitleEn, legacyTitleZh := draft.Title, draft.Title
@@ -151,6 +154,8 @@ func (s *PostTranslationStore) Publish(ctx context.Context, draft *TranslationDr
 // 3. 自动将最新产生的版本快照追加到 post_translation_revisions 表中；
 // 4. 双写同步旧版 posts 主表中的对应语言字段。
 func (s *PostTranslationStore) Update(ctx context.Context, draft *TranslationDraft) (*PostTranslation, error) {
+	ctx, span := observability.StartSpan(ctx, "db.translation.update")
+	defer span.End()
 	var translation PostTranslation
 	err := withTx(s.db, ctx, func(tx *sql.Tx) error {
 		query := `UPDATE post_translations SET
@@ -238,6 +243,8 @@ func syncLegacyTranslation(ctx context.Context, tx *sql.Tx, draft *TranslationDr
 // 2. 通过 chooseTranslation 执行三级降级匹配算法选出最佳内容；
 // 3. 构建 LocalizedPost 聚合对象，包含实际命中语言及 Fallback 降级标记。
 func (s *PostTranslationStore) GetLocalized(ctx context.Context, slug, requestedLocale string) (*LocalizedPost, error) {
+	ctx, span := observability.StartSpan(ctx, "db.translation.get_localized")
+	defer span.End()
 	translations, metadata, err := s.getAll(ctx, slug)
 	if err != nil {
 		return nil, err
@@ -270,12 +277,16 @@ func (s *PostTranslationStore) GetLocalized(ctx context.Context, slug, requested
 
 // GetAll 获取某篇文章当前发布的所有多语言版本列表。
 func (s *PostTranslationStore) GetAll(ctx context.Context, slug string) ([]PostTranslation, error) {
+	ctx, span := observability.StartSpan(ctx, "db.translation.list")
+	defer span.End()
 	translations, _, err := s.getAll(ctx, slug)
 	return translations, err
 }
 
 // GetRevisions 获取某篇文章指定语言版本的全部修改历史记录（按版本号倒序排列）。
 func (s *PostTranslationStore) GetRevisions(ctx context.Context, slug, locale string) ([]PostTranslationRevision, error) {
+	ctx, span := observability.StartSpan(ctx, "db.translation.revisions")
+	defer span.End()
 	query := `SELECT post_slug, locale, version, title, description,
 		source_updated_at, created_at
 		FROM post_translation_revisions
@@ -325,6 +336,8 @@ type postTranslationMetadata struct {
 // getAll 内部方法：联表（posts, users, post_likes）查询某文章的所有翻译版本及元数据，
 // 按照 zh-CN 优先的规则进行排序。
 func (s *PostTranslationStore) getAll(ctx context.Context, slug string) ([]PostTranslation, postTranslationMetadata, error) {
+	ctx, span := observability.StartSpan(ctx, "db.translation.query_all")
+	defer span.End()
 	query := `SELECT t.post_slug, t.locale, t.title, t.description, t.content,
 		t.version, t.source_updated_at, t.created_at, t.updated_at,
 		p.tags, p.photo, u.username, p.created_at, l.view_num, l.like_num
