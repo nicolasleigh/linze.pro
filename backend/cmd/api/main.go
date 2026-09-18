@@ -141,6 +141,7 @@ func main() {
 		cfg.rateLimiter.RequestsPerTimeFrame,
 		cfg.rateLimiter.TimeFrame,
 	)
+	defer rateLimiter.Close()
 
 	store := store.NewStorage(db)
 	cacheStorage := cache.NewRedisStorage(rdb)
