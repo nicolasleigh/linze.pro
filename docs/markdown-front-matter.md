@@ -15,16 +15,17 @@
 
 ## 2. 字段详细规范
 
-| 字段名称          | 类型       | 是否必填 | 约束与长度限制                      | 说明                                                                          |
-| :---------------- | :--------- | :------- | :---------------------------------- | :---------------------------------------------------------------------------- |
-| **`title`**       | `string`   | **必填** | 最大 150 字符，不可为空白           | 文章标题。                                                                    |
-| **`slug`**        | `string`   | 条件必填 | 最大 150 字符，严格 Kebab-Case 格式 | 文章全局唯一别名 / URL 路径标识。导入时若未通过接口显式指定，则此字段为必填。 |
-| **`locale`**      | `string`   | 条件必填 | `zh-CN` 或 `en-US`                  | 本语言版本代号。导入时若未通过接口显式指定，则此字段为必填。                  |
-| **`description`** | `string`   | 可选     | 最大 500 字符                       | 文章摘要与 SEO Meta 描述。若未提供，将尝试回退读取 `summary` 字段。           |
-| **`summary`**     | `string`   | 可选     | 最大 500 字符                       | 备用描述字段。仅在 `description` 为空时生效。                                 |
-| **`tags`**        | `[]string` | 可选     | 最多 12 个标签                      | 文章标签列表，系统会自动去除前后空白并去重。                                  |
-| **`photo`**       | `string`   | 可选     | 合法 URL 链接                       | 文章封面大图 URL（如 Cloudinary 图片地址）。                                  |
-| **`updated`**     | `string`   | 可选     | `YYYY-MM-DD` 或 RFC3339 格式        | 文章写作/更新日期。若未提供，将使用系统提交时间。                             |
+| 字段名称          | 类型       | 是否必填 | 约束与长度限制                      | 说明                                                                                   |
+| :---------------- | :--------- | :------- | :---------------------------------- | :------------------------------------------------------------------------------------- |
+| **`title`**       | `string`   | **必填** | 最大 150 字符，不可为空白           | 文章标题。                                                                             |
+| **`slug`**        | `string`   | 条件必填 | 最大 150 字符，严格 Kebab-Case 格式 | 文章全局唯一别名 / URL 路径标识。导入时若未通过接口显式指定，则此字段为必填。          |
+| **`locale`**      | `string`   | 条件必填 | `zh-CN` 或 `en-US`                  | 本语言版本代号。导入时若未通过接口显式指定，则此字段为必填。                           |
+| **`description`** | `string`   | 可选     | 最大 500 字符                       | 文章摘要与 SEO Meta 描述。若未提供，将尝试回退读取 `summary` 字段。                    |
+| **`summary`**     | `string`   | 可选     | 最大 500 字符                       | 备用描述字段。仅在 `description` 为空时生效。                                          |
+| **`tags`**        | `[]string` | 可选     | 最多 12 个标签                      | 文章标签列表，系统会自动去除前后空白并去重。                                           |
+| **`photo`**       | `string`   | 可选     | 合法 URL 链接                       | 文章封面大图 URL（如 Cloudinary 图片地址）。                                           |
+| **`date`**        | `string`   | 可选     | `YYYY-MM-DD` 或 RFC3339 格式        | 文章原始发布日期（决定博客列表排序与年份归档）。若未提供，新文章默认使用系统当前时间。 |
+| **`updated`**     | `string`   | 可选     | `YYYY-MM-DD` 或 RFC3339 格式        | 文章写作/更新日期。若未提供，将使用系统提交时间。                                      |
 
 ---
 
@@ -59,12 +60,15 @@
 - 自动去重并保持原文中的出现顺序。
 - 超过 12 个标签时将触发错误：`a post can have at most 12 tags`。
 
-### 3.4 时间格式（Updated）
+### 3.4 时间格式（Date 与 Updated）
 
-支持两种标准格式：
+- **`date`**：文章的原始发布时间，直接对应数据库主表 `posts.created_at`，决定博客前台的**发布时间排序**与**年份归档**。
+- **`updated`**：文章的更新/修订时间，对应多语言子表 `post_translations.source_updated_at`，用于展示文章的最后修改日期。
 
-1. **短日期格式**（推荐）：`YYYY-MM-DD`（如 `2026-09-12`）
-2. **RFC3339 完整时间**：`YYYY-MM-DDTHH:MM:SSZ`（如 `2026-09-12T15:04:05Z`）
+两者均支持以下两种标准格式：
+
+1. **短日期格式**（推荐）：`YYYY-MM-DD`（如 `2025-05-20`）
+2. **RFC3339 完整时间**：`YYYY-MM-DDTHH:MM:SSZ`（如 `2025-05-20T10:00:00Z`）
 
 ---
 
@@ -83,6 +87,7 @@ tags:
   - AI Agent
   - 系统架构
 photo: https://res.cloudinary.com/example/image/upload/v1/covers/agent.webp
+date: 2025-05-20
 updated: 2026-09-16
 ---
 
@@ -106,6 +111,7 @@ tags:
   - AI Agent
   - Architecture
 photo: https://res.cloudinary.com/example/image/upload/v1/covers/agent.webp
+date: 2025-05-20
 updated: 2026-09-16
 ---
 
@@ -141,4 +147,5 @@ title: 快速入门笔记
 | `slug must contain lowercase letters, numbers and hyphens only` | `slug` 包含大写字母、下划线或非法字符 | 转换为纯小写字母与短中划线连接，如 `my-first-post`。 |
 | `locale must be zh-CN or en-US`                                 | 语言代码不在支持列表内                | 将 `locale` 设置为 `zh-CN` 或 `en-US`。              |
 | `a post can have at most 12 tags`                               | 标签数量超过上限                      | 缩减 `tags` 列表至 12 个以内。                       |
-| `front-matter updated must be RFC3339 or YYYY-MM-DD`            | 日期格式不合规                        | 修正日期格式为标准 `2026-09-16`。                    |
+| `front-matter date must be RFC3339 or YYYY-MM-DD`               | 发布日期格式不合规                    | 修正日期格式为标准 `2025-05-20`。                    |
+| `front-matter updated must be RFC3339 or YYYY-MM-DD`            | 更新日期格式不合规                    | 修正日期格式为标准 `2026-09-16`。                    |
