@@ -3,6 +3,7 @@ package main
 import (
 	"context"
 	"expvar"
+	"fmt"
 	"os"
 	"os/signal"
 	"runtime"
@@ -25,6 +26,15 @@ import (
 const version = "1.1.0"
 
 func main() {
+	if err := run(); err != nil {
+		// run 返回前已经执行了数据库、Redis、限流器、Telemetry 和 Logger 的 defer。
+		// 这里仅负责设置非零退出码，不再使用会跳过 defer 的 logger.Fatal。
+		fmt.Fprintf(os.Stderr, "api failed: %v\n", err)
+		os.Exit(1)
+	}
+}
+
+func run() error {
 	rootCtx, stop := signal.NotifyContext(
 		context.Background(),
 		syscall.SIGINT,
@@ -91,7 +101,7 @@ func main() {
 	defer logger.Sync()
 	if cfg.visitor.secret == "" {
 		if cfg.env == "production" {
-			logger.Fatal("VISITOR_SECRET must be configured in production")
+			return fmt.Errorf("VISITOR_SECRET must be configured in production")
 		}
 		cfg.visitor.secret = "development-only-visitor-secret"
 	}
@@ -99,7 +109,7 @@ func main() {
 	// Database
 	db, err := db.New(cfg.db.addr, cfg.db.maxOpenConns, cfg.db.maxIdleConns, cfg.db.maxIdleTime)
 	if err != nil {
-		logger.Fatal(err)
+		return fmt.Errorf("initialize database: %w", err)
 	}
 
 	defer db.Close()
@@ -117,7 +127,7 @@ func main() {
 		SampleRatio:    getTraceSampleRatio(env.GetString("OTEL_TRACES_SAMPLER_ARG", "0.05")),
 	})
 	if err != nil {
-		logger.Fatalw("telemetry initialization failed", "error", err)
+		return fmt.Errorf("initialize telemetry: %w", err)
 	}
 	defer func() {
 		if err := tracing.Shutdown(context.Background()); err != nil {
@@ -173,8 +183,9 @@ func main() {
 	}))
 
 	if err := app.run(rootCtx, app.mount()); err != nil {
-		logger.Fatal(err)
+		return fmt.Errorf("run HTTP server: %w", err)
 	}
+	return nil
 }
 
 func getDuration(key string, fallback time.Duration) time.Duration {
