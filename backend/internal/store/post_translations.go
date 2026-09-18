@@ -69,6 +69,7 @@ type TranslationDraft struct {
 	UserID          int64      // 操作用户 ID
 	Version         int        // 目标更新的版本号（用于乐观锁校验）
 	SourceUpdatedAt *time.Time // 源文件更新时间
+	CreatedAt       *time.Time // 文章发布时间（若指定则覆盖默认系统当前时间）
 }
 
 // PostTranslationStore 负责文章多语言持久化相关的数据存取实现。
@@ -78,11 +79,11 @@ type PostTranslationStore struct {
 
 // Publish 发布某篇文章的新语言版本：
 // 1. 在单事务中执行，确保主表、统计表与多语言翻译表的数据原子性；
-// 2. 检查并确保 posts 父表及 post_likes 汇总表记录存在（ON CONFLICT DO NOTHING）；
+// 2. 检查并确保 posts 父表及 post_likes 汇总表记录存在（ON CONFLICT DO NOTHING）；若指定了 CreatedAt 则写入自定义发布时间；
 // 3. 插入 post_translations 新记录，初始版本号由数据库生成（默认为 1）；
 // 4. 若 (post_slug, locale) 唯一约束冲突，捕获 PostgreSQL 23505 错误码并返回 ErrConflict（409）；
 // 5. 调用 insertTranslationRevision 将第 1 版快照记录存入 post_translation_revisions 历史表；
-// 6. 调用 syncLegacyTranslation 双写同步更新旧版 posts 主表对应语言字段，保持向后兼容。
+// 6. 调用 syncLegacyTranslation 双写同步更新旧版 posts 主表对应语言字段及发布时间，保持向后兼容。
 func (s *PostTranslationStore) Publish(ctx context.Context, draft *TranslationDraft) (*PostTranslation, error) {
 	ctx, span := observability.StartSpan(ctx, "db.translation.publish")
 	defer span.End()
@@ -92,14 +93,15 @@ func (s *PostTranslationStore) Publish(ctx context.Context, draft *TranslationDr
 		legacyAboutEn, legacyAboutZh := draft.Description, draft.Description
 		legacyContentEn, legacyContentZh := draft.Content, draft.Content
 
-		// 1. 确保 posts 主表中存在该文章的基础骨架记录
+		// 1. 确保 posts 主表中存在该文章的基础骨架记录（支持指定发布时间）
 		_, err := tx.ExecContext(ctx, `INSERT INTO posts (
 			slug, title_en, title_zh, about_en, about_zh,
-			content_en, content_zh, user_id, tags, photo
-		) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10)
+			content_en, content_zh, user_id, tags, photo, created_at
+		) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10, COALESCE($11, NOW()))
 		ON CONFLICT (slug) DO NOTHING;`,
 			draft.Slug, legacyTitleEn, legacyTitleZh, legacyAboutEn, legacyAboutZh,
 			legacyContentEn, legacyContentZh, draft.UserID, pq.Array(draft.Tags), draft.Photo,
+			draft.CreatedAt,
 		)
 		if err != nil {
 			return err
@@ -114,13 +116,13 @@ func (s *PostTranslationStore) Publish(ctx context.Context, draft *TranslationDr
 
 		// 3. 插入多语言子表记录
 		query := `INSERT INTO post_translations (
-			post_slug, locale, title, description, content, source_updated_at
-		) VALUES ($1,$2,$3,$4,$5,$6)
+			post_slug, locale, title, description, content, source_updated_at, created_at
+		) VALUES ($1,$2,$3,$4,$5,$6, COALESCE($7, NOW()))
 		RETURNING post_slug, locale, title, description, content, version,
 			source_updated_at, created_at, updated_at;`
 		if err := tx.QueryRowContext(ctx, query,
 			draft.Slug, draft.Locale, draft.Title, draft.Description,
-			draft.Content, draft.SourceUpdatedAt,
+			draft.Content, draft.SourceUpdatedAt, draft.CreatedAt,
 		).Scan(
 			&translation.PostSlug, &translation.Locale, &translation.Title,
 			&translation.Description, &translation.Content, &translation.Version,
@@ -150,9 +152,9 @@ func (s *PostTranslationStore) Publish(ctx context.Context, draft *TranslationDr
 
 // Update 更新某篇文章特定语言版本的翻译内容（基于乐观并发控制）：
 // 1. 在单事务内根据 post_slug, locale 以及旧版本号 version 进行匹配更新；
-// 2. 更新时使版本号自增（version = version + 1），若匹配不到行（sql.ErrNoRows）返回 ErrVersionConflict（409）；
+// 2. 更新时使版本号自增（version = version + 1），若匹配不到行（sql.ErrNoRows）返回 ErrVersionConflict（409）；若传入了 CreatedAt 则同步更新创建时间；
 // 3. 自动将最新产生的版本快照追加到 post_translation_revisions 表中；
-// 4. 双写同步旧版 posts 主表中的对应语言字段。
+// 4. 双写同步旧版 posts 主表中的对应语言字段及发布时间。
 func (s *PostTranslationStore) Update(ctx context.Context, draft *TranslationDraft) (*PostTranslation, error) {
 	ctx, span := observability.StartSpan(ctx, "db.translation.update")
 	defer span.End()
@@ -160,13 +162,15 @@ func (s *PostTranslationStore) Update(ctx context.Context, draft *TranslationDra
 	err := withTx(s.db, ctx, func(tx *sql.Tx) error {
 		query := `UPDATE post_translations SET
 			title = $3, description = $4, content = $5,
-			source_updated_at = $6, updated_at = NOW(), version = version + 1
+			source_updated_at = $6,
+			created_at = COALESCE($8, created_at),
+			updated_at = NOW(), version = version + 1
 		WHERE post_slug = $1 AND locale = $2 AND version = $7
 		RETURNING post_slug, locale, title, description, content, version,
 			source_updated_at, created_at, updated_at;`
 		if err := tx.QueryRowContext(ctx, query,
 			draft.Slug, draft.Locale, draft.Title, draft.Description,
-			draft.Content, draft.SourceUpdatedAt, draft.Version,
+			draft.Content, draft.SourceUpdatedAt, draft.Version, draft.CreatedAt,
 		).Scan(
 			&translation.PostSlug, &translation.Locale, &translation.Title,
 			&translation.Description, &translation.Content, &translation.Version,
@@ -209,21 +213,24 @@ func insertTranslationRevision(ctx context.Context, tx *sql.Tx, translation *Pos
 // syncLegacyTranslation 保持与旧版 posts 表结构的双写同步：
 // - zh-CN: 同步更新 posts 表的 title_zh, about_zh, content_zh;
 // - en-US: 同步更新 posts 表的 title_en, about_en, content_en;
-// - 使用 COALESCE 和 NULLIF 保证在未传 tags 或 photo 时不覆盖旧有数据。
+// - 使用 COALESCE 和 NULLIF 保证在未传 tags 或 photo 时不覆盖旧有数据；
+// - 若传入了 CreatedAt，则同步更新 posts 表的 created_at 发布时间。
 func syncLegacyTranslation(ctx context.Context, tx *sql.Tx, draft *TranslationDraft) error {
 	var query string
 	if draft.Locale == LocaleZhCN {
 		query = `UPDATE posts SET title_zh=$2, about_zh=$3, content_zh=$4,
-			tags=COALESCE($5, tags), photo=COALESCE(NULLIF($6, ''), photo), updated_at=NOW(), version=version+1
+			tags=COALESCE($5, tags), photo=COALESCE(NULLIF($6, ''), photo),
+			created_at=COALESCE($7, created_at), updated_at=NOW(), version=version+1
 			WHERE slug=$1;`
 	} else {
 		query = `UPDATE posts SET title_en=$2, about_en=$3, content_en=$4,
-			tags=COALESCE($5, tags), photo=COALESCE(NULLIF($6, ''), photo), updated_at=NOW(), version=version+1
+			tags=COALESCE($5, tags), photo=COALESCE(NULLIF($6, ''), photo),
+			created_at=COALESCE($7, created_at), updated_at=NOW(), version=version+1
 			WHERE slug=$1;`
 	}
 	result, err := tx.ExecContext(ctx, query,
 		draft.Slug, draft.Title, draft.Description, draft.Content,
-		pq.Array(draft.Tags), draft.Photo,
+		pq.Array(draft.Tags), draft.Photo, draft.CreatedAt,
 	)
 	if err != nil {
 		return err
