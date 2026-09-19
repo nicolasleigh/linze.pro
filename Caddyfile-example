@@ -1,5 +1,5 @@
 linze.pro {
-	handle /api/* {
+	handle /api/v1/* {
 		reverse_proxy localhost:8085
 	}
 	handle {
