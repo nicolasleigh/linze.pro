@@ -19,6 +19,9 @@ export default async function ProtectedAdminLayout({
           <Link href="/admin">概览</Link>
           <Link href="/admin/articles">文章</Link>
           <Link href="/admin/articles/new">新建</Link>
+          <Link href="/" target="_blank" rel="noreferrer">
+            博客首页 ↗
+          </Link>
         </nav>
         <div className="admin-account">
           <span>
