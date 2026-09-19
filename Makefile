@@ -14,6 +14,10 @@ help:
 	@echo "  make frontend/vue/dev    - Start Vue frontend only (npm run dev)"
 	@echo "  make frontend/build      - Build Vue frontend"
 	@echo "  make frontend/next/build - Build Next.js frontend"
+	@echo "  make obs/remote/start    - Start Prometheus, Jaeger, Grafana on cloud server"
+	@echo "  make obs/remote/stop     - Stop Prometheus, Jaeger, Grafana on cloud server"
+	@echo "  make obs/tunnel          - Open SSH port forwarding for Grafana, Jaeger, Prometheus"
+	@echo "  make obs/tunnel/bg       - Open SSH tunnel in background"
 
 # -----------------------------------------------------------------------------
 # Local Development
@@ -117,3 +121,34 @@ deploy/prod:
 .PHONY: envrc
 envrc:
 	scp backend/.envrc nicolas@106.14.126.186:~/linze.pro/backend/.envrc
+
+# -----------------------------------------------------------------------------
+# Observability & Remote Tunnels
+# -----------------------------------------------------------------------------
+
+REMOTE_SERVER ?= nicolas@106.14.126.186
+
+.PHONY: obs/remote/start
+obs/remote/start:
+	@echo "Starting Prometheus, Jaeger, and Grafana on remote server..."
+	ssh $(REMOTE_SERVER) "cd ~/linze.pro && docker compose --profile observability up -d prometheus jaeger grafana"
+
+.PHONY: obs/remote/stop
+obs/remote/stop:
+	@echo "Stopping observability stack on remote server to free memory..."
+	ssh $(REMOTE_SERVER) "cd ~/linze.pro && docker compose stop prometheus jaeger grafana"
+
+.PHONY: obs/tunnel
+obs/tunnel:
+	@echo "Opening SSH tunnel for remote Observability stack..."
+	@echo "  👉 Grafana:    http://localhost:3001 (admin / admin)"
+	@echo "  👉 Jaeger:     http://localhost:16686"
+	@echo "  👉 Prometheus: http://localhost:9090"
+	@echo "Press Ctrl+C to close the tunnel."
+	ssh -N -L 3001:localhost:3001 -L 16686:localhost:16686 -L 9090:localhost:9090 $(REMOTE_SERVER)
+
+.PHONY: obs/tunnel/bg
+obs/tunnel/bg:
+	@echo "Opening background SSH tunnel for Grafana (3001), Jaeger (16686), Prometheus (9090)..."
+	ssh -fN -L 3001:localhost:3001 -L 16686:localhost:16686 -L 9090:localhost:9090 $(REMOTE_SERVER)
+	@echo "Tunnel established in background. Access at http://localhost:3001"
