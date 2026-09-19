@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"net"
 	"net/http"
+	"strings"
 	"sync"
 	"sync/atomic"
 	"time"
@@ -106,11 +107,22 @@ func (app *application) mount() http.Handler {
 	router.Use(middleware.Logger)
 	router.Use(middleware.Recoverer)
 	// Basic CORS for more ideas, see: https://developer.github.com/v3/#cross-origin-resource-sharing
+	allowedOrigins := []string{
+		"https://linze.pro",
+		"https://*.linze.pro",
+		"http://localhost:*",
+		"http://127.0.0.1:*",
+	}
+	if envOrigin := env.GetString("CORS_ALLOWED_ORIGIN", ""); envOrigin != "" {
+		for _, o := range strings.Split(envOrigin, ",") {
+			if trimmed := strings.TrimSpace(o); trimmed != "" {
+				allowedOrigins = append(allowedOrigins, trimmed)
+			}
+		}
+	}
+
 	router.Use(cors.Handler(cors.Options{
-		// AllowedOrigins:   []string{"https://foo.com"}, // Use this to allow specific origin hosts
-		// AllowedOrigins: []string{"https://*", "http://*"},
-		AllowedOrigins: []string{env.GetString("CORS_ALLOWED_ORIGIN", "http://localhost:5173")},
-		// AllowOriginFunc:  func(r *http.Request, origin string) bool { return true },
+		AllowedOrigins:   allowedOrigins,
 		AllowedMethods:   []string{"GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"},
 		AllowedHeaders:   []string{"Accept", "Authorization", "Content-Type", "X-CSRF-Token"},
 		ExposedHeaders:   []string{"Link"},
