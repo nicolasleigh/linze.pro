@@ -40,12 +40,9 @@ defineExpose({ section, activeSection })
           一位拥有经济与金融背景的自学软件开发者，目前专注于构建现代全栈 Web 应用。
         </p>
         <ul :class="unorderedListStyle">
-          <li>出生于 1994 年 7 月，中国云南省</li>
-          <li>2013 年高考理科成绩 617 分（云南省理科第 1522 名）</li>
-          <li>经济学学士，主修财政学（国家重点学科）</li>
-          <li>2017 年毕业于中南财经政法大学（“211 工程”高校）</li>
-          <li>中国注册会计师（于 2020 年通过全部六门专业考试）</li>
-          <li>自 2021 年起自学编程至今</li>
+          <li>中南财经政法大学（“211 工程”高校）· 财政学 · 经济学学士</li>
+          <li>中国注册会计师（CPA）</li>
+          <li>专注于现代全栈 Web 开发与软件工程</li>
         </ul>
       </Section>
       <Section :id="section[1].slug">
@@ -53,8 +50,7 @@ defineExpose({ section, activeSection })
           {{ section[1].title }}
         </h2>
         <p :class="paragraphStyle">
-          在从事财务审计工作一年后，我意识到这份职业并不符合我的个人价值观和长期发展目标。于是，在
-          2021 年 10 月，也就是新冠疫情期间，我开始了一段全新的旅程：学习编程。
+          在从事财务审计工作后，我意识到这份职业并不符合我的个人长期发展目标。于是，我开始了一段全新的旅程：深入探索并学习计算机与软件工程。
         </p>
         <p :class="paragraphStyle">
           我最初从 C 和 Java

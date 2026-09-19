@@ -39,14 +39,12 @@ defineExpose({ section, activeSection })
           economics and finance, now fully immersed in building modern full-stack web applications.
         </p>
         <ul :class="unorderedListStyle">
-          <li>Born in July 1994, Yunnan Province, China</li>
           <li>
-            Scored 617 in 2013 National College Entrance Exam (Ranked 1522 in Yunnan science track)
+            Zhongnan University of Economics and Law (Project 211) · Bachelor of Economics, Public
+            Finance
           </li>
-          <li>Bachelor of Economics, Major in Public Finance (National Key Discipline)</li>
-          <li>Graduated from Zhongnan University of Economics and Law (Project 211) in 2017</li>
-          <li>Certified Public Accountant of China (Passed all 6 professional exams in 2020)</li>
-          <li>Self-taught software developer since 2021</li>
+          <li>Certified Public Accountant of China (CPA)</li>
+          <li>Full-stack software developer focused on modern web engineering</li>
         </ul>
       </Section>
       <Section :id="section[1].slug">
@@ -54,9 +52,9 @@ defineExpose({ section, activeSection })
           {{ section[1].title }}
         </h2>
         <p :class="paragraphStyle">
-          After working in financial auditing for a year, I realized that career path didn't align
-          with my personal values and aspirations. In October 2021, during the COVID-19 pandemic, I
-          began a new journey: learning to code.
+          After working in financial auditing, I realized that career path didn't align with my
+          personal aspirations. I embarked on a new journey: diving deep into software development
+          and web engineering.
         </p>
         <p :class="paragraphStyle">
           I started with C and Java, which laid a solid foundation for programming concepts and
