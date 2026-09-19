@@ -32,6 +32,7 @@ export const siteMessages = {
     footerStatement: '深思于架构，敏行于交付',
     explore: '探索',
     contact: '联系',
+    legacyBlog: '旧版博客 (Vue)',
   },
   'en-US': {
     skip: 'Skip to content',
@@ -43,6 +44,7 @@ export const siteMessages = {
     footerStatement: 'Turning complex systems into clear, reliable products.',
     explore: 'Explore',
     contact: 'Contact',
+    legacyBlog: 'Legacy Blog (Vue)',
   },
 } as const;
 

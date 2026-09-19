@@ -1,12 +1,22 @@
+# 1. 新版 Next.js 博客：主域名 linze.pro
 linze.pro {
 	handle /api/v1/* {
 		reverse_proxy localhost:8085
 	}
 	handle {
-		# root * /home/nicolas/linze.pro/vue-build/dist
-		# try_files {path} /index.html
-		# file_server
 		reverse_proxy localhost:3000
+	}
+}
+
+# 2. 旧版 Vue 博客：二级域名 vue.linze.pro
+vue.linze.pro {
+	handle /api/* {
+		reverse_proxy localhost:8085
+	}
+	handle {
+		root * /home/nicolas/linze.pro/vue-build/dist
+		try_files {path} /index.html
+		file_server
 	}
 }
 
