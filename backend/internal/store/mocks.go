@@ -8,7 +8,8 @@ import (
 
 func NewMockStore() Storage {
 	return Storage{
-		Users: &MockUserStore{},
+		Users:     &MockUserStore{},
+		PostLikes: &MockPostLikeStore{},
 	}
 }
 
@@ -41,4 +42,18 @@ func (m *MockUserStore) Delete(ctx context.Context, userID int64) error {
 
 func (m *MockUserStore) GetByEmail(ctx context.Context, email string, password string) (*User, error) {
 	return &User{}, nil
+}
+
+type MockPostLikeStore struct{}
+
+func (m *MockPostLikeStore) UpdateLike(ctx context.Context, slug string) (int, error) {
+	return 1, nil
+}
+
+func (m *MockPostLikeStore) GetLike(ctx context.Context, slug string) (int, error) {
+	return 1, nil
+}
+
+func (m *MockPostLikeStore) UpdateView(ctx context.Context, slug string) (int, error) {
+	return 1, nil
 }

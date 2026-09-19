@@ -8,6 +8,7 @@ import (
 	"github.com/nicolasleigh/social/internal/store"
 )
 
+// updatePostLike 用于旧版 Vue 博客兼容：自增文章点赞数 (POST /api/v1/like/post/{slug})
 func (app *application) updatePostLike(w http.ResponseWriter, r *http.Request) {
 	slug := chi.URLParam(r, "slug")
 
@@ -27,6 +28,7 @@ func (app *application) updatePostLike(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+// getPostLike 用于旧版 Vue 博客兼容：获取文章点赞数 (GET /api/v1/like/post/{slug})
 func (app *application) getPostLike(w http.ResponseWriter, r *http.Request) {
 	slug := chi.URLParam(r, "slug")
 
@@ -46,6 +48,7 @@ func (app *application) getPostLike(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+// updatePostView 用于旧版 Vue 博客兼容：自增文章浏览量 (GET /api/v1/view/post/{slug})
 func (app *application) updatePostView(w http.ResponseWriter, r *http.Request) {
 	slug := chi.URLParam(r, "slug")
 

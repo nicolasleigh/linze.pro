@@ -217,7 +217,13 @@ func (app *application) mount() http.Handler {
 			r.Post("/auth/token", app.createTokenHandler)
 		})
 		r.Group(func(r chi.Router) {
+			// 旧版 Vue 博客（vue.linze.pro）兼容路由：
+			// 旧版前端在文章详情页阅读或点赞时依赖 GET /view/post/{slug}、GET /like/post/{slug} 与 POST /like/post/{slug}。
+			// 新版 Next.js 博客已升级至基于访客指纹和防刷限流的新接口（/posts/{slug}/engagement/*），
+			// 保留此组旧路由以确保旧版 Vue 博客部署在二级域名下时，文章浏览量自增与点赞功能正常运行，避免 404。
 			r.Get("/like/post/{slug}", app.getPostLike)
+			r.Post("/like/post/{slug}", app.updatePostLike)
+			r.Get("/view/post/{slug}", app.updatePostView)
 			r.Post("/like/project/{slug}", app.updateProjectLike)
 			r.Get("/like/project/{slug}", app.getProjectLike)
 			r.Get("/view/project/{slug}", app.updateProjectView)

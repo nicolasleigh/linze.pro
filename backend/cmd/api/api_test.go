@@ -102,3 +102,37 @@ func TestCorsMiddleware(t *testing.T) {
 		})
 	}
 }
+
+func TestLegacyPostViewAndLikeRoutes(t *testing.T) {
+	cfg := config{
+		rateLimiter: ratelimiter.Config{
+			RequestsPerTimeFrame: 100,
+			TimeFrame:            time.Second * 5,
+			Enabled:              false,
+		},
+		addr: ":8080",
+	}
+
+	app := newTestApplication(t, cfg)
+	handler := app.mount()
+
+	req, err := http.NewRequest("GET", "/api/v1/view/post/test-slug", nil)
+	if err != nil {
+		t.Fatalf("could not create request: %v", err)
+	}
+	rec := httptest.NewRecorder()
+	handler.ServeHTTP(rec, req)
+	if rec.Code == http.StatusNotFound && rec.Body.String() == "404 page not found\n" {
+		t.Errorf("expected route /api/v1/view/post/{slug} to be registered, got unregistered 404")
+	}
+
+	reqLike, err := http.NewRequest("POST", "/api/v1/like/post/test-slug", nil)
+	if err != nil {
+		t.Fatalf("could not create request: %v", err)
+	}
+	recLike := httptest.NewRecorder()
+	handler.ServeHTTP(recLike, reqLike)
+	if recLike.Code == http.StatusNotFound && recLike.Body.String() == "404 page not found\n" {
+		t.Errorf("expected route /api/v1/like/post/{slug} to be registered, got unregistered 404")
+	}
+}
