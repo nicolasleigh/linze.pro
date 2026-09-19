@@ -1,57 +1,65 @@
-import type { Metadata, Viewport } from "next";
-import { headers } from "next/headers";
+import type { Metadata, Viewport } from 'next';
+import { headers } from 'next/headers';
 
-import { siteContent } from "@/content/site";
-import { isBlogLocale } from "@/lib/i18n";
+import { siteContent } from '@/content/site';
+import { isBlogLocale } from '@/lib/i18n';
 
-import "./globals.css";
+import './globals.css';
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteContent.url),
   title: {
     default: `${siteContent.identity.name} · 全栈开发者`,
-    template: "%s · Linze.pro",
+    template: '%s · Linze.pro',
   },
   description: siteContent.description,
   applicationName: siteContent.name,
-  authors: [{ name: siteContent.identity.name, url: "/about" }],
+  authors: [{ name: siteContent.identity.name, url: '/about' }],
   creator: siteContent.identity.name,
   publisher: siteContent.identity.name,
-  category: "technology",
+  category: 'technology',
+  icons: {
+    icon: [
+      { url: '/favicon.ico', sizes: '32x32' },
+      { url: '/favicon.svg', type: 'image/svg+xml' },
+    ],
+    shortcut: '/favicon.ico',
+    apple: '/favicon.svg',
+  },
   alternates: {
-    canonical: "/",
+    canonical: '/',
     types: {
-      "application/rss+xml": "/rss.xml",
+      'application/rss+xml': '/rss.xml',
     },
   },
   openGraph: {
-    type: "website",
-    locale: "zh_CN",
-    url: "/",
+    type: 'website',
+    locale: 'zh_CN',
+    url: '/',
     siteName: siteContent.name,
     title: `${siteContent.identity.name} · 全栈开发者`,
     description: siteContent.description,
   },
   twitter: {
-    card: "summary",
+    card: 'summary',
     title: `${siteContent.identity.name} · 全栈开发者`,
     description: siteContent.description,
   },
 };
 
 export const viewport: Viewport = {
-  colorScheme: "light dark",
+  colorScheme: 'light dark',
   themeColor: [
-    { media: "(prefers-color-scheme: light)", color: "#eef2f7" },
-    { media: "(prefers-color-scheme: dark)", color: "#09101c" },
+    { media: '(prefers-color-scheme: light)', color: '#eef2f7' },
+    { media: '(prefers-color-scheme: dark)', color: '#09101c' },
   ],
 };
 
 export default async function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
-  const requestedLocale = (await headers()).get("x-site-locale") ?? "";
-  const locale = isBlogLocale(requestedLocale) ? requestedLocale : "zh-CN";
+  const requestedLocale = (await headers()).get('x-site-locale') ?? '';
+  const locale = isBlogLocale(requestedLocale) ? requestedLocale : 'zh-CN';
   return (
-    <html lang={locale} data-scroll-behavior="smooth">
+    <html lang={locale} data-scroll-behavior='smooth'>
       <body>{children}</body>
     </html>
   );
