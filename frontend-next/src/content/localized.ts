@@ -37,27 +37,58 @@ const englishProjects: readonly PortfolioProject[] = [
   },
   {
     ...portfolioProjects[2],
-    category: 'Commerce / Multi-app system',
-    status: 'In development',
+    category: 'Product engineering / Full stack',
+    status: 'Active iteration',
     description:
-      'An e-commerce system composed of a storefront, an admin application and an Express API, covering product discovery, carts, orders, reviews, realtime support and payments.',
+      'A bilingual cabin-booking platform for guests and administrators. React, React Query and Tailwind CSS shape the booking experience and admin workspace, while Node.js, Express, Prisma and PostgreSQL support the core domain flows.',
     engineeringFocus:
-      'Coordinate user, product, order and conversation data across three applications, using Redux, Socket.IO and MongoDB to connect transactional and realtime flows.',
+      'Organise guest and admin experiences around one business data model, with particular attention to server state, form validation, responsive interaction, internationalisation and operational workflows.',
     highlights: [
-      'Separated storefront, admin and API applications',
-      'Bidirectional support chat with Socket.IO',
-      'Cart, order and review domain flows',
-      'Stripe payment and webhook flow',
+      'Server state and mutations with React Query',
+      'Separated guest and admin route boundaries',
+      'React Hook Form and Zod validation',
+      'Bilingual, dark-mode and responsive interface',
     ],
   },
   {
     ...portfolioProjects[3],
+    category: 'Media platform / Admin tooling',
+    status: 'Active iteration',
+    description:
+      'A two-sided movie content platform for viewers and administrators. React, Tailwind CSS and shadcn/ui shape discovery, playback, reviews and content operations, while Node.js, Express, MongoDB and JWT support the API and auth flows.',
+    engineeringFocus:
+      'Organise complex movie forms, media uploads, cast relationships, localisation and the admin workspace into a coherent frontend experience backed by a focused content and authentication API.',
+    highlights: [
+      'Complex movie forms with React Hook Form and Zod',
+      'Debounced actor search and multi-select relationships',
+      'Cloudinary poster and video uploads',
+      'Bilingual, light/dark and responsive UI',
+    ],
+  },
+  {
+    ...portfolioProjects[4],
+    category: 'Commerce / Multi-app system',
+    status: 'Active iteration',
+    description:
+      'A pet commerce system composed of a customer storefront, seller operations dashboard and Express API, covering product discovery, carts, orders, reviews, realtime support and operational analytics.',
+    engineeringFocus:
+      'Coordinate user, product, order and chat data across three applications, with particular attention to Redux state boundaries, responsive shopping, operations workflows and Socket.IO communication.',
+    highlights: [
+      'Separated storefront, admin and API applications',
+      'Redux Toolkit for cart, order and chat state',
+      'Customer, seller and admin support chat with Socket.IO',
+      'Product discovery, order management and dashboard analytics',
+      'React i18next, dark mode and responsive UI',
+    ],
+  },
+  {
+    ...portfolioProjects[5],
     category: 'Mobile / Media',
     status: 'Prototype complete',
     description:
-      'A React Native music application without Expo, including playlists, favorites, listening history, file uploads, email verification and password recovery.',
+      'A full-stack mobile music application built without Expo, organised around cross-screen playback, local device audio caching and user-generated content.',
     engineeringFocus:
-      'Handle native audio modules, player state and file caching on mobile, backed by a Node.js API for user and media data.',
+      'Use native player modules, Redux, React Query and RNFS to separate playback state, server data and device files, backed by a Node.js API for users and media.',
     highlights: [
       'Playback controls with React Native Track Player',
       'Audio file caching with react-native-fs',
@@ -437,6 +468,576 @@ const englishLinzeProCase: ProjectCaseStudy = {
   ],
 };
 
+const englishCabinFyCase: ProjectCaseStudy = {
+  projectSlug: 'cabinfy',
+  heroKicker: 'CASE STUDY / PRODUCT ENGINEERING',
+  title: 'From a course prototype to a bilingual cabin-booking platform',
+  description:
+    'A React, React Query and Tailwind CSS rebuild of a guest booking experience and admin workspace, backed by Node.js, Express, Prisma and PostgreSQL for cabins, bookings, reviews and operational settings.',
+  problem:
+    'CabinFy serves two audiences: guests who want to discover and book cabins, and administrators who need to manage listings, reservations and check-in workflows. The challenge was not simply rendering a list of cabins, but organising two user experiences around one business data model, including routes, server state, forms, tables and responsive interaction.',
+  sections: {
+    problem: { kicker: '01 / PRODUCT SCOPE', title: 'Why build a two-sided accommodation product?' },
+    flow: { kicker: '02 / BOOKING FLOW', title: 'How a booking moves from discovery to operations' },
+    decisions: { kicker: '03 / ENGINEERING DECISIONS', title: 'Frontend and full-stack decisions visible in the code' },
+    boundaries: {
+      kicker: '04 / CURRENT BOUNDARIES',
+      title: 'Backend boundaries that still need to converge',
+      intro: 'The frontend and business flows have a clear shape, while authorization, booking consistency and production safeguards remain the next engineering focus.',
+    },
+    next: { kicker: '05 / NEXT ITERATION', title: 'What to improve next' },
+  },
+  goals: [
+    'Organise guest and admin experiences around one cabin and booking data model',
+    'Separate server state from local interaction state with React Query',
+    'Keep the frontend maintainable through validation, reusable primitives and lazy loading',
+    'Provide a consistent experience across languages, themes and screen sizes',
+  ],
+  flow: [
+    {
+      label: '01',
+      title: 'Discover',
+      description: 'Guests browse the cabin catalogue and use filtering, sorting and pagination to find available stays.',
+    },
+    {
+      label: '02',
+      title: 'Decide',
+      description: 'The cabin detail page brings together images, description, price, location and reviews while guests choose dates and capacity.',
+    },
+    {
+      label: '03',
+      title: 'Calculate',
+      description: 'The booking form presents an estimate based on dates, nights, guests and breakfast options before submission.',
+    },
+    {
+      label: '04',
+      title: 'Book',
+      description: 'After signing in, the frontend uses the JWT cookie to call the protected booking endpoint and submit the form.',
+    },
+    {
+      label: '05',
+      title: 'Operate',
+      description: 'Administrators use the dashboard, bookings, cabins and check-in screens to handle reservations, listings and stay status.',
+    },
+  ],
+  decisions: [
+    {
+      title: 'Use React Query for server state',
+      implementation:
+        'Cabins, bookings, reviews and settings are fetched through dedicated query hooks, while create, update and delete operations use mutation hooks with shared loading, error and update states.',
+      value:
+        'Server data stays separate from local UI state instead of coupling request results, form input and modal state in one global container.',
+    },
+    {
+      title: 'Organise the frontend by business boundaries',
+      implementation:
+        'The features directory separates authentication, bookings, cabins, check-in/out, dashboard, guests and settings, combining page components, forms and data hooks within each domain.',
+      value:
+        'Business entry points are easier to find, while lists, forms, dialogs and request logic can be reused within a coherent domain boundary.',
+    },
+    {
+      title: 'Separate guest and admin route boundaries',
+      implementation:
+        'React Router keeps /admin/* apart from the guest-facing pages. The admin workspace has its own layout and ProtectedRoute, while the guest flow centres on discovery, cabin details and booking.',
+      value:
+        'The two audiences get different information hierarchies and operation boundaries while sharing the same API and domain data.',
+    },
+    {
+      title: 'Use lazy routes and skeletons for transitions',
+      implementation:
+        'Dashboard, bookings, cabins, home and cabin pages load through React.lazy and Suspense, with dedicated skeletons for cabin lists and details.',
+      value:
+        'Route-level code splitting reduces the initial JavaScript payload, while stable placeholders reduce blank states and layout movement during requests.',
+    },
+    {
+      title: 'Keep validation and UI primitives consistent',
+      implementation:
+        'React Hook Form manages form state, Zod handles runtime validation, and shared Table, Dialog, Select, Form and Sheet primitives support both guest and admin interactions.',
+      value:
+        'Different flows—cabins, bookings, authentication and settings—share predictable validation and feedback patterns instead of bespoke form logic.',
+    },
+    {
+      title: 'Treat language, theme and responsiveness as product capabilities',
+      implementation:
+        'react-i18next detects the browser language and loads English and Chinese JSON locales, while Tailwind responsive styles, DarkModeProvider and mobile layouts cover different devices and preferences.',
+      value:
+        'Internationalisation and accessible visual choices are part of the interface foundation rather than a final-page patch.',
+    },
+  ],
+  boundaries: [
+    {
+      level: '高',
+      title: 'Backend authorization is not consistent yet',
+      description:
+        'ProtectedRoute guards the admin UI, but some cabin mutations, booking operations and settings updates still lack a single server-side authentication and ADMIN role boundary. The backend should be the final authority.',
+    },
+    {
+      level: '高',
+      title: 'Booking consistency cannot rely on client forms alone',
+      description:
+        'The create-booking path validates input, but date overlap checks, concurrent booking protection, server-side price calculation and transaction boundaries still need strengthening to avoid duplicate reservations or tampered totals.',
+    },
+    {
+      level: '中',
+      title: 'Session and JWT authentication are used together',
+      description:
+        'Administrators and guests use Passport sessions and JWT cookies respectively. This can work, but cookie security, refresh and revocation, CORS, rate limiting and a unified error contract need further convergence.',
+    },
+    {
+      level: '中',
+      title: 'Testing and observability are still thin',
+      description:
+        'The current system mainly relies on Morgan and application logs. A fuller health, metrics and tracing layer, together with tests for booking conflicts, authorization and failure recovery, is still needed.',
+    },
+    {
+      level: '中',
+      title: 'Money and deployment configuration need stricter production constraints',
+      description:
+        'Money fields use Float and deployment files contain environment-specific paths and security options. Decimal values, environment-driven configuration and explicit production cookie and CORS settings should come next.',
+    },
+  ],
+  nextSteps: [
+    'Add consistent authentication and ADMIN role middleware to cabin, booking and settings writes',
+    'Recalculate totals on the server and use transactions plus date-overlap checks for booking consistency',
+    'Converge Session and JWT security policy with Secure Cookie, SameSite, CORS and login rate limiting',
+    'Add API integration, frontend interaction and end-to-end booking tests',
+    'Add health checks, structured logs and baseline metrics before evaluating cache or asynchronous work',
+  ],
+};
+
+const englishMovieFyCase: ProjectCaseStudy = {
+  projectSlug: 'moviefy',
+  heroKicker: 'CASE STUDY / MEDIA PLATFORM',
+  title: 'From a movie review app to a two-sided content platform',
+  description:
+    'A movie content platform for viewers and administrators. React, Tailwind CSS and shadcn/ui shape discovery, playback, cast, reviews and content operations, while Node.js, Express, MongoDB and JWT support the content and authentication paths.',
+  problem:
+    'MovieFy serves two audiences: viewers who want to discover, watch and review movies, and administrators who maintain movies, actors, media files and user reviews. The challenge was not simply building a movie list, but organising two information hierarchies around one content model: a smooth discovery experience for users and a complex, relational content workspace for administrators.',
+  sections: {
+    problem: { kicker: '01 / PRODUCT SCOPE', title: 'Why does a movie app need two experiences?' },
+    flow: { kicker: '02 / MOVIE EXPERIENCE', title: 'How a movie moves from content management to viewing' },
+    decisions: { kicker: '03 / ENGINEERING DECISIONS', title: 'Frontend and full-stack decisions visible in the code' },
+    boundaries: {
+      kicker: '04 / CURRENT BOUNDARIES',
+      title: 'Backend and state boundaries that still need to converge',
+      intro: 'The frontend product and content flows have a clear shape, while authentication safety, data consistency and error contracts remain the next engineering focus.',
+    },
+    next: { kicker: '05 / NEXT ITERATION', title: 'What to improve next' },
+  },
+  goals: [
+    'Organise viewer and admin experiences around one movie, actor and review model',
+    'Handle movie metadata, cast relationships and media uploads through composable forms',
+    'Support search, playback, ratings, reviews, related movies and localised content',
+    'Keep interactions consistent across themes, mobile layouts and dense admin tables',
+  ],
+  flow: [
+    {
+      label: '01',
+      title: 'Discover',
+      description: 'The home page uses a hero carousel, latest uploads and genre-based top-rated lists to help viewers find movies.',
+    },
+    {
+      label: '02',
+      title: 'Search',
+      description: 'Viewers search by title while Search Context and debounce logic reduce repeated requests and expose result states.',
+    },
+    {
+      label: '03',
+      title: 'Explore',
+      description: 'The movie detail page brings together video, story, director, writer, cast, genres, language, release date and related movies.',
+    },
+    {
+      label: '04',
+      title: 'Review',
+      description: 'Signed-in viewers can submit ratings, read reviews, and edit or remove their own review.',
+    },
+    {
+      label: '05',
+      title: 'Operate',
+      description: 'Administrators use the dashboard, movies, actors and search screens to manage media, people and publication status.',
+    },
+  ],
+  decisions: [
+    {
+      title: 'Use composable forms for complex movie data',
+      implementation:
+        'MovieForm combines React Hook Form and Zod for title, storyline, genres, tags, director, writer, cast, release date, language, status, poster and video fields.',
+      value:
+        'A form that could easily become unmaintainable is split into validated fields and reusable selectors, with shared interaction for create and edit modes.',
+    },
+    {
+      title: 'Connect cast relationships through debounced search',
+      implementation:
+        'LiveSearch, LiveSearchCast, DirectorSelector and WriterSelector provide live search, keyboard navigation, multi-select presentation and duplicate filtering for people relationships.',
+      value:
+        'Administrators can build movie relationships during content entry instead of manually finding and entering database identifiers.',
+    },
+    {
+      title: 'Treat viewer and admin surfaces as two product experiences',
+      implementation:
+        'App switches between the user routes and AdminNavigator based on the authenticated role. The user side centres on discovery, playback and reviews, while the admin side centres on dashboards, movies and actors.',
+      value:
+        'Each audience gets an appropriate information hierarchy, navigation and interaction density while sharing movie, actor and review APIs.',
+    },
+    {
+      title: 'Make media upload part of content publishing',
+      implementation:
+        'The backend receives images and videos through Multer, uploads them to Cloudinary, and stores URLs, public IDs and responsive poster variants. The frontend validates file types and sizes in the form.',
+      value:
+        'Movies are more than text CRUD: posters, video assets, CDN resources and metadata move through one publishing workflow.',
+    },
+    {
+      title: 'Use Context boundaries for cross-page state',
+      implementation:
+        'AuthProvider restores login state and tokens, MoviesProvider handles paginated movie data, SearchProvider manages search results and ThemeProvider persists the selected theme.',
+      value:
+        'Shared authentication, search, movie list and theme state have explicit boundaries instead of being recreated independently on every page.',
+    },
+    {
+      title: 'Batch rating aggregation for list views',
+      implementation:
+        'MongoDB aggregation calculates average ratings, review counts, related movies and top-rated movies. getAverageRatingsMap combines multiple rating lookups into one aggregation instead of repeating a query per movie.',
+      value:
+        'The flexible document model remains useful while homepage lists and related content get a more controlled data access path.',
+    },
+  ],
+  boundaries: [
+    {
+      level: '高',
+      title: 'JWT storage and lifecycle need strengthening',
+      description:
+        'The frontend currently stores the JWT in localStorage, while the backend does not visibly set an expiry, refresh or revocation strategy when signing tokens. HttpOnly cookies, short-lived access tokens and refresh-token rotation should be evaluated next.',
+    },
+    {
+      level: '高',
+      title: 'Email verification is not enforced by the review endpoint',
+      description:
+        'The project implements OTP email verification and an isVerified field, but the review controller still contains a commented verification check. Reviews should not be described as restricted to verified users yet.',
+    },
+    {
+      level: '中',
+      title: 'Review and movie references lack a transaction boundary',
+      description:
+        'Adding or removing a review updates both the Review document and Movie.reviews array, but there is no MongoDB session transaction or unique index to guard concurrent duplicate reviews and partial failures.',
+    },
+    {
+      level: '中',
+      title: 'Error contracts and status codes are not fully consistent',
+      description:
+        'Some validation failures return an error payload with a successful status, while JWT failures need explicit mapping to authentication errors. The frontend currently consumes mostly string errors through toast notifications.',
+    },
+    {
+      level: '中',
+      title: 'Frontend server state and search state are simplified',
+      description:
+        'Several Context providers and module-level pagination or debounce variables hold state. As the dataset grows, server state can move to React Query and search or pagination state can become URL-addressable.',
+    },
+  ],
+  nextSteps: [
+    'Move JWT authentication to a secure, expiring cookie strategy with refresh and revocation support',
+    'Enforce email verification in the review endpoint and add a unique owner-plus-movie constraint',
+    'Use a MongoDB session transaction to keep Review and Movie references consistent',
+    'Unify 4xx/5xx error codes and localised frontend messages, with request-level structured logs',
+    'Move movie, search and pagination data to React Query and add end-to-end viewer and admin flows',
+  ],
+};
+
+const englishPetifyCase: ProjectCaseStudy = {
+  projectSlug: 'petify',
+  heroKicker: 'CASE STUDY / COMMERCE SYSTEM',
+  title: 'From a storefront to a three-surface commerce system',
+  description:
+    'Petify separates a customer storefront, seller operations dashboard and Express API into three independent applications. It covers product discovery, filtering, carts, orders, reviews, realtime support and operational analytics with React, Redux, Tailwind CSS, Node.js, MongoDB, Cloudinary, Docker and Caddy.',
+  problem:
+    'Petify was not simply a product list. It had to organise three different experiences around the same users, products, orders and conversations: customers need a clear path from discovery to purchase, sellers need a dense operations workspace, and support needs low-latency communication. The project therefore separates the storefront, seller surface and API, then connects commerce and conversations through REST, Redux and Socket.IO.',
+  sections: {
+    problem: { kicker: '01 / PRODUCT SURFACES', title: 'Why split commerce into three applications?' },
+    flow: { kicker: '02 / COMMERCE FLOW', title: 'How a purchase moves from discovery to operations' },
+    decisions: { kicker: '03 / FRONTEND ENGINEERING', title: 'Product and engineering decisions visible in the code' },
+    boundaries: {
+      kicker: '04 / CURRENT BOUNDARIES',
+      title: 'A complete frontend experience, with transaction boundaries still to close',
+      intro: 'The storefront and seller workspace form a clear product skeleton. Identity boundaries, order consistency, realtime connections and the payment path are the most important next engineering problems.',
+    },
+    next: { kicker: '05 / NEXT ITERATION', title: 'What to improve next' },
+  },
+  goals: [
+    'Separate the customer storefront, seller operations dashboard and Express API into independent application boundaries',
+    'Create a continuous customer experience across discovery, carts, orders, reviews and support',
+    'Use Redux, React Router and Tailwind to organise cross-screen state and responsive interfaces',
+    'Give sellers one workspace for products, orders, metrics and customer conversations',
+  ],
+  flow: [
+    {
+      label: '01',
+      title: 'Discover',
+      description:
+        'Customers start with the home banner, categories and product lists. The API returns latest, top-rated and discounted products, while the frontend shapes the discovery path.',
+    },
+    {
+      label: '02',
+      title: 'Filter',
+      description:
+        'The shop combines category, price range, rating, keyword and price sorting while keeping the same filters across grid/list views and pagination.',
+    },
+    {
+      label: '03',
+      title: 'Decide',
+      description:
+        'Product details bring together images, description, stock, discount, rating, reviews, related products and more products from the same seller.',
+    },
+    {
+      label: '04',
+      title: 'Cart',
+      description:
+        'Customers add products to a cart or wishlist, adjust quantities, check stock and provide shipping information at checkout.',
+    },
+    {
+      label: '05',
+      title: 'Order',
+      description:
+        'The order path creates a customer order and seller sub-orders, removes cart items and exposes status through the customer dashboard.',
+    },
+    {
+      label: '06',
+      title: 'Operate',
+      description:
+        'Sellers use the dashboard, products, categories, orders, payment stats and support views for daily operations, while Socket.IO surfaces active customers and messages.',
+    },
+  ],
+  decisions: [
+    {
+      title: 'Treat storefront, seller surface and API as product boundaries',
+      implementation:
+        'The frontend and dashboard are independent Vite React applications. The backend owns the Express REST API, MongoDB, uploads and Socket.IO, while Caddy routes pet.linze.pro and seller.pet.linze.pro to the corresponding static assets and API.',
+      value:
+        'The storefront and seller workspace can have different information density, navigation and interaction models while sharing one business data layer.',
+    },
+    {
+      title: 'Organise cross-screen commerce state with Redux Toolkit',
+      implementation:
+        'The storefront keeps separate auth, home, cart, order, dashboard and chat reducers. The dashboard has auth, product, category, seller, order and chat state of its own.',
+      value:
+        'Product details, carts, orders, dashboards and conversations have stable state entry points instead of rebuilding the same cross-screen interactions in each page.',
+    },
+    {
+      title: 'Design the seller workspace around daily operations',
+      implementation:
+        'The dashboard combines protected routes, lazy loading, product and order tables, search, pagination, charts and a react-window virtual list for product, order, payment and support views.',
+      value:
+        'The dashboard is not just an extension of the storefront: it gives product management, order processing, sales metrics and support their own high-density workflow.',
+    },
+    {
+      title: 'Combine REST persistence with Socket.IO delivery',
+      implementation:
+        'Chat controllers save Customer, Seller and Admin messages to MongoDB. Socket.IO tracks in-process connections and delivers messages to active recipients, while Redux updates the conversation state in the clients.',
+      value:
+        'Queryable history and low-latency interaction have separate responsibilities: REST provides durable reads and Socket.IO handles the online feedback path.',
+    },
+    {
+      title: 'Make localisation, theme and responsiveness part of the UI foundation',
+      implementation:
+        'The storefront uses react-i18next and browser-language detection for English and Chinese copy. Tailwind covers product, detail, cart and mobile layouts, while the dashboard uses ThemeProvider and a responsive sidebar.',
+      value:
+        'The product is not limited to one language or desktop viewport; language, device size and visual preference have explicit places in the interface structure.',
+    },
+    {
+      title: 'Include media and deployment in the delivery path',
+      implementation:
+        'Formidable receives product images and profile uploads, Cloudinary hosts media URLs, Docker Compose runs MongoDB and the backend, Makefile builds the two static applications, and Caddy provides HTTPS, SPA fallback and proxying.',
+      value:
+        'The project covers content entry, static asset publishing, API routing and server deployment instead of stopping at a local development setup.',
+    },
+  ],
+  boundaries: [
+    {
+      level: '高',
+      title: 'The order API still trusts too much client data',
+      description:
+        'placeOrder receives userId, product structures, price and shipping information from the client. The code does not yet fully show server-side price reloading, stock validation, atomic inventory decrement, idempotency or a transaction boundary. The cart-to-order flow works, but it should not be presented as a strongly consistent transaction system.',
+    },
+    {
+      level: '高',
+      title: 'Customer API and role boundaries are not unified yet',
+      description:
+        'Some cart, wishlist, review and order endpoints use a userId from the URL or request body, while dashboard routes mainly rely on a shared auth middleware. The next step is deriving identity from the token and converging Customer, Seller and Admin authorization.',
+    },
+    {
+      level: '高',
+      title: 'Socket.IO is single-instance and lacks connection authentication',
+      description:
+        'Online customers, sellers and the admin are stored in process arrays and one admin variable, while connection events depend on client-provided IDs. There is no Redis adapter, acknowledgement, retry, offline queue or multi-instance broadcast path.',
+    },
+    {
+      level: '中',
+      title: 'Product filtering and dashboard analytics need a database path at scale',
+      description:
+        'Public product filtering first loads all products and then performs category, price, rating, search, sorting and pagination in Node memory. Dashboard metrics also read broad order sets. Larger data should move into MongoDB queries, aggregations and indexes.',
+    },
+    {
+      level: '中',
+      title: 'Payments and production safeguards are not a complete loop yet',
+      description:
+        'The Stripe code mainly creates a Seller Connect onboarding link; Checkout, Payment Intent and Webhook confirmation are not visible. The project also needs a fuller test suite, rate limiting, health checks, structured logs and CI/CD.',
+    },
+  ],
+  nextSteps: [
+    'Derive customer identity from authenticated tokens and complete server-side Customer, Seller and Admin RBAC',
+    'Recalculate totals and stock on the server, then protect checkout with MongoDB transactions, atomic updates and idempotency keys',
+    'Add JWT handshake auth, trusted origins, rooms, acknowledgements, reconnection and a Redis Socket.IO adapter',
+    'Move filters, pagination and dashboard metrics into MongoDB queries and aggregations with supporting indexes',
+    'Add Stripe Payment Intent and Webhook flows, order audit events, integration tests, health checks and structured observability',
+  ],
+};
+
+const englishMusicFyCase: ProjectCaseStudy = {
+  projectSlug: 'musicfy',
+  heroKicker: 'CASE STUDY / MOBILE MEDIA',
+  title: 'From bare React Native to a complete music playback path',
+  description:
+    'A full-stack mobile music app built without Expo. MusicFy uses React Native, React Navigation, Redux and React Query for the mobile experience, while React Native Track Player and RNFS handle cross-screen playback, queues and local audio files.',
+  problem:
+    'MusicFy was not just about putting a list of songs on a phone. Starting with a bare React Native setup meant defining boundaries between the player, navigation, authentication, user-generated content and the device file system. The product needed registration, email verification, uploads, playlists, favourites, listening history and follows while keeping playback alive as users moved between screens.',
+  sections: {
+    problem: { kicker: '01 / MOBILE PRODUCT SCOPE', title: 'Why design the mobile product around playback?' },
+    flow: { kicker: '02 / PLAYBACK FLOW', title: 'How a track moves from the content API to the device' },
+    decisions: { kicker: '03 / ENGINEERING DECISIONS', title: 'Mobile decisions visible in the code' },
+    boundaries: {
+      kicker: '04 / CURRENT BOUNDARIES',
+      title: 'A complete prototype still has engineering edges to close',
+      intro: 'The mobile playback and content flows form a working product skeleton. Download timing, token lifecycle, history writes and backend constraints are the most valuable next improvements.',
+    },
+    next: { kicker: '05 / NEXT ITERATION', title: 'What to improve next' },
+  },
+  goals: [
+    'Integrate native React Native modules without relying on Expo',
+    'Keep the player, queue, mini player and system media controls working across screens',
+    'Separate Redux global state, React Query server state and device file caching',
+    'Cover authentication, uploads, playlists, favourites, history and follows in one mobile product',
+  ],
+  flow: [
+    {
+      label: '01',
+      title: 'Authenticate',
+      description:
+        'The app restores a token from AsyncStorage, calls /auth/is-auth to validate the session, and lets the auth slice select the auth or tab navigator.',
+    },
+    {
+      label: '02',
+      title: 'Discover',
+      description:
+        'Home uses React Query to fetch latest uploads, recommendations, playlists and recently played tracks without coupling server data to navigation state.',
+    },
+    {
+      label: '03',
+      title: 'Cache',
+      description:
+        'Before playback, useAudioController checks the RNFS cache directory. On a miss it starts a background download from the API audio URL before handing the file to the player.',
+    },
+    {
+      label: '04',
+      title: 'Queue',
+      description:
+        'AudioData is mapped into a Track Player queue that owns the current track, previous and next actions, playback rate, progress and artwork.',
+    },
+    {
+      label: '05',
+      title: 'Control',
+      description:
+        'MiniAudioPlayer, AudioPlayer and playbackService share the same Track Player, so screen controls and Android media controls operate on one playback path.',
+    },
+    {
+      label: '06',
+      title: 'History',
+      description:
+        'The playback service listens for progress events and sends audio, progress and date to /history, bringing recently played and listening history back to the server.',
+    },
+  ],
+  decisions: [
+    {
+      title: 'Create a continuous playback boundary with Track Player',
+      implementation:
+        'InitPlayer configures Track Player capabilities and Android media notifications. useAudioController manages queues and playback operations, while playbackService handles remote play, pause and skip events.',
+      value:
+        'Playback no longer belongs to one screen: users can move between Home, Profile and content views while the same playback path continues.',
+    },
+    {
+      title: 'Separate two kinds of state with Redux and React Query',
+      implementation:
+        'Auth, player and playlist modal state live in Redux. Latest uploads, recommendations, favourites, history, public profiles and follows are fetched through React Query hooks.',
+      value:
+        'Cross-screen state such as the active track and authentication has a stable home, while server data that changes over time is not copied into the global store.',
+    },
+    {
+      title: 'Keep device caching in the file system, not a state container',
+      implementation:
+        'RNFS derives a cache path from the public ID, checks for an existing file and downloads the remote audio on a miss. AsyncStorage is used for the authentication token rather than audio binaries.',
+      value:
+        'Audio data does not enter Redux or AsyncStorage, reducing memory and serialisation pressure while leaving a clear local boundary for replay.',
+    },
+    {
+      title: 'Use nested navigators to express the mobile information hierarchy',
+      implementation:
+        'Auth, Home, Profile and upload flows are composed through AuthNavigator, HomeNavigator, ProfileNavigator and TabNavigator. AppView renders the shared player outside individual screens.',
+      value:
+        'Navigation follows product areas and the common player is implemented once instead of being rebuilt by each screen.',
+    },
+    {
+      title: 'Connect user-generated content into a complete product loop',
+      implementation:
+        'AudioForm combines Yup, native document/image pickers and multipart upload. The Express backend uses Formidable, Cloudinary and MongoDB for audio, artwork, playlists and user relationships.',
+      value:
+        'The project is more than a player demo: authentication, creation, media publishing, favourites, history and social relationships form an operable product flow.',
+    },
+    {
+      title: 'Start recommendations with explainable rules',
+      implementation:
+        'The backend extracts categories from a user’s recent history, filters matching audio and uses a scheduled task to generate automatic playlists. The frontend consumes the result through React Query.',
+      value:
+        'Without introducing a machine-learning stack, the project establishes an understandable recommendation entry point that can be evaluated with real usage data.',
+    },
+  ],
+  boundaries: [
+    {
+      level: '高',
+      title: 'The download helper does not fully await completion',
+      description:
+        'downLoadFile starts RNFS.downloadFile but does not return or await its promise, while onAudioPress continues into the playback flow. On a cold start or weak network the file may not be ready when Track Player receives it; await, failure fallback and duplicate-download control should be added.',
+    },
+    {
+      level: '高',
+      title: 'JWT lifecycle and mobile storage need strengthening',
+      description:
+        'The token is stored in AsyncStorage and the server signing path does not visibly define expiry, rotation or bounded device-token cleanup. This is suitable for prototype validation, but not a complete production session-security story.',
+    },
+    {
+      level: '中',
+      title: 'Playback writes and the history model need to converge',
+      description:
+        'playbackService writes /history from progress events, while the history document maintains both last and an embedded all array. Event frequency, idempotency, array growth and offline compensation need a deliberate design before the catalogue grows.',
+    },
+    {
+      level: '中',
+      title: 'Media uploads and relationship writes need stronger server constraints',
+      description:
+        'Formidable file limits, cross-document consistency between favourites and audio likes, transaction boundaries for follows, and access checks for private playlists all have room to converge.',
+    },
+    {
+      level: '中',
+      title: 'Localisation, testing and observability are not complete capabilities yet',
+      description:
+        'The current code does not show an integrated react-i18next layer, Redis/CDN, push notifications or a full test suite. Recommendations are history-and-category rules, not a machine-learning recommendation system.',
+    },
+  ],
+  nextSteps: [
+    'Make audio downloads awaitable, cancellable and retryable, with cache cleanup and concurrent-request deduplication',
+    'Add short-lived JWTs, refresh rotation, revocation and device limits, then evaluate safer credential storage',
+    'Batch or throttle history writes, cap document growth and design offline event compensation',
+    'Add upload limits, unique constraints and MongoDB transactions, with one authorization rule for private content',
+    'Add unit and integration coverage for playback, uploads, auth and recommendations before evaluating Redis, a CDN or push notifications',
+  ],
+};
+
 export function getSiteContent(locale: BlogLocale) {
   if (locale === 'zh-CN') return siteContent;
   return {
@@ -464,6 +1065,10 @@ export function getProjectCaseStudyLocalized(slug: string, locale: BlogLocale) {
   if (locale === 'en-US') {
     if (slug === 'chatify') return englishChatifyCase;
     if (slug === 'linze-pro') return englishLinzeProCase;
+    if (slug === 'cabinfy') return englishCabinFyCase;
+    if (slug === 'moviefy') return englishMovieFyCase;
+    if (slug === 'petify') return englishPetifyCase;
+    if (slug === 'musicfy') return englishMusicFyCase;
   }
   return getProjectCaseStudy(slug);
 }
