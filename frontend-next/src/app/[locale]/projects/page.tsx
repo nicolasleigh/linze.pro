@@ -80,7 +80,21 @@ export default async function ProjectsPage({ params }: Props) {
                       share="title-morph"
                       default="none"
                     >
-                      <h3>{project.name}</h3>
+                      <h3>
+                        {project.caseStudyPath ? (
+                          <Link href={localizedPath(locale, project.caseStudyPath)}>
+                            {project.name}
+                          </Link>
+                        ) : (
+                          <a
+                            href={project.website ?? project.repository}
+                            rel="noreferrer"
+                            target="_blank"
+                          >
+                            {project.name}
+                          </a>
+                        )}
+                      </h3>
                     </ViewTransition>
                     <p>{project.description}</p>
                   </header>
