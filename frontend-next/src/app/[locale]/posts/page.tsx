@@ -22,9 +22,9 @@ export const revalidate = 300;
 
 const copy = {
   "zh-CN": {
-    title: "技术文章", filteredTitle: "筛选技术文章", description: "关于 React、Next.js、Go、部署和全栈工程实践的技术文章。", intro: "记录项目中的架构取舍、实现细节与问题复盘。内容来自实际开发过程，而不是技术名词的简单罗列。", recent: "近期文章", unavailable: "文章暂时没有加载成功", unavailableBody: "内容服务可能正在更新，请稍后重新尝试。", reload: "重新加载", search: "搜索文章", searchPlaceholder: "搜索标题、摘要或标签", topics: "主题", topicFilter: "按主题筛选", all: "全部", archive: "归档", yearFilter: "按年份筛选", allYears: "全部年份", results: "筛选结果", archiveTitle: "文章归档", unit: "篇", empty: "文章正在整理中", emptyBody: "新的技术记录会在这里发布。", noResults: "没有匹配的文章", noResultsBody: "可以尝试缩短关键词，或清除当前主题与年份筛选。", clear: "清除筛选", reads: "次阅读", likes: "个喜欢", read: (title: string) => `阅读《${title}》`, tags: (title: string) => `${title}的标签`, unknownDate: "日期未知" },
+    title: "技术文章", filteredTitle: "筛选技术文章", description: "关于 React、Next.js、Go、部署和全栈工程实践的技术文章。", intro: "记录 Go 后端、React/Next.js 与全栈项目中的架构决策、实现细节与工程复盘。", recent: "近期文章", unavailable: "文章暂时没有加载成功", unavailableBody: "内容服务可能正在更新，请稍后重新尝试。", reload: "重新加载", search: "搜索文章", searchPlaceholder: "搜索标题、摘要或标签", topics: "主题", topicFilter: "按主题筛选", all: "全部", archive: "归档", yearFilter: "按年份筛选", allYears: "全部年份", results: "筛选结果", archiveTitle: "文章归档", unit: "篇", empty: "文章正在整理中", emptyBody: "新的技术记录会在这里发布。", noResults: "没有匹配的文章", noResultsBody: "可以尝试缩短关键词，或清除当前主题与年份筛选。", clear: "清除筛选", reads: "次阅读", likes: "个喜欢", read: (title: string) => `阅读《${title}》`, tags: (title: string) => `${title}的标签`, unknownDate: "日期未知" },
   "en-US": {
-    title: "Writing", filteredTitle: "Filtered writing", description: "Notes on React, Next.js, Go, deployment and full-stack engineering.", intro: "Architecture decisions, implementation details and lessons from real projects—not a list of technology buzzwords.", recent: "Recent posts", unavailable: "Posts are temporarily unavailable", unavailableBody: "The content service may be updating. Please try again shortly.", reload: "Reload", search: "Search posts", searchPlaceholder: "Search titles, summaries or tags", topics: "Topics", topicFilter: "Filter by topic", all: "All", archive: "Archive", yearFilter: "Filter by year", allYears: "All years", results: "Results", archiveTitle: "Post archive", unit: "posts", empty: "Posts are being prepared", emptyBody: "New engineering notes will appear here.", noResults: "No matching posts", noResultsBody: "Try a shorter query or remove topic and year filters.", clear: "Clear filters", reads: "reads", likes: "likes", read: (title: string) => `Read ${title}`, tags: (title: string) => `Tags for ${title}`, unknownDate: "Unknown date" },
+    title: "Writing", filteredTitle: "Filtered writing", description: "Notes on React, Next.js, Go, deployment and full-stack engineering.", intro: "Notes on architecture decisions, implementation details and engineering lessons from Go, React/Next.js and full-stack projects.", recent: "Recent posts", unavailable: "Posts are temporarily unavailable", unavailableBody: "The content service may be updating. Please try again shortly.", reload: "Reload", search: "Search posts", searchPlaceholder: "Search titles, summaries or tags", topics: "Topics", topicFilter: "Filter by topic", all: "All", archive: "Archive", yearFilter: "Filter by year", allYears: "All years", results: "Results", archiveTitle: "Post archive", unit: "posts", empty: "Posts are being prepared", emptyBody: "New engineering notes will appear here.", noResults: "No matching posts", noResultsBody: "Try a shorter query or remove topic and year filters.", clear: "Clear filters", reads: "reads", likes: "likes", read: (title: string) => `Read ${title}`, tags: (title: string) => `Tags for ${title}`, unknownDate: "Unknown date" },
 } as const;
 
 function formatDate(value: string, locale: BlogLocale) {
@@ -315,13 +315,15 @@ async function PostsIndex({ params, searchParams }: PostsPageProps) {
                           {post.tags.map((tag) => (
                             <li key={tag}>
                               <Link
+                                className="article-tag-link"
                                 href={buildPostsHref(locale, {
                                   query: "",
                                   tag,
                                   year: "",
                                 })}
+                                aria-current={filters.tag === tag ? "page" : undefined}
                               >
-                                #{tag}
+                                {tag}
                               </Link>
                             </li>
                           ))}

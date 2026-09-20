@@ -5,13 +5,14 @@ export const siteContent = {
   identity: {
     name: '李林泽',
     englishName: 'Nicolas Leigh',
-    role: 'Full-stack Engineer',
+    role: 'Go Backend & AI Full-stack Engineer',
     location: 'China · Beijing',
   },
   introduction: {
     eyebrow: 'Finance background · Building software with passion',
-    title: '深思于架构，敏行于交付',
-    body: '我是一名拥有财经背景的自学开发者，关注前端、Go 后端与 AI。这里记录真实项目中的设计判断与实现细节。',
+    title: 'Go 后端与 AI 全栈工程师',
+    tagline: '深思架构，可靠交付。',
+    body: '我拥有财经教育与专业背景，专注 Go 后端、React/Next.js 与全栈工程实践，并持续探索 AI 在真实产品中的落地。这里记录项目中的架构取舍、实现细节与问题复盘。',
   },
   focus: ['React / Next.js', 'Go / PostgreSQL', 'AI engineering'],
   links: {

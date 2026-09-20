@@ -1,211 +1,221 @@
-# 🌐 Linze.pro
+# Linze.pro
 
-[![CD Deploy](https://github.com/nicolasleigh/linze.pro/actions/workflows/cd-deploy.yml/badge.svg)](https://github.com/nicolasleigh/linze.pro/actions/workflows/cd-deploy.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 
-[English](README.md) | [简体中文](README.zh-CN.md)
+[English](README.md) · [简体中文](README.zh-CN.md)
 
-> A modern, high-performance, full-stack portfolio and bilingual engineering publication platform built with **Next.js 15 (App Router)**, **Golang**, **PostgreSQL**, and **Redis**, backed by **Docker**, **Caddy**, and **OpenTelemetry**.
+> A bilingual personal portfolio and engineering blog rebuilt with Next.js and Go.
 
----
+Linze.pro is a real-world portfolio project rather than a static landing page. It combines a bilingual blog, Markdown article management, anonymous engagement, a Go API, PostgreSQL persistence, optional Redis acceleration, and production-oriented observability.
 
-## 📖 System Overview
+The repository contains two frontends:
 
-**Linze.pro** is an enterprise-grade personal engineering platform designed to showcase full-stack projects, publish technical writing, and demonstrate modern web architecture practices. It delivers a robust dual-frontend architecture:
+- **Next.js frontend**: the actively developed frontend and recommended entry point.
+- **Vue frontend**: the legacy SPA kept for compatibility and migration history.
 
-1. **Main Production Platform ([linze.pro](https://linze.pro))**:
-   - Built on **Next.js 15 (App Router)** & **React 19** with Server-Side Rendering (SSR) and Static Site Generation (SSG) for optimal performance and SEO.
-   - Comprehensive internationalization (`/zh-CN` and `/en-US`) with language negotiation, localized alternates, sitemaps, and RSS feeds.
-   - Embedded content management system (**Admin CMS**) at `/admin` featuring HttpOnly JWT authentication, Markdown workbench, multi-language revision tracking, and cache revalidation.
-2. **Legacy Interactive Archive ([vue.linze.pro](https://vue.linze.pro))**:
-   - The original **Vue 3 + Vite** single-page application (SPA), preserved as a live historical showcase demonstrating the architectural evolution from client-side SPA to hybrid server-rendered modern stack.
-3. **Core API Backend (`/api/v1`)**:
-   - High-throughput **Go** RESTful API with structured layering, PostgreSQL migrations, Redis caching, rate limiting, and distributed tracing.
+## Architecture
 
----
+    Browser
+        |
+        v
+    Caddy reverse proxy (optional deployment layer)
+        |
+        +--> Next.js 16 App Router / React 19 --> Go API
+        +--> Legacy Vue 3 + Vite SPA -------> Go API
+                                                    |
+                                                    +--> PostgreSQL
+                                                    +--> Redis (optional)
+                                                    +--> Cloudinary (image upload)
+                                                    +--> SendGrid (optional email)
+                                                    +--> Prometheus / Jaeger (optional)
 
-## 🏗️ Architecture
+Caddy is provided as Caddyfile-example. The local Compose files run application services directly and do not start Caddy.
 
-```text
-                                  +-------------------+
-                                  |   Internet User   |
-                                  +---------+---------+
-                                            | (HTTPS: 443)
-                                            v
-                     +----------------------------------------------+
-                     |                Caddy Reverse Proxy           |
-                     +----------------------+-----------------------+
-                                            |
-                 +--------------------------+--------------------------+
-                 | (linze.pro)              | (vue.linze.pro)          | (/api/v1/*)
-                 v                          v                          v
-       +--------------------+     +-------------------+      +--------------------+
-       |  Next.js 15 App    |     |  Static Vue Dist  |      |   Go RESTful API   |
-       |  (Port: 3000)      |     |  (Static Files)   |      |   (Port: 8085)     |
-       |  - Public SSR/SSG  |     +-------------------+      |  - Chi Router      |
-       |  - Route Handlers  |                                |  - Auth / JWT      |
-       |  - Admin CMS       |----+                           |  - Analytics       |
-       +--------------------+    | (Internal /api/v1)        |  - Translations    |
-                                 +-------------------------->+--------------------+
-                                                                       |
-                                             +-------------------------+-------------------------+
-                                             |                                                   |
-                                             v                                                   v
-                                   +-------------------+                               +-------------------+
-                                   |   PostgreSQL 16   |                               |       Redis       |
-                                   |  (Port: 5432)     |                               |  (Port: 6379)     |
-                                   +-------------------+                               +-------------------+
-```
+## Implemented capabilities
 
----
+### Public content platform
 
-## 🛠️ Tech Stack Matrix
+- Locale-aware routes for zh-CN and en-US
+- Home, article list, article detail, projects, about and RSS pages
+- Markdown rendering with article metadata
+- Fallback when a requested translation is unavailable
+- Canonical URLs, Open Graph metadata, sitemap and robots rules
+- Previous/next navigation, reading progress and engagement UI
 
-| Domain                  | Technology                                    | Purpose & Highlights                                                          |
-| :---------------------- | :-------------------------------------------- | :---------------------------------------------------------------------------- |
-| **Primary Frontend**    | Next.js 15 (App Router), React 19, TypeScript | Server Components, SSG/SSR, localized route handlers, Tailwind CSS            |
-| **Legacy Frontend**     | Vue 3, Vite, Pinia, Tailwind CSS              | Preserved SPA archive, i18next-vue                                            |
-| **Backend API**         | Go 1.23, `chi/v5`                             | RESTful endpoints, clean architecture, JWT auth, CORS wildcard, rate limiting |
-| **Primary Database**    | PostgreSQL 16                                 | Relational data, localized translation schema, revision history               |
-| **Cache & Session**     | Redis 6.2                                     | Metrics caching, rate limit counters, temporary session store                 |
-| **Observability**       | OpenTelemetry, Prometheus, Jaeger, Grafana    | Distributed tracing (OTLP), low-cardinality metrics export, dashboarding      |
-| **Reverse Proxy & TLS** | Caddy 2                                       | Automatic Let's Encrypt TLS, HTTP/2 & HTTP/3, reverse proxy routing           |
-| **Containerization**    | Docker, Docker Compose                        | Multi-stage Docker builds, container orchestration, networking                |
-| **CI / CD**             | GitHub Actions                                | Automated lint, race detector tests, remote zero-downtime SSH deploy          |
+### Markdown article management
 
----
+- Admin login and protected article management pages
+- Markdown import and translation updates
+- Separate article, localized translation and revision data models
+- Optimistic version checks for concurrent edits
+- On-demand Next.js path/tag revalidation after content updates
 
-## ✨ Key Features
+### Anonymous engagement
 
-### 1. Bilingual Content & SEO Architecture
+- Signed HttpOnly visitor cookie without requiring registration
+- Visitor identifiers hashed before persistence
+- PostgreSQL uniqueness constraints for idempotent likes
+- Daily per-visitor view deduplication
+- Redis-backed engagement rate limiting when Redis is enabled
 
-- **Dual Locale Routing**: Native `/zh-CN` and `/en-US` route structures with automatic client preference detection via `Accept-Language`.
-- **Search Engine Optimization**: Canonical tags, dynamic localized XML sitemaps, Open Graph metadata, and RSS feeds.
-- **Translation Schema**: PostgreSQL tables split article identity (`posts`) from localized markdown content (`post_translations`), supporting independent slug-locale versions.
+### Backend and observability
 
-```markdown
----
-slug: building-go-agents
-locale: zh-CN
-title: 使用 Go 构建 Agent
-description: 从工具调用到执行循环
-tags: [Go, AI Agent]
-photo: https://example.com/cover.webp
-updated: 2026-09-12
----
+- Go 1.23.4 HTTP server using net/http and go-chi/chi
+- Request ID, real IP, logging, recovery, CORS, rate limiting and timeout middleware
+- JWT authentication and role-based authorization
+- PostgreSQL access through database/sql and explicit SQL
+- Context propagation into database, Redis, Cloudinary and SendGrid boundaries
+- Root Context, graceful shutdown, readiness draining and managed goroutines
+- Prometheus metrics at /metrics
+- OpenTelemetry traces exported over OTLP/gRPC when enabled
+- Manual spans around HTTP, Store and Redis boundaries
 
-# 正文内容
-```
+The project deliberately does not currently use Kafka, RabbitMQ, WebSocket, SSE, gRPC, Elasticsearch, RAG, Embeddings, Vector Database or an LLM Agent runtime. They are not required by the current blog domain.
 
-### 2. Full-Stack Editorial CMS (`/admin`)
+## Technology stack
 
-- **Secure Authentication**: Admin authentication against Go API with token encapsulated in HttpOnly, SameSite cookies via Next.js Route Handlers (BFF architecture — browser never touches raw JWT).
-- **Article Workbench**: Live Markdown preview, asset management, multi-language revision logs (`post_translation_revisions`), and optimistic locking.
-- **Instant Revalidation**: Next.js On-Demand Tag & Path Revalidation ensures updates reflect immediately on production without full rebuilds.
-- **Dedicated Management APIs**:
-  ```text
-  POST /api/v1/posts/import
-  PUT  /api/v1/posts/{slug}/translations/{locale}
-  GET  /api/v1/posts/{slug}/translations
-  ```
+| Area             | Technology                                               | Role                                                                  |
+| ---------------- | -------------------------------------------------------- | --------------------------------------------------------------------- |
+| Main frontend    | Next.js 16.3.4, React 19.3, TypeScript 5.9               | App Router, Server Components, localized rendering and route handlers |
+| Styling/content  | Tailwind CSS 4, react-markdown, GFM, rehype highlighting | UI and Markdown presentation                                          |
+| Legacy frontend  | Vue 3.5, Vite 6, Pinia                                   | Existing SPA kept as migration reference                              |
+| Backend          | Go 1.23.4, net/http, Chi 5                               | REST API, middleware and lifecycle management                         |
+| Database         | PostgreSQL                                               | Users, posts, translations, revisions, comments and engagement        |
+| Cache/rate limit | Redis 6.2, go-redis/v9                                   | Optional cache, deduplication and engagement limits                   |
+| Authentication   | JWT, Basic Auth, bcrypt                                  | API authentication and protected operations                           |
+| Observability    | Prometheus, OpenTelemetry, Jaeger, Grafana               | Metrics and request tracing                                           |
+| Deployment       | Docker, Docker Compose, Caddy example                    | Local and production-like packaging                                   |
+| Automation       | GitHub Actions                                           | Backend/frontend validation and optional SSH deployment               |
 
-### 3. Analytics & Engagement
+## Repository layout
 
-- **Privacy-Friendly Visitor Tracking**: Signed HttpOnly visitor cookie with cryptographic salt (`VISITOR_SECRET`), hashing visitor identifiers before database persistence.
-- **Engagement Counters**: Deduplicated view and like tracking with rate limiting protection.
+    backend/                  Go API, migrations and Dockerfile
+    backend/cmd/api/           HTTP entrypoint, routes and handlers
+    backend/internal/          Auth, store, cache, mailer and observability
+    frontend-next/             Active Next.js frontend and admin surface
+    frontend/                  Legacy Vue 3 + Vite frontend
+    monitoring/                Prometheus and Grafana provisioning
+    compose.yaml               Production-like Compose stack
+    Caddyfile-example          Reverse proxy routing example
+    Makefile                   Development, migration and deployment helpers
+    docs/                      Content and project documentation
 
-### 4. Enterprise Observability & Monitoring
-
-- **Prometheus Metrics**: Exported at `/metrics` over internal Docker network (API latency histograms, HTTP status counters, database connection pool statistics).
-- **Distributed Tracing**: Native OpenTelemetry instrumentation sending traces via OTLP to Jaeger for end-to-end request tracing.
-- **Pre-provisioned Dashboards**: Grafana pre-configured with Prometheus and Jaeger datasources (`docker compose --profile observability up -d`).
-
----
-
-## 🚀 Getting Started (Local Development)
+## Local development
 
 ### Prerequisites
 
-- **Go** (1.23+)
-- **Node.js** (v22+) & **npm**
-- **Docker** & **Docker Compose**
-- **Make**
+- Go 1.23.4+
+- Node.js 22+
+- npm
+- Docker / Docker Compose
+- make
+- golang-migrate
 
-### Quick Start
+### Start dependencies
 
-1. **Clone repository**:
+    docker compose -f backend/docker-compose.yaml up -d db redis
 
-   ```bash
-   git clone https://github.com/nicolasleigh/linze.pro.git
-   cd linze.pro
-   ```
+Create the ignored file backend/.envrc. Do not commit it. Local development needs values equivalent to:
 
-2. **Environment Configuration**:
+    ADDR=:8085
+    CORS_ALLOWED_ORIGIN=http://localhost:3000
+    DB_DSN=postgres://admin:adminpassword@localhost:5432/social?sslmode=disable
+    REDIS_ENABLED=true
+    REDIS_ADDR=localhost:6379
+    AUTH_TOKEN_SECRET=local-only-change-me
+    VISITOR_SECRET=local-only-change-me
 
-   ```bash
-   cp backend/.envrc.example backend/.envrc  # Configure DB credentials & secrets
-   cp frontend-next/.env.example frontend-next/.env.local
-   ```
+For the Next.js frontend:
 
-3. **Start with Make**:
+    cp frontend-next/.env.example frontend-next/.env.local
 
-   ```bash
-   # Start backend (Go) + Next.js frontend concurrently
-   make dev
+Run migrations and start:
 
-   # Or start backend with Air hot reload + Next.js frontend
-   make dev/air
+    cd backend
+    make migrate/up
+    cd ..
+    make dev
 
-   # Start with full observability stack (Prometheus, Jaeger, Grafana)
-   docker compose --profile observability up -d
-   ```
+Or run applications separately:
 
-4. **Service URLs**:
-   - Next.js Frontend: `http://localhost:3000`
-   - Go Backend API: `http://localhost:8085`
-   - Grafana Dashboard: `http://localhost:3001`
-   - Jaeger Tracing: `http://localhost:16686`
-   - Prometheus: `http://localhost:9090`
+    make backend/dev
+    make frontend/dev
 
----
+| Service            | URL                                 |
+| ------------------ | ----------------------------------- |
+| Next.js frontend   | http://localhost:3000               |
+| Go API             | http://localhost:8085               |
+| Health check       | http://localhost:8085/api/v1/health |
+| Readiness check    | http://localhost:8085/api/v1/ready  |
+| Prometheus metrics | http://localhost:8085/metrics       |
 
-## 🚢 CI/CD & Deployment
+## Optional observability stack
 
-This project uses **GitHub Actions** for automated testing, builds, and cloud deployment:
+    docker compose --profile observability up -d
 
-- **Backend CI (`.github/workflows/ci-backend.yml`)**: Executes `go mod verify`, `go vet`, race detector tests (`go test -race ./...`), and binary compilation.
-- **Frontend CI (`.github/workflows/ci-frontend.yml`)**: Runs ESLint, TypeScript validation, and Next.js production build.
-- **Production CD (`.github/workflows/cd-deploy.yml`)**: On push to `main`, tests are re-verified, followed by automated SSH deployment to the production server:
-  - Pulls latest commit from `origin/main`
-  - Rebuilds and restarts Docker containers (`backend` and `frontend`)
-  - Automatically executes database migrations (`golang-migrate`)
+Enable tracing through backend environment variables:
 
-### Required GitHub Secrets
+    OTEL_ENABLED=true
+    OTEL_SERVICE_NAME=linze-blog-api
+    OTEL_EXPORTER_OTLP_ENDPOINT=jaeger:4317
+    OTEL_EXPORTER_OTLP_INSECURE=true
+    OTEL_TRACES_SAMPLER_ARG=1.0
 
-Configure these secrets in repository settings (**Settings > Secrets and variables > Actions**):
+Local endpoints:
 
-| Secret           | Description                      | Example                                   |
-| :--------------- | :------------------------------- | :---------------------------------------- |
-| `SERVER_HOST`    | Remote server IP / domain        | `106.14.126.186`                          |
-| `SERVER_USER`    | SSH user                         | `nicolas`                                 |
-| `SERVER_SSH_KEY` | Private SSH key (ED25519 or RSA) | `-----BEGIN OPENSSH PRIVATE KEY----- ...` |
-| `SERVER_PORT`    | SSH port (optional, default: 22) | `22`                                      |
+- Grafana: http://localhost:3001
+- Prometheus: http://localhost:9090
+- Jaeger UI: http://localhost:16686
+- Jaeger OTLP/gRPC: localhost:4317
 
-### Legacy Vue Blog Deployment
+The default Grafana credentials are for local development only.
 
-The archived Vue 3 SPA is served directly via Caddy from `/home/nicolas/linze.pro/vue-build/dist`:
+## API surface
 
-```bash
-make bs  # Builds frontend/dist locally and rsyncs to cloud server
-```
+The API is versioned under /api/v1.
 
----
+    GET  /api/v1/posts
+    GET  /api/v1/posts/{slug}/localized
+    GET  /api/v1/posts/tags
+    GET  /api/v1/posts/{slug}/engagement
+    PUT  /api/v1/posts/{slug}/engagement/like
+    POST /api/v1/posts/{slug}/engagement/view
 
-## 📄 License & Contact
+    POST /api/v1/posts/import
+    PUT  /api/v1/posts/{slug}/translations/{locale}
+    GET  /api/v1/posts/{slug}/translations
+    GET  /api/v1/posts/{slug}/translations/{locale}/revisions
 
-- **Author**: Nicolas Leigh
-- **Website**: [https://linze.pro](https://linze.pro)
-- **Legacy Blog**: [https://vue.linze.pro](https://vue.linze.pro)
-- **GitHub**: [@nicolasleigh](https://github.com/nicolasleigh)
+Generated Swagger assets are under backend/docs.
 
-Distributed under the MIT License. See [LICENSE](LICENSE) for more information.
+## Testing and CI
+
+Backend:
+
+    cd backend
+    go test ./...
+    go test -race ./...
+    go vet ./...
+    go build ./cmd/api
+
+Frontend:
+
+    cd frontend-next
+    npm ci
+    npm run lint
+    npm run typecheck
+    npm run build
+
+GitHub Actions runs these checks for backend and frontend changes.
+
+## Deployment notes
+
+The root compose.yaml describes a production-like topology with PostgreSQL, Go API, Next.js, Redis and optional observability services. It expects deployment-only files such as backend/.envrc and db_password.txt; keep them outside Git.
+
+Caddyfile-example shows routing for the Next.js site, /api/v1, the legacy Vue build and optional static files.
+
+The current CD workflow can pull main and rebuild backend/frontend containers over SSH. It is not a complete zero-downtime deployment system; production should add strict migration failure handling, readiness-based rollout and rollback.
+
+## License
+
+Released under the MIT License. See LICENSE.

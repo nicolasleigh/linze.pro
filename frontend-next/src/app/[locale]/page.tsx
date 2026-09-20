@@ -26,19 +26,14 @@ export default async function HomePage({ params }: Props) {
           </div>
 
           <div className='hero-copy'>
-            <p className='eyebrow reveal reveal-1'>{siteContent.introduction.eyebrow}</p>
+            <p className='eyebrow reveal reveal-1'>
+              {en
+                ? `${siteContent.identity.englishName} · ${siteContent.identity.role}`
+                : `${siteContent.identity.name} · Go 后端与 AI 全栈工程师`}
+            </p>
             <h1 id='hero-title' className='display-title reveal reveal-2'>
-              {en ? (
-                <>
-                  <span>Thoughtful architecture.</span>
-                  <span>Intentional delivery.</span>
-                </>
-              ) : (
-                <>
-                  <span>深思于架构，</span>
-                  <span>敏行于交付</span>
-                </>
-              )}
+              <span>{siteContent.introduction.title}</span>
+              {/* <span className='hero-tagline'>{siteContent.introduction.tagline}</span> */}
             </h1>
             <p className='hero-description reveal reveal-3'>{siteContent.introduction.body}</p>
 
@@ -55,7 +50,7 @@ export default async function HomePage({ params }: Props) {
           <aside className='signal-panel reveal reveal-4' aria-label={en ? 'Profile overview' : '个人概览'}>
             <div className='signal-heading'>
               <span className='signal-dot' aria-hidden='true' />
-              <span>{en ? 'Always building' : '正在持续构建'}</span>
+              <span>{en ? 'Currently building' : '持续构建中'}</span>
             </div>
             <dl>
               <div>
@@ -83,7 +78,7 @@ export default async function HomePage({ params }: Props) {
           </div>
         </section>
 
-        <section id='about' className='statement-section page-shell motion-section' aria-labelledby='about-title'>
+        {/* <section id='about' className='statement-section page-shell motion-section' aria-labelledby='about-title'>
           <p className='section-kicker'>01 / APPROACH</p>
           <div>
             <h2 id='about-title'>
@@ -97,18 +92,22 @@ export default async function HomePage({ params }: Props) {
                 : '从界面信息层级、服务端数据契约，到缓存、部署与可观测性，我倾向于把产品体验和工程质量视为同一个问题。'}
             </p>
           </div>
-        </section>
+        </section> */}
 
-        <section id='latest-writing' className='latest-writing-section page-shell motion-section' aria-labelledby='latest-writing-title'>
+        <section
+          id='latest-writing'
+          className='latest-writing-section page-shell motion-section'
+          aria-labelledby='latest-writing-title'
+        >
           <div className='section-heading'>
-            <p className='section-kicker'>02 / LATEST WRITING</p>
+            <p className='section-kicker'>01 / LATEST WRITING</p>
             <div className='latest-writing-heading'>
               <h2 id='latest-writing-title'>{en ? 'Latest writing' : '最新文章'}</h2>
-              <p>
+              {/* <p>
                 {en
-                  ? 'Notes on architecture, implementation details and lessons learned while building real products.'
-                  : '记录真实项目中的架构取舍、实现细节与问题复盘。'}
-              </p>
+                  ? 'Notes on architecture decisions, implementation details and engineering lessons from Go, React/Next.js and full-stack projects.'
+                  : '记录 Go 后端、React/Next.js 与全栈项目中的架构决策、实现细节与工程复盘。'}
+              </p> */}
             </div>
           </div>
 
@@ -123,7 +122,7 @@ export default async function HomePage({ params }: Props) {
 
         <section id='work' className='work-section page-shell motion-section' aria-labelledby='work-title'>
           <div className='section-heading'>
-            <p className='section-kicker'>03 / SELECTED WORK</p>
+            <p className='section-kicker'>02 / SELECTED WORK</p>
             <h2 id='work-title'>{en ? 'Selected projects' : '代表项目'}</h2>
           </div>
 

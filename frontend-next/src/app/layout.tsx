@@ -9,7 +9,7 @@ import './globals.css';
 export const metadata: Metadata = {
   metadataBase: new URL(siteContent.url),
   title: {
-    default: `${siteContent.identity.name} · 全栈开发者`,
+    default: `${siteContent.identity.name} · Go 后端与 AI 全栈工程师`,
     template: '%s · Linze.pro',
   },
   description: siteContent.description,
@@ -37,12 +37,12 @@ export const metadata: Metadata = {
     locale: 'zh_CN',
     url: '/',
     siteName: siteContent.name,
-    title: `${siteContent.identity.name} · 全栈开发者`,
+    title: `${siteContent.identity.name} · Go 后端与 AI 全栈工程师`,
     description: siteContent.description,
   },
   twitter: {
     card: 'summary',
-    title: `${siteContent.identity.name} · 全栈开发者`,
+    title: `${siteContent.identity.name} · Go 后端与 AI 全栈工程师`,
     description: siteContent.description,
   },
 };

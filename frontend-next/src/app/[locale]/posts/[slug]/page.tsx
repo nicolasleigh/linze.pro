@@ -307,7 +307,7 @@ export default async function LocalizedArticlePage({ params }: Props) {
             {post.tags.map((tag) => (
               <li key={tag}>
                 <Link href={{ pathname: localizedPath(locale, "/posts"), query: { tag } }}>
-                  #{tag}
+                  {tag}
                 </Link>
               </li>
             ))}

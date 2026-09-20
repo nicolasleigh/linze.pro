@@ -1,211 +1,221 @@
-# 🌐 Linze.pro
+# Linze.pro
 
-[![CD Deploy](https://github.com/nicolasleigh/linze.pro/actions/workflows/cd-deploy.yml/badge.svg)](https://github.com/nicolasleigh/linze.pro/actions/workflows/cd-deploy.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 
-[English](README.md) | [简体中文](README.zh-CN.md)
+[English](README.md) · [简体中文](README.zh-CN.md)
 
-> 现代化、高性能的全栈个人作品集与双语工程技术博客平台。基于 **Next.js 15 (App Router)**、**Golang**、**PostgreSQL** 和 **Redis** 构建，依托 **Docker**、**Caddy** 与 **OpenTelemetry** 实现高可用部署与企业级全链路可观测性。
+> 基于 Next.js 与 Go 重构的双语个人作品集与工程技术博客。
 
----
+Linze.pro 不是简单的静态展示页，而是一个包含真实业务能力的个人项目：双语博客、Markdown 文章管理、匿名点赞与阅读量、Go REST API、PostgreSQL、可选 Redis，以及 Prometheus / OpenTelemetry 可观测性。
 
-## 📖 系统概述
+仓库保留两个前端：
 
-**Linze.pro** 是一个企业级个人全栈工程平台，旨在展示开源作品、分享系统设计与深度工程实践。项目采用清晰的**双前端架构（Dual-Frontend）**与高性能后端服务：
+- **Next.js 前端**：当前主线和推荐入口。
+- **Vue 前端**：旧版 SPA，用于兼容和记录迁移过程。
 
-1. **主生产平台（[linze.pro](https://linze.pro)）**：
-   - 基于 **Next.js 15 (App Router)** 与 **React 19** 构建，采用服务端渲染（SSR）与静态生成（SSG）混合策略，兼具出色的首屏性能与搜索引擎优化（SEO）。
-   - 完善的国际化体系（`/zh-CN` 与 `/en-US`），支持客户端语言协商、本地化替代标签（Alternate Tags）、动态站点地图（Sitemap）与 RSS 订阅。
-   - 深度集成的后台内容管理系统（**Admin CMS**，位于 `/admin`），基于 HttpOnly JWT 安全 Cookie 鉴权、提供实时 Markdown 写作工作台、多语言版本修订记录与按需缓存重验证机制。
-2. **历史交互归档站（[vue.linze.pro](https://vue.linze.pro)）**：
-   - 原始 **Vue 3 + Vite** 单页应用（SPA），作为系统演进的在线活水归档完整保留，直观展示从客户端 SPA 到服务端现代架构的技术迭代轨迹。
-3. **核心后端 API（`/api/v1`）**：
-   - 高吞吐 **Go** RESTful 服务，采用规范的分层架构，集成 PostgreSQL 自动迁移、Redis 高速缓存、细粒度速率限制与分布式链路追踪。
+## 系统架构
 
----
+    浏览器
+        |
+        v
+    Caddy 反向代理（可选部署层）
+        |
+        +--> Next.js 16 / React 19 ------> Go API
+        +--> 旧版 Vue 3 + Vite ---------> Go API
+                                             |
+                                             +--> PostgreSQL
+                                             +--> Redis（可选）
+                                             +--> Cloudinary（图片上传）
+                                             +--> SendGrid（可选邮件）
+                                             +--> Prometheus / Jaeger（可选）
 
-## 🏗️ 架构拓扑
+Caddy 配置示例见 Caddyfile-example。本地 Compose 默认不会启动 Caddy。
 
-```text
-                                  +-------------------+
-                                  |     公网用户      |
-                                  +---------+---------+
-                                            | (HTTPS: 443)
-                                            v
-                     +----------------------------------------------+
-                     |                Caddy 反向代理                |
-                     +----------------------+-----------------------+
-                                            |
-                 +--------------------------+--------------------------+
-                 | (linze.pro)              | (vue.linze.pro)          | (/api/v1/*)
-                 v                          v                          v
-       +--------------------+     +-------------------+      +--------------------+
-       |   Next.js 15 主站  |     |  Vue 3 静态资源包 |      |   Go RESTful API   |
-       |   (端口: 3000)     |     |  (静态文件服务)   |      |   (端口: 8085)     |
-       |   - 公开 SSR/SSG   |     +-------------------+      |  - Chi 路由框架    |
-       |   - 路由处理器 BFF |                                |  - JWT 鉴权        |
-       |   - Admin CMS 后台 |----+                           |  - 访客分析统计    |
-       +--------------------+    | (内网调用 /api/v1)        |  - 多语言内容接口  |
-                                 +-------------------------->+--------------------+
-                                                                       |
-                                             +-------------------------+-------------------------+
-                                             |                                                   |
-                                             v                                                   v
-                                   +-------------------+                               +-------------------+
-                                   |   PostgreSQL 16   |                               |       Redis       |
-                                   |   (端口: 5432)    |                               |   (端口: 6379)    |
-                                   +-------------------+                               +-------------------+
-```
+## 已实现能力
 
----
+### 公开内容平台
 
-## 🛠️ 技术栈矩阵
+- zh-CN 与 en-US 国际化路由
+- 首页、文章列表、文章详情、Projects、About 和 RSS
+- Markdown 内容和文章元数据渲染
+- 请求语言版本缺失时的降级逻辑
+- Canonical、Open Graph、Sitemap、robots 等 SEO 能力
+- 上一篇/下一篇、阅读进度和文章互动模块
 
-| 层次 / 领域                     | 技术选型                                      | 职责与亮点                                                      |
-| :------------------------------ | :-------------------------------------------- | :-------------------------------------------------------------- |
-| **主前端（Primary Frontend）**  | Next.js 15 (App Router), React 19, TypeScript | Server Components, SSG/SSR, 本地化路由处理器, Tailwind CSS      |
-| **归档前端（Legacy Frontend）** | Vue 3, Vite, Pinia, Tailwind CSS              | 历史归档 SPA 演示站, i18next-vue                                |
-| **后端服务（Backend API）**     | Go 1.23, `chi/v5`                             | RESTful API 架构, 严格 CORS 通配支持, JWT 鉴权, 速率限制        |
-| **主数据库（Primary DB）**      | PostgreSQL 16                                 | 关系型业务数据存储, 本地化翻译分离模型, 版本修订表              |
-| **高速缓存（Cache & Session）** | Redis 6.2                                     | 访问指标统计缓存, 频率控制计数器, 临时会话存储                  |
-| **可观测性（Observability）**   | OpenTelemetry, Prometheus, Jaeger, Grafana    | 分布式链路追踪 (OTLP), 低基数指标采集导出, 自动化看板监控       |
-| **反向代理与 TLS**              | Caddy 2                                       | 自动申请 Let's Encrypt 证书, HTTP/2 & HTTP/3 支持, 动态路由分流 |
-| **容器化编排**                  | Docker, Docker Compose                        | 多阶段镜像构建, 隔离容器网络与轻量编排                          |
-| **持续交付（CI / CD）**         | GitHub Actions                                | 自动化代码风格检查、数据竞态检测、零停机远程 SSH 自动部署       |
+### Markdown 文章管理
 
----
+- 管理员登录和受保护的文章管理页面
+- Markdown 导入和翻译版本更新
+- 文章主体、语言版本、修订记录分离的数据模型
+- 基于版本号的乐观锁
+- 内容更新后的 Next.js Path/Tag 按需重验证
 
-## ✨ 核心特性
+### 匿名互动
 
-### 1. 双语内容与 SEO 架构
+- 签名 HttpOnly 访客 Cookie，无需注册
+- 访客标识哈希后再持久化
+- PostgreSQL 唯一约束保证点赞幂等
+- 按自然日进行访客阅读量去重
+- Redis 启用时提供互动接口限流
 
-- **双本地化路由体系**：原生支持 `/zh-CN` 与 `/en-US` 路由，根据客户端 `Accept-Language` 自动协商首选语言。
-- **全维度搜索引擎优化**：提供规范链接（Canonical URL）、动态生成的本地化 XML Sitemap、Open Graph 社交元数据以及 RSS 订阅源。
-- **多语言数据模型**：PostgreSQL 结构中将文章实体核心指标（`posts`）与本地化 Markdown 正文（`post_translations`）解耦，支持同一文章标识符（Slug）下的独立语言版本。
+### Go 后端与可观测性
 
-```markdown
----
-slug: building-go-agents
-locale: zh-CN
-title: 使用 Go 构建 Agent
-description: 从工具调用到执行循环
-tags: [Go, AI Agent]
-photo: https://example.com/cover.webp
-updated: 2026-09-12
----
+- Go 1.23.4、标准库 net/http、go-chi/chi
+- Request ID、真实 IP、日志、Recovery、CORS、限流和超时中间件
+- JWT 鉴权和基于角色的权限校验
+- database/sql + 手写 SQL
+- Context 贯穿数据库、Redis、Cloudinary 和 SendGrid 调用边界
+- root Context、Graceful Shutdown、readiness draining 和后台 goroutine 管理
+- /metrics Prometheus 指标端点
+- 可选的 OpenTelemetry OTLP/gRPC 链路导出
+- HTTP、Store、Redis 调用手动 Span
 
-# 正文内容
-```
+当前项目没有使用 Kafka、RabbitMQ、WebSocket、SSE、gRPC、Elasticsearch、RAG、Embedding、向量数据库或 LLM Agent。这些技术不是当前博客业务的必要组成部分。
 
-### 2. 全栈内容管理系统（`/admin`）
+## 技术栈
 
-- **企业级安全鉴权（BFF 架构）**：管理员凭据向 Go API 校验，JWT 令牌通过 Next.js 路由处理器封装在 HttpOnly、SameSite 的安全 Cookie 中，浏览器端 JS 永远无法接触裸 Token，有效防御 XSS。
-- **全功能文章工作台**：支持实时 Markdown 预览、独立中英文保存、版本差异与历史记录（`post_translation_revisions`）以及乐观并发锁控制。
-- **按需缓存重验证**：采用 Next.js On-Demand Tag / Path Revalidation，文章保存后秒级向公网刷新，无需耗费时间整站全量重构。
-- **专属内容管理接口**：
-  ```text
-  POST /api/v1/posts/import
-  PUT  /api/v1/posts/{slug}/translations/{locale}
-  GET  /api/v1/posts/{slug}/translations
-  ```
+| 领域       | 技术                                                     | 用途                                                  |
+| ---------- | -------------------------------------------------------- | ----------------------------------------------------- |
+| 主前端     | Next.js 16.3.4、React 19.3、TypeScript 5.9               | App Router、Server Components、国际化和 Route Handler |
+| 样式与内容 | Tailwind CSS 4、react-markdown、GFM、rehype highlighting | UI 和 Markdown 展示                                   |
+| 旧版前端   | Vue 3.5、Vite 6、Pinia                                   | 历史 SPA 和迁移参考                                   |
+| 后端       | Go 1.23.4、net/http、Chi 5                               | REST API、路由、中间件和生命周期                      |
+| 数据库     | PostgreSQL                                               | 用户、文章、翻译、修订、评论和互动数据                |
+| 缓存与限流 | Redis 6.2、go-redis/v9                                   | 可选缓存、阅读去重和互动限流                          |
+| 鉴权       | JWT、Basic Auth、bcrypt                                  | API 鉴权和受保护操作                                  |
+| 可观测性   | Prometheus、OpenTelemetry、Jaeger、Grafana               | 指标和链路追踪                                        |
+| 部署       | Docker、Docker Compose、Caddy 示例                       | 本地和生产化打包                                      |
+| 自动化     | GitHub Actions                                           | 前后端验证和可选 SSH 部署                             |
 
-### 3. 访客分析与互动统计
+## 目录结构
 
-- **隐私友好型追踪机制**：通过加盐加密的 `VISITOR_SECRET` 签署 HttpOnly 访客 Cookie，并在落库持久化前单向哈希访客标识，杜绝个人隐私泄露风险。
-- **防刷去重计数**：针对阅读量（Views）与点赞量（Likes）实现带限流防护的去重聚合统计。
+    backend/                  Go API、迁移和 Dockerfile
+    backend/cmd/api/           HTTP 入口、路由和 Handler
+    backend/internal/          鉴权、Store、Cache、Mailer、Observability
+    frontend-next/             当前 Next.js 前端与后台管理页面
+    frontend/                  旧版 Vue 3 + Vite 前端
+    monitoring/                Prometheus 和 Grafana 配置
+    compose.yaml               生产化拓扑的 Compose 配置
+    Caddyfile-example          反向代理示例
+    Makefile                   开发、迁移和部署命令
+    docs/                      内容和项目文档
 
-### 4. 企业级全链路可观测性
+## 本地开发
 
-- **Prometheus 指标监控**：在内部 Docker 网络下暴露 `/metrics` 端口，实时监控 API 请求延迟分位数、HTTP 状态码分布与数据库连接池状态。
-- **分布式链路追踪**：通过 OpenTelemetry 原生打点，基于 OTLP 协议将调用链直接上报至 Jaeger，提供精准的跨服务排障能力。
-- **预配置监控看板**：集成 Grafana 并预置 Prometheus 与 Jaeger 数据源及仪表盘模板（可通过 `docker compose --profile observability up -d` 启动）。
+### 环境要求
 
----
+- Go 1.23.4+
+- Node.js 22+
+- npm
+- Docker / Docker Compose
+- make
+- golang-migrate
 
-## 🚀 本地开发与快速启动
+### 启动依赖
 
-### 环境依赖
+    docker compose -f backend/docker-compose.yaml up -d db redis
 
-- **Go** (1.23+)
-- **Node.js** (v22+) & **npm**
-- **Docker** & **Docker Compose**
-- **Make**
+创建不会提交到 Git 的 backend/.envrc。至少需要类似配置：
 
-### 快速启动步骤
+    ADDR=:8085
+    CORS_ALLOWED_ORIGIN=http://localhost:3000
+    DB_DSN=postgres://admin:adminpassword@localhost:5432/social?sslmode=disable
+    REDIS_ENABLED=true
+    REDIS_ADDR=localhost:6379
+    AUTH_TOKEN_SECRET=local-only-change-me
+    VISITOR_SECRET=local-only-change-me
 
-1. **克隆项目代码**：
+配置前端：
 
-   ```bash
-   git clone https://github.com/nicolasleigh/linze.pro.git
-   cd linze.pro
-   ```
+    cp frontend-next/.env.example frontend-next/.env.local
 
-2. **配置文件准备**：
+执行迁移并启动：
 
-   ```bash
-   cp backend/.envrc.example backend/.envrc  # 配置数据库连接及各组件密钥
-   cp frontend-next/.env.example frontend-next/.env.local
-   ```
+    cd backend
+    make migrate/up
+    cd ..
+    make dev
 
-3. **使用 Make 启动服务**：
+也可以分别启动：
 
-   ```bash
-   # 同时启动 Go 后端 与 Next.js 主前端
-   make dev
+    make backend/dev
+    make frontend/dev
 
-   # 使用 Air（热重载）启动 Go 后端并联调 Next.js 前端
-   make dev/air
+| 服务            | 地址                                |
+| --------------- | ----------------------------------- |
+| Next.js         | http://localhost:3000               |
+| Go API          | http://localhost:8085               |
+| 健康检查        | http://localhost:8085/api/v1/health |
+| Readiness       | http://localhost:8085/api/v1/ready  |
+| Prometheus 指标 | http://localhost:8085/metrics       |
 
-   # 启动包含 Prometheus、Jaeger、Grafana 的完整可观测性监控套件
-   docker compose --profile observability up -d
-   ```
+## 可选可观测性环境
 
-4. **各服务访问地址**：
-   - Next.js 主站前端：`http://localhost:3000`
-   - Go 后端 API：`http://localhost:8085`
-   - Grafana 监控看板：`http://localhost:3001`
-   - Jaeger 链路追踪：`http://localhost:16686`
-   - Prometheus 指标中心：`http://localhost:9090`
+    docker compose --profile observability up -d
 
----
+后端环境变量示例：
 
-## 🚢 CI/CD 与自动化部署
+    OTEL_ENABLED=true
+    OTEL_SERVICE_NAME=linze-blog-api
+    OTEL_EXPORTER_OTLP_ENDPOINT=jaeger:4317
+    OTEL_EXPORTER_OTLP_INSECURE=true
+    OTEL_TRACES_SAMPLER_ARG=1.0
 
-本项目使用 **GitHub Actions** 进行自动化持续集成与部署：
+本地地址：
 
-- **后端 CI (`.github/workflows/ci-backend.yml`)**：自动化执行依赖校验 (`go mod verify`)、静态语法分析 (`go vet`)、并发竞态检测 (`go test -race ./...`) 以及二进制编译构建。
-- **前端 CI (`.github/workflows/ci-frontend.yml`)**：执行 ESLint 代码检查、TypeScript 类型验证以及 Next.js 生产环境构建。
-- **生产环境 CD (`.github/workflows/cd-deploy.yml`)**：主分支（`main`）代码合并后自动触发。在安全运行测试后，通过原生 SSH 连接云服务器执行：
-  - 拉取最新代码 (`git pull origin main`)
-  - 重新构建并平滑重启 Docker 容器 (`backend` 和 `frontend`)
-  - 自动应用数据库增量变更 (`golang-migrate`)
+- Grafana：http://localhost:3001
+- Prometheus：http://localhost:9090
+- Jaeger：http://localhost:16686
+- Jaeger OTLP/gRPC：localhost:4317
 
-### GitHub 部署机密配置
+Compose 中的 Grafana 默认账号只适用于本地开发。
 
-在 GitHub 仓库管理页面 (**Settings > Secrets and variables > Actions**) 配置以下 Secret：
+## API 概览
 
-| 机密名称         | 作用说明                  | 示例值                                    |
-| :--------------- | :------------------------ | :---------------------------------------- |
-| `SERVER_HOST`    | 云服务器 IP / 域名        | `106.14.126.186`                          |
-| `SERVER_USER`    | SSH 登录用户名            | `nicolas`                                 |
-| `SERVER_SSH_KEY` | SSH 私钥 (ED25519 或 RSA) | `-----BEGIN OPENSSH PRIVATE KEY----- ...` |
-| `SERVER_PORT`    | SSH 端口 (可选，默认 22)  | `22`                                      |
+接口统一位于 /api/v1：
 
-### 旧版 Vue 博客更新与同步
+    GET  /api/v1/posts
+    GET  /api/v1/posts/{slug}/localized
+    GET  /api/v1/posts/tags
+    GET  /api/v1/posts/{slug}/engagement
+    PUT  /api/v1/posts/{slug}/engagement/like
+    POST /api/v1/posts/{slug}/engagement/view
 
-归档的 Vue 3 静态页面由 Caddy 直接托管于云服务器目录 `/home/nicolas/linze.pro/vue-build/dist`：
+    POST /api/v1/posts/import
+    PUT  /api/v1/posts/{slug}/translations/{locale}
+    GET  /api/v1/posts/{slug}/translations
+    GET  /api/v1/posts/{slug}/translations/{locale}/revisions
 
-```bash
-make bs  # 在本地执行打包并将 dist 目录增量 rsync 同步至服务器
-```
+Swagger 文件位于 backend/docs。
 
----
+## 测试与 CI
 
-## 📄 开源许可与联系方式
+后端：
 
-- **作者**：Nicolas Leigh（李林泽）
-- **主站**：[https://linze.pro](https://linze.pro)
-- **旧版博客**：[https://vue.linze.pro](https://vue.linze.pro)
-- **GitHub**：[@nicolasleigh](https://github.com/nicolasleigh)
+    cd backend
+    go test ./...
+    go test -race ./...
+    go vet ./...
+    go build ./cmd/api
 
-本项目遵循 [MIT License](LICENSE) 开源协议。
+前端：
+
+    cd frontend-next
+    npm ci
+    npm run lint
+    npm run typecheck
+    npm run build
+
+GitHub Actions 会对前后端变更执行这些检查。
+
+## 部署说明
+
+根目录 compose.yaml 描述了 PostgreSQL、Go API、Next.js、Redis 和可选可观测性服务组成的生产化拓扑。它依赖 backend/.envrc、db_password.txt 等部署文件，这些文件必须放在仓库外部。
+
+Caddyfile-example 展示了主域名、/api/v1、旧版 Vue 站点和静态资源的路由方式。
+
+当前 CD Workflow 会通过 SSH 拉取 main 并重建前后端容器。它不是完整的零停机发布系统；生产环境还应补充严格的迁移失败处理、readiness 摘流和回滚策略。
+
+## License
+
+本项目使用 MIT License，详见 LICENSE。

@@ -283,8 +283,9 @@ export function getSiteContent(locale: BlogLocale) {
       "Nicolas Leigh's technical writing and project portfolio, covering React, Next.js, Go and full-stack engineering.",
     introduction: {
       eyebrow: 'Finance background · Building software since 2021',
-      title: 'Turning complex systems into clear, reliable products.',
-      body: 'I am a self-taught developer with a background in finance and audit, focused on frontend experience, Go backends and end-to-end delivery. This site documents real design decisions, implementation details and lessons learned.',
+      title: 'Go Backend & AI Full-stack Engineer',
+      tagline: 'Thoughtful architecture. Reliable delivery.',
+      body: 'I have an educational and professional background in finance, and focus on Go backends, React/Next.js and full-stack engineering. I am also exploring how AI can be applied to real products. This site documents architectural trade-offs, implementation details and lessons learned from real projects.',
     },
   } as const;
 }

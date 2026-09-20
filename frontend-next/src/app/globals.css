@@ -224,6 +224,15 @@ a {
   display: block;
 }
 
+.display-title .hero-tagline {
+  margin-top: 0.7em;
+  color: var(--muted);
+  font-size: 0.32em;
+  font-weight: 520;
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+}
+
 .hero-description {
   max-width: 41rem;
   margin: 2rem 0 0;
@@ -1916,15 +1925,37 @@ a {
   gap: 0.65rem;
   margin: 1.2rem 0 0;
   padding: 0;
-  color: var(--accent);
-  font-size: 0.72rem;
   list-style: none;
 }
 
-.article-tags a:hover,
-.article-tags a:focus-visible {
-  text-decoration: underline;
-  text-underline-offset: 0.18em;
+.article-tag-link {
+  display: inline-flex;
+  align-items: center;
+  min-height: 1.8rem;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  color: var(--muted);
+  padding: 0.28rem 0.62rem;
+  font-family: 'SFMono-Regular', Consolas, monospace;
+  font-size: 0.7rem;
+  line-height: 1;
+  transition:
+    border-color 180ms ease,
+    color 180ms ease,
+    background-color 180ms ease,
+    transform 180ms ease;
+}
+
+.article-tag-link:hover,
+.article-tag-link:focus-visible,
+.article-tag-link[aria-current='page'] {
+  border-color: var(--accent);
+  background: color-mix(in srgb, var(--accent) 10%, transparent);
+  color: var(--accent);
+}
+
+.article-tag-link:hover {
+  transform: translateY(-1px);
 }
 
 .archive-group + .archive-group {

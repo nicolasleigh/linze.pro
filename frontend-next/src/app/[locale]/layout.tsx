@@ -23,7 +23,7 @@ export async function generateMetadata({ params }: Omit<Props, "children">): Pro
 
   return {
     title: {
-      default: rawLocale === "zh-CN" ? `${content.identity.name} · 全栈开发者` : `${content.identity.englishName} · Full-stack Engineer`,
+      default: rawLocale === "zh-CN" ? `${content.identity.name} · Go 后端与 AI 全栈工程师` : `${content.identity.englishName} · Go Backend & AI Full-stack Engineer`,
       template: "%s · Linze.pro",
     },
     description: content.description,
@@ -38,7 +38,7 @@ export async function generateMetadata({ params }: Omit<Props, "children">): Pro
       alternateLocale: blogLocales.filter((item) => item !== rawLocale).map((item) => item.replace("-", "_")),
       url: home,
       siteName: content.name,
-      title: rawLocale === "zh-CN" ? `${content.identity.name} · 全栈开发者` : `${content.identity.englishName} · Full-stack Engineer`,
+      title: rawLocale === "zh-CN" ? `${content.identity.name} · Go 后端与 AI 全栈工程师` : `${content.identity.englishName} · Go Backend & AI Full-stack Engineer`,
       description: content.description,
     },
   };
