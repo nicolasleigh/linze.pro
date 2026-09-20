@@ -1,8 +1,16 @@
 export type ProjectCaseStudy = {
   projectSlug: string;
+  heroKicker: string;
   title: string;
   description: string;
   problem: string;
+  sections: {
+    problem: { kicker: string; title: string };
+    flow: { kicker: string; title: string };
+    decisions: { kicker: string; title: string };
+    boundaries: { kicker: string; title: string; intro: string };
+    next: { kicker: string; title: string };
+  };
   goals: readonly string[];
   flow: readonly {
     label: string;
@@ -25,11 +33,23 @@ export type ProjectCaseStudy = {
 export const projectCaseStudies = {
   chatify: {
     projectSlug: "chatify",
+    heroKicker: "CASE STUDY / REALTIME SYSTEM",
     title: "从 BaaS 原型到 Go 实时消息链路",
     description:
       "围绕数据库访问成本和 N+1 查询问题，为 Chatify 增加 Go、PostgreSQL 与 WebSocket 后端，并保留迁移期间仍在工作的 Next.js / Convex 能力。",
     problem:
       "旧实现将会话与消息数据主要放在 Convex。随着关系查询增多，缺少 SQL JOIN 的数据访问方式容易把一次页面加载拆成大量查询。重构目标不是简单换语言，而是重新建立会话、成员、消息和未读状态之间的关系模型，同时让消息能够持久化后再实时分发。",
+    sections: {
+      problem: { kicker: "01 / PROBLEM", title: "为什么要重构后端" },
+      flow: { kicker: "02 / MESSAGE FLOW", title: "一条消息如何完成持久化与分发" },
+      decisions: { kicker: "03 / ENGINEERING DECISIONS", title: "代码中真实存在的设计" },
+      boundaries: {
+        kicker: "04 / CURRENT BOUNDARIES",
+        title: "尚不能包装成生产级的部分",
+        intro: "这些问题都能从当前代码直接确认，也是下一轮重构必须先处理的风险。",
+      },
+      next: { kicker: "05 / NEXT ITERATION", title: "下一轮应该怎么做" },
+    },
     goals: [
       "用关系模型表达会话、成员、好友和消息",
       "消息先持久化，再向同一会话的连接广播",
@@ -147,6 +167,147 @@ export const projectCaseStudies = {
       "加入结构化日志和连接、广播、数据库延迟指标后再讨论水平扩展",
     ],
   },
+  "linze-pro": {
+    projectSlug: "linze-pro",
+    heroKicker: "CASE STUDY / CONTENT PLATFORM",
+    title: "从 Vue 博客到 Next.js 双语内容平台",
+    description:
+      "在保留 Go/chi 内容 API 与既有文章模型的前提下，使用 Next.js App Router 重建公开前端，补齐 Markdown 发布、双语回退、SEO、文章互动与后台内容管理链路。",
+    problem:
+      "旧 Vue 前端的组件结构和渲染边界不适合继续扩展，文章展示、语言切换、SEO 与互动逻辑也逐渐耦合。重构目标不是把 Vue 文件逐个翻译成 React，而是在保留 Go 后端和内容数据的前提下，重新建立从 Markdown 编辑、版本保存到公开阅读的完整内容链路。",
+    sections: {
+      problem: { kicker: "01 / MIGRATION BRIEF", title: "为什么要重构博客前端" },
+      flow: { kicker: "02 / CONTENT LIFECYCLE", title: "一篇文章如何从 Markdown 走到公开页面" },
+      decisions: { kicker: "03 / ENGINEERING DECISIONS", title: "代码中真实存在的设计" },
+      boundaries: {
+        kicker: "04 / CURRENT BOUNDARIES",
+        title: "当前仍需继续收敛的边界",
+        intro: "这些限制都能从当前代码和部署方式确认，也是下一轮内容平台演进的具体入口。",
+      },
+      next: { kicker: "05 / NEXT ITERATION", title: "下一轮应该怎么做" },
+    },
+    goals: [
+      "保留 Go 内容 API 与既有文章数据，渐进式替换公开前端",
+      "让 Markdown Front-matter 成为可校验、可版本化的内容入口",
+      "用独立的语言版本与明确的回退状态支持中英双语",
+      "把 SEO、阅读体验、互动和可观测性纳入同一条交付链路",
+    ],
+    flow: [
+      {
+        label: "01",
+        title: "Authoring",
+        description:
+          "管理员在 Next.js 后台上传或编辑 Markdown 文件，通过 JWT 与 RBAC 保护文章发布和更新接口。",
+      },
+      {
+        label: "02",
+        title: "Validate",
+        description:
+          "Go 后端解析 Front-matter，校验 slug、标题、正文长度、标签数量和日期格式，并清洗重复标签。",
+      },
+      {
+        label: "03",
+        title: "Persist",
+        description:
+          "发布或更新在同一事务中写入 post_translations、修订快照和互动统计，同时双写旧 posts 字段保持兼容。",
+      },
+      {
+        label: "04",
+        title: "Resolve",
+        description:
+          "Next.js Server Component 请求目标语言版本；Go 存储层优先精确匹配，缺失时回退到中文，并返回可用语言和回退状态。",
+      },
+      {
+        label: "05",
+        title: "Render",
+        description:
+          "服务端渲染 Markdown、目录、代码高亮和结构化数据；浏览器再通过独立互动接口记录阅读量并处理游客点赞。",
+      },
+    ],
+    decisions: [
+      {
+        title: "渐进式迁移，而不是重写后端",
+        implementation:
+          "公开前端迁移到 Next.js App Router，继续复用 Go/chi REST API、PostgreSQL 和现有文章数据；后端保留旧版 Vue 兼容路由，降低切换期间的破坏性变更。",
+        value:
+          "把迁移风险限制在前端渲染和内容边界，同时让旧站、新站和数据层可以在过渡期共同运行。",
+      },
+      {
+        title: "用语言子表承载双语内容",
+        implementation:
+          "post_translations 以 (post_slug, locale) 作为联合主键，post_translation_revisions 保存每个语言版本的历史快照；读取时由存储层返回 requestedLocale、resolvedLocale 和 fallback。",
+        value:
+          "中英文可以独立发布和更新，语言缺失时不会由前端猜测，而是由后端明确表达回退结果。",
+      },
+      {
+        title: "Markdown 解析与版本控制放在后端边界",
+        implementation:
+          "Go 统一解析 YAML Front-matter，执行 slug、字段长度、标签和时间校验；更新语句携带旧 version，成功后递增版本并写入修订快照。",
+        value:
+          "内容格式和并发更新规则集中在服务端，避免多个管理端同时编辑时发生静默覆盖。",
+      },
+      {
+        title: "服务端优先渲染公开内容",
+        implementation:
+          "Next.js 使用 Server Component 获取文章数据，按语言生成 Metadata、Canonical、alternate、Open Graph、Article JSON-LD、Sitemap 和 RSS；Markdown 通过 GFM、heading slug、代码高亮和目录组件渲染。",
+        value:
+          "把 SEO、首屏内容和阅读结构放回服务端，同时将点赞等个性化互动隔离到客户端请求。",
+      },
+      {
+        title: "匿名互动也保持幂等和可控",
+        implementation:
+          "后端为游客签发 HttpOnly 签名 Cookie，并只在 Redis 与 PostgreSQL 中保存 HMAC 脱敏哈希；点赞由唯一约束和事务保证幂等，浏览量使用日粒度去重，Redis 负责快速过滤和限流。",
+        value:
+          "不要求注册即可回显点赞状态，同时降低刷新、连击和脚本请求对统计数据的影响。",
+      },
+      {
+        title: "把可观测性纳入内容服务",
+        implementation:
+          "Go API 暴露 Prometheus HTTP、数据库和业务指标，并通过可选的 OpenTelemetry OTLP/gRPC 导出 HTTP、数据库和 Redis Span；健康检查、readiness、超时与优雅停机共同管理服务生命周期。",
+        value:
+          "文章请求、翻译回退、互动写入和基础设施瓶颈都有可追踪入口，而不是只依赖用户反馈定位问题。",
+      },
+    ],
+    boundaries: [
+      {
+        level: "高",
+        title: "旧模型与新模型仍处于双写过渡期",
+        description:
+          "post_translations 已成为多语言读取和版本管理的主要入口，但 posts 中仍保留旧的中英文列，并在发布更新时同步写入。后续需要确定唯一事实来源并逐步退出兼容双写。",
+      },
+      {
+        level: "中",
+        title: "文章列表的搜索和筛选仍有扩展空间",
+        description:
+          "当前前端会获取有限数量的文章后完成部分筛选。文章规模扩大后，应将搜索、标签、年份和分页下沉到 Go API，并配合稳定的排序和索引策略。",
+      },
+      {
+        level: "中",
+        title: "内容图片还没有完整的尺寸与优化链路",
+        description:
+          "Markdown 图片目前以普通 img 渲染，内容没有固有宽高信息。后续需要补充尺寸元数据、响应式加载和 CDN/缓存策略，以继续改善 CLS 和移动端加载。",
+      },
+      {
+        level: "中",
+        title: "Redis 限流是可降级的防护，而不是绝对防刷",
+        description:
+          "互动接口在 Redis 不可用时会 fail-open，以优先保证博客可用；游客 Cookie 也可能被清除。因此它提供的是基础去重和限流，不应包装成强身份认证或完全防刷系统。",
+      },
+      {
+        level: "中",
+        title: "AI 目前是开发工作流，不是产品能力",
+        description:
+          "项目可以使用 AI 协助拆解问题、比较方案和验证实现，但当前没有接入 LLM API、RAG、Embedding 或 Agent。案例页不会把这些未实现能力描述成系统功能。",
+      },
+    ],
+    nextSteps: [
+      "逐步收敛 post_translations 为唯一内容事实来源，结束旧字段双写",
+      "将搜索、标签筛选、归档和分页下沉到 Go API，并补齐缓存失效策略",
+      "为 Markdown 图片补充尺寸元数据、响应式加载和可观测的 Core Web Vitals 指标",
+      "增加文章发布、语言回退、版本冲突和互动幂等的端到端测试",
+      "完善后台发布审计、回滚和内容发布后的精确缓存刷新流程",
+    ],
+  },
 } as const satisfies Record<string, ProjectCaseStudy>;
 
 export type ProjectCaseStudySlug = keyof typeof projectCaseStudies;
@@ -154,4 +315,3 @@ export type ProjectCaseStudySlug = keyof typeof projectCaseStudies;
 export function getProjectCaseStudy(slug: string): ProjectCaseStudy | undefined {
   return projectCaseStudies[slug as ProjectCaseStudySlug];
 }
-

@@ -70,14 +70,15 @@ const englishProjects: readonly PortfolioProject[] = [
 const englishAbout = {
   introduction: {
     eyebrow: 'ABOUT / BACKGROUND',
-    title: 'From understanding numbers and risk to designing clear, reliable software.',
+    title: 'Finance-informed software engineering',
     description:
-      'With an educational and professional background in finance, I now focus on web products, full-stack engineering and reliable software delivery.',
+      'I focus on Go backends, React/Next.js and AI-assisted full-stack work. I use AI to explore problems, compare approaches and accelerate validation, while grounding final decisions in clear boundaries, working code and real results.',
   },
   profile: [
-    { label: 'FOCUS', value: 'Web products and full-stack engineering' },
-    { label: 'BUILDING', value: 'React / Next.js · Go' },
-    { label: 'BASE', value: 'China · UTC+8' },
+    { label: 'FOCUS', value: 'Go backends · React/Next.js' },
+    { label: 'BUILDING', value: 'Full-stack products · AI-assisted workflows' },
+    { label: 'LEARNING', value: 'Projects · experiments · reviews' },
+    { label: 'BASE', value: 'Beijing, China' },
   ],
   education: {
     title: 'Education & Credentials',
@@ -87,7 +88,7 @@ const englishAbout = {
         title: 'Zhongnan University of Economics and Law',
         subtitle: 'Public Finance · Bachelor of Economics',
         description:
-          'Rigorous training in economics and public finance, building analytical models for macroeconomics, fiscal frameworks, quantitative methods and public policy.',
+          'Training in public finance taught me to look at complex problems through data, constraints and outcomes.',
         tags: ['Bachelor of Economics', 'Public Finance', 'Project 211 University'],
       },
       {
@@ -95,7 +96,7 @@ const englishAbout = {
         title: 'Certified Public Accountant (CPA)',
         subtitle: 'Professional Stage Passed · China',
         description:
-          'Comprehensive grasp of accounting, audit, tax, and economic law frameworks, corporate financial and cost management, and strategic risk controls. Bringing evidence-driven audit discipline and boundary awareness into software engineering.',
+          'CPA training strengthened my attention to evidence, boundaries and risk—habits I carry into API design, data modelling and delivery.',
         tags: [
           'Accounting & Auditing',
           'Tax & Commercial Law',
@@ -110,49 +111,68 @@ const englishAbout = {
       index: '01',
       title: 'Interface and product experience',
       description:
-        'Build web and mobile interfaces with React, Next.js, TypeScript and React Native, with attention to information hierarchy, accessibility, rendering strategy and maintainability.',
+        'Turn complex information into clear, usable interfaces, with attention to hierarchy, accessibility and long-term maintenance.',
       stack: ['React', 'Next.js', 'TypeScript', 'React Native', 'Vue'],
     },
     {
       index: '02',
       title: 'Services and data boundaries',
       description:
-        'Design REST APIs and WebSocket flows with Go and Node.js, using PostgreSQL and MongoDB for domain modelling, queries and consistency.',
+        'Break domains into clear APIs, data models and service boundaries, then work through queries, state and consistency.',
       stack: ['Go', 'Node.js', 'PostgreSQL', 'MongoDB', 'REST', 'WebSocket'],
     },
     {
       index: '03',
       title: 'Engineering delivery',
       description:
-        'Treat types, error handling, tests, containers and reverse proxies as part of the product, carrying features from local code to a verifiable running system.',
+        'Make features more than locally runnable: testable, deployable, observable and ready to improve.',
       stack: ['Testing', 'Docker', 'Caddy', 'Git'],
+    },
+    {
+      index: '04',
+      title: 'AI-assisted problem solving',
+      description:
+        'Use AI to break down problems, compare architectural options, draft implementations and surface edge cases, then verify the output through code, tests and real execution.',
+      stack: ['AI-assisted workflow', 'Prompt design', 'Edge cases', 'Verification'],
     },
   ],
   principles: [
     {
-      title: 'Problem definition before technology',
-      description:
-        'Start with core constraints and data flow instead of substituting tool popularity for independent design.',
+      title: 'Define the problem first',
+      description: 'Before choosing a stack, clarify the goal, constraints and problem that actually needs solving.',
     },
     {
-      title: 'Ground systems in evidence and boundaries',
+      title: 'Put boundaries and details into the design',
       description:
-        'Validate hypotheses through execution paths and failure modes, stating constraints and unknowns honestly.',
+        'Pay attention to naming, permissions, failure paths, loading states and data boundaries so reliability becomes concrete.',
     },
     {
-      title: 'Experience and engineering are one problem',
-      description: 'Unify user interaction, API contracts and reliability into a single continuous delivery loop.',
+      title: 'Let AI accelerate exploration; let review drive progress',
+      description:
+        'Let AI participate in exploration, summarising and drafting, while final judgment stays grounded in boundaries, tests and real execution. Every review becomes a starting point for the next improvement.',
     },
   ],
 } as const;
 
 const englishChatifyCase: ProjectCaseStudy = {
   projectSlug: 'chatify',
+  heroKicker: 'CASE STUDY / REALTIME SYSTEM',
   title: 'From a BaaS prototype to a Go realtime messaging path',
   description:
     "A Go, PostgreSQL and WebSocket backend added around Chatify's query-cost and N+1 problems while preserving the Next.js and Convex capabilities still needed during migration.",
   problem:
     'The original implementation kept most conversation and message data in Convex. As relational reads grew, the lack of SQL joins turned a page load into many queries. The goal is not a language swap: it is to establish an explicit model for conversations, members, messages and unread state, then persist each message before realtime delivery.',
+  sections: {
+    problem: { kicker: '01 / PROBLEM', title: 'Why rebuild the backend?' },
+    flow: { kicker: '02 / MESSAGE FLOW', title: 'How a message is persisted and delivered' },
+    decisions: { kicker: '03 / ENGINEERING DECISIONS', title: 'Decisions visible in the code' },
+    boundaries: {
+      kicker: '04 / CURRENT BOUNDARIES',
+      title: 'What is not production-ready yet',
+      intro: 'These risks are verifiable in the current code and should be addressed before the next production-oriented iteration.',
+    },
+    next: { kicker: '05 / NEXT ITERATION', title: 'What to improve next' },
+  },
   goals: [
     'Represent conversations, members, friendships and messages relationally',
     'Persist messages before broadcasting them to active connections',
@@ -275,6 +295,148 @@ const englishChatifyCase: ProjectCaseStudy = {
   ],
 };
 
+const englishLinzeProCase: ProjectCaseStudy = {
+  projectSlug: 'linze-pro',
+  heroKicker: 'CASE STUDY / CONTENT PLATFORM',
+  title: 'From a Vue Blog to a Bilingual Next.js Content Platform',
+  description:
+    'A server-first rebuild of a Vue blog with Next.js App Router, keeping the Go/chi content API and existing article model while adding Markdown publishing, bilingual fallback, SEO, article engagement and content administration flows.',
+  problem:
+    'The old Vue frontend had component and rendering boundaries that were difficult to extend, while article display, language switching, SEO and engagement logic were becoming coupled. The goal was not to translate Vue files one by one, but to rebuild the content path from Markdown editing and versioning to public reading without replacing the existing Go backend or article data.',
+  sections: {
+    problem: { kicker: '01 / MIGRATION BRIEF', title: 'Why rebuild the blog frontend?' },
+    flow: { kicker: '02 / CONTENT LIFECYCLE', title: 'How an article moves from Markdown to a public page' },
+    decisions: { kicker: '03 / ENGINEERING DECISIONS', title: 'Decisions visible in the code' },
+    boundaries: {
+      kicker: '04 / CURRENT BOUNDARIES',
+      title: 'What still needs to converge',
+      intro: 'These limitations are verifiable in the current code and provide concrete entry points for the next iteration of the content platform.',
+    },
+    next: { kicker: '05 / NEXT ITERATION', title: 'What to improve next' },
+  },
+  goals: [
+    'Keep the Go content API and existing article data while replacing the public frontend incrementally',
+    'Make Markdown Front-matter a validated and versioned content entry point',
+    'Support Chinese and English through independent versions and explicit fallback state',
+    'Treat SEO, reading experience, engagement and observability as one delivery path',
+  ],
+  flow: [
+    {
+      label: '01',
+      title: 'Authoring',
+      description:
+        'An authenticated Next.js admin workspace uploads or edits Markdown files, while JWT and RBAC protect publishing and update endpoints.',
+    },
+    {
+      label: '02',
+      title: 'Validate',
+      description:
+        'The Go backend parses Front-matter, validates the slug, title, content length, tag count and dates, then normalises duplicate tags.',
+    },
+    {
+      label: '03',
+      title: 'Persist',
+      description:
+        'Publishing and updates write post_translations, revision snapshots and engagement records in a transaction, while synchronising legacy posts fields for compatibility.',
+    },
+    {
+      label: '04',
+      title: 'Resolve',
+      description:
+        'A Next.js Server Component requests the target locale; the Go store prefers an exact match, falls back to Chinese when needed and returns the available locales and fallback state.',
+    },
+    {
+      label: '05',
+      title: 'Render',
+      description:
+        'The server renders Markdown, the table of contents, highlighted code and structured data. The browser then uses a separate engagement endpoint for views and anonymous likes.',
+    },
+  ],
+  decisions: [
+    {
+      title: 'Migrate incrementally instead of rewriting the backend',
+      implementation:
+        'The public frontend moves to Next.js App Router while continuing to use the Go/chi REST API, PostgreSQL and existing article data. Legacy Vue-compatible endpoints remain available during the transition.',
+      value:
+        'Migration risk stays within frontend rendering and content boundaries, allowing the old site, new site and data layer to coexist while the system changes.',
+    },
+    {
+      title: 'Model bilingual content as translation records',
+      implementation:
+        'post_translations uses (post_slug, locale) as a composite key, while post_translation_revisions stores snapshots for each language. Reads return requestedLocale, resolvedLocale and fallback explicitly.',
+      value:
+        'Chinese and English can be published independently, and missing content is handled by the backend instead of guessed by the frontend.',
+    },
+    {
+      title: 'Keep Markdown parsing and version rules at the backend boundary',
+      implementation:
+        'Go centrally parses YAML Front-matter and validates slugs, field lengths, tags and dates. Updates include the previous version, increment it on success and append a revision snapshot.',
+      value:
+        'Content format and concurrent update rules stay in one service boundary, preventing silent overwrites between admin sessions.',
+    },
+    {
+      title: 'Render public content server-first',
+      implementation:
+        'Next.js Server Components fetch article data and generate Metadata, Canonical, alternate links, Open Graph, Article JSON-LD, sitemap and RSS output. Markdown uses GFM, heading slugs, code highlighting and a table of contents.',
+      value:
+        'SEO, first-screen content and reading structure remain available on the server, while personalised likes are isolated to client-side requests.',
+    },
+    {
+      title: 'Make anonymous engagement idempotent and bounded',
+      implementation:
+        'The backend issues a signed HttpOnly visitor cookie and stores only an HMAC-derived hash in Redis and PostgreSQL. A unique constraint and transaction make likes idempotent, while daily views use deduplication and Redis provides fast filtering and rate limiting.',
+      value:
+        'Visitors can like without creating an account and see their state again without treating a client-side counter as the source of truth.',
+    },
+    {
+      title: 'Treat observability as part of the content service',
+      implementation:
+        'The Go API exposes Prometheus HTTP, database and business metrics and optionally exports HTTP, database and Redis spans through OpenTelemetry OTLP/gRPC. Health, readiness, timeouts and graceful shutdown manage the service lifecycle.',
+      value:
+        'Article requests, translation fallbacks, engagement writes and infrastructure bottlenecks have traceable entry points instead of relying only on user reports.',
+    },
+  ],
+  boundaries: [
+    {
+      level: '高',
+      title: 'The legacy and new content models still coexist',
+      description:
+        'post_translations is now the main path for localised reads and versioning, but the legacy posts columns remain and are synchronised on publish and update. The next step is to define one source of truth and retire the compatibility write path.',
+    },
+    {
+      level: '中',
+      title: 'Search and filtering need a server-side path at scale',
+      description:
+        'The frontend currently fetches a bounded set of posts and performs part of the filtering locally. A larger archive should move search, tags, years and pagination into the Go API with stable ordering and indexes.',
+    },
+    {
+      level: '中',
+      title: 'Content images do not yet have a complete optimisation path',
+      description:
+        'Markdown images currently render as ordinary img elements without intrinsic dimensions. Dimensions, responsive loading and CDN or cache policy should be added to improve CLS and mobile loading.',
+    },
+    {
+      level: '中',
+      title: 'Redis rate limiting is a degradable guard, not absolute anti-abuse',
+      description:
+        'Engagement requests fail open when Redis is unavailable to preserve blog availability, and visitors can clear their cookie. This provides baseline deduplication and throttling, not strong identity or complete abuse prevention.',
+    },
+    {
+      level: '中',
+      title: 'AI is a development workflow, not a product capability here',
+      description:
+        'AI can assist problem decomposition, option comparison and implementation review, but this project does not currently integrate an LLM API, RAG, embeddings or an agent. The case study does not present those as implemented features.',
+    },
+  ],
+  nextSteps: [
+    'Converge on post_translations as the single content source and retire legacy dual writes',
+    'Move search, tag filtering, archive and pagination into the Go API with precise cache invalidation',
+    'Add image dimensions, responsive loading and observable Core Web Vitals metrics for Markdown media',
+    'Add end-to-end coverage for publishing, locale fallback, version conflicts and engagement idempotency',
+    'Complete publishing audit, rollback and targeted cache refresh flows in the admin workspace',
+  ],
+};
+
 export function getSiteContent(locale: BlogLocale) {
   if (locale === 'zh-CN') return siteContent;
   return {
@@ -299,5 +461,9 @@ export function getPortfolioProjects(locale: BlogLocale) {
 }
 
 export function getProjectCaseStudyLocalized(slug: string, locale: BlogLocale) {
-  return locale === 'en-US' && slug === 'chatify' ? englishChatifyCase : getProjectCaseStudy(slug);
+  if (locale === 'en-US') {
+    if (slug === 'chatify') return englishChatifyCase;
+    if (slug === 'linze-pro') return englishLinzeProCase;
+  }
+  return getProjectCaseStudy(slug);
 }

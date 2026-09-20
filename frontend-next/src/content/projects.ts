@@ -53,7 +53,7 @@ export const portfolioProjects = [
     stack: ["Next.js", "TypeScript", "Go", "PostgreSQL", "Docker", "Caddy"],
     repository: "https://github.com/nicolasleigh/linze.pro",
     website: "https://linze.pro",
-    caseStudyPath: undefined,
+    caseStudyPath: "/projects/linze-pro",
     featured: true,
   },
   {

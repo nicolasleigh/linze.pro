@@ -69,7 +69,7 @@ export default async function ProjectCasePage({
     "@graph": [
       {
         "@type": "TechArticle",
-        headline: `${project.name}：${caseStudy.title}`,
+        headline: en ? `${project.name}: ${caseStudy.title}` : `${project.name}：${caseStudy.title}`,
         description: caseStudy.description,
         author: { "@type": "Person", name: en ? "Nicolas Leigh" : "李林泽" },
         inLanguage: locale,
@@ -126,7 +126,7 @@ export default async function ProjectCasePage({
 
         <header className="project-case-hero page-intro">
           <div>
-            <p className="section-kicker">CASE STUDY / REALTIME SYSTEM</p>
+            <p className="section-kicker">{caseStudy.heroKicker}</p>
             <ViewTransition
               name={`project-title-${project.slug}`}
               share="title-morph"
@@ -143,6 +143,11 @@ export default async function ProjectCasePage({
               <a href={project.repository} rel="noreferrer" target="_blank">
                 {en ? "View code" : "查看代码"} <span aria-hidden="true">↗</span>
               </a>
+              {project.website ? (
+                <a href={project.website} rel="noreferrer" target="_blank">
+                  {en ? "Open project" : "打开项目"} <span aria-hidden="true">↗</span>
+                </a>
+              ) : null}
               <a href="#current-boundaries">
                 {en ? "Current boundaries" : "查看当前边界"} <span aria-hidden="true">↓</span>
               </a>
@@ -154,9 +159,9 @@ export default async function ProjectCasePage({
           className="case-problem motion-section"
           aria-labelledby="case-problem-title"
         >
-          <p className="section-kicker">01 / PROBLEM</p>
+          <p className="section-kicker">{caseStudy.sections.problem.kicker}</p>
           <div>
-            <h2 id="case-problem-title">{en ? "Why rebuild the backend?" : "为什么要重构后端"}</h2>
+            <h2 id="case-problem-title">{caseStudy.sections.problem.title}</h2>
             <p>{caseStudy.problem}</p>
             <ul>
               {caseStudy.goals.map((goal) => (
@@ -171,8 +176,8 @@ export default async function ProjectCasePage({
           aria-labelledby="case-flow-title"
         >
           <header>
-            <p className="section-kicker">02 / MESSAGE FLOW</p>
-            <h2 id="case-flow-title">{en ? "How a message is persisted and delivered" : "一条消息如何完成持久化与分发"}</h2>
+            <p className="section-kicker">{caseStudy.sections.flow.kicker}</p>
+            <h2 id="case-flow-title">{caseStudy.sections.flow.title}</h2>
           </header>
           <ol className="system-flow">
             {caseStudy.flow.map((step) => (
@@ -190,8 +195,8 @@ export default async function ProjectCasePage({
           aria-labelledby="case-decisions-title"
         >
           <header>
-            <p className="section-kicker">03 / ENGINEERING DECISIONS</p>
-            <h2 id="case-decisions-title">{en ? "Decisions visible in the code" : "代码中真实存在的设计"}</h2>
+            <p className="section-kicker">{caseStudy.sections.decisions.kicker}</p>
+            <h2 id="case-decisions-title">{caseStudy.sections.decisions.title}</h2>
           </header>
           <ol>
             {caseStudy.decisions.map((decision, index) => (
@@ -219,11 +224,9 @@ export default async function ProjectCasePage({
           aria-labelledby="case-boundaries-title"
         >
           <header>
-            <p className="section-kicker">04 / CURRENT BOUNDARIES</p>
-            <h2 id="case-boundaries-title">{en ? "What is not production-ready yet" : "尚不能包装成生产级的部分"}</h2>
-            <p>
-              {en ? "These risks are verifiable in the current code and should be addressed before the next production-oriented iteration." : "这些问题都能从当前代码直接确认，也是下一轮重构必须先处理的风险。"}
-            </p>
+            <p className="section-kicker">{caseStudy.sections.boundaries.kicker}</p>
+            <h2 id="case-boundaries-title">{caseStudy.sections.boundaries.title}</h2>
+            <p>{caseStudy.sections.boundaries.intro}</p>
           </header>
           <ol>
             {caseStudy.boundaries.map((boundary) => (
@@ -240,9 +243,9 @@ export default async function ProjectCasePage({
           className="case-next motion-section"
           aria-labelledby="case-next-title"
         >
-          <p className="section-kicker">05 / NEXT ITERATION</p>
+          <p className="section-kicker">{caseStudy.sections.next.kicker}</p>
           <div>
-            <h2 id="case-next-title">{en ? "What to improve next" : "下一轮应该怎么做"}</h2>
+            <h2 id="case-next-title">{caseStudy.sections.next.title}</h2>
             <ol>
               {caseStudy.nextSteps.map((step, index) => (
                 <li key={step}>

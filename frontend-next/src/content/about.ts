@@ -1,13 +1,15 @@
 export const aboutContent = {
   introduction: {
     eyebrow: 'ABOUT / BACKGROUND',
-    title: '从理解数字与风险，到设计清晰、可靠的软件。',
-    description: '拥有财经教育与专业背景，如今专注于 Web 产品、全栈工程与可靠的软件交付。',
+    title: '财经思维，工程实践',
+    description:
+      '我专注 Go 后端、React/Next.js 与 AI 辅助的全栈实践。AI 帮我探索问题、比较方案和加速验证，但最终判断仍然来自清晰的边界、可运行的代码与真实结果。',
   },
   profile: [
-    { label: 'FOCUS', value: 'Web 产品与全栈工程' },
-    { label: 'BUILDING', value: 'React / Next.js · Go' },
-    { label: 'BASE', value: 'China · UTC+8' },
+    { label: 'FOCUS', value: 'Go 后端 · React/Next.js' },
+    { label: 'BUILDING', value: '全栈产品 · AI 辅助工作流' },
+    { label: 'LEARNING', value: '项目实验 · 工程复盘' },
+    { label: 'BASE', value: '中国 · 北京' },
   ],
   education: {
     title: '教育背景与专业资质',
@@ -16,7 +18,7 @@ export const aboutContent = {
         index: '01',
         title: '中南财经政法大学',
         subtitle: '财政学 · 经济学学士',
-        description: '接受系统的财政学与经济学专业训练，建立对宏观经济运行、财税体制、数据分析与公共政策的底层认知。',
+        description: '财政学训练让我习惯从数据、约束和结果出发，理解复杂问题背后的运行逻辑。',
         tags: ['财政学', '经济学学士', '“211工程”重点高校'],
       },
       {
@@ -24,7 +26,7 @@ export const aboutContent = {
         title: '中国注册会计师（CPA）',
         subtitle: 'Certified Public Accountant',
         description:
-          '熟知我国会计法、审计法、税法与经济法体系，深刻理解企业财务与成本管理，通晓公司战略与全面风险控制框架。将严谨的证据意识与合规思维融入系统架构与软件工程。',
+          'CPA 训练强化了我对证据、边界与风险的敏感度；这些习惯也影响我设计 API、数据模型和交付流程的方式。',
         tags: ['会计与审计准则', '财税与商事法规', '财务与成本管理', '战略与风险控制'],
       },
     ],
@@ -34,36 +36,43 @@ export const aboutContent = {
       index: '01',
       title: '界面与产品体验',
       description:
-        '使用 React、Next.js、TypeScript 与 React Native 构建 Web 和移动端界面，关注信息层级、可访问性、渲染策略与长期可维护性。',
+        '把复杂信息整理成清晰、好用的界面，关注信息层级、可访问性和长期维护。',
       stack: ['React', 'Next.js', 'TypeScript', 'React Native', 'Vue'],
     },
     {
       index: '02',
       title: '服务与数据边界',
       description:
-        '使用 Go、Node.js 设计 REST API 与 WebSocket 链路，围绕 PostgreSQL、MongoDB 处理业务模型、查询与一致性问题。',
+        '把业务拆成清晰的 API、数据模型与服务边界，处理查询、状态和一致性问题。',
       stack: ['Go', 'Node.js', 'PostgreSQL', 'MongoDB', 'REST', 'WebSocket'],
     },
     {
       index: '03',
       title: '工程交付',
       description:
-        '把类型约束、错误处理、测试、容器化与反向代理视为产品的一部分，让功能从本地实现走到可验证、可运行的系统。',
+        '让功能不止在本地跑起来，还能被测试、部署、观察和持续迭代。',
       stack: ['Testing', 'Docker', 'Caddy', 'Git'],
+    },
+    {
+      index: '04',
+      title: 'AI 辅助的问题解决',
+      description:
+        '用 AI 协助拆解问题、比较架构方案、生成实现初稿和补充边界场景，再通过代码、测试与实际运行结果完成验证。',
+      stack: ['AI-assisted workflow', 'Prompt design', 'Edge cases', 'Verification'],
     },
   ],
   principles: [
     {
-      title: '问题定义重于技术选型',
-      description: '从核心约束与数据流出发，不以技术流行度替代独立的设计判断。',
+      title: '先把问题说清楚',
+      description: '技术选型之前，先确认目标、约束和真正需要解决的问题。',
     },
     {
-      title: '以证据与确定性描述系统',
-      description: '用链路与失败场景验证假设，坦诚面对未知，清晰界定能力边界。',
+      title: '把边界和细节写进设计',
+      description: '关注命名、权限、错误路径、加载状态和数据边界，让可靠性落到具体细节。',
     },
     {
-      title: '体验与工程从来是同一个问题',
-      description: '将交互手感、API 契约与系统可靠性，统一纳入端到端交付链路。',
+      title: '让 AI 加速探索，让复盘推动进步',
+      description: '让 AI 参与探索、总结和生成，但把最终判断交给问题边界、测试结果和实际运行；每次复盘都成为下一次改进的起点。',
     },
   ],
 } as const;
