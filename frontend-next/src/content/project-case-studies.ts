@@ -41,146 +41,155 @@ export type ProjectMedia = {
 };
 
 export const projectCaseStudies = {
-  chatify: {
-    projectSlug: 'chatify',
-    heroKicker: 'CASE STUDY / REALTIME SYSTEM',
-    title: '从 BaaS 原型到 Go 实时消息链路',
+  'obsai-cli': {
+    projectSlug: 'obsai-cli',
+    heroKicker: 'CASE STUDY / LOCAL AI SYSTEM',
+    title: '把 Obsidian Vault 变成可引用、可审计的本地 AI 工作流',
     description:
-      '围绕数据库访问成本和 N+1 查询问题，为 Chatify 增加 Go、PostgreSQL 与 WebSocket 后端，并保留迁移期间仍在工作的 Next.js / Convex 能力。',
+      'ObsAgent CLI 面向 Obsidian Vault 构建本地优先的 AI 工作流：通过安全 Markdown 解析、上下文感知分块、可重建 SQLite 索引和混合检索完成搜索与问答，并让 Agent 在人工审批、乐观并发控制和可恢复事务的约束下修改文件。',
     problem:
-      '旧实现将会话与消息数据主要放在 Convex。随着关系查询增多，缺少 SQL JOIN 的数据访问方式容易把一次页面加载拆成大量查询。重构目标不是简单换语言，而是重新建立会话、成员、消息和未读状态之间的关系模型，同时让消息能够持久化后再实时分发。',
+      '普通全文搜索难以回答跨文档问题，而直接把整个 Vault 上传给远程模型又会带来隐私、成本和上下文失控风险。ObsAgent CLI 的目标不是增加一个聊天框，而是把解析、索引、检索、证据引用和文件写入组织成一条本地优先、可验证、可恢复的工作流。',
     media: [
       {
-        src: '/projects/chatify/architecture.svg',
-        alt: 'Chatify architecture showing Next.js, Clerk, Go WebSocket, PostgreSQL and LiveKit boundaries',
-        caption: '身份同步、历史查询、消息持久化、实时广播与音视频服务的边界。',
+        src: '/projects/obsai-cli/architecture.svg',
+        alt: 'ObsAgent CLI architecture showing the Obsidian Vault, Python application, SQLite retrieval index, local or remote models and approval-gated write path',
+        caption: 'Vault 是唯一事实来源；检索和问答与需要人工审批的文件写入路径相互隔离。',
         width: 1600,
         height: 900,
         role: 'architecture',
       },
     ],
     sections: {
-      problem: { kicker: '01 / PROBLEM', title: '为什么要重构后端' },
-      flow: { kicker: '02 / MESSAGE FLOW', title: '一条消息如何完成持久化与分发' },
-      decisions: { kicker: '03 / ENGINEERING DECISIONS', title: '代码中真实存在的设计' },
+      problem: { kicker: '01 / PRODUCT BRIEF', title: '为什么本地知识库 AI 不应该只是一个聊天框' },
+      flow: { kicker: '02 / SYSTEM FLOW', title: '一次问答和一次文件修改如何完成' },
+      decisions: { kicker: '03 / ENGINEERING DECISIONS', title: '代码中真实存在的 AI 工程设计' },
       boundaries: {
         kicker: '04 / CURRENT BOUNDARIES',
-        title: '尚不能包装成生产级的部分',
-        intro: '这些问题都能从当前代码直接确认，也是下一轮重构必须先处理的风险。',
+        title: '当前实现的能力边界',
+        intro:
+          '项目已经把本地检索、证据约束和安全写入串成完整闭环，但它仍是本地单用户系统，不能包装成云端多租户或生产级分布式 AI 平台。',
       },
       next: { kicker: '05 / NEXT ITERATION', title: '下一轮应该怎么做' },
     },
     goals: [
-      '用关系模型表达会话、成员、好友和消息',
-      '消息先持久化，再向同一会话的连接广播',
-      '用生成代码连接原生 SQL 与 Go 类型系统',
-      '保留 Clerk 身份与 LiveKit 音视频能力',
+      '让 Obsidian Markdown 文件继续作为唯一事实来源，索引可以随时重建',
+      '通过 FTS5、向量和图关系检索，减少单一检索策略的盲区',
+      '让回答绑定到有限证据，并在证据不足或引用无效时拒答',
+      '让 Agent 的执行步数、工具调用和错误次数处于可控范围',
+      '让任何文件修改都经过预览、人工批准、并发校验和可恢复事务',
     ],
     flow: [
       {
         label: '01',
-        title: 'Identity',
-        description: 'Next.js 从 Clerk 获取会话令牌；Clerk Webhook 经 Svix 验签后同步用户资料。',
+        title: 'Parse',
+        description:
+          'Scanner 以只读方式读取 Vault，解析 Front-matter、标题、段落、代码块、Callout、WikiLink 和标签，不执行 Markdown 中的 HTML、JavaScript 或 Dataview。',
       },
       {
         label: '02',
-        title: 'History',
-        description: 'React Query 通过 REST API 获取历史消息，并对返回数据执行 Zod 运行时校验。',
+        title: 'Index',
+        description:
+          'Context-aware Chunker 按标题层级和段落边界生成带 breadcrumb 的分块，再写入 SQLite 元数据、FTS5 索引和 sqlite-vec 向量索引；内容 Hash 用于增量更新和文件移动识别。',
       },
       {
         label: '03',
-        title: 'Connect',
-        description: '浏览器以 Clerk 令牌作为 WebSocket subprotocol 建立连接，Go 中间件解析身份。',
+        title: 'Retrieve',
+        description:
+          '搜索请求可以走关键词、向量或图检索；Hybrid 模式使用 RRF 合并结果，并在语义能力不可用时明确降级为关键词检索。',
       },
       {
         label: '04',
-        title: 'Persist',
-        description: 'readPump 解析消息，sqlc 调用 CTE 写入消息并更新会话的最后消息引用。',
+        title: 'Answer',
+        description:
+          'ContextBuilder 从 SQLite 加载原始内容，限制证据数量、上下文和输出规模，为片段标注 [S1] 等引用，再由校验器检查引用是否确实来自检索证据。',
       },
       {
         label: '05',
-        title: 'Broadcast',
-        description: 'Hub 按 conversation ID 维护客户端集合，再由每个连接的 writePump 完成下行发送。',
+        title: 'Approve',
+        description:
+          'Agent 的写操作先生成 ChangeSet 和 Diff，暂停等待明确的人类批准；通过路径校验、原始 Hash 校验和事务日志后才替换 Vault 文件。',
       },
     ],
     decisions: [
       {
-        title: '关系型数据模型替代多次拼装',
+        title: '让 Vault 成为唯一事实来源',
         implementation:
-          'PostgreSQL 将 users、conversations、conversation_members、messages 与 friends 分表建模，查询通过 CTE 和 JOIN 一次返回会话成员、最后消息和未读数量。',
-        value: '将隐式的数据依赖变成数据库约束和可审查 SQL，为定位 N+1、索引和一致性问题提供明确入口。',
+          'Markdown 文件是最终数据，SQLite、FTS5 和 sqlite-vec 都是可以删除并重建的派生索引。增量索引通过内容 Hash 跳过未变化文件，并识别唯一的移动或重命名。',
+        value:
+          '降低索引损坏和数据迁移风险，也让系统可以围绕“源文件是否正确”而不是“数据库是否拥有全部内容”进行恢复设计。',
       },
       {
-        title: 'SQL 作为契约，Go 类型由代码生成',
+        title: '用结构化分块保留 Markdown 语义',
         implementation:
-          '查询集中维护在 queries 目录，由 sqlc 生成参数和结果类型；结构变化通过 golang-migrate 的顺序迁移记录。',
-        value: '保留原生 SQL 的控制力，同时减少手写 Scan、字段错位以及模型和查询不同步的问题。',
+          '分块器保留标题 breadcrumb，并将代码块、Callout 和 Block ID 段落作为不可拆分单元，在段落边界切割并生成稳定的 raw_content 与 embedding_text。',
+        value: '避免固定长度切割破坏代码和说明之间的语义关系，同时为稳定的向量缓存、引用定位和增量更新提供基础。',
       },
       {
-        title: '持久化成功后再进行实时广播',
+        title: '用混合检索代替单一向量搜索',
         implementation:
-          'WebSocket readPump 收到消息后先执行 CreateMessage，再读取包含发送者信息的完整消息，最后写入 Hub 的 broadcast channel。',
-        value: '客户端收到的消息已经拥有数据库 ID 和创建时间，避免先广播后写入失败造成的幽灵消息。',
+          '关键词检索使用 SQLite FTS5，语义检索使用 sqlite-vec，WikiLink 关系通过图检索补充，Hybrid 模式使用 RRF 融合多路排名。',
+        value: '精确术语、自然语言表达和文档关系各有适合的检索路径，并且不需要引入独立的向量数据库或外部搜索集群。',
       },
       {
-        title: '按会话隔离连接与广播范围',
+        title: '把回答限制在可验证证据内',
         implementation:
-          'Hub 使用 conversation ID 到 Client 集合的映射；每个客户端拥有独立的 256 容量发送通道和读写 goroutine。',
-        value: '广播只遍历当前会话连接，并通过独立写协程避免单个网络写操作直接阻塞消息读取。',
+          '回答流程不直接使用 FTS 摘要，而是回读原始内容，统一限制 evidence、context 和 output，并对模型引用进行校验和修复；没有可靠证据时返回 abstention。',
+        value: '把“模型说得像真的”转化为可检查的证据链，降低上下文污染、引用幻觉和无依据回答的风险。',
       },
       {
-        title: '音视频与文字消息链路解耦',
+        title: '用有界 LangGraph Agent 管理工具调用',
         implementation:
-          '文字消息由自建 WebSocket 与 PostgreSQL 处理；音视频房间交给 LiveKit，Next.js Route Handler 仅签发短期房间令牌并禁用缓存。',
-        value: '自建可控的数据链路，同时避免在业务服务中重复实现 WebRTC 媒体基础设施。',
+          'Agent 通过确定性的 intent route 选择搜索或规划路径，限制最大步骤、重复工具调用、连续错误和无进展次数；状态只保存引用和 Artifact，而不是不断复制大段内容。',
+        value: 'Agent 的行为可预测、可恢复、可审计，更适合本地文件操作，而不是依赖模型自行决定何时停止。',
       },
       {
-        title: '前端区分服务端状态和表单状态',
+        title: '把文件写入设计成审批后的事务',
         implementation:
-          'React Query 管理历史消息缓存，Zod 校验 REST 响应，React Hook Form 处理输入；收到 WebSocket 消息后定向更新对应会话缓存。',
-        value: '减少消息列表、请求状态和输入交互之间的状态耦合，为后续补充重连和乐观更新留下边界。',
+          'safe_write 校验 Vault 相对路径、保留目录和符号链接；事务服务保存快照并执行 OCC 原始 Hash 检查，写入失败时可以回滚或通过恢复日志继续处理。',
+        value: '即使 Agent 生成了错误计划，也不会直接覆盖用户文件；写入过程具备预览、冲突检测和恢复入口。',
       },
     ],
     boundaries: [
       {
         level: '高',
-        title: '会话级授权尚未真正落地',
+        title: '这是本地单用户系统，不是云端多租户平台',
         description:
-          'WebSocket 握手虽然会校验 Clerk 身份，但 hasAccessToConversation 当前直接返回 true；发送者 ID 也来自客户端消息体。需要从令牌映射数据库用户，并在升级连接前查询 conversation_members。',
+          'FastAPI、React UI 和 Agent Runtime 都围绕本机 Vault 运行，当前没有账号体系、跨用户隔离、云端同步或多实例任务调度。不能将其描述成 SaaS 型 AI 平台。',
       },
       {
         level: '高',
-        title: 'WebSocket 信任边界过宽',
+        title: '远程模型能力仍受用户同意和网络影响',
         description:
-          'Upgrader 的 CheckOrigin 当前允许任意来源。应配置可信 Origin，并避免把客户端提供的 sender_id 作为持久化依据。',
+          'OpenAI Embedding 或 LLM 调用只在明确的 Consent 和预算约束下发送必要文本，但网络延迟、Provider 可用性和模型回答质量不包含在本地检索基准中。',
       },
       {
         level: '中',
-        title: '连接生命周期与投递语义不完整',
+        title: '性能基准是合成本地基准，不是生产 SLA',
         description:
-          '当前没有 ping/pong、读写 deadline、自动重连、消息确认或幂等键；前端发送时会重设 onmessage，也可能覆盖已有监听器。',
+          '项目文档记录了 10,000 篇笔记和 100,000 个分块的本地测试，但测试不包含远程网络和真实用户 Vault 分布，不能直接推导生产 QPS 或端到端延迟。',
       },
       {
         level: '中',
-        title: 'Hub 只适用于单实例',
+        title: '重排序和评测体系仍较基础',
         description:
-          '连接表与广播 channel 都在进程内；横向扩容后不同实例无法互相投递，需要 Redis Pub/Sub、NATS 等跨节点通道，并重新定义消息顺序和重试策略。',
+          '当前提供 Reranker 接口，但主要实现是 NoOpReranker；项目也需要真实 Vault 评测集来验证召回、引用正确率和拒答质量，而不仅是检索延迟。',
       },
       {
         level: '中',
-        title: '并发保护和可观测性仍较薄弱',
+        title: '本地威胁模型不覆盖恶意同用户进程',
         description:
-          '广播路径在读锁范围内删除客户端，数据库写入使用 context.Background；目前也只有基础日志，缺少连接数、投递失败和消息延迟指标。',
+          '项目重点防范 Agent 误写、路径穿越、符号链接和并发覆盖；如果另一个拥有同一用户文件权限的本地进程恶意修改文件，当前系统不承诺隔离。',
       },
     ],
     nextSteps: [
-      '首先补齐会话成员授权、可信 Origin 和服务端 sender ID 推导',
-      '重构前端 WebSocket Provider，统一消息监听、重连、退避和状态恢复',
-      '为 Hub 和消息写入增加 race test、集成测试与故障场景测试',
-      '定义消息幂等键、确认机制和离线补偿策略',
-      '加入结构化日志和连接、广播、数据库延迟指标后再讨论水平扩展',
+      '使用真实 Obsidian Vault 构建检索、引用和拒答评测集，补充可重复的质量指标',
+      '增加精确 tokenizer 统计、Provider 延迟与成本观测，并区分本地和远程调用预算',
+      '实现更强的 Reranker 与可解释的检索诊断页面，帮助定位召回失败原因',
+      '补充多进程锁、故障恢复和文件外部修改场景的集成测试',
+      '在保持本地优先边界的前提下评估 Tauri 桌面封装，而不是直接引入云端多租户复杂度',
     ],
   },
+
   'linze-pro': {
     projectSlug: 'linze-pro',
     heroKicker: 'CASE STUDY / CONTENT PLATFORM',
@@ -470,6 +479,146 @@ export const projectCaseStudies = {
       '统一 Session/JWT 的安全策略，补齐 Secure Cookie、SameSite、CORS 与登录限流',
       '为核心业务增加 API 集成测试、前端交互测试和端到端预订流程测试',
       '补充健康检查、结构化日志和基础指标，再评估缓存与异步任务的必要性',
+    ],
+  },
+  chatify: {
+    projectSlug: 'chatify',
+    heroKicker: 'CASE STUDY / REALTIME SYSTEM',
+    title: '从 BaaS 原型到 Go 实时消息链路',
+    description:
+      '围绕数据库访问成本和 N+1 查询问题，为 Chatify 增加 Go、PostgreSQL 与 WebSocket 后端，并保留迁移期间仍在工作的 Next.js / Convex 能力。',
+    problem:
+      '旧实现将会话与消息数据主要放在 Convex。随着关系查询增多，缺少 SQL JOIN 的数据访问方式容易把一次页面加载拆成大量查询。重构目标不是简单换语言，而是重新建立会话、成员、消息和未读状态之间的关系模型，同时让消息能够持久化后再实时分发。',
+    media: [
+      {
+        src: '/projects/chatify/architecture.svg',
+        alt: 'Chatify architecture showing Next.js, Clerk, Go WebSocket, PostgreSQL and LiveKit boundaries',
+        caption: '身份同步、历史查询、消息持久化、实时广播与音视频服务的边界。',
+        width: 1600,
+        height: 900,
+        role: 'architecture',
+      },
+    ],
+    sections: {
+      problem: { kicker: '01 / PROBLEM', title: '为什么要重构后端' },
+      flow: { kicker: '02 / MESSAGE FLOW', title: '一条消息如何完成持久化与分发' },
+      decisions: { kicker: '03 / ENGINEERING DECISIONS', title: '代码中真实存在的设计' },
+      boundaries: {
+        kicker: '04 / CURRENT BOUNDARIES',
+        title: '尚不能包装成生产级的部分',
+        intro: '这些问题都能从当前代码直接确认，也是下一轮重构必须先处理的风险。',
+      },
+      next: { kicker: '05 / NEXT ITERATION', title: '下一轮应该怎么做' },
+    },
+    goals: [
+      '用关系模型表达会话、成员、好友和消息',
+      '消息先持久化，再向同一会话的连接广播',
+      '用生成代码连接原生 SQL 与 Go 类型系统',
+      '保留 Clerk 身份与 LiveKit 音视频能力',
+    ],
+    flow: [
+      {
+        label: '01',
+        title: 'Identity',
+        description: 'Next.js 从 Clerk 获取会话令牌；Clerk Webhook 经 Svix 验签后同步用户资料。',
+      },
+      {
+        label: '02',
+        title: 'History',
+        description: 'React Query 通过 REST API 获取历史消息，并对返回数据执行 Zod 运行时校验。',
+      },
+      {
+        label: '03',
+        title: 'Connect',
+        description: '浏览器以 Clerk 令牌作为 WebSocket subprotocol 建立连接，Go 中间件解析身份。',
+      },
+      {
+        label: '04',
+        title: 'Persist',
+        description: 'readPump 解析消息，sqlc 调用 CTE 写入消息并更新会话的最后消息引用。',
+      },
+      {
+        label: '05',
+        title: 'Broadcast',
+        description: 'Hub 按 conversation ID 维护客户端集合，再由每个连接的 writePump 完成下行发送。',
+      },
+    ],
+    decisions: [
+      {
+        title: '关系型数据模型替代多次拼装',
+        implementation:
+          'PostgreSQL 将 users、conversations、conversation_members、messages 与 friends 分表建模，查询通过 CTE 和 JOIN 一次返回会话成员、最后消息和未读数量。',
+        value: '将隐式的数据依赖变成数据库约束和可审查 SQL，为定位 N+1、索引和一致性问题提供明确入口。',
+      },
+      {
+        title: 'SQL 作为契约，Go 类型由代码生成',
+        implementation:
+          '查询集中维护在 queries 目录，由 sqlc 生成参数和结果类型；结构变化通过 golang-migrate 的顺序迁移记录。',
+        value: '保留原生 SQL 的控制力，同时减少手写 Scan、字段错位以及模型和查询不同步的问题。',
+      },
+      {
+        title: '持久化成功后再进行实时广播',
+        implementation:
+          'WebSocket readPump 收到消息后先执行 CreateMessage，再读取包含发送者信息的完整消息，最后写入 Hub 的 broadcast channel。',
+        value: '客户端收到的消息已经拥有数据库 ID 和创建时间，避免先广播后写入失败造成的幽灵消息。',
+      },
+      {
+        title: '按会话隔离连接与广播范围',
+        implementation:
+          'Hub 使用 conversation ID 到 Client 集合的映射；每个客户端拥有独立的 256 容量发送通道和读写 goroutine。',
+        value: '广播只遍历当前会话连接，并通过独立写协程避免单个网络写操作直接阻塞消息读取。',
+      },
+      {
+        title: '音视频与文字消息链路解耦',
+        implementation:
+          '文字消息由自建 WebSocket 与 PostgreSQL 处理；音视频房间交给 LiveKit，Next.js Route Handler 仅签发短期房间令牌并禁用缓存。',
+        value: '自建可控的数据链路，同时避免在业务服务中重复实现 WebRTC 媒体基础设施。',
+      },
+      {
+        title: '前端区分服务端状态和表单状态',
+        implementation:
+          'React Query 管理历史消息缓存，Zod 校验 REST 响应，React Hook Form 处理输入；收到 WebSocket 消息后定向更新对应会话缓存。',
+        value: '减少消息列表、请求状态和输入交互之间的状态耦合，为后续补充重连和乐观更新留下边界。',
+      },
+    ],
+    boundaries: [
+      {
+        level: '高',
+        title: '会话级授权尚未真正落地',
+        description:
+          'WebSocket 握手虽然会校验 Clerk 身份，但 hasAccessToConversation 当前直接返回 true；发送者 ID 也来自客户端消息体。需要从令牌映射数据库用户，并在升级连接前查询 conversation_members。',
+      },
+      {
+        level: '高',
+        title: 'WebSocket 信任边界过宽',
+        description:
+          'Upgrader 的 CheckOrigin 当前允许任意来源。应配置可信 Origin，并避免把客户端提供的 sender_id 作为持久化依据。',
+      },
+      {
+        level: '中',
+        title: '连接生命周期与投递语义不完整',
+        description:
+          '当前没有 ping/pong、读写 deadline、自动重连、消息确认或幂等键；前端发送时会重设 onmessage，也可能覆盖已有监听器。',
+      },
+      {
+        level: '中',
+        title: 'Hub 只适用于单实例',
+        description:
+          '连接表与广播 channel 都在进程内；横向扩容后不同实例无法互相投递，需要 Redis Pub/Sub、NATS 等跨节点通道，并重新定义消息顺序和重试策略。',
+      },
+      {
+        level: '中',
+        title: '并发保护和可观测性仍较薄弱',
+        description:
+          '广播路径在读锁范围内删除客户端，数据库写入使用 context.Background；目前也只有基础日志，缺少连接数、投递失败和消息延迟指标。',
+      },
+    ],
+    nextSteps: [
+      '首先补齐会话成员授权、可信 Origin 和服务端 sender ID 推导',
+      '重构前端 WebSocket Provider，统一消息监听、重连、退避和状态恢复',
+      '为 Hub 和消息写入增加 race test、集成测试与故障场景测试',
+      '定义消息幂等键、确认机制和离线补偿策略',
+      '加入结构化日志和连接、广播、数据库延迟指标后再讨论水平扩展',
     ],
   },
   moviefy: {
@@ -1075,159 +1224,6 @@ export const projectCaseStudies = {
       '将播放历史改为批量或节流写入，限制单文档增长并设计离线事件补偿',
       '补齐上传大小/类型校验、唯一索引和 MongoDB 事务，统一私有内容授权',
       '为播放、上传、认证和推荐增加单元/集成测试，再评估 Redis、CDN 和推送通知',
-    ],
-  },
-  'obsai-cli': {
-    projectSlug: 'obsai-cli',
-    heroKicker: 'CASE STUDY / LOCAL AI SYSTEM',
-    title: '把 Obsidian Vault 变成可引用、可审计的本地 AI 工作流',
-    description:
-      'ObsAgent CLI 面向 Obsidian Vault 构建本地优先的 AI 工作流：通过安全 Markdown 解析、上下文感知分块、可重建 SQLite 索引和混合检索完成搜索与问答，并让 Agent 在人工审批、乐观并发控制和可恢复事务的约束下修改文件。',
-    problem:
-      '普通全文搜索难以回答跨文档问题，而直接把整个 Vault 上传给远程模型又会带来隐私、成本和上下文失控风险。ObsAgent CLI 的目标不是增加一个聊天框，而是把解析、索引、检索、证据引用和文件写入组织成一条本地优先、可验证、可恢复的工作流。',
-    media: [
-      {
-        src: '/projects/obsai-cli/architecture.svg',
-        alt: 'ObsAgent CLI architecture showing the Obsidian Vault, Python application, SQLite retrieval index, local or remote models and approval-gated write path',
-        caption: 'Vault 是唯一事实来源；检索和问答与需要人工审批的文件写入路径相互隔离。',
-        width: 1600,
-        height: 900,
-        role: 'architecture',
-      },
-    ],
-    sections: {
-      problem: { kicker: '01 / PRODUCT BRIEF', title: '为什么本地知识库 AI 不应该只是一个聊天框' },
-      flow: { kicker: '02 / SYSTEM FLOW', title: '一次问答和一次文件修改如何完成' },
-      decisions: { kicker: '03 / ENGINEERING DECISIONS', title: '代码中真实存在的 AI 工程设计' },
-      boundaries: {
-        kicker: '04 / CURRENT BOUNDARIES',
-        title: '当前实现的能力边界',
-        intro:
-          '项目已经把本地检索、证据约束和安全写入串成完整闭环，但它仍是本地单用户系统，不能包装成云端多租户或生产级分布式 AI 平台。',
-      },
-      next: { kicker: '05 / NEXT ITERATION', title: '下一轮应该怎么做' },
-    },
-    goals: [
-      '让 Obsidian Markdown 文件继续作为唯一事实来源，索引可以随时重建',
-      '通过 FTS5、向量和图关系检索，减少单一检索策略的盲区',
-      '让回答绑定到有限证据，并在证据不足或引用无效时拒答',
-      '让 Agent 的执行步数、工具调用和错误次数处于可控范围',
-      '让任何文件修改都经过预览、人工批准、并发校验和可恢复事务',
-    ],
-    flow: [
-      {
-        label: '01',
-        title: 'Parse',
-        description:
-          'Scanner 以只读方式读取 Vault，解析 Front-matter、标题、段落、代码块、Callout、WikiLink 和标签，不执行 Markdown 中的 HTML、JavaScript 或 Dataview。',
-      },
-      {
-        label: '02',
-        title: 'Index',
-        description:
-          'Context-aware Chunker 按标题层级和段落边界生成带 breadcrumb 的分块，再写入 SQLite 元数据、FTS5 索引和 sqlite-vec 向量索引；内容 Hash 用于增量更新和文件移动识别。',
-      },
-      {
-        label: '03',
-        title: 'Retrieve',
-        description:
-          '搜索请求可以走关键词、向量或图检索；Hybrid 模式使用 RRF 合并结果，并在语义能力不可用时明确降级为关键词检索。',
-      },
-      {
-        label: '04',
-        title: 'Answer',
-        description:
-          'ContextBuilder 从 SQLite 加载原始内容，限制证据数量、上下文和输出规模，为片段标注 [S1] 等引用，再由校验器检查引用是否确实来自检索证据。',
-      },
-      {
-        label: '05',
-        title: 'Approve',
-        description:
-          'Agent 的写操作先生成 ChangeSet 和 Diff，暂停等待明确的人类批准；通过路径校验、原始 Hash 校验和事务日志后才替换 Vault 文件。',
-      },
-    ],
-    decisions: [
-      {
-        title: '让 Vault 成为唯一事实来源',
-        implementation:
-          'Markdown 文件是最终数据，SQLite、FTS5 和 sqlite-vec 都是可以删除并重建的派生索引。增量索引通过内容 Hash 跳过未变化文件，并识别唯一的移动或重命名。',
-        value:
-          '降低索引损坏和数据迁移风险，也让系统可以围绕“源文件是否正确”而不是“数据库是否拥有全部内容”进行恢复设计。',
-      },
-      {
-        title: '用结构化分块保留 Markdown 语义',
-        implementation:
-          '分块器保留标题 breadcrumb，并将代码块、Callout 和 Block ID 段落作为不可拆分单元，在段落边界切割并生成稳定的 raw_content 与 embedding_text。',
-        value:
-          '避免固定长度切割破坏代码和说明之间的语义关系，同时为稳定的向量缓存、引用定位和增量更新提供基础。',
-      },
-      {
-        title: '用混合检索代替单一向量搜索',
-        implementation:
-          '关键词检索使用 SQLite FTS5，语义检索使用 sqlite-vec，WikiLink 关系通过图检索补充，Hybrid 模式使用 RRF 融合多路排名。',
-        value:
-          '精确术语、自然语言表达和文档关系各有适合的检索路径，并且不需要引入独立的向量数据库或外部搜索集群。',
-      },
-      {
-        title: '把回答限制在可验证证据内',
-        implementation:
-          '回答流程不直接使用 FTS 摘要，而是回读原始内容，统一限制 evidence、context 和 output，并对模型引用进行校验和修复；没有可靠证据时返回 abstention。',
-        value:
-          '把“模型说得像真的”转化为可检查的证据链，降低上下文污染、引用幻觉和无依据回答的风险。',
-      },
-      {
-        title: '用有界 LangGraph Agent 管理工具调用',
-        implementation:
-          'Agent 通过确定性的 intent route 选择搜索或规划路径，限制最大步骤、重复工具调用、连续错误和无进展次数；状态只保存引用和 Artifact，而不是不断复制大段内容。',
-        value:
-          'Agent 的行为可预测、可恢复、可审计，更适合本地文件操作，而不是依赖模型自行决定何时停止。',
-      },
-      {
-        title: '把文件写入设计成审批后的事务',
-        implementation:
-          'safe_write 校验 Vault 相对路径、保留目录和符号链接；事务服务保存快照并执行 OCC 原始 Hash 检查，写入失败时可以回滚或通过恢复日志继续处理。',
-        value:
-          '即使 Agent 生成了错误计划，也不会直接覆盖用户文件；写入过程具备预览、冲突检测和恢复入口。',
-      },
-    ],
-    boundaries: [
-      {
-        level: '高',
-        title: '这是本地单用户系统，不是云端多租户平台',
-        description:
-          'FastAPI、React UI 和 Agent Runtime 都围绕本机 Vault 运行，当前没有账号体系、跨用户隔离、云端同步或多实例任务调度。不能将其描述成 SaaS 型 AI 平台。',
-      },
-      {
-        level: '高',
-        title: '远程模型能力仍受用户同意和网络影响',
-        description:
-          'OpenAI Embedding 或 LLM 调用只在明确的 Consent 和预算约束下发送必要文本，但网络延迟、Provider 可用性和模型回答质量不包含在本地检索基准中。',
-      },
-      {
-        level: '中',
-        title: '性能基准是合成本地基准，不是生产 SLA',
-        description:
-          '项目文档记录了 10,000 篇笔记和 100,000 个分块的本地测试，但测试不包含远程网络和真实用户 Vault 分布，不能直接推导生产 QPS 或端到端延迟。',
-      },
-      {
-        level: '中',
-        title: '重排序和评测体系仍较基础',
-        description:
-          '当前提供 Reranker 接口，但主要实现是 NoOpReranker；项目也需要真实 Vault 评测集来验证召回、引用正确率和拒答质量，而不仅是检索延迟。',
-      },
-      {
-        level: '中',
-        title: '本地威胁模型不覆盖恶意同用户进程',
-        description:
-          '项目重点防范 Agent 误写、路径穿越、符号链接和并发覆盖；如果另一个拥有同一用户文件权限的本地进程恶意修改文件，当前系统不承诺隔离。',
-      },
-    ],
-    nextSteps: [
-      '使用真实 Obsidian Vault 构建检索、引用和拒答评测集，补充可重复的质量指标',
-      '增加精确 tokenizer 统计、Provider 延迟与成本观测，并区分本地和远程调用预算',
-      '实现更强的 Reranker 与可解释的检索诊断页面，帮助定位召回失败原因',
-      '补充多进程锁、故障恢复和文件外部修改场景的集成测试',
-      '在保持本地优先边界的前提下评估 Tauri 桌面封装，而不是直接引入云端多租户复杂度',
     ],
   },
 } as const satisfies Record<string, ProjectCaseStudy>;
