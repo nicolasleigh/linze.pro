@@ -134,14 +134,14 @@ const englishProjects: readonly PortfolioProject[] = [
 const englishAbout = {
   introduction: {
     eyebrow: 'ABOUT / BACKGROUND',
-    title: 'Finance-informed software engineering',
+    title: 'From financial auditing to full-stack engineering',
     description:
-      'I focus on Go backends, React/Next.js and AI-assisted full-stack work. I use AI to explore problems, compare approaches and accelerate validation, while grounding final decisions in clear boundaries, working code and real results.',
+      'I am a self-taught full-stack developer based in Beijing with a finance background and a CPA qualification. My core stack centers on Go, React / Next.js, and TypeScript. I enjoy building clean, resilient end-to-end applications, diving deep into system architecture and delivery, and integrating modern AI tools into practical workflows.',
   },
   profile: [
-    { label: 'FOCUS', value: 'Go backends · React/Next.js' },
-    { label: 'BUILDING', value: 'Full-stack products · AI-assisted workflows' },
-    { label: 'LEARNING', value: 'Projects · experiments · reviews' },
+    { label: 'FOCUS', value: 'Go backend · React / Next.js' },
+    { label: 'BUILDING', value: 'Full-stack systems · Modern AI tooling' },
+    { label: 'LEARNING', value: 'System architecture · Performance · Observability' },
     { label: 'BASE', value: 'Beijing, China' },
   ],
   education: {
@@ -152,20 +152,20 @@ const englishAbout = {
         title: 'Zhongnan University of Economics and Law',
         subtitle: 'Public Finance · Bachelor of Economics',
         description:
-          'Training in public finance taught me to look at complex problems through data, constraints and outcomes.',
+          'Rigorous training in public finance and economics provided me with strong analytical thinking around macro systems, statistical data, and underlying policy logic.',
         tags: ['Bachelor of Economics', 'Public Finance', 'Project 211 University'],
       },
       {
         index: '02',
         title: 'Certified Public Accountant (CPA)',
-        subtitle: 'Professional Stage Passed · China',
+        subtitle: 'Professional Stage Qualified · China',
         description:
-          'CPA training strengthened my attention to evidence, boundaries and risk—habits I carry into API design, data modelling and delivery.',
+          'Passed all CPA professional exams. My background in accounting and auditing gives me an instinctive vigilance for ledger balance, data consistency, and vulnerability prevention—habits that directly inform my defensive API design, DB constraints, and domain state handling.',
         tags: [
-          'Accounting & Auditing',
+          'Accounting & Auditing Standards',
           'Tax & Commercial Law',
           'Financial & Cost Management',
-          'Strategy & Risk Management',
+          'Corporate Strategy & Risk Control',
         ],
       },
     ],
@@ -173,47 +173,48 @@ const englishAbout = {
   capabilities: [
     {
       index: '01',
-      title: 'Interface and product experience',
+      title: 'Backend & Data Foundations',
       description:
-        'Turn complex information into clear, usable interfaces, with attention to hierarchy, accessibility and long-term maintenance.',
-      stack: ['React', 'Next.js', 'TypeScript', 'React Native', 'Vue'],
+        'Building clean RESTful APIs and realtime paths in Go with chi/Gin. Proficient with PostgreSQL relational modeling, indexing, and transaction management, paired with Redis for caching and rate limiting.',
+      stack: ['Go', 'PostgreSQL', 'Redis', 'Node.js', 'REST', 'WebSocket'],
     },
     {
       index: '02',
-      title: 'Services and data boundaries',
+      title: 'Modern Web & Cross-platform UI',
       description:
-        'Break domains into clear APIs, data models and service boundaries, then work through queries, state and consistency.',
-      stack: ['Go', 'Node.js', 'PostgreSQL', 'MongoDB', 'REST', 'WebSocket'],
+        'Proficient with React, TypeScript, and Next.js App Router, emphasizing SSR/SSG, SEO, and initial load performance. Experienced with React Native for cross-platform mobile apps with isolated component state and fluid UX.',
+      stack: ['Next.js', 'React', 'TypeScript', 'React Native', 'Tailwind CSS'],
     },
     {
       index: '03',
-      title: 'Engineering delivery',
+      title: 'Engineering & DevOps Delivery',
       description:
-        'Make features more than locally runnable: testable, deployable, observable and ready to improve.',
-      stack: ['Testing', 'Docker', 'Caddy', 'Git'],
+        'Treating delivery and observability as essential engineering closures. Experienced with Docker/Compose for service orchestration, Caddy for reverse proxying and auto HTTPS, Prometheus + Jaeger for telemetry, and GitHub Actions CI/CD.',
+      stack: ['Docker', 'Caddy', 'Prometheus', 'Jaeger', 'GitHub Actions'],
     },
     {
       index: '04',
-      title: 'AI-assisted problem solving',
+      title: 'AI Tooling & Practical Integrations',
       description:
-        'Use AI to break down problems, compare architectural options, draft implementations and surface edge cases, then verify the output through code, tests and real execution.',
-      stack: ['AI-assisted workflow', 'Prompt design', 'Edge cases', 'Verification'],
+        'Going beyond conversational chatbots to embed LLMs into real engineering workflows. Designed ObsAgent CLI for local knowledge vaults, implementing hybrid RAG, constrained agent decision loops, and safe atomic file rollbacks.',
+      stack: ['ObsAgent CLI', 'RAG', 'Tool Calling', 'LangGraph', 'Local LLM'],
     },
   ],
   principles: [
     {
-      title: 'Define the problem first',
-      description: 'Before choosing a stack, clarify the goal, constraints and problem that actually needs solving.',
+      title: 'Maintainability over shortcuts',
+      description:
+        'Clear boundaries, strict type definitions, and expressive naming matter far more than shaving off two lines of code. Programs must be written for people to read, and only incidentally for machines to execute.',
     },
     {
-      title: 'Put boundaries and details into the design',
+      title: 'Defensive design & boundary awareness',
       description:
-        'Pay attention to naming, permissions, failure paths, loading states and data boundaries so reliability becomes concrete.',
+        'An engineering instinct carried over from auditing: never blindly trust external input. Consolidate validations, unique constraints, and state machines on the server, gracefully handling every potential failure branch.',
     },
     {
-      title: 'Let AI accelerate exploration; let review drive progress',
+      title: 'Execution completeness & continuous review',
       description:
-        'Let AI participate in exploration, summarising and drafting, while final judgment stays grounded in boundaries, tests and real execution. Every review becomes a starting point for the next improvement.',
+        'Focus on solving real problems rather than chasing hype. Once deployed, rely on structured logs, telemetry metrics, and post-mortems to steadily evolve the system.',
     },
   ],
 } as const;
@@ -243,7 +244,8 @@ const englishChatifyCase: ProjectCaseStudy = {
     boundaries: {
       kicker: '04 / CURRENT BOUNDARIES',
       title: 'What is not production-ready yet',
-      intro: 'These risks are verifiable in the current code and should be addressed before the next production-oriented iteration.',
+      intro:
+        'These risks are verifiable in the current code and should be addressed before the next production-oriented iteration.',
     },
     next: { kicker: '05 / NEXT ITERATION', title: 'What to improve next' },
   },
@@ -381,7 +383,8 @@ const englishLinzeProCase: ProjectCaseStudy = {
     {
       src: '/projects/linze-pro/architecture.svg',
       alt: 'Linze.pro content architecture showing Markdown authoring, Go API, PostgreSQL, Next.js rendering and SEO delivery',
-      caption: 'The path from Markdown authoring through the Go API and PostgreSQL to Next.js server rendering and SEO output.',
+      caption:
+        'The path from Markdown authoring through the Go API and PostgreSQL to Next.js server rendering and SEO output.',
       width: 1600,
       height: 900,
       role: 'architecture',
@@ -394,7 +397,8 @@ const englishLinzeProCase: ProjectCaseStudy = {
     boundaries: {
       kicker: '04 / CURRENT BOUNDARIES',
       title: 'What still needs to converge',
-      intro: 'These limitations are verifiable in the current code and provide concrete entry points for the next iteration of the content platform.',
+      intro:
+        'These limitations are verifiable in the current code and provide concrete entry points for the next iteration of the content platform.',
     },
     next: { kicker: '05 / NEXT ITERATION', title: 'What to improve next' },
   },
@@ -554,7 +558,8 @@ const englishCabinFyCase: ProjectCaseStudy = {
     boundaries: {
       kicker: '04 / CURRENT BOUNDARIES',
       title: 'Backend boundaries that still need to converge',
-      intro: 'The frontend and business flows have a clear shape, while authorization, booking consistency and production safeguards remain the next engineering focus.',
+      intro:
+        'The frontend and business flows have a clear shape, while authorization, booking consistency and production safeguards remain the next engineering focus.',
     },
     next: { kicker: '05 / NEXT ITERATION', title: 'What to improve next' },
   },
@@ -568,27 +573,32 @@ const englishCabinFyCase: ProjectCaseStudy = {
     {
       label: '01',
       title: 'Discover',
-      description: 'Guests browse the cabin catalogue and use filtering, sorting and pagination to find available stays.',
+      description:
+        'Guests browse the cabin catalogue and use filtering, sorting and pagination to find available stays.',
     },
     {
       label: '02',
       title: 'Decide',
-      description: 'The cabin detail page brings together images, description, price, location and reviews while guests choose dates and capacity.',
+      description:
+        'The cabin detail page brings together images, description, price, location and reviews while guests choose dates and capacity.',
     },
     {
       label: '03',
       title: 'Calculate',
-      description: 'The booking form presents an estimate based on dates, nights, guests and breakfast options before submission.',
+      description:
+        'The booking form presents an estimate based on dates, nights, guests and breakfast options before submission.',
     },
     {
       label: '04',
       title: 'Book',
-      description: 'After signing in, the frontend uses the JWT cookie to call the protected booking endpoint and submit the form.',
+      description:
+        'After signing in, the frontend uses the JWT cookie to call the protected booking endpoint and submit the form.',
     },
     {
       label: '05',
       title: 'Operate',
-      description: 'Administrators use the dashboard, bookings, cabins and check-in screens to handle reservations, listings and stay status.',
+      description:
+        'Administrators use the dashboard, bookings, cabins and check-in screens to handle reservations, listings and stay status.',
     },
   ],
   decisions: [
@@ -691,7 +701,8 @@ const englishMovieFyCase: ProjectCaseStudy = {
     boundaries: {
       kicker: '04 / CURRENT BOUNDARIES',
       title: 'Backend and state boundaries that still need to converge',
-      intro: 'The frontend product and content flows have a clear shape, while authentication safety, data consistency and error contracts remain the next engineering focus.',
+      intro:
+        'The frontend product and content flows have a clear shape, while authentication safety, data consistency and error contracts remain the next engineering focus.',
     },
     next: { kicker: '05 / NEXT ITERATION', title: 'What to improve next' },
   },
@@ -705,17 +716,20 @@ const englishMovieFyCase: ProjectCaseStudy = {
     {
       label: '01',
       title: 'Discover',
-      description: 'The home page uses a hero carousel, latest uploads and genre-based top-rated lists to help viewers find movies.',
+      description:
+        'The home page uses a hero carousel, latest uploads and genre-based top-rated lists to help viewers find movies.',
     },
     {
       label: '02',
       title: 'Search',
-      description: 'Viewers search by title while Search Context and debounce logic reduce repeated requests and expose result states.',
+      description:
+        'Viewers search by title while Search Context and debounce logic reduce repeated requests and expose result states.',
     },
     {
       label: '03',
       title: 'Explore',
-      description: 'The movie detail page brings together video, story, director, writer, cast, genres, language, release date and related movies.',
+      description:
+        'The movie detail page brings together video, story, director, writer, cast, genres, language, release date and related movies.',
     },
     {
       label: '04',
@@ -725,7 +739,8 @@ const englishMovieFyCase: ProjectCaseStudy = {
     {
       label: '05',
       title: 'Operate',
-      description: 'Administrators use the dashboard, movies, actors and search screens to manage media, people and publication status.',
+      description:
+        'Administrators use the dashboard, movies, actors and search screens to manage media, people and publication status.',
     },
   ],
   decisions: [
@@ -854,7 +869,8 @@ const englishPetifyCase: ProjectCaseStudy = {
     boundaries: {
       kicker: '04 / CURRENT BOUNDARIES',
       title: 'A complete frontend experience, with transaction boundaries still to close',
-      intro: 'The storefront and seller workspace form a clear product skeleton. Identity boundaries, order consistency, realtime connections and the payment path are the most important next engineering problems.',
+      intro:
+        'The storefront and seller workspace form a clear product skeleton. Identity boundaries, order consistency, realtime connections and the payment path are the most important next engineering problems.',
     },
     next: { kicker: '05 / NEXT ITERATION', title: 'What to improve next' },
   },
@@ -999,7 +1015,8 @@ const englishHomestayCase: ProjectCaseStudy = {
     {
       src: '/projects/homestay/architecture.svg',
       alt: 'Homestay booking architecture showing the WeChat Mini Program, Nginx, Go API, MySQL, Redis, worker and WeChat Pay',
-      caption: 'Boundaries between the Mini Program, Go API, MySQL source of truth, Redis calendar cache, expiry worker and WeChat Pay.',
+      caption:
+        'Boundaries between the Mini Program, Go API, MySQL source of truth, Redis calendar cache, expiry worker and WeChat Pay.',
       width: 1600,
       height: 900,
       role: 'architecture',
@@ -1012,7 +1029,8 @@ const englishHomestayCase: ProjectCaseStudy = {
     boundaries: {
       kicker: '04 / CURRENT BOUNDARIES',
       title: 'Current implementation boundaries and risks',
-      intro: 'These limitations are directly verifiable in the Go code, deployment configuration and runtime model; they should not be presented as completed production capabilities.',
+      intro:
+        'These limitations are directly verifiable in the Go code, deployment configuration and runtime model; they should not be presented as completed production capabilities.',
     },
     next: { kicker: '05 / NEXT ITERATION', title: 'What to improve next' },
   },
@@ -1175,7 +1193,8 @@ const englishMusicFyCase: ProjectCaseStudy = {
     boundaries: {
       kicker: '04 / CURRENT BOUNDARIES',
       title: 'A complete prototype still has engineering edges to close',
-      intro: 'The mobile playback and content flows form a working product skeleton. Download timing, token lifecycle, history writes and backend constraints are the most valuable next improvements.',
+      intro:
+        'The mobile playback and content flows form a working product skeleton. Download timing, token lifecycle, history writes and backend constraints are the most valuable next improvements.',
     },
     next: { kicker: '05 / NEXT ITERATION', title: 'What to improve next' },
   },
@@ -1320,7 +1339,8 @@ const englishObsaiCase: ProjectCaseStudy = {
     {
       src: '/projects/obsai-cli/architecture.svg',
       alt: 'ObsAgent CLI architecture showing the Obsidian Vault, Python application, SQLite retrieval index, local or remote models and approval-gated write path',
-      caption: 'The Vault remains the source of truth; retrieval and answering are separated from approval-gated file writes.',
+      caption:
+        'The Vault remains the source of truth; retrieval and answering are separated from approval-gated file writes.',
       width: 1600,
       height: 900,
       role: 'architecture',

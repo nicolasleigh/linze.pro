@@ -1,14 +1,14 @@
 export const aboutContent = {
   introduction: {
     eyebrow: 'ABOUT / BACKGROUND',
-    title: '财经思维，工程实践',
+    title: '从财务审计，到全栈软件工程',
     description:
-      '我专注 Go 后端、React/Next.js 与 AI 辅助的全栈实践。AI 帮我探索问题、比较方案和加速验证，但最终判断仍然来自清晰的边界、可运行的代码与真实结果。',
+      '我是一名转行自学的全栈开发者，目前生活在北京。拥有财经教育背景与中国注册会计师（CPA）专业资质，日常主力技术栈是 Go、React / Next.js 与 TypeScript。热衷于构建清晰、健壮的端到端应用，深入钻研系统架构与工程交付，并积极将现代 AI 工具融入真实的研发与个人项目工作流中。',
   },
   profile: [
     { label: 'FOCUS', value: 'Go 后端 · React/Next.js' },
-    { label: 'BUILDING', value: '全栈产品 · AI 辅助工作流' },
-    { label: 'LEARNING', value: '项目实验 · 工程复盘' },
+    { label: 'BUILDING', value: '全栈系统 · 现代 AI 工具链' },
+    { label: 'LEARNING', value: '系统架构 · 性能优化 · 可观测性' },
     { label: 'BASE', value: '中国 · 北京' },
   ],
   education: {
@@ -18,15 +18,15 @@ export const aboutContent = {
         index: '01',
         title: '中南财经政法大学',
         subtitle: '财政学 · 经济学学士',
-        description: '财政学训练让我习惯从数据、约束和结果出发，理解复杂问题背后的运行逻辑。',
+        description: '系统的财政学与经济学训练，培养了我对宏观体系、统计数据与公共政策底层逻辑的认知能力。',
         tags: ['财政学', '经济学学士', '“211工程”重点高校'],
       },
       {
         index: '02',
         title: '中国注册会计师（CPA）',
-        subtitle: 'Certified Public Accountant',
+        subtitle: 'Certified Public Accountant · 全科合格',
         description:
-          'CPA 训练强化了我对证据、边界与风险的敏感度；这些习惯也影响我设计 API、数据模型和交付流程的方式。',
+          '通关 CPA 专业阶段全部科目。财务与审计背景让我对账目逻辑、数据一致性和潜在漏洞有天然的防范意识；在设计后端 API、数据库约束和处理业务状态时，总会下意识多做一步防御性考量。',
         tags: ['会计与审计准则', '财税与商事法规', '财务与成本管理', '战略与风险控制'],
       },
     ],
@@ -34,45 +34,48 @@ export const aboutContent = {
   capabilities: [
     {
       index: '01',
-      title: '界面与产品体验',
+      title: '服务端与数据底座',
       description:
-        '把复杂信息整理成清晰、好用的界面，关注信息层级、可访问性和长期维护。',
-      stack: ['React', 'Next.js', 'TypeScript', 'React Native', 'Vue'],
+        '以 Go 为主力后端语言，基于 chi / Gin 构建结构清晰的 RESTful API 与实时链路。熟练进行 PostgreSQL 关系建模、索引优化与事务控制，配合 Redis 实现缓存与限流。',
+      stack: ['Go', 'PostgreSQL', 'Redis', 'Node.js', 'REST', 'WebSocket'],
     },
     {
       index: '02',
-      title: '服务与数据边界',
+      title: '现代 Web 与跨端界面',
       description:
-        '把业务拆成清晰的 API、数据模型与服务边界，处理查询、状态和一致性问题。',
-      stack: ['Go', 'Node.js', 'PostgreSQL', 'MongoDB', 'REST', 'WebSocket'],
+        '精通 React、TypeScript 与 Next.js App Router，注重服务端渲染（SSR/SSG）、SEO 与首屏性能；具备 React Native 移动端开发经验，关注组件状态隔离与交互体验。',
+      stack: ['Next.js', 'React', 'Vue', 'TypeScript', 'React Native', 'Tailwind CSS'],
     },
     {
       index: '03',
-      title: '工程交付',
+      title: '工程化与运维交付',
       description:
-        '让功能不止在本地跑起来，还能被测试、部署、观察和持续迭代。',
-      stack: ['Testing', 'Docker', 'Caddy', 'Git'],
+        '坚持把“可交付、可观测”视为开发闭环。熟练使用 Docker / Docker Compose 组织服务网络，配置 Caddy 反向代理与自动 HTTPS，搭建 Prometheus + Jaeger 监控与 GitHub Actions 自动化部署。',
+      stack: ['Docker', 'Caddy', 'Prometheus', 'Jaeger', 'GitHub Actions'],
     },
     {
       index: '04',
-      title: 'AI 辅助的问题解决',
+      title: 'AI 工具链与落地实践',
       description:
-        '用 AI 协助拆解问题、比较架构方案、生成实现初稿和补充边界场景，再通过代码、测试与实际运行结果完成验证。',
-      stack: ['AI-assisted workflow', 'Prompt design', 'Edge cases', 'Verification'],
+        '不满足于仅仅把 AI 当做聊天问答，更探索其在真实工程中的集成。曾独立设计面向本地知识库的 ObsAgent CLI 工具，实践过 RAG 混合检索、受限 Agent 决策与安全的文件事务回滚。',
+      stack: ['ObsAgent CLI', 'RAG', 'Tool Calling', 'LangGraph', 'Local LLM'],
     },
   ],
   principles: [
     {
-      title: '先把问题说清楚',
-      description: '技术选型之前，先确认目标、约束和真正需要解决的问题。',
+      title: '可维护性优于捷径',
+      description:
+        '清晰的模块边界、严谨的类型定义与见名知意的命名，远比少写两行代码重要。代码是写给人看的，顺便由机器执行。',
     },
     {
-      title: '把边界和细节写进设计',
-      description: '关注命名、权限、错误路径、加载状态和数据边界，让可靠性落到具体细节。',
+      title: '防御性设计与边界意识',
+      description:
+        '从审计经历延续下来的工程习惯：永远不要盲目信任外部输入。把数据校验、唯一约束与业务状态机收拢在服务端，优雅处理每一个可能的错误路径。',
     },
     {
-      title: '让 AI 加速探索，让复盘推动进步',
-      description: '让 AI 参与探索、总结和生成，但把最终判断交给问题边界、测试结果和实际运行；每次复盘都成为下一次改进的起点。',
+      title: '完成度与持续复盘',
+      description:
+        '不盲目追逐时髦框架，聚焦于解决真实业务痛点。上线之后，依靠日志、指标监控与工程复盘推动系统持续平稳演进。',
     },
   ],
 } as const;
