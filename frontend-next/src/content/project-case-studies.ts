@@ -4,6 +4,7 @@ export type ProjectCaseStudy = {
   title: string;
   description: string;
   problem: string;
+  media?: readonly ProjectMedia[];
   sections: {
     problem: { kicker: string; title: string };
     flow: { kicker: string; title: string };
@@ -30,6 +31,15 @@ export type ProjectCaseStudy = {
   nextSteps: readonly string[];
 };
 
+export type ProjectMedia = {
+  src: string;
+  alt: string;
+  caption?: string;
+  width: number;
+  height: number;
+  role: 'hero' | 'architecture' | 'flow' | 'screen';
+};
+
 export const projectCaseStudies = {
   chatify: {
     projectSlug: 'chatify',
@@ -39,6 +49,16 @@ export const projectCaseStudies = {
       '围绕数据库访问成本和 N+1 查询问题，为 Chatify 增加 Go、PostgreSQL 与 WebSocket 后端，并保留迁移期间仍在工作的 Next.js / Convex 能力。',
     problem:
       '旧实现将会话与消息数据主要放在 Convex。随着关系查询增多，缺少 SQL JOIN 的数据访问方式容易把一次页面加载拆成大量查询。重构目标不是简单换语言，而是重新建立会话、成员、消息和未读状态之间的关系模型，同时让消息能够持久化后再实时分发。',
+    media: [
+      {
+        src: '/projects/chatify/architecture.svg',
+        alt: 'Chatify architecture showing Next.js, Clerk, Go WebSocket, PostgreSQL and LiveKit boundaries',
+        caption: '身份同步、历史查询、消息持久化、实时广播与音视频服务的边界。',
+        width: 1600,
+        height: 900,
+        role: 'architecture',
+      },
+    ],
     sections: {
       problem: { kicker: '01 / PROBLEM', title: '为什么要重构后端' },
       flow: { kicker: '02 / MESSAGE FLOW', title: '一条消息如何完成持久化与分发' },
@@ -169,6 +189,16 @@ export const projectCaseStudies = {
       '在保留 Go/chi 内容 API 与既有文章模型的前提下，使用 Next.js App Router 重建公开前端，补齐 Markdown 发布、双语回退、SEO、文章互动与后台内容管理链路。',
     problem:
       '旧 Vue 前端的组件结构和渲染边界不适合继续扩展，文章展示、语言切换、SEO 与互动逻辑也逐渐耦合。重构目标不是把 Vue 文件逐个翻译成 React，而是在保留 Go 后端和内容数据的前提下，重新建立从 Markdown 编辑、版本保存到公开阅读的完整内容链路。',
+    media: [
+      {
+        src: '/projects/linze-pro/architecture.svg',
+        alt: 'Linze.pro content architecture showing Markdown authoring, Go API, PostgreSQL, Next.js rendering and SEO delivery',
+        caption: 'Markdown 内容从后台编辑、Go API 与 PostgreSQL 持久化，到 Next.js 服务端渲染和 SEO 输出的链路。',
+        width: 1600,
+        height: 900,
+        role: 'architecture',
+      },
+    ],
     sections: {
       problem: { kicker: '01 / MIGRATION BRIEF', title: '为什么要重构博客前端' },
       flow: { kicker: '02 / CONTENT LIFECYCLE', title: '一篇文章如何从 Markdown 走到公开页面' },
@@ -302,6 +332,24 @@ export const projectCaseStudies = {
       '使用 React、React Query 与 Tailwind CSS 重建面向旅客和管理员的住宿预订体验，并通过 Node.js、Express、Prisma 与 PostgreSQL 支撑房源、预订、评价和运营设置等核心流程。',
     problem:
       'CabinFy 同时服务希望发现并预订小木屋的旅客，以及需要管理房源、预订和入住流程的管理员。项目的挑战不只是完成一个房源列表，而是在同一套数据模型上组织两类用户的路由、服务端状态、表单、数据表格和响应式交互，让一个课程原型逐步具备完整产品的结构。',
+    media: [
+      {
+        src: 'https://file.linze.pro/images/cabinfy/1.webp',
+        alt: 'CabinFy accommodation application interface screenshot 1',
+        caption: 'CabinFy 真实项目界面截图（1）。',
+        width: 1600,
+        height: 900,
+        role: 'screen',
+      },
+      {
+        src: 'https://file.linze.pro/images/cabinfy/5.webp',
+        alt: 'CabinFy accommodation application interface screenshot 5',
+        caption: 'CabinFy 真实项目界面截图（5）。',
+        width: 1600,
+        height: 900,
+        role: 'screen',
+      },
+    ],
     sections: {
       problem: { kicker: '01 / PRODUCT SCOPE', title: '为什么需要一个双端住宿产品' },
       flow: { kicker: '02 / BOOKING FLOW', title: '一次预订如何从浏览走到后台处理' },
@@ -555,150 +603,336 @@ export const projectCaseStudies = {
     ],
   },
   petify: {
-    projectSlug: "petify",
-    heroKicker: "CASE STUDY / COMMERCE SYSTEM",
-    title: "从用户商城到卖家后台的三端电商系统",
+    projectSlug: 'petify',
+    heroKicker: 'CASE STUDY / COMMERCE SYSTEM',
+    title: '从用户商城到卖家后台的三端电商系统',
     description:
-      "Petify 将用户商城、卖家运营后台和 Express API 拆成三个独立应用，覆盖商品发现、筛选、购物车、订单、评价、实时客服和运营数据看板。项目使用 React、Redux、Tailwind CSS、Node.js、MongoDB、Cloudinary、Docker 与 Caddy 完成从界面到部署的全栈实践。",
+      'Petify 将用户商城、卖家运营后台和 Express API 拆成三个独立应用，覆盖商品发现、筛选、购物车、订单、评价、实时客服和运营数据看板。项目使用 React、Redux、Tailwind CSS、Node.js、MongoDB、Cloudinary、Docker 与 Caddy 完成从界面到部署的全栈实践。',
     problem:
-      "Petify 的挑战不是完成一个商品列表，而是在同一套用户、商品、订单和聊天数据上组织三种不同的使用场景：用户需要清晰的发现和购买流程，卖家需要高密度的商品与订单工作台，客服又需要低延迟的实时沟通。项目因此将用户端、卖家端和 API 独立出来，再通过 REST、Redux 和 Socket.IO 连接交易与沟通流程。",
-    sections: {
-      problem: { kicker: "01 / PRODUCT SURFACES", title: "为什么把电商拆成三个应用" },
-      flow: { kicker: "02 / COMMERCE FLOW", title: "一次购买如何从商品发现进入后台协作" },
-      decisions: { kicker: "03 / FRONTEND ENGINEERING", title: "代码中真实存在的产品与工程设计" },
-      boundaries: {
-        kicker: "04 / CURRENT BOUNDARIES",
-        title: "前端体验完整，但交易后端仍需收敛",
-        intro: "用户商城和卖家工作台已经形成较完整的产品骨架；身份边界、订单一致性、实时连接和支付闭环是下一轮更重要的工程问题。",
+      'Petify 的挑战不是完成一个商品列表，而是在同一套用户、商品、订单和聊天数据上组织三种不同的使用场景：用户需要清晰的发现和购买流程，卖家需要高密度的商品与订单工作台，客服又需要低延迟的实时沟通。项目因此将用户端、卖家端和 API 独立出来，再通过 REST、Redux 和 Socket.IO 连接交易与沟通流程。',
+    media: [
+      {
+        src: 'https://file.linze.pro/images/petify/10.webp',
+        alt: 'Petify commerce application interface screenshot 10',
+        // caption: 'Petify 真实项目界面截图（10）。',
+        width: 1600,
+        height: 900,
+        role: 'screen',
       },
-      next: { kicker: "05 / NEXT ITERATION", title: "下一轮应该怎么做" },
+      {
+        src: 'https://file.linze.pro/images/petify/1.webp',
+        alt: 'Petify commerce application interface screenshot 3',
+        // caption: 'Petify 真实项目界面截图（3）。',
+        width: 1600,
+        height: 900,
+        role: 'screen',
+      },
+      {
+        src: 'https://file.linze.pro/images/petify/7.webp',
+        alt: 'Petify commerce application interface screenshot 7',
+        // caption: 'Petify 真实项目界面截图（7）。',
+        width: 1600,
+        height: 900,
+        role: 'screen',
+      },
+    ],
+    sections: {
+      problem: { kicker: '01 / PRODUCT SURFACES', title: '为什么把电商拆成三个应用' },
+      flow: { kicker: '02 / COMMERCE FLOW', title: '一次购买如何从商品发现进入后台协作' },
+      decisions: { kicker: '03 / FRONTEND ENGINEERING', title: '代码中真实存在的产品与工程设计' },
+      boundaries: {
+        kicker: '04 / CURRENT BOUNDARIES',
+        title: '前端体验完整，但交易后端仍需收敛',
+        intro:
+          '用户商城和卖家工作台已经形成较完整的产品骨架；身份边界、订单一致性、实时连接和支付闭环是下一轮更重要的工程问题。',
+      },
+      next: { kicker: '05 / NEXT ITERATION', title: '下一轮应该怎么做' },
     },
     goals: [
-      "将用户商城、卖家运营后台和 Express API 拆成独立的应用边界",
-      "为商品发现、购物车、订单、评价和客服建立连续的用户体验",
-      "使用 Redux、React Router 和 Tailwind 组织跨页面状态与响应式界面",
-      "让卖家能够在同一个工作台中处理商品、订单、统计和客户消息",
+      '将用户商城、卖家运营后台和 Express API 拆成独立的应用边界',
+      '为商品发现、购物车、订单、评价和客服建立连续的用户体验',
+      '使用 Redux、React Router 和 Tailwind 组织跨页面状态与响应式界面',
+      '让卖家能够在同一个工作台中处理商品、订单、统计和客户消息',
     ],
     flow: [
       {
-        label: "01",
-        title: "Discover",
+        label: '01',
+        title: 'Discover',
         description:
-          "用户从首页 Banner、分类和商品列表开始浏览，API 返回最新、评分和折扣商品，前端通过卡片和详情页组织发现路径。",
+          '用户从首页 Banner、分类和商品列表开始浏览，API 返回最新、评分和折扣商品，前端通过卡片和详情页组织发现路径。',
       },
       {
-        label: "02",
-        title: "Filter",
+        label: '02',
+        title: 'Filter',
         description:
-          "Shop 页面组合分类、价格区间、评分、关键词和价格排序，并在 Grid/List 视图和分页之间保持同一组筛选状态。",
+          'Shop 页面组合分类、价格区间、评分、关键词和价格排序，并在 Grid/List 视图和分页之间保持同一组筛选状态。',
       },
       {
-        label: "03",
-        title: "Decide",
+        label: '03',
+        title: 'Decide',
         description:
-          "商品详情聚合图片、描述、库存、折扣、评分、评论、同类商品和同一卖家的更多商品，帮助用户完成购买判断。",
+          '商品详情聚合图片、描述、库存、折扣、评分、评论、同类商品和同一卖家的更多商品，帮助用户完成购买判断。',
       },
       {
-        label: "04",
-        title: "Cart",
-        description:
-          "用户可以将商品加入购物车或心愿单，调整数量，检查库存，并在结算页面填写配送信息。",
+        label: '04',
+        title: 'Cart',
+        description: '用户可以将商品加入购物车或心愿单，调整数量，检查库存，并在结算页面填写配送信息。',
       },
       {
-        label: "05",
-        title: "Order",
+        label: '05',
+        title: 'Order',
         description:
-          "下单接口创建客户订单和卖家子订单，删除购物车项目，并通过订单状态和 Dashboard 让用户追踪处理进度。",
+          '下单接口创建客户订单和卖家子订单，删除购物车项目，并通过订单状态和 Dashboard 让用户追踪处理进度。',
       },
       {
-        label: "06",
-        title: "Operate",
+        label: '06',
+        title: 'Operate',
         description:
-          "卖家在 Dashboard、商品、分类、订单、支付统计和客服页面中完成日常运营，Socket.IO 同步在线客户与消息变化。",
+          '卖家在 Dashboard、商品、分类、订单、支付统计和客服页面中完成日常运营，Socket.IO 同步在线客户与消息变化。',
       },
     ],
     decisions: [
       {
-        title: "将用户端、卖家端与 API 作为三个产品边界",
+        title: '将用户端、卖家端与 API 作为三个产品边界',
         implementation:
-          "frontend 和 dashboard 是两个独立的 Vite React 应用，backend 负责 Express REST API、MongoDB、文件上传和 Socket.IO；Caddy 根据 pet.linze.pro 与 seller.pet.linze.pro 路由静态资源和 API。",
-        value:
-          "用户商城和卖家后台可以拥有不同的信息密度、导航和交互方式，同时共享同一套业务数据和后端能力。",
+          'frontend 和 dashboard 是两个独立的 Vite React 应用，backend 负责 Express REST API、MongoDB、文件上传和 Socket.IO；Caddy 根据 pet.linze.pro 与 seller.pet.linze.pro 路由静态资源和 API。',
+        value: '用户商城和卖家后台可以拥有不同的信息密度、导航和交互方式，同时共享同一套业务数据和后端能力。',
       },
       {
-        title: "用 Redux Toolkit 组织跨页面交易状态",
+        title: '用 Redux Toolkit 组织跨页面交易状态',
         implementation:
-          "用户端分别维护 auth、home、cart、order、dashboard 和 chat reducer；后台则拆分 auth、product、category、seller、order 和 chat 状态。",
+          '用户端分别维护 auth、home、cart、order、dashboard 和 chat reducer；后台则拆分 auth、product、category、seller、order 和 chat 状态。',
         value:
-          "商品详情、购物车、订单、Dashboard 和聊天页面之间拥有稳定的状态入口，减少跨页面交互中的重复请求和局部状态拼装。",
+          '商品详情、购物车、订单、Dashboard 和聊天页面之间拥有稳定的状态入口，减少跨页面交互中的重复请求和局部状态拼装。',
       },
       {
-        title: "围绕卖家日常操作设计后台工作台",
+        title: '围绕卖家日常操作设计后台工作台',
         implementation:
-          "dashboard 使用独立路由、ProtectedRoute、Lazy Loading、商品与订单表格、搜索分页、图表和 react-window 虚拟列表组织商品、订单、支付和客服页面。",
-        value:
-          "后台不只是用户端的附属页面，而是针对商品管理、订单处理、销售统计和客户沟通建立了更高密度的操作流。",
+          'dashboard 使用独立路由、ProtectedRoute、Lazy Loading、商品与订单表格、搜索分页、图表和 react-window 虚拟列表组织商品、订单、支付和客服页面。',
+        value: '后台不只是用户端的附属页面，而是针对商品管理、订单处理、销售统计和客户沟通建立了更高密度的操作流。',
       },
       {
-        title: "用 REST 持久化与 Socket.IO 即时分发协作",
+        title: '用 REST 持久化与 Socket.IO 即时分发协作',
         implementation:
-          "聊天控制器将 Customer、Seller 和 Admin 消息写入 MongoDB，Socket.IO 维护当前进程中的在线连接并向目标用户推送消息；前端 Redux 接收事件后更新会话列表。",
+          '聊天控制器将 Customer、Seller 和 Admin 消息写入 MongoDB，Socket.IO 维护当前进程中的在线连接并向目标用户推送消息；前端 Redux 接收事件后更新会话列表。',
         value:
-          "历史数据和实时交互拥有不同的职责边界：REST 负责可查询的消息记录，Socket.IO 负责在线场景中的低延迟反馈。",
+          '历史数据和实时交互拥有不同的职责边界：REST 负责可查询的消息记录，Socket.IO 负责在线场景中的低延迟反馈。',
       },
       {
-        title: "将国际化、主题和响应式作为界面基础",
+        title: '将国际化、主题和响应式作为界面基础',
         implementation:
-          "用户端使用 react-i18next 和浏览器语言检测加载中英文文案，Tailwind CSS 负责商品筛选、详情、购物车和移动端布局；后台通过 ThemeProvider 支持明暗主题和响应式 Sidebar。",
-        value:
-          "用户体验不局限于桌面端单语言商城，语言、设备尺寸和视觉偏好都在界面结构中拥有明确入口。",
+          '用户端使用 react-i18next 和浏览器语言检测加载中英文文案，Tailwind CSS 负责商品筛选、详情、购物车和移动端布局；后台通过 ThemeProvider 支持明暗主题和响应式 Sidebar。',
+        value: '用户体验不局限于桌面端单语言商城，语言、设备尺寸和视觉偏好都在界面结构中拥有明确入口。',
       },
       {
-        title: "把媒体上传和部署纳入交付链路",
+        title: '把媒体上传和部署纳入交付链路',
         implementation:
-          "Formidable 接收商品图片和头像上传，Cloudinary 托管媒体 URL；Docker Compose 编排 MongoDB 与后端，Makefile 构建前端和后台静态资源，Caddy 提供 HTTPS、SPA fallback 和反向代理。",
-        value:
-          "项目覆盖了从商品内容录入到静态资源发布、API 代理和服务器部署的完整交付路径，而不止停留在本地开发环境。",
+          'Formidable 接收商品图片和头像上传，Cloudinary 托管媒体 URL；Docker Compose 编排 MongoDB 与后端，Makefile 构建前端和后台静态资源，Caddy 提供 HTTPS、SPA fallback 和反向代理。',
+        value: '项目覆盖了从商品内容录入到静态资源发布、API 代理和服务器部署的完整交付路径，而不止停留在本地开发环境。',
       },
     ],
     boundaries: [
       {
-        level: "高",
-        title: "订单接口仍然信任较多客户端数据",
+        level: '高',
+        title: '订单接口仍然信任较多客户端数据',
         description:
-          "placeOrder 接收客户端传入的 userId、商品结构、价格和配送信息，当前没有充分体现服务端重新读取价格、校验库存、原子扣减、订单幂等和事务边界。它已经打通购物车到订单的业务流程，但还不能包装成强一致交易系统。",
+          'placeOrder 接收客户端传入的 userId、商品结构、价格和配送信息，当前没有充分体现服务端重新读取价格、校验库存、原子扣减、订单幂等和事务边界。它已经打通购物车到订单的业务流程，但还不能包装成强一致交易系统。',
       },
       {
-        level: "高",
-        title: "Customer API 和后台角色边界还不统一",
+        level: '高',
+        title: 'Customer API 和后台角色边界还不统一',
         description:
-          "部分购物车、心愿单、评论和订单接口直接使用 URL 或 Body 中的 userId，后台路由也主要依赖通用 authMiddleware。下一步需要让服务端从 Token 推导身份，并统一 Customer、Seller 和 Admin 的授权策略。",
+          '部分购物车、心愿单、评论和订单接口直接使用 URL 或 Body 中的 userId，后台路由也主要依赖通用 authMiddleware。下一步需要让服务端从 Token 推导身份，并统一 Customer、Seller 和 Admin 的授权策略。',
       },
       {
-        level: "高",
-        title: "Socket.IO 当前是单实例且缺少连接鉴权",
+        level: '高',
+        title: 'Socket.IO 当前是单实例且缺少连接鉴权',
         description:
-          "在线客户、卖家和管理员保存在 Node.js 进程内的数组与单个 admin 变量中，连接事件也依赖客户端传入的 ID；没有 Redis Adapter、ACK、重试、离线队列或多实例广播能力。",
+          '在线客户、卖家和管理员保存在 Node.js 进程内的数组与单个 admin 变量中，连接事件也依赖客户端传入的 ID；没有 Redis Adapter、ACK、重试、离线队列或多实例广播能力。',
       },
       {
-        level: "中",
-        title: "商品筛选和 Dashboard 统计仍有查询扩展空间",
+        level: '中',
+        title: '商品筛选和 Dashboard 统计仍有查询扩展空间',
         description:
-          "公开商品筛选先读取全部商品，再在 Node.js 内存中完成分类、价格、评分、搜索、排序和分页；Dashboard 统计也有多次读取全部订单的实现。数据量增长后应下沉到 MongoDB 查询、聚合和索引。",
+          '公开商品筛选先读取全部商品，再在 Node.js 内存中完成分类、价格、评分、搜索、排序和分页；Dashboard 统计也有多次读取全部订单的实现。数据量增长后应下沉到 MongoDB 查询、聚合和索引。',
       },
       {
-        level: "中",
-        title: "支付与生产保障尚未形成完整闭环",
+        level: '中',
+        title: '支付与生产保障尚未形成完整闭环',
         description:
-          "当前 Stripe 代码主要完成 Seller Connect 账户开户链接，尚未看到 Checkout、Payment Intent 和 Webhook 支付确认；同时缺少完整测试、限流、健康检查、结构化日志和 CI/CD。",
+          '当前 Stripe 代码主要完成 Seller Connect 账户开户链接，尚未看到 Checkout、Payment Intent 和 Webhook 支付确认；同时缺少完整测试、限流、健康检查、结构化日志和 CI/CD。',
       },
     ],
     nextSteps: [
-      "让所有 Customer API 从认证 Token 推导用户身份，并补齐 Customer、Seller、Admin 的服务端 RBAC",
-      "服务端重新计算订单金额和库存，用 MongoDB Transaction、原子扣减和幂等键保护下单流程",
-      "为 Socket.IO 增加 JWT 握手鉴权、可信 Origin、room、ACK、重连和 Redis Adapter",
-      "将筛选、分页和 Dashboard 统计下沉到 MongoDB 查询与聚合，并补充必要索引",
-      "接入 Stripe Payment Intent/Webhook，增加订单审计、集成测试、健康检查和结构化可观测性",
+      '让所有 Customer API 从认证 Token 推导用户身份，并补齐 Customer、Seller、Admin 的服务端 RBAC',
+      '服务端重新计算订单金额和库存，用 MongoDB Transaction、原子扣减和幂等键保护下单流程',
+      '为 Socket.IO 增加 JWT 握手鉴权、可信 Origin、room、ACK、重连和 Redis Adapter',
+      '将筛选、分页和 Dashboard 统计下沉到 MongoDB 查询与聚合，并补充必要索引',
+      '接入 Stripe Payment Intent/Webhook，增加订单审计、集成测试、健康检查和结构化可观测性',
+    ],
+  },
+  homestay: {
+    projectSlug: 'homestay',
+    heroKicker: 'CASE STUDY / GO TRANSACTION SYSTEM',
+    title: '从房态日历到幂等支付的 Go 民宿预订后端',
+    description:
+      '面向微信小程序的民宿预订 MVP。Homestay 使用 Go、Gin、GORM、MySQL、Redis 与微信支付 API v3，围绕按日房态、动态价格、服务端计价、幂等下单、库存锁定、订单过期释放和支付回调确认建立完整交易链路。',
+    problem:
+      '民宿预订并不是简单的房源 CRUD：同一房型的库存按入住日期变化，价格也可能按天不同；用户连击下单、订单超时和支付回调重试还会同时修改库存与订单状态。项目把 MySQL 作为金额和库存的事实来源，把 Redis 限定为可失效的房态缓存，并将价格计算、库存锁定和支付确认收敛在服务端事务边界内。',
+    media: [
+      {
+        src: '/projects/homestay/architecture.svg',
+        alt: 'Homestay booking architecture showing the WeChat Mini Program, Nginx, Go API, MySQL, Redis, worker and WeChat Pay',
+        caption: '微信小程序、Go API、MySQL 事实来源、Redis 房态缓存、过期订单 worker 与微信支付之间的边界。',
+        width: 1600,
+        height: 900,
+        role: 'architecture',
+      },
+    ],
+    sections: {
+      problem: { kicker: '01 / BACKEND BRIEF', title: '为什么这个预订系统值得单独设计' },
+      flow: { kicker: '02 / BOOKING FLOW', title: '一次预订如何走完库存与支付链路' },
+      decisions: { kicker: '03 / ENGINEERING DECISIONS', title: '代码中真实存在的后端设计' },
+      boundaries: {
+        kicker: '04 / CURRENT BOUNDARIES',
+        title: '当前实现的边界与风险',
+        intro: '这些限制可以从现有 Go 代码、部署配置和运行方式直接确认，不应在项目介绍中包装成已经完成的生产能力。',
+      },
+      next: { kicker: '05 / NEXT ITERATION', title: '下一轮应该怎么做' },
+    },
+    goals: [
+      '用按日库存与价格模型表达可售房态，而不是只保存房型总库存',
+      '让服务端重新计算报价，并用事务与行锁保护并发下单',
+      '通过 Idempotency-Key 和唯一约束抵御重复提交与网络重试',
+      '把微信支付准备、回调验签和支付确认接入订单状态链路',
+      '在不影响 MySQL 事实来源的前提下，用 Redis 缓存房态读取',
+    ],
+    flow: [
+      {
+        label: '01',
+        title: 'Discover',
+        description:
+          '微信小程序通过 Gin 路由获取房源、房型和指定日期范围的房态日历；日历读取优先访问 Redis，未命中或缓存异常时回到 MySQL。',
+      },
+      {
+        label: '02',
+        title: 'Preview',
+        description:
+          '客户端提交入住/退房日期和房间数，Order Service 从数据库读取每日价格与库存，在服务端计算总价并检查每晚可用量。',
+      },
+      {
+        label: '03',
+        title: 'Create',
+        description:
+          '创建订单必须携带 Idempotency-Key；事务先查询既有幂等订单，再按日期升序锁定库存行，增加 locked_stock 并写入订单和订单夜间快照。',
+      },
+      {
+        label: '04',
+        title: 'Expire',
+        description: '独立 worker 每 5 秒扫描已过期的待支付订单，复用取消逻辑释放 locked_stock，并使对应房态缓存失效。',
+      },
+      {
+        label: '05',
+        title: 'Pay',
+        description:
+          '支付准备阶段在生产环境调用微信支付 API v3 创建 JSAPI 预支付单，开发环境才允许使用显式的 mock 支付路径。',
+      },
+      {
+        label: '06',
+        title: 'Confirm',
+        description:
+          '微信回调经过 API v3 验签与解密后进入确认事务；服务端锁定订单和库存，将 locked_stock 转为 sold_stock，创建唯一支付记录并将重复通知安全地幂等返回。',
+      },
+    ],
+    decisions: [
+      {
+        title: '用模块化单体承载交易域',
+        implementation:
+          'server/internal 按 auth、user、homestay、room、order、payment 划分领域包，各自保留 model、repository、service 和 handler 边界；Gin router 只负责组装依赖和路由。',
+        value:
+          '在单体部署复杂度可控的前提下，把房态、订单和支付的业务规则集中在明确的服务边界中，后续仍有拆分或替换实现的空间。',
+      },
+      {
+        title: 'MySQL 是金额与库存的事实来源',
+        implementation:
+          '金额统一使用 int64 分，订单保存房源、房型和每日价格快照；Redis 只保存带版本号的房态日历，缓存异常时 fail-open 回源 MySQL。',
+        value: '避免浮点金额误差和缓存写入失败导致的库存错乱，也让支付金额校验可以对照订单持久化数据完成。',
+      },
+      {
+        title: '按日库存模型表达真实可售量',
+        implementation:
+          'room_inventory_daily 为每个房型和日期保存 total_stock、locked_stock、sold_stock、daily_price 和 closed；退房日按 checkout exclusive 处理，最多预览 93 天、预订 30 晚。',
+        value: '价格和库存可以随日期变化，周末价、关闭日期和跨夜预订都能在服务端以同一套数据模型校验。',
+      },
+      {
+        title: '幂等键与唯一索引共同保护下单',
+        implementation:
+          'orders 使用 user_id + idempotency_key 联合唯一约束；Order Service 在事务中先查既有订单，遇到并发唯一键竞争时再读取已创建订单并返回。',
+        value: '网络重试、按钮连击或客户端超时不会轻易产生重复订单，幂等语义由数据库约束和服务逻辑共同兜底。',
+      },
+      {
+        title: '固定锁顺序并用行锁防止超卖',
+        implementation:
+          '创建、取消和支付确认都会按日期升序锁定库存行，使用 SELECT ... FOR UPDATE 检查 available stock，再移动 locked_stock / sold_stock；更新后还检查 RowsAffected 是否符合预期。',
+        value: '并发预订同一房型时由 MySQL 串行化关键库存判断，固定锁顺序也降低了跨日期锁竞争形成死锁的概率。',
+      },
+      {
+        title: '缓存采用版本号主动失效',
+        implementation:
+          '房态缓存 key 包含 roomTypeID、版本、起止日期；库存发生变化后 Redis INCR 版本号，旧 key 自然失效，读写缓存失败不会阻断主交易。',
+        value: '不需要枚举并删除所有日期区间 key，就能让订单创建、取消和支付确认后的房态读取回到新版本。',
+      },
+      {
+        title: '支付网关与订单确认分离',
+        implementation:
+          'Payment Service 通过 WechatGateway 抽象生产支付创建与通知验签；真正的库存扣减仍由本地确认事务完成，并以订单金额、商户号、AppID 和交易状态做校验。',
+        value: '第三方支付 SDK 不会直接改写业务库存，回调重复、金额异常或订单已过期时都有明确的本地状态判断。',
+      },
+      {
+        title: '迁移与运行角色分离',
+        implementation:
+          'SQL migration 通过 go:embed 和 schema_migrations 记录版本，生产环境单独运行 migrate；API 和 worker 分别部署，避免把过期订单扫描塞进 HTTP 请求进程。',
+        value: '数据库结构变更和业务进程启动解耦，过期回收任务也能拥有独立的运行与扩容边界。',
+      },
+    ],
+    boundaries: [
+      {
+        level: '高',
+        title: '领域服务仍耦合 HTTP 响应类型',
+        description:
+          '部分 service 直接返回 response.Error 或 net/http 语义，领域规则与传输层边界还没有完全分开。后续更换 RPC、异步任务或复用领域服务时，需要先统一错误码和领域错误映射。',
+      },
+      {
+        level: '高',
+        title: '身份与跨域策略仍偏 MVP',
+        description:
+          'JWT 使用自定义 HS256 实现，当前没有刷新/撤销链路；CORS 仍允许任意 Origin，生产环境还需要收紧可信来源并增加请求限流。',
+      },
+      {
+        level: '中',
+        title: '可观测性与运行时生命周期尚未完整',
+        description:
+          '当前混用 Gin Logger 与标准日志，缺少 request-id、指标和分布式追踪；API/worker 的 context、readiness、draining 以及数据库连接显式关闭也仍有完善空间。',
+      },
+      {
+        level: '中',
+        title: '过期回收是轮询任务而不是可靠任务队列',
+        description:
+          'worker 通过固定间隔扫描数据库并复用取消逻辑，适合 MVP 的低复杂度部署，但没有任务租约、重试退避、失败告警或多实例抢占语义。',
+      },
+      {
+        level: '中',
+        title: '订单状态模型已经预留但业务驱动仍有限',
+        description:
+          '模型包含 CHECKED_IN、COMPLETED、退款等扩展状态，但当前核心链路主要覆盖待支付、已确认、取消和支付回调；状态迁移规则还需要继续集中化。',
+      },
+    ],
+    nextSteps: [
+      '统一领域错误、request-id、结构化日志、指标和追踪边界，形成可定位的交易观测链路',
+      '用 signal.NotifyContext、readiness/draining 和可取消 worker 收敛 API 与后台任务生命周期，并显式释放数据库与 Redis 连接',
+      '收紧 JWT、CORS 与支付回调的安全策略，增加请求限流和敏感操作审计',
+      '补充 OpenAPI 契约、缓存响应头与 ETag，减少前后端接口演进时的隐式约定',
+      '为过期回收和支付对账增加重试退避、失败记录与告警，明确异常订单的人工处理入口',
     ],
   },
   musicfy: {
@@ -841,6 +1075,159 @@ export const projectCaseStudies = {
       '将播放历史改为批量或节流写入，限制单文档增长并设计离线事件补偿',
       '补齐上传大小/类型校验、唯一索引和 MongoDB 事务，统一私有内容授权',
       '为播放、上传、认证和推荐增加单元/集成测试，再评估 Redis、CDN 和推送通知',
+    ],
+  },
+  'obsai-cli': {
+    projectSlug: 'obsai-cli',
+    heroKicker: 'CASE STUDY / LOCAL AI SYSTEM',
+    title: '把 Obsidian Vault 变成可引用、可审计的本地 AI 工作流',
+    description:
+      'ObsAgent CLI 面向 Obsidian Vault 构建本地优先的 AI 工作流：通过安全 Markdown 解析、上下文感知分块、可重建 SQLite 索引和混合检索完成搜索与问答，并让 Agent 在人工审批、乐观并发控制和可恢复事务的约束下修改文件。',
+    problem:
+      '普通全文搜索难以回答跨文档问题，而直接把整个 Vault 上传给远程模型又会带来隐私、成本和上下文失控风险。ObsAgent CLI 的目标不是增加一个聊天框，而是把解析、索引、检索、证据引用和文件写入组织成一条本地优先、可验证、可恢复的工作流。',
+    media: [
+      {
+        src: '/projects/obsai-cli/architecture.svg',
+        alt: 'ObsAgent CLI architecture showing the Obsidian Vault, Python application, SQLite retrieval index, local or remote models and approval-gated write path',
+        caption: 'Vault 是唯一事实来源；检索和问答与需要人工审批的文件写入路径相互隔离。',
+        width: 1600,
+        height: 900,
+        role: 'architecture',
+      },
+    ],
+    sections: {
+      problem: { kicker: '01 / PRODUCT BRIEF', title: '为什么本地知识库 AI 不应该只是一个聊天框' },
+      flow: { kicker: '02 / SYSTEM FLOW', title: '一次问答和一次文件修改如何完成' },
+      decisions: { kicker: '03 / ENGINEERING DECISIONS', title: '代码中真实存在的 AI 工程设计' },
+      boundaries: {
+        kicker: '04 / CURRENT BOUNDARIES',
+        title: '当前实现的能力边界',
+        intro:
+          '项目已经把本地检索、证据约束和安全写入串成完整闭环，但它仍是本地单用户系统，不能包装成云端多租户或生产级分布式 AI 平台。',
+      },
+      next: { kicker: '05 / NEXT ITERATION', title: '下一轮应该怎么做' },
+    },
+    goals: [
+      '让 Obsidian Markdown 文件继续作为唯一事实来源，索引可以随时重建',
+      '通过 FTS5、向量和图关系检索，减少单一检索策略的盲区',
+      '让回答绑定到有限证据，并在证据不足或引用无效时拒答',
+      '让 Agent 的执行步数、工具调用和错误次数处于可控范围',
+      '让任何文件修改都经过预览、人工批准、并发校验和可恢复事务',
+    ],
+    flow: [
+      {
+        label: '01',
+        title: 'Parse',
+        description:
+          'Scanner 以只读方式读取 Vault，解析 Front-matter、标题、段落、代码块、Callout、WikiLink 和标签，不执行 Markdown 中的 HTML、JavaScript 或 Dataview。',
+      },
+      {
+        label: '02',
+        title: 'Index',
+        description:
+          'Context-aware Chunker 按标题层级和段落边界生成带 breadcrumb 的分块，再写入 SQLite 元数据、FTS5 索引和 sqlite-vec 向量索引；内容 Hash 用于增量更新和文件移动识别。',
+      },
+      {
+        label: '03',
+        title: 'Retrieve',
+        description:
+          '搜索请求可以走关键词、向量或图检索；Hybrid 模式使用 RRF 合并结果，并在语义能力不可用时明确降级为关键词检索。',
+      },
+      {
+        label: '04',
+        title: 'Answer',
+        description:
+          'ContextBuilder 从 SQLite 加载原始内容，限制证据数量、上下文和输出规模，为片段标注 [S1] 等引用，再由校验器检查引用是否确实来自检索证据。',
+      },
+      {
+        label: '05',
+        title: 'Approve',
+        description:
+          'Agent 的写操作先生成 ChangeSet 和 Diff，暂停等待明确的人类批准；通过路径校验、原始 Hash 校验和事务日志后才替换 Vault 文件。',
+      },
+    ],
+    decisions: [
+      {
+        title: '让 Vault 成为唯一事实来源',
+        implementation:
+          'Markdown 文件是最终数据，SQLite、FTS5 和 sqlite-vec 都是可以删除并重建的派生索引。增量索引通过内容 Hash 跳过未变化文件，并识别唯一的移动或重命名。',
+        value:
+          '降低索引损坏和数据迁移风险，也让系统可以围绕“源文件是否正确”而不是“数据库是否拥有全部内容”进行恢复设计。',
+      },
+      {
+        title: '用结构化分块保留 Markdown 语义',
+        implementation:
+          '分块器保留标题 breadcrumb，并将代码块、Callout 和 Block ID 段落作为不可拆分单元，在段落边界切割并生成稳定的 raw_content 与 embedding_text。',
+        value:
+          '避免固定长度切割破坏代码和说明之间的语义关系，同时为稳定的向量缓存、引用定位和增量更新提供基础。',
+      },
+      {
+        title: '用混合检索代替单一向量搜索',
+        implementation:
+          '关键词检索使用 SQLite FTS5，语义检索使用 sqlite-vec，WikiLink 关系通过图检索补充，Hybrid 模式使用 RRF 融合多路排名。',
+        value:
+          '精确术语、自然语言表达和文档关系各有适合的检索路径，并且不需要引入独立的向量数据库或外部搜索集群。',
+      },
+      {
+        title: '把回答限制在可验证证据内',
+        implementation:
+          '回答流程不直接使用 FTS 摘要，而是回读原始内容，统一限制 evidence、context 和 output，并对模型引用进行校验和修复；没有可靠证据时返回 abstention。',
+        value:
+          '把“模型说得像真的”转化为可检查的证据链，降低上下文污染、引用幻觉和无依据回答的风险。',
+      },
+      {
+        title: '用有界 LangGraph Agent 管理工具调用',
+        implementation:
+          'Agent 通过确定性的 intent route 选择搜索或规划路径，限制最大步骤、重复工具调用、连续错误和无进展次数；状态只保存引用和 Artifact，而不是不断复制大段内容。',
+        value:
+          'Agent 的行为可预测、可恢复、可审计，更适合本地文件操作，而不是依赖模型自行决定何时停止。',
+      },
+      {
+        title: '把文件写入设计成审批后的事务',
+        implementation:
+          'safe_write 校验 Vault 相对路径、保留目录和符号链接；事务服务保存快照并执行 OCC 原始 Hash 检查，写入失败时可以回滚或通过恢复日志继续处理。',
+        value:
+          '即使 Agent 生成了错误计划，也不会直接覆盖用户文件；写入过程具备预览、冲突检测和恢复入口。',
+      },
+    ],
+    boundaries: [
+      {
+        level: '高',
+        title: '这是本地单用户系统，不是云端多租户平台',
+        description:
+          'FastAPI、React UI 和 Agent Runtime 都围绕本机 Vault 运行，当前没有账号体系、跨用户隔离、云端同步或多实例任务调度。不能将其描述成 SaaS 型 AI 平台。',
+      },
+      {
+        level: '高',
+        title: '远程模型能力仍受用户同意和网络影响',
+        description:
+          'OpenAI Embedding 或 LLM 调用只在明确的 Consent 和预算约束下发送必要文本，但网络延迟、Provider 可用性和模型回答质量不包含在本地检索基准中。',
+      },
+      {
+        level: '中',
+        title: '性能基准是合成本地基准，不是生产 SLA',
+        description:
+          '项目文档记录了 10,000 篇笔记和 100,000 个分块的本地测试，但测试不包含远程网络和真实用户 Vault 分布，不能直接推导生产 QPS 或端到端延迟。',
+      },
+      {
+        level: '中',
+        title: '重排序和评测体系仍较基础',
+        description:
+          '当前提供 Reranker 接口，但主要实现是 NoOpReranker；项目也需要真实 Vault 评测集来验证召回、引用正确率和拒答质量，而不仅是检索延迟。',
+      },
+      {
+        level: '中',
+        title: '本地威胁模型不覆盖恶意同用户进程',
+        description:
+          '项目重点防范 Agent 误写、路径穿越、符号链接和并发覆盖；如果另一个拥有同一用户文件权限的本地进程恶意修改文件，当前系统不承诺隔离。',
+      },
+    ],
+    nextSteps: [
+      '使用真实 Obsidian Vault 构建检索、引用和拒答评测集，补充可重复的质量指标',
+      '增加精确 tokenizer 统计、Provider 延迟与成本观测，并区分本地和远程调用预算',
+      '实现更强的 Reranker 与可解释的检索诊断页面，帮助定位召回失败原因',
+      '补充多进程锁、故障恢复和文件外部修改场景的集成测试',
+      '在保持本地优先边界的前提下评估 Tauri 桌面封装，而不是直接引入云端多租户复杂度',
     ],
   },
 } as const satisfies Record<string, ProjectCaseStudy>;

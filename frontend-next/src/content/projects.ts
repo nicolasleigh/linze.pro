@@ -193,6 +193,72 @@ export const portfolioProjects = [
     caseStudyPath: "/projects/musicfy",
     featured: false,
   },
+  {
+    slug: "homestay",
+    name: "Homestay Booking",
+    category: "Go Backend / Transaction System",
+    status: "核心交易链路完成",
+    description:
+      "面向微信小程序的民宿预订 MVP。使用 Go、Gin、MySQL、Redis 与微信支付 API v3 构建房态日历、动态价格、服务端计价、幂等下单、库存锁定、订单过期释放和支付回调确认链路。",
+    engineeringFocus:
+      "把民宿预订中最容易出错的价格、库存、订单和支付边界放回服务端，并用事务、行锁、唯一约束和可失效缓存保护交易状态。",
+    highlights: [
+      "按日房态库存与价格模型",
+      "Idempotency-Key 幂等下单",
+      "MySQL 行锁防止超卖",
+      "微信支付 API v3 回调确认",
+      "Redis 版本化房态缓存",
+    ],
+    stack: [
+      "Go",
+      "Gin",
+      "GORM",
+      "MySQL",
+      "Redis",
+      "JWT",
+      "WeChat Pay API v3",
+      "Docker Compose",
+      "Nginx",
+    ],
+    repository: "https://github.com/nicolasleigh/homestay",
+    website: undefined,
+    caseStudyPath: "/projects/homestay",
+    featured: false,
+  },
+  {
+    slug: "obsai-cli",
+    name: "ObsAgent CLI",
+    category: "Local AI / Developer Tooling",
+    status: "V1 可用",
+    description:
+      "面向 Obsidian Vault 的本地优先 AI 工作流工具，使用安全 Markdown 解析、可重建索引、混合检索和带证据引用的问答，支持经过人工审批的文件修改。",
+    engineeringFocus:
+      "把 RAG、Agent 和文件写入放进可验证的隐私与安全边界：Vault 是唯一事实来源，远程调用需要同意与预算，写入必须经过 Diff、审批、乐观并发控制和可恢复事务。",
+    highlights: [
+      "上下文感知的 Markdown 分块与增量索引",
+      "SQLite FTS5 + sqlite-vec 混合检索",
+      "RRF 排序融合与证据约束式问答",
+      "LangGraph 受限 Agent 与人工审批",
+      "安全写入、OCC、回滚与恢复日志",
+      "OpenAI / Ollama Provider 抽象",
+    ],
+    stack: [
+      "Python",
+      "Typer",
+      "FastAPI",
+      "SQLite FTS5",
+      "sqlite-vec",
+      "LangGraph",
+      "OpenAI / Ollama",
+      "React",
+      "TypeScript",
+      "Vite",
+    ],
+    repository: "https://github.com/nicolasleigh/obsai",
+    website: undefined,
+    caseStudyPath: "/projects/obsai-cli",
+    featured: false,
+  },
 ] as const satisfies readonly PortfolioProject[];
 
 export const featuredProjects = portfolioProjects.filter((project) => project.featured);

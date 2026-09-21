@@ -1,11 +1,12 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ViewTransition } from "react";
 
 import { PageTransition } from "@/components/page-transition";
 import { getPortfolioProjects, getProjectCaseStudyLocalized } from "@/content/localized";
-import { projectCaseStudies } from "@/content/project-case-studies";
+import { projectCaseStudies, type ProjectMedia } from "@/content/project-case-studies";
 import { blogLocales, isBlogLocale, localizedPath } from "@/lib/i18n";
 import type { BlogLocale } from "@/types/post";
 
@@ -15,6 +16,27 @@ type ProjectCasePageProps = {
 
 function getProject(slug: string, locale: BlogLocale) {
   return getPortfolioProjects(locale).find((project) => project.slug === slug);
+}
+
+function ProjectMediaFigure({ media, priority = false }: { media: ProjectMedia; priority?: boolean }) {
+  const isRemoteMedia = /^https?:\/\//.test(media.src);
+
+  return (
+    <figure className={`project-case-media project-case-media-${media.role}`}>
+      <div className="project-case-media-frame">
+        <Image
+          src={media.src}
+          alt={media.alt}
+          width={media.width}
+          height={media.height}
+          sizes="(max-width: 900px) calc(100vw - 2.5rem), min(1180px, calc(100vw - 5rem))"
+          priority={priority}
+          unoptimized={isRemoteMedia}
+        />
+      </div>
+      {media.caption ? <figcaption>{media.caption}</figcaption> : null}
+    </figure>
+  );
 }
 
 export function generateStaticParams() {
@@ -32,6 +54,8 @@ export async function generateMetadata({
 
   if (!project || !caseStudy) return { robots: { index: false }, title: locale === "en-US" ? "Case study not found" : "项目案例未找到" };
 
+  const socialImage = caseStudy.media?.find((media) => media.role === "hero") ?? caseStudy.media?.[0];
+
   return {
     title: locale === "en-US" ? `${project.name} case study` : `${project.name} 项目案例`,
     description: caseStudy.description,
@@ -42,11 +66,15 @@ export async function generateMetadata({
       description: caseStudy.description,
       url: localizedPath(locale, `/projects/${project.slug}`),
       locale: locale.replace("-", "_"),
+      images: socialImage
+        ? [{ url: socialImage.src, width: socialImage.width, height: socialImage.height, alt: socialImage.alt }]
+        : undefined,
     },
     twitter: {
       card: "summary",
       title: locale === "en-US" ? `${project.name} case study` : `${project.name} 项目案例`,
       description: caseStudy.description,
+      images: socialImage ? [socialImage.src] : undefined,
     },
   };
 }
@@ -62,6 +90,11 @@ export default async function ProjectCasePage({
   const caseStudy = getProjectCaseStudyLocalized(slug, locale);
 
   if (!project || !caseStudy) notFound();
+
+  const renderMedia = (role: ProjectMedia["role"], priority = false) =>
+    (caseStudy.media ?? [])
+      .filter((media) => media.role === role)
+      .map((media) => <ProjectMediaFigure key={media.src} media={media} priority={priority} />);
 
   const pageUrl = `https://linze.pro${localizedPath(locale, `/projects/${project.slug}`)}`;
   const structuredData = {
@@ -155,6 +188,8 @@ export default async function ProjectCasePage({
           </div>
         </header>
 
+        {renderMedia("hero", true)}
+
         <section
           className="case-problem motion-section"
           aria-labelledby="case-problem-title"
@@ -171,6 +206,8 @@ export default async function ProjectCasePage({
           </div>
         </section>
 
+        {renderMedia("architecture")}
+
         <section
           className="case-flow-section motion-section"
           aria-labelledby="case-flow-title"
@@ -179,6 +216,7 @@ export default async function ProjectCasePage({
             <p className="section-kicker">{caseStudy.sections.flow.kicker}</p>
             <h2 id="case-flow-title">{caseStudy.sections.flow.title}</h2>
           </header>
+          {renderMedia("flow")}
           <ol className="system-flow">
             {caseStudy.flow.map((step) => (
               <li key={step.label}>
@@ -189,6 +227,8 @@ export default async function ProjectCasePage({
             ))}
           </ol>
         </section>
+
+        {renderMedia("screen")}
 
         <section
           className="case-decisions motion-section"

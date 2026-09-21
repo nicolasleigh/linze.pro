@@ -1,50 +1,59 @@
-import Link from "next/link";
+import Link from 'next/link';
 
-import { LocaleSwitcher } from "@/components/locale-switcher";
-import { getSiteContent } from "@/content/localized";
-import { localizedPath, siteMessages } from "@/lib/i18n";
-import type { BlogLocale } from "@/types/post";
+import { LocaleSwitcher } from '@/components/locale-switcher';
+import { getSiteContent } from '@/content/localized';
+import { localizedPath, siteMessages } from '@/lib/i18n';
+import type { BlogLocale } from '@/types/post';
 
 export function SiteHeader({ locale }: { locale: BlogLocale }) {
   const siteContent = getSiteContent(locale);
   const copy = siteMessages[locale];
   const navigation = [
-    { href: localizedPath(locale, "/about"), label: copy.navigation.about },
-    { href: localizedPath(locale, "/posts"), label: copy.navigation.posts },
-    { href: localizedPath(locale, "/projects"), label: copy.navigation.projects },
+    { href: localizedPath(locale, '/about'), label: copy.navigation.about },
+    { href: localizedPath(locale, '/posts'), label: copy.navigation.posts },
+    { href: localizedPath(locale, '/projects'), label: copy.navigation.projects },
   ];
 
   return (
-    <header
-      className="site-header"
-      style={{ viewTransitionName: "site-header" }}
-    >
-      <div className="page-shell flex h-18 items-center justify-between gap-6">
+    <header className='site-header' style={{ viewTransitionName: 'site-header' }}>
+      <div className='page-shell flex h-18 items-center justify-between gap-6'>
         <Link
-          className="brand-mark"
+          className='brand-mark'
           href={localizedPath(locale)}
           aria-label={copy.homeAria}
-          transitionTypes={["nav-back"]}
+          transitionTypes={['nav-back']}
         >
           <span>LZ</span>
-          <span className="text-muted">/01</span>
+          <span className='text-muted'>/01</span>
         </Link>
 
         <nav aria-label={copy.mainNavigation}>
-          <ul className="flex items-center gap-5 sm:gap-8">
+          <ul className='flex items-center gap-5 sm:gap-8'>
             {navigation.map((item) => (
               <li key={item.href}>
-                <Link className="nav-link" href={item.href}>
+                <Link className='nav-link' href={item.href}>
                   {item.label}
                 </Link>
               </li>
             ))}
             <li>
               <a
-                className="nav-link hidden sm:inline-flex"
+                className='nav-link inline-flex items-center'
+                href='https://vue.linze.pro'
+                rel='noreferrer'
+                target='_blank'
+                title='https://vue.linze.pro'
+              >
+                <span className='hidden sm:inline'>{copy.legacyBlog} ↗</span>
+                <span className='sm:hidden'>Vue ↗</span>
+              </a>
+            </li>
+            <li>
+              <a
+                className='nav-link hidden sm:inline-flex'
                 href={siteContent.links.github}
-                rel="noreferrer"
-                target="_blank"
+                rel='noreferrer'
+                target='_blank'
               >
                 GitHub ↗
               </a>

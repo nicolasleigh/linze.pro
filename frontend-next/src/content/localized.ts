@@ -96,6 +96,39 @@ const englishProjects: readonly PortfolioProject[] = [
       'JWT, email verification and password recovery',
     ],
   },
+  {
+    ...portfolioProjects[6],
+    category: 'Go Backend / Transaction system',
+    status: 'Core transaction path complete',
+    description:
+      'A WeChat Mini Program homestay-booking MVP. Go, Gin, MySQL, Redis and WeChat Pay API v3 support inventory calendars, daily pricing, server-side quotes, idempotent orders, stock locking, expiration recovery and payment notification confirmation.',
+    engineeringFocus:
+      'Keep pricing, inventory, order and payment boundaries on the server, then protect the transaction path with database transactions, row locks, unique constraints and invalidatable caching.',
+    highlights: [
+      'Daily inventory and price model',
+      'Idempotent checkout with Idempotency-Key',
+      'MySQL row locks against overselling',
+      'WeChat Pay API v3 notification confirmation',
+      'Versioned Redis room-calendar cache',
+    ],
+  },
+  {
+    ...portfolioProjects[7],
+    category: 'Local AI / Developer tooling',
+    status: 'V1 available',
+    description:
+      'A local-first AI workflow for Obsidian Vaults. ObsAgent CLI combines safe Markdown parsing, rebuildable SQLite indexes, hybrid retrieval and evidence-bounded answers with approval-gated file edits.',
+    engineeringFocus:
+      'Put RAG, Agent execution and file writes behind explicit privacy and safety boundaries: the Vault remains the source of truth, remote calls require consent and budgets, and writes require diffs, approval, optimistic concurrency checks and recoverable transactions.',
+    highlights: [
+      'Context-aware Markdown chunking and incremental indexing',
+      'SQLite FTS5 and sqlite-vec hybrid retrieval',
+      'RRF fusion and evidence-bounded answers',
+      'Bounded LangGraph Agent with human approval',
+      'Safe writes, OCC, rollback and recovery journal',
+      'OpenAI and Ollama provider adapters',
+    ],
+  },
 ];
 
 const englishAbout = {
@@ -193,6 +226,16 @@ const englishChatifyCase: ProjectCaseStudy = {
     "A Go, PostgreSQL and WebSocket backend added around Chatify's query-cost and N+1 problems while preserving the Next.js and Convex capabilities still needed during migration.",
   problem:
     'The original implementation kept most conversation and message data in Convex. As relational reads grew, the lack of SQL joins turned a page load into many queries. The goal is not a language swap: it is to establish an explicit model for conversations, members, messages and unread state, then persist each message before realtime delivery.',
+  media: [
+    {
+      src: '/projects/chatify/architecture.svg',
+      alt: 'Chatify architecture showing Next.js, Clerk, Go WebSocket, PostgreSQL and LiveKit boundaries',
+      caption: 'Boundaries for identity sync, history reads, message persistence, realtime broadcast and media rooms.',
+      width: 1600,
+      height: 900,
+      role: 'architecture',
+    },
+  ],
   sections: {
     problem: { kicker: '01 / PROBLEM', title: 'Why rebuild the backend?' },
     flow: { kicker: '02 / MESSAGE FLOW', title: 'How a message is persisted and delivered' },
@@ -334,6 +377,16 @@ const englishLinzeProCase: ProjectCaseStudy = {
     'A server-first rebuild of a Vue blog with Next.js App Router, keeping the Go/chi content API and existing article model while adding Markdown publishing, bilingual fallback, SEO, article engagement and content administration flows.',
   problem:
     'The old Vue frontend had component and rendering boundaries that were difficult to extend, while article display, language switching, SEO and engagement logic were becoming coupled. The goal was not to translate Vue files one by one, but to rebuild the content path from Markdown editing and versioning to public reading without replacing the existing Go backend or article data.',
+  media: [
+    {
+      src: '/projects/linze-pro/architecture.svg',
+      alt: 'Linze.pro content architecture showing Markdown authoring, Go API, PostgreSQL, Next.js rendering and SEO delivery',
+      caption: 'The path from Markdown authoring through the Go API and PostgreSQL to Next.js server rendering and SEO output.',
+      width: 1600,
+      height: 900,
+      role: 'architecture',
+    },
+  ],
   sections: {
     problem: { kicker: '01 / MIGRATION BRIEF', title: 'Why rebuild the blog frontend?' },
     flow: { kicker: '02 / CONTENT LIFECYCLE', title: 'How an article moves from Markdown to a public page' },
@@ -476,6 +529,24 @@ const englishCabinFyCase: ProjectCaseStudy = {
     'A React, React Query and Tailwind CSS rebuild of a guest booking experience and admin workspace, backed by Node.js, Express, Prisma and PostgreSQL for cabins, bookings, reviews and operational settings.',
   problem:
     'CabinFy serves two audiences: guests who want to discover and book cabins, and administrators who need to manage listings, reservations and check-in workflows. The challenge was not simply rendering a list of cabins, but organising two user experiences around one business data model, including routes, server state, forms, tables and responsive interaction.',
+  media: [
+    {
+      src: 'https://file.linze.pro/images/cabinfy/1.webp',
+      alt: 'CabinFy accommodation application interface screenshot 1',
+      caption: 'Real CabinFy interface screenshot (1).',
+      width: 1600,
+      height: 900,
+      role: 'screen',
+    },
+    {
+      src: 'https://file.linze.pro/images/cabinfy/5.webp',
+      alt: 'CabinFy accommodation application interface screenshot 5',
+      caption: 'Real CabinFy interface screenshot (5).',
+      width: 1600,
+      height: 900,
+      role: 'screen',
+    },
+  ],
   sections: {
     problem: { kicker: '01 / PRODUCT SCOPE', title: 'Why build a two-sided accommodation product?' },
     flow: { kicker: '02 / BOOKING FLOW', title: 'How a booking moves from discovery to operations' },
@@ -750,6 +821,32 @@ const englishPetifyCase: ProjectCaseStudy = {
     'Petify separates a customer storefront, seller operations dashboard and Express API into three independent applications. It covers product discovery, filtering, carts, orders, reviews, realtime support and operational analytics with React, Redux, Tailwind CSS, Node.js, MongoDB, Cloudinary, Docker and Caddy.',
   problem:
     'Petify was not simply a product list. It had to organise three different experiences around the same users, products, orders and conversations: customers need a clear path from discovery to purchase, sellers need a dense operations workspace, and support needs low-latency communication. The project therefore separates the storefront, seller surface and API, then connects commerce and conversations through REST, Redux and Socket.IO.',
+  media: [
+    {
+      src: 'https://file.linze.pro/images/petify/3.webp',
+      alt: 'Petify commerce application interface screenshot 3',
+      caption: 'Real Petify interface screenshot (3).',
+      width: 1600,
+      height: 900,
+      role: 'screen',
+    },
+    {
+      src: 'https://file.linze.pro/images/petify/7.webp',
+      alt: 'Petify commerce application interface screenshot 7',
+      caption: 'Real Petify interface screenshot (7).',
+      width: 1600,
+      height: 900,
+      role: 'screen',
+    },
+    {
+      src: 'https://file.linze.pro/images/petify/10.webp',
+      alt: 'Petify commerce application interface screenshot 10',
+      caption: 'Real Petify interface screenshot (10).',
+      width: 1600,
+      height: 900,
+      role: 'screen',
+    },
+  ],
   sections: {
     problem: { kicker: '01 / PRODUCT SURFACES', title: 'Why split commerce into three applications?' },
     flow: { kicker: '02 / COMMERCE FLOW', title: 'How a purchase moves from discovery to operations' },
@@ -887,6 +984,179 @@ const englishPetifyCase: ProjectCaseStudy = {
     'Add JWT handshake auth, trusted origins, rooms, acknowledgements, reconnection and a Redis Socket.IO adapter',
     'Move filters, pagination and dashboard metrics into MongoDB queries and aggregations with supporting indexes',
     'Add Stripe Payment Intent and Webhook flows, order audit events, integration tests, health checks and structured observability',
+  ],
+};
+
+const englishHomestayCase: ProjectCaseStudy = {
+  projectSlug: 'homestay',
+  heroKicker: 'CASE STUDY / GO TRANSACTION SYSTEM',
+  title: 'From inventory calendars to idempotent payments in Go',
+  description:
+    'A WeChat Mini Program homestay-booking MVP. Homestay uses Go, Gin, GORM, MySQL, Redis and WeChat Pay API v3 to connect daily inventory, dynamic pricing, server-side quotes, idempotent orders, inventory locking, order expiration and payment notification confirmation.',
+  problem:
+    'Homestay booking is more than listing CRUD: inventory changes by stay date, prices can vary night by night, and retries, expiration and payment notifications can modify the same order and stock concurrently. The project keeps MySQL as the source of truth for money and inventory, limits Redis to invalidatable calendar reads, and puts pricing, stock locking and payment confirmation behind explicit server-side transaction boundaries.',
+  media: [
+    {
+      src: '/projects/homestay/architecture.svg',
+      alt: 'Homestay booking architecture showing the WeChat Mini Program, Nginx, Go API, MySQL, Redis, worker and WeChat Pay',
+      caption: 'Boundaries between the Mini Program, Go API, MySQL source of truth, Redis calendar cache, expiry worker and WeChat Pay.',
+      width: 1600,
+      height: 900,
+      role: 'architecture',
+    },
+  ],
+  sections: {
+    problem: { kicker: '01 / BACKEND BRIEF', title: 'Why this booking backend deserves a closer look' },
+    flow: { kicker: '02 / BOOKING FLOW', title: 'How one booking moves through inventory and payment' },
+    decisions: { kicker: '03 / ENGINEERING DECISIONS', title: 'Backend decisions visible in the code' },
+    boundaries: {
+      kicker: '04 / CURRENT BOUNDARIES',
+      title: 'Current implementation boundaries and risks',
+      intro: 'These limitations are directly verifiable in the Go code, deployment configuration and runtime model; they should not be presented as completed production capabilities.',
+    },
+    next: { kicker: '05 / NEXT ITERATION', title: 'What to improve next' },
+  },
+  goals: [
+    'Represent availability and price with a daily inventory model instead of one total room count',
+    'Recalculate quotes on the server and protect concurrent checkout with transactions and row locks',
+    'Use Idempotency-Key and unique constraints to handle retries and repeated submissions',
+    'Connect WeChat Pay preparation, notification verification and payment confirmation to order state',
+    'Use Redis for calendar reads without making it the source of truth for money or inventory',
+  ],
+  flow: [
+    {
+      label: '01',
+      title: 'Discover',
+      description:
+        'The Mini Program loads homestays, room types and a date-range calendar through Gin routes. Calendar reads prefer Redis and fall back to MySQL on misses or cache errors.',
+    },
+    {
+      label: '02',
+      title: 'Preview',
+      description:
+        'The client submits dates and room count; Order Service reads daily prices and inventory from the database, calculates the total on the server and checks each night’s availability.',
+    },
+    {
+      label: '03',
+      title: 'Create',
+      description:
+        'Checkout requires an Idempotency-Key. Inside a transaction the service looks for an existing idempotent order, locks inventory rows in ascending date order, increments locked_stock and writes the order and night snapshots.',
+    },
+    {
+      label: '04',
+      title: 'Expire',
+      description:
+        'A separate worker scans pending orders past their expiry every five seconds, reuses the cancellation path to release locked_stock and invalidates the related calendar cache.',
+    },
+    {
+      label: '05',
+      title: 'Pay',
+      description:
+        'In production the payment preparation path calls WeChat Pay API v3 to create a JSAPI prepay order; an explicit mock path is available only in development.',
+    },
+    {
+      label: '06',
+      title: 'Confirm',
+      description:
+        'After API v3 signature verification and decryption, the notification enters a confirmation transaction. The service locks the order and inventory, moves locked_stock to sold_stock, creates a unique payment record and returns duplicate notifications idempotently.',
+    },
+  ],
+  decisions: [
+    {
+      title: 'Use a modular monolith for the transaction domain',
+      implementation:
+        'server/internal is organised into auth, user, homestay, room, order and payment packages, each with model, repository, service and handler boundaries. The Gin router only composes dependencies and routes.',
+      value:
+        'The deployment stays simple while booking, inventory and payment rules remain in explicit boundaries that can later be replaced or split without starting from an unstructured CRUD service.',
+    },
+    {
+      title: 'Keep MySQL as the source of truth for money and stock',
+      implementation:
+        'Amounts use int64 cents, and orders snapshot property, room and nightly prices. Redis stores only versioned room calendars, fails open to MySQL and never becomes the authority for settlement.',
+      value:
+        'This avoids floating-point money errors and cache-write failures changing inventory, while payment amount checks can compare against persisted order data.',
+    },
+    {
+      title: 'Model sellable availability per night',
+      implementation:
+        'room_inventory_daily stores total_stock, locked_stock, sold_stock, daily_price and closed for each room type and date. Checkout is exclusive, previews are capped at 93 days and bookings at 30 nights.',
+      value:
+        'Variable prices, closed dates and multi-night reservations can be validated with one server-side model rather than a collection of client-side assumptions.',
+    },
+    {
+      title: 'Protect checkout with idempotency and a unique index',
+      implementation:
+        'orders has a composite unique constraint on user_id and idempotency_key. The service looks up an existing order inside the transaction and, after a concurrent unique-key race, reads and returns the order that won.',
+      value:
+        'Network retries, button double-clicks and client timeouts are much less likely to create duplicate orders because the guarantee is shared by application logic and the database.',
+    },
+    {
+      title: 'Prevent overselling with ordered row locks',
+      implementation:
+        'Create, cancel and payment confirmation lock inventory rows in ascending date order with SELECT ... FOR UPDATE, check available stock, move locked_stock / sold_stock and verify expected RowsAffected.',
+      value:
+        'Concurrent reservations for the same room type serialize the critical inventory decision, while a fixed lock order reduces deadlock risk across multi-night bookings.',
+    },
+    {
+      title: 'Invalidate calendars with a versioned cache key',
+      implementation:
+        'Calendar keys include roomTypeID, version, start and end dates. Inventory mutations increment the Redis version; old ranges naturally become unreachable, and cache failures do not block the main transaction.',
+      value:
+        'Order creation, cancellation and payment confirmation can invalidate every overlapping range without enumerating and deleting every date-range key.',
+    },
+    {
+      title: 'Separate the payment gateway from local confirmation',
+      implementation:
+        'Payment Service uses a WechatGateway abstraction for production payment creation and notification verification. Local confirmation still validates order amount, merchant identity, AppID and trade status before changing inventory.',
+      value:
+        'The third-party SDK does not directly mutate business stock, and duplicate callbacks, amount mismatches and expired orders have explicit local decisions.',
+    },
+    {
+      title: 'Separate migration and runtime roles',
+      implementation:
+        'Embedded SQL migrations record versions in schema_migrations and run as a separate production role. API and worker are deployed independently, keeping expiration scans out of HTTP request handling.',
+      value:
+        'Schema changes are decoupled from application startup, and background expiry has its own runtime and scaling boundary.',
+    },
+  ],
+  boundaries: [
+    {
+      level: '高',
+      title: 'Domain services still depend on HTTP response types',
+      description:
+        'Some services return response.Error or net/http semantics directly, so domain rules and transport concerns are not fully separated. Reusing the domain from RPC or asynchronous jobs would first require a unified error mapping.',
+    },
+    {
+      level: '高',
+      title: 'Identity and CORS remain MVP-oriented',
+      description:
+        'JWT uses a custom HS256 implementation without a refresh or revocation path, and CORS currently permits any origin. Production use needs trusted origins, request limiting and a clearer token lifecycle.',
+    },
+    {
+      level: '中',
+      title: 'Runtime lifecycle and observability are incomplete',
+      description:
+        'Gin Logger and the standard logger are mixed, with no request ID, metrics or distributed tracing. API and worker context cancellation, readiness, draining and explicit database/Redis closure also need to converge.',
+    },
+    {
+      level: '中',
+      title: 'Expiration recovery is polling, not a durable task queue',
+      description:
+        'The worker scans the database on a fixed interval and reuses cancellation logic. This keeps the MVP simple, but there is no lease, retry backoff, failure alert or multi-instance claim semantics.',
+    },
+    {
+      level: '中',
+      title: 'The order state model is reserved but only partly driven',
+      description:
+        'The model includes CHECKED_IN, COMPLETED and refund-related states, while the current core path mainly covers pending, confirmed, cancelled and payment notification transitions. State rules still need a single transition boundary.',
+    },
+  ],
+  nextSteps: [
+    'Unify domain errors, request IDs, structured logs, metrics and traces into an observable transaction path',
+    'Use signal.NotifyContext, readiness/draining and cancellable workers, with explicit database and Redis shutdown',
+    'Tighten JWT, CORS and payment-notification security, then add request limiting and sensitive-action auditing',
+    'Add an OpenAPI contract, cache response headers and ETags so frontend and backend evolution does not rely on implicit conventions',
+    'Add retry backoff, failure records and alerting for expiration recovery and payment reconciliation, with a clear manual handling path',
   ],
 };
 
@@ -1038,6 +1308,160 @@ const englishMusicFyCase: ProjectCaseStudy = {
   ],
 };
 
+const englishObsaiCase: ProjectCaseStudy = {
+  projectSlug: 'obsai-cli',
+  heroKicker: 'CASE STUDY / LOCAL AI SYSTEM',
+  title: 'An evidence-bounded local AI workflow for Obsidian',
+  description:
+    'ObsAgent CLI is a local-first AI workflow for Obsidian Vaults. It combines safe Markdown parsing, context-aware chunking, rebuildable SQLite indexes and hybrid retrieval with citation-bounded answers and approval-gated file edits protected by optimistic concurrency and recovery transactions.',
+  problem:
+    'Plain full-text search is not enough for cross-document questions, while uploading an entire Vault to a remote model creates privacy, cost and context-control risks. ObsAgent CLI is not just another chat box: it turns parsing, indexing, retrieval, evidence-grounded answering and file writes into one local-first, verifiable and recoverable workflow.',
+  media: [
+    {
+      src: '/projects/obsai-cli/architecture.svg',
+      alt: 'ObsAgent CLI architecture showing the Obsidian Vault, Python application, SQLite retrieval index, local or remote models and approval-gated write path',
+      caption: 'The Vault remains the source of truth; retrieval and answering are separated from approval-gated file writes.',
+      width: 1600,
+      height: 900,
+      role: 'architecture',
+    },
+  ],
+  sections: {
+    problem: { kicker: '01 / PRODUCT BRIEF', title: 'Why local knowledge AI should be more than a chat box' },
+    flow: { kicker: '02 / SYSTEM FLOW', title: 'How a question and a file edit are completed' },
+    decisions: { kicker: '03 / ENGINEERING DECISIONS', title: 'AI engineering decisions visible in the code' },
+    boundaries: {
+      kicker: '04 / CURRENT BOUNDARIES',
+      title: 'What the current implementation does and does not claim',
+      intro:
+        'The project connects local retrieval, evidence constraints and safe writes into a complete workflow, but it remains a local single-user system rather than a cloud multi-tenant or distributed AI platform.',
+    },
+    next: { kicker: '05 / NEXT ITERATION', title: 'What to improve next' },
+  },
+  goals: [
+    'Keep Obsidian Markdown as the source of truth while making the index fully rebuildable',
+    'Combine keyword, vector and graph retrieval to reduce the blind spots of any single strategy',
+    'Bind answers to bounded evidence and abstain when evidence or citations are not reliable',
+    'Keep Agent steps, tool calls and error loops within explicit limits',
+    'Require previews, approval, concurrency checks and recoverable transactions for every file write',
+  ],
+  flow: [
+    {
+      label: '01',
+      title: 'Parse',
+      description:
+        'The scanner reads the Vault without executing Markdown HTML, JavaScript or Dataview, while extracting front matter, headings, paragraphs, code blocks, callouts, WikiLinks and tags.',
+    },
+    {
+      label: '02',
+      title: 'Index',
+      description:
+        'The context-aware chunker preserves heading breadcrumbs and paragraph boundaries, then writes SQLite metadata, FTS5 records and sqlite-vec embeddings. Content hashes drive incremental updates and move detection.',
+    },
+    {
+      label: '03',
+      title: 'Retrieve',
+      description:
+        'A query can use keyword, vector or graph search. Hybrid retrieval fuses rankings with RRF and reports visible degradation when semantic capabilities are unavailable.',
+    },
+    {
+      label: '04',
+      title: 'Answer',
+      description:
+        'ContextBuilder reloads original content from SQLite, bounds evidence, context and output sizes, labels sources such as [S1], then validates and repairs model citations or abstains.',
+    },
+    {
+      label: '05',
+      title: 'Approve',
+      description:
+        'Write tools first produce a ChangeSet and Diff, pause for explicit human approval, then validate paths and original hashes before applying a transactional Vault change.',
+    },
+  ],
+  decisions: [
+    {
+      title: 'Keep the Vault as the source of truth',
+      implementation:
+        'Markdown files are authoritative; SQLite, FTS5 and sqlite-vec are derived indexes that can be deleted and rebuilt. Incremental indexing skips unchanged content and recognizes unique moves or renames through content hashes.',
+      value:
+        'Recovery is designed around restoring the source files rather than trusting an opaque database, reducing the risk of index corruption and migration lock-in.',
+    },
+    {
+      title: 'Preserve Markdown semantics during chunking',
+      implementation:
+        'Chunks retain heading breadcrumbs and keep code blocks, callouts and Block ID paragraphs atomic. The chunker splits at paragraph boundaries and produces stable raw_content and embedding_text values.',
+      value:
+        'Code and explanation are less likely to be separated by arbitrary character limits, while stable content supports embedding reuse, citations and incremental indexing.',
+    },
+    {
+      title: 'Use hybrid retrieval instead of vector search alone',
+      implementation:
+        'SQLite FTS5 handles keyword search, sqlite-vec handles semantic search, WikiLink relationships provide graph retrieval, and Hybrid mode fuses the rankings with Reciprocal Rank Fusion.',
+      value:
+        'Exact terminology, natural-language intent and document relationships each have a suitable retrieval path without introducing a separate vector database or search cluster.',
+    },
+    {
+      title: 'Constrain answers to verifiable evidence',
+      implementation:
+        'Answering reloads original content instead of relying on FTS snippets, bounds evidence, context and output, annotates sources and validates citations. It abstains when the evidence is insufficient.',
+      value:
+        'The system makes an answer auditable instead of merely plausible, reducing unsupported claims, context contamination and citation hallucinations.',
+    },
+    {
+      title: 'Make the LangGraph Agent bounded by design',
+      implementation:
+        'Deterministic intent routing selects direct search or a planning path. Agent limits cover steps, retrieval calls, repeated tools, consecutive errors and no-progress loops, while state stores references and artifact IDs instead of copying large content.',
+      value:
+        'Execution remains predictable, resumable and reviewable, which is a safer fit for local file operations than letting the model decide when it is finished.',
+    },
+    {
+      title: 'Treat file writes as approved transactions',
+      implementation:
+        'safe_write validates Vault-relative paths, reserved directories and symlink traversal. The transaction service stores snapshots and checks original hashes with optimistic concurrency control before replacement, with rollback and recovery records on failure.',
+      value:
+        'A bad Agent plan cannot silently overwrite a user file; every change has a preview, conflict detection and a recovery path.',
+    },
+  ],
+  boundaries: [
+    {
+      level: '高',
+      title: 'This is local single-user software, not a cloud multi-tenant platform',
+      description:
+        'The FastAPI adapter, React UI and Agent runtime operate around a local Vault. There is no account system, cross-user isolation, cloud sync or multi-instance task scheduler, so the project should not be presented as an AI SaaS platform.',
+    },
+    {
+      level: '高',
+      title: 'Remote model calls still depend on consent and network conditions',
+      description:
+        'OpenAI embedding or LLM calls are gated by consent and budgets and send only the selected text required for the operation, but provider availability, network latency and answer quality are outside the local retrieval benchmark.',
+    },
+    {
+      level: '中',
+      title: 'The benchmark is synthetic and local, not a production SLA',
+      description:
+        'The release notes record a local test with 10,000 notes and 100,000 chunks. It excludes remote network time and the distribution of a real Vault, so it cannot be used to claim production QPS or end-to-end latency.',
+    },
+    {
+      level: '中',
+      title: 'Reranking and evaluation are still basic',
+      description:
+        'A reranker interface exists, but the current implementation is primarily NoOpReranker. A real Vault evaluation set is still needed to measure recall, citation correctness and abstention quality rather than retrieval latency alone.',
+    },
+    {
+      level: '中',
+      title: 'The local threat model does not isolate a malicious same-user process',
+      description:
+        'The system focuses on Agent mistakes, path traversal, symlinks and concurrent overwrites. Another local process with the same file permissions can still modify the Vault outside the application threat boundary.',
+    },
+  ],
+  nextSteps: [
+    'Build a real Obsidian Vault evaluation set for retrieval, citation and abstention quality',
+    'Add exact tokenizer accounting and provider latency, cost and budget telemetry',
+    'Implement a stronger reranker and explainable retrieval diagnostics',
+    'Add integration coverage for multi-process locks, recovery and external file changes',
+    'Evaluate a Tauri desktop shell while keeping the local-first boundary instead of adding cloud multi-tenancy prematurely',
+  ],
+};
+
 export function getSiteContent(locale: BlogLocale) {
   if (locale === 'zh-CN') return siteContent;
   return {
@@ -1069,6 +1493,8 @@ export function getProjectCaseStudyLocalized(slug: string, locale: BlogLocale) {
     if (slug === 'moviefy') return englishMovieFyCase;
     if (slug === 'petify') return englishPetifyCase;
     if (slug === 'musicfy') return englishMusicFyCase;
+    if (slug === 'homestay') return englishHomestayCase;
+    if (slug === 'obsai-cli') return englishObsaiCase;
   }
   return getProjectCaseStudy(slug);
 }

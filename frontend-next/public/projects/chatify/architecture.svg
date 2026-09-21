@@ -1,0 +1,73 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" role="img" aria-labelledby="title desc">
+  <title id="title">Chatify realtime architecture</title>
+  <desc id="desc">Chatify identity, history, WebSocket persistence and media boundaries.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#0b1423"/>
+      <stop offset="1" stop-color="#111d31"/>
+    </linearGradient>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto">
+      <path d="M0 0 10 5 0 10Z" fill="#7da2ff"/>
+    </marker>
+    <style>
+      .label { fill:#8fa3bf; font:600 18px Inter,Arial,sans-serif; letter-spacing:.08em }
+      .title { fill:#edf4ff; font:700 32px Inter,Arial,sans-serif; letter-spacing:-.03em }
+      .node-title { fill:#edf4ff; font:700 25px Inter,Arial,sans-serif }
+      .node-copy { fill:#a9b9cf; font:500 18px Inter,Arial,sans-serif }
+      .small { fill:#8fa3bf; font:500 16px Inter,Arial,sans-serif }
+      .box { fill:#15243a; stroke:#415a80; stroke-width:2 }
+      .store { fill:#132c36; stroke:#4abf9b; stroke-width:2 }
+      .external { fill:#2d2631; stroke:#d8a44d; stroke-width:2 }
+      .line { stroke:#7da2ff; stroke-width:3; fill:none; marker-end:url(#arrow) }
+      .dashed { stroke:#73839b; stroke-width:2; stroke-dasharray:9 10; fill:none }
+    </style>
+  </defs>
+  <rect width="1600" height="900" rx="28" fill="url(#bg)"/>
+  <path d="M0 145H1600M0 760H1600" stroke="#21334f" stroke-width="1"/>
+  <text x="72" y="76" class="label">CHATIFY / REALTIME SYSTEM</text>
+  <text x="72" y="120" class="title">Persist first. Broadcast second. Keep media on its own path.</text>
+
+  <rect x="72" y="280" width="245" height="170" rx="16" class="box"/>
+  <text x="105" y="327" class="node-title">Next.js Client</text>
+  <text x="105" y="367" class="node-copy">history · composer</text>
+  <text x="105" y="397" class="node-copy">WebSocket session</text>
+  <text x="105" y="427" class="small">React Query + Zod</text>
+
+  <rect x="385" y="190" width="220" height="120" rx="16" class="external"/>
+  <text x="430" y="240" class="node-title">Clerk</text>
+  <text x="430" y="274" class="node-copy">identity + webhook</text>
+
+  <rect x="385" y="375" width="220" height="120" rx="16" class="external"/>
+  <text x="424" y="425" class="node-title">LiveKit</text>
+  <text x="424" y="459" class="node-copy">audio / video rooms</text>
+
+  <rect x="690" y="205" width="350" height="310" rx="18" class="box"/>
+  <text x="732" y="255" class="node-title">Go realtime backend</text>
+  <rect x="732" y="290" width="260" height="48" rx="8" fill="#1e3556"/>
+  <text x="756" y="321" class="small">REST history handlers</text>
+  <rect x="732" y="351" width="260" height="48" rx="8" fill="#1e3556"/>
+  <text x="756" y="382" class="small">WebSocket readPump</text>
+  <rect x="732" y="412" width="260" height="48" rx="8" fill="#1e3556"/>
+  <text x="756" y="443" class="small">Hub / writePump</text>
+  <text x="732" y="490" class="small">persist → load → broadcast</text>
+
+  <rect x="1160" y="220" width="300" height="170" rx="16" class="store"/>
+  <text x="1200" y="270" class="node-title">PostgreSQL</text>
+  <text x="1200" y="310" class="node-copy">users · conversations</text>
+  <text x="1200" y="340" class="node-copy">members · messages</text>
+  <text x="1200" y="370" class="small">sqlc + CTE / JOIN</text>
+
+  <rect x="1160" y="470" width="300" height="105" rx="16" class="box"/>
+  <text x="1200" y="515" class="node-title">Convex (legacy path)</text>
+  <text x="1200" y="549" class="node-copy">migration compatibility</text>
+
+  <path d="M317 350H690M495 310V350M605 435H690M1040 315H1160M1040 445H1160M1160 520H1040V480" class="line"/>
+  <path d="M495 310V375" class="dashed"/>
+  <text x="330" y="332" class="small">REST + WebSocket</text>
+  <text x="615" y="334" class="small">token</text>
+  <text x="1060" y="298" class="small">persist</text>
+  <text x="1060" y="428" class="small">migration</text>
+
+  <text x="72" y="816" class="label">DELIVERY ORDER</text>
+  <text x="72" y="850" class="small">Client message → SQL write → complete row read → Hub broadcast → independent socket writers.</text>
+</svg>

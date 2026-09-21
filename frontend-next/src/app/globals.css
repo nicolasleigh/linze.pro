@@ -1312,6 +1312,30 @@ a {
   color: var(--accent);
 }
 
+.project-case-media {
+  margin: 0 0 clamp(5rem, 10vw, 9rem);
+}
+
+.project-case-media-frame {
+  overflow: hidden;
+  border: 1px solid var(--line-strong);
+  background: #0c1422;
+}
+
+.project-case-media img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.project-case-media figcaption {
+  max-width: 48rem;
+  margin: 0.9rem 0 0;
+  color: var(--muted);
+  font-size: 0.78rem;
+  line-height: 1.7;
+}
+
 .case-problem,
 .case-next {
   display: grid;
