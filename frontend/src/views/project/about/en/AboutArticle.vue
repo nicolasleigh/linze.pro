@@ -62,7 +62,7 @@ defineExpose({ section, activeSection })
           build complete applications from interface to database.
         </p>
       </Section>
-      <Section :id="section[2].slug">
+      <!-- <Section :id="section[2].slug">
         <h2 :class="h2Style">
           {{ section[2].title }}
         </h2>
@@ -77,7 +77,7 @@ defineExpose({ section, activeSection })
           comfortably read A2-level content, using English as the medium. This multilingual learning
           experience has deepened my adaptability and problem-solving mindset.
         </p>
-      </Section>
+      </Section> -->
       <Section :id="section[3].slug">
         <h2 :class="h2Style">
           {{ section[3].title }}

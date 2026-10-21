@@ -29,8 +29,8 @@ defineExpose({ section, activeSection })
           {{ section[0].title }}
         </h2>
         <p :class="paragraphStyle">
-          我是 Nicolas Leigh（李林泽）——
-          一位拥有经济与金融背景的自学软件开发者，目前专注于构建现代全栈 Web 应用。
+          我是 Nicolas Leigh（李林泽）—— 一位拥有财经背景的软件开发者，目前专注于构建现代全栈 Web
+          应用。
         </p>
         <ul :class="unorderedListStyle">
           <li>中南财经政法大学（“211 工程”高校）· 财政学 · 经济学学士</li>
@@ -56,7 +56,7 @@ defineExpose({ section, activeSection })
           的经验，这一转变变得顺理成章，同时也让我能够使用更高效的工具和并发模式。这种全栈的开发方式，使我能够独立完成从界面到数据库的完整应用构建。
         </p>
       </Section>
-      <Section :id="section[2].slug">
+      <!-- <Section :id="section[2].slug">
         <h2 :class="h2Style">
           {{ section[2].title }}
         </h2>
@@ -69,7 +69,7 @@ defineExpose({ section, activeSection })
           出于对语言和知识的热情，我还挑战自己学习法语，并通过英文作为媒介，现在已能够阅读 A2
           水平的法语内容。这样的多语言学习经历进一步增强了我的适应能力和解决问题的思维方式。
         </p>
-      </Section>
+      </Section> -->
       <Section :id="section[3].slug">
         <h2 :class="h2Style">
           {{ section[3].title }}
