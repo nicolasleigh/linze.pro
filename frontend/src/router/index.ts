@@ -1,24 +1,27 @@
-import { createRouter, createWebHistory, RouterView } from "vue-router"
-import HomeView from "../views/HomeView.vue"
-import Posts from "@/views/Posts.vue"
-import Projects from "@/views/Projects.vue"
-// import LoginForm from "@/views/LoginForm.vue"
-// import SignupForm from "@/views/SignupForm.vue"
-// import Post from "@/views/Post.vue"
-// import Cabinfy from "@/views/project/cabin/Cabinfy.vue"
-// import Moviefy from "@/views/project/movie/Moviefy.vue"
-// import Musicfy from "@/views/project/music/Musicfy.vue"
-// import Chatify from "@/views/project/chat/Chatify.vue"
-// import Petify from "@/views/project/pet/Petify.vue"
-// import Blog from "@/views/project/blog/Blog.vue"
-// import AboutView from "@/views/AboutView.vue"
+import { getPreferredLocale, localizePath } from "@/utils/locale"
 import { h } from "vue"
+import {
+  createRouter,
+  createWebHistory,
+  RouterView,
+  type RouteLocationGeneric,
+} from "vue-router"
 
 const activeLinkStyle = "text-accent"
+const routerView = { render: () => h(RouterView) }
+
+function redirectToLocalizedPath(to: RouteLocationGeneric) {
+  return {
+    path: localizePath(to.path, getPreferredLocale()),
+    query: to.query,
+    hash: to.hash,
+    replace: true,
+  }
+}
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
-  scrollBehavior(to, from, savedPosition) {
+  scrollBehavior(to) {
     if (to.hash) {
       return {
         el: to.hash,
@@ -30,98 +33,112 @@ const router = createRouter({
   linkActiveClass: activeLinkStyle,
   routes: [
     {
-      path: "/",
-      name: "home",
-      component: HomeView,
-    },
-    {
-      path: "/login",
-      name: "login",
-      component: () => import("@/views/LoginForm.vue"),
-    },
-    {
-      path: "/signup",
-      name: "signup",
-      component: () => import("@/views/SignupForm.vue"),
-    },
-    {
-      path: "/editor",
-      name: "editor",
-      component: () => import("@/views/CreatePost.vue"),
-      meta: { requiresAuth: true },
-    },
-    {
-      path: "/posts",
-      component: { render: () => h(RouterView) },
+      path: "/:locale(zh|en)",
+      component: routerView,
       children: [
         {
           path: "",
-          name: "posts",
-          component: Posts,
+          name: "home",
+          component: () => import("@/views/HomeView.vue"),
         },
         {
-          path: ":slug",
-          name: "post",
-          component: () => import("@/views/Post.vue"),
+          path: "login",
+          name: "login",
+          component: () => import("@/views/LoginForm.vue"),
+        },
+        {
+          path: "signup",
+          name: "signup",
+          component: () => import("@/views/SignupForm.vue"),
+        },
+        {
+          path: "editor",
+          name: "editor",
+          component: () => import("@/views/CreatePost.vue"),
+          meta: { requiresAuth: true },
+        },
+        {
+          path: "posts",
+          component: routerView,
+          children: [
+            {
+              path: "",
+              name: "posts",
+              component: () => import("@/views/Posts.vue"),
+            },
+            {
+              path: ":slug",
+              name: "post",
+              component: () => import("@/views/Post.vue"),
+            },
+          ],
+        },
+        {
+          path: "edit-post/:slug",
+          name: "edit-post",
+          component: () => import("@/views/EditPost.vue"),
+          meta: { requiresAuth: true },
+        },
+        {
+          path: "projects",
+          component: routerView,
+          children: [
+            {
+              path: "",
+              name: "projects",
+              component: () => import("@/views/Projects.vue"),
+            },
+            {
+              path: "cabinfy",
+              name: "cabinfy",
+              component: () => import("@/views/project/cabin/Cabinfy.vue"),
+            },
+            {
+              path: "moviefy",
+              name: "moviefy",
+              component: () => import("@/views/project/movie/Moviefy.vue"),
+            },
+            {
+              path: "musicfy",
+              name: "musicfy",
+              component: () => import("@/views/project/music/Musicfy.vue"),
+            },
+            {
+              path: "chatify",
+              name: "chatify",
+              component: () => import("@/views/project/chat/Chatify.vue"),
+            },
+            {
+              path: "petify",
+              name: "petify",
+              component: () => import("@/views/project/pet/Petify.vue"),
+            },
+            {
+              path: "blog",
+              name: "blog",
+              component: () => import("@/views/project/blog/Blog.vue"),
+            },
+          ],
+        },
+        {
+          path: "about",
+          name: "about",
+          component: () => import("@/views/AboutView.vue"),
+        },
+        {
+          path: "comments",
+          name: "comments",
+          component: () => import("@/views/CommentView.vue"),
+        },
+        {
+          path: ":pathMatch(.*)*",
+          redirect: (to) => ({ name: "home", params: { locale: to.params.locale } }),
         },
       ],
     },
     {
-      path: "/edit-post/:slug",
-      name: "edit-post",
-      component: () => import("@/views/EditPost.vue"),
-      meta: { requiresAuth: true },
-    },
-    {
-      path: "/projects",
-      component: { render: () => h(RouterView) },
-      children: [
-        {
-          path: "",
-          name: "projects",
-          component: Projects,
-        },
-        {
-          path: "cabinfy",
-          name: "cabinfy",
-          component: () => import("@/views/project/cabin/Cabinfy.vue"),
-        },
-        {
-          path: "moviefy",
-          name: "moviefy",
-          component: () => import("@/views/project/movie/Moviefy.vue"),
-        },
-        {
-          path: "musicfy",
-          name: "musicfy",
-          component: () => import("@/views/project/music/Musicfy.vue"),
-        },
-        {
-          path: "chatify",
-          name: "chatify",
-          component: () => import("@/views/project/chat/Chatify.vue"),
-        },
-        {
-          path: "petify",
-          name: "petify",
-          component: () => import("@/views/project/pet/Petify.vue"),
-        },
-        {
-          path: "blog",
-          name: "blog",
-          component: () => import("@/views/project/blog/Blog.vue"),
-        },
-      ],
-    },
-    {
-      path: "/about",
-      name: "about",
-      component: () => import("@/views/AboutView.vue"),
-    },
-    {
-      path: "/comments",
-      name: "comments",
-      component: () => import("@/views/CommentView.vue"),
+      path: "/:pathMatch(.*)*",
+      redirect: redirectToLocalizedPath,
     },
   ],
 })
@@ -131,19 +148,35 @@ function isAuthenticated() {
   if (!token) {
     return false
   }
-  const jwtPayload = JSON.parse(window.atob(token.split(".")[1]))
-  const isExpired = Date.now() >= jwtPayload.exp * 1000
-  if (isExpired) {
+
+  try {
+    const payload = token.split(".")[1]
+    if (!payload) {
+      return false
+    }
+
+    const normalizedPayload = payload.replace(/-/g, "+").replace(/_/g, "/")
+    const paddedPayload = normalizedPayload.padEnd(Math.ceil(normalizedPayload.length / 4) * 4, "=")
+    const jwtPayload = JSON.parse(window.atob(paddedPayload)) as { exp?: number }
+    if (!jwtPayload.exp || Date.now() >= jwtPayload.exp * 1000) {
+      localStorage.removeItem("jwt-token")
+      return false
+    }
+  } catch {
+    localStorage.removeItem("jwt-token")
     return false
   }
+
   return true
 }
 
-router.beforeEach((to, from, next) => {
+router.beforeEach((to) => {
   if (to.meta.requiresAuth && !isAuthenticated()) {
-    next("/login")
-  } else {
-    next()
+    return {
+      name: "login",
+      params: { locale: to.params.locale },
+      query: { redirect: to.fullPath },
+    }
   }
 })
 

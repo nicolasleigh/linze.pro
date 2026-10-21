@@ -4,6 +4,7 @@ import IconLink from "@/components/icons/IconLink.vue"
 import { useTranslation } from "i18next-vue"
 import { ChevronRight } from "lucide-vue-next"
 import { RouterLink } from "vue-router"
+import { useLocalizedPath } from "@/hooks/useLocalizedPath"
 
 const props = defineProps({
   title: String,
@@ -16,6 +17,7 @@ const props = defineProps({
 })
 
 const { t } = useTranslation()
+const { localizedPath } = useLocalizedPath()
 </script>
 
 <template>
@@ -24,7 +26,13 @@ const { t } = useTranslation()
       <figure
         class="overflow-hidden relative isolate z-[1] pointer-events-none h-full border border-neutral-900 rounded-xl"
       >
-        <img class="absolute" :src="props.image" />
+        <img
+          class="absolute"
+          :src="props.image"
+          :alt="props.title || 'Project preview'"
+          loading="lazy"
+          decoding="async"
+        />
       </figure>
     </div>
     <div
@@ -42,7 +50,7 @@ const { t } = useTranslation()
       </div>
       <div class="w-full flex flex-wrap justify-between gap-4 items-center mt-6 mb-6">
         <RouterLink
-          :to="{ path: props.link || '', state: { about: props.about } }"
+          :to="{ path: localizedPath(props.link || '/'), state: { about: props.about } }"
           class="relative group px-4 py-3 rounded-xl border inline-flex items-center gap-3 cursor-pointer text-neutral-100 hover:bg-neutral-100 hover:text-neutral-800 transition-colors duration-300"
         >
           <span class="font-semibold"> {{ t("projects.cta") }} </span>

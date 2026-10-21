@@ -1,9 +1,11 @@
 <script setup lang="ts">
 import { useTranslation } from "i18next-vue"
 import { Mail, Github } from "lucide-vue-next"
+import { useLocalizedPath } from "@/hooks/useLocalizedPath"
 
 const linkStyle = "hover:text-accent transition-colors"
 const { t, i18next } = useTranslation()
+const { localizedPath } = useLocalizedPath()
 </script>
 
 <template>
@@ -41,12 +43,20 @@ const { t, i18next } = useTranslation()
           <div>
             <p class="text-sm text-neutral-500">{{ t("footer.section_1") }}</p>
             <ul class="text-neutral-300 mt-4 space-y-3 text-sm">
-              <li><RouterLink :class="linkStyle" to="/">Home</RouterLink></li>
-              <li><RouterLink :class="linkStyle" to="/posts">Posts</RouterLink></li>
               <li>
-                <RouterLink :class="linkStyle" to="/projects">Projects</RouterLink>
+                <RouterLink :class="linkStyle" :to="localizedPath('/')">Home</RouterLink>
               </li>
-              <li><RouterLink :class="linkStyle" to="/about">About</RouterLink></li>
+              <li>
+                <RouterLink :class="linkStyle" :to="localizedPath('/posts')">Posts</RouterLink>
+              </li>
+              <li>
+                <RouterLink :class="linkStyle" :to="localizedPath('/projects')">
+                  Projects
+                </RouterLink>
+              </li>
+              <li>
+                <RouterLink :class="linkStyle" :to="localizedPath('/about')">About</RouterLink>
+              </li>
             </ul>
           </div>
           <div>

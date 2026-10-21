@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import { useTranslation } from "i18next-vue"
-import { HomeIcon } from "lucide-vue-next"
 import { useRoute } from "vue-router"
+import { useLocalizedPath } from "@/hooks/useLocalizedPath"
+import { stripLocalePrefix } from "@/utils/locale"
 
 defineProps<{
   title: string
@@ -11,10 +12,11 @@ defineProps<{
 
 const route = useRoute()
 const { t } = useTranslation()
+const { localizedPath } = useLocalizedPath()
 </script>
 
 <template>
-  <RouterLink :to="to" class="flex w-full items-start gap-3">
+  <RouterLink :to="localizedPath(to)" class="flex w-full items-start gap-3">
     <div
       class="mt-0.5 p-3 bg-neutral-900 text-neutral-300 rounded-xl [&>svg]:size-4 [&>svg]:stroke-1"
     >
@@ -26,7 +28,7 @@ const { t } = useTranslation()
           {{ title }}
         </p>
         <button
-          v-if="route.path === to"
+          v-if="stripLocalePrefix(route.path) === to"
           class="text-xs bg-neutral-800/70 font-medium text-neutral-400 px-1.5 py-0.5 rounded-md"
           tabindex="-1"
         >

@@ -1,10 +1,17 @@
 <script setup lang="ts">
 import { Toaster } from "@/components/ui/sonner"
-import { VueQueryDevtools } from "@tanstack/vue-query-devtools"
-import { RouterView, useRoute } from "vue-router"
+import { defineAsyncComponent } from "vue"
+import { RouterView } from "vue-router"
 import Footer from "./components/Footer.vue"
 import Header from "./components/Header.vue"
 import { useHideHeader } from "./hooks/useHideHeader"
+
+const showDevtools = import.meta.env.DEV
+const VueQueryDevtools = showDevtools
+  ? defineAsyncComponent(() =>
+      import("@tanstack/vue-query-devtools").then(({ VueQueryDevtools }) => VueQueryDevtools),
+    )
+  : null
 
 const { isHidden } = useHideHeader(300)
 </script>
@@ -25,7 +32,7 @@ const { isHidden } = useHideHeader(300)
     </main>
   </div>
   <Footer />
-  <VueQueryDevtools />
+  <VueQueryDevtools v-if="showDevtools" />
 </template>
 
 <style scoped>
@@ -43,5 +50,13 @@ const { isHidden } = useHideHeader(300)
 }
 .page-enter-from {
   opacity: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .header-enter-active,
+  .header-leave-active,
+  .page-enter-active {
+    transition: none;
+  }
 }
 </style>

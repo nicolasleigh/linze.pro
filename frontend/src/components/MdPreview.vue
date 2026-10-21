@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { MdPreview } from "md-editor-v3"
 import "md-editor-v3/lib/preview.css"
-import { computed, ref } from "vue"
+import { computed } from "vue"
 
 const props = defineProps({
   isLoading: Boolean,

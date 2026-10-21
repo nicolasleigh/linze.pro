@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import IconGithub from "@/components/icons/IconGithub.vue"
 import IconLink from "@/components/icons/IconLink.vue"
-import { Eye, Heart, Play, User } from "lucide-vue-next"
+import { Eye, Heart, User } from "lucide-vue-next"
 import { useGetProjectLike, useProjectLike, useProjectView } from "@/hooks/useLikeAndView"
 import { useRoute } from "vue-router"
 import { ref } from "vue"

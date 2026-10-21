@@ -3,7 +3,7 @@ import { useRoute } from "vue-router"
 
 export function useHideHeader(scrollY: number) {
   const route = useRoute()
-  let isHidden = ref(false)
+  const isHidden = ref(false)
   const handleScroll = () => {
     if (route.name === "home") {
       return
@@ -18,7 +18,7 @@ export function useHideHeader(scrollY: number) {
   }
 
   onMounted(() => {
-    window.addEventListener("scroll", handleScroll)
+    window.addEventListener("scroll", handleScroll, { passive: true })
   })
 
   onUnmounted(() => {

@@ -1,13 +1,6 @@
 <script setup lang="ts">
 import { getSectionTitleAndSlug } from "@/utils/helper"
-import {
-  h2Style,
-  h3Style,
-  h4Style,
-  orderedListStyle,
-  paragraphStyle,
-  unorderedListStyle,
-} from "../../CommonStyle"
+import { h2Style, paragraphStyle, unorderedListStyle } from "../../CommonStyle"
 import Section from "../../Section.vue"
 import { useActiveSection } from "@/hooks/useActiveSection"
 import AboutContact from "../AboutContact.vue"

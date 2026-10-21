@@ -1,7 +1,5 @@
-import { getPostBySlugAndLangApi, getPostForAllLanguage } from "@/api/post"
+import { getPostForAllLanguage } from "@/api/post"
 import { useQuery } from "@tanstack/vue-query"
-import { useTranslation } from "i18next-vue"
-import { ref, watch } from "vue"
 import { useRoute } from "vue-router"
 
 export function usePostForEdit() {

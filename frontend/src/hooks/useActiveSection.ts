@@ -26,7 +26,8 @@ export function useActiveSection(selector = "[data-section]") {
 
   onMounted(() => {
     sections.value = Array.from(document.querySelectorAll(selector)) as HTMLElement[]
-    window.addEventListener("scroll", handleScroll)
+    handleScroll()
+    window.addEventListener("scroll", handleScroll, { passive: true })
   })
 
   onUnmounted(() => {

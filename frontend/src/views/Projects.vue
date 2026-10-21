@@ -7,7 +7,7 @@ import Musicfy from "@/components/project-icons/Musicfy.vue"
 import Petify from "@/components/project-icons/Petify.vue"
 import ProjectCard from "@/components/ProjectCard.vue"
 import { useTranslation } from "i18next-vue"
-import { BriefcaseBusiness, ChevronRight } from "lucide-vue-next"
+import { BriefcaseBusiness } from "lucide-vue-next"
 
 const { t } = useTranslation()
 </script>

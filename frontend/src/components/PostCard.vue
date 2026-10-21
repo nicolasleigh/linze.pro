@@ -1,31 +1,41 @@
 <script setup lang="ts">
-import { useRouter } from "vue-router"
 import type { PostCardProps } from "@/types/post"
-import { Calendar, Eye, Heart } from "lucide-vue-next"
+import { Eye, Heart } from "lucide-vue-next"
 import PostTag from "@/components/PostTag.vue"
 import { dateFormat } from "@/utils/helper"
 import { useTranslation } from "i18next-vue"
+import { useLocalizedPath } from "@/hooks/useLocalizedPath"
 
 const props = defineProps<PostCardProps>()
 const { t } = useTranslation()
-const router = useRouter()
-
-// const goToPost = () => {
-//   router.push({ path: `/posts/${props.id}` })
-// }
+const { localizedPath } = useLocalizedPath()
 </script>
 
 <template>
   <RouterLink
-    :to="'/posts/' + slug"
+    :to="localizedPath('/posts/' + slug)"
     class="w-full rounded-md transition duration-300 group cursor-pointer"
   >
     <div class="flex flex-col md:flex-row-reverse md:items-center gap-4 py-3 md:gap-6">
       <figure
         class="isolate z-[1] pointer-events-none overflow-hidden flex justify-center items-center md:max-w-44 md:w-full md:h-32"
       >
-        <img v-if="photo" :src="photo" alt="cover photo" class="rounded-md" />
-        <img v-else src="/default-cover-photo.webp" alt="cover photo" class="rounded-md" />
+        <img
+          v-if="photo"
+          :src="photo"
+          :alt="title || 'Post cover'"
+          class="rounded-md"
+          loading="lazy"
+          decoding="async"
+        />
+        <img
+          v-else
+          src="/default-cover-photo.webp"
+          :alt="title || 'Post cover'"
+          class="rounded-md"
+          loading="lazy"
+          decoding="async"
+        />
       </figure>
       <div class="w-full">
         <div class="flex items-center gap-3">

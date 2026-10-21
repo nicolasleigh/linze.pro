@@ -11,7 +11,6 @@ import {
 } from "../../CommonStyle"
 import Section from "../../Section.vue"
 import { useActiveSection } from "@/hooks/useActiveSection"
-import { Chrome, Github, GithubIcon } from "lucide-vue-next"
 import IconGithub2 from "@/components/icons/IconGithub2.vue"
 import IconChrome from "@/components/icons/IconChrome.vue"
 import ImageDialog from "@/components/ImageDialog.vue"

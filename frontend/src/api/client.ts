@@ -1,10 +1,8 @@
 import axios from "axios"
 
-let baseURL = "http://localhost:8085/api/v1"
-
-if (import.meta.env.PROD) {
-  baseURL = "https://linze.pro/api/v1"
-}
+const baseURL =
+  import.meta.env.VITE_API_BASE_URL ||
+  (import.meta.env.PROD ? "/api/v1" : "http://localhost:8085/api/v1")
 
 export const client = axios.create({
   baseURL,

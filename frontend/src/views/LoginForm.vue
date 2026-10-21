@@ -3,12 +3,14 @@ import { useLogin } from "@/hooks/useLogin"
 import { useTranslation } from "i18next-vue"
 import { ref } from "vue"
 import { RouterLink } from "vue-router"
+import { useLocalizedPath } from "@/hooks/useLocalizedPath"
 
 const email = ref("")
 const password = ref("")
 
 const { login, isPending } = useLogin()
 const { t } = useTranslation()
+const { localizedPath } = useLocalizedPath()
 const inputStyle =
   "w-full bg-neutral-950 border border-neutral-800 rounded-md p-2 transition-colors duration-200 focus:border-neutral-600 focus:outline-none"
 
@@ -81,7 +83,7 @@ const handleSubmit = async () => {
 
         <div class="">
           <RouterLink
-            to="/signup"
+            :to="localizedPath('/signup')"
             class="hover:underline underline-offset-4 text-neutral-500 hover:text-neutral-300"
           >
             {{ t("auth.signup_link") }}

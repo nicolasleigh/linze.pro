@@ -1,9 +1,8 @@
 <script setup lang="ts">
-import Cabinfy from "@/components/project-icons/Cabinfy.vue"
 import Petify from "@/components/project-icons/Petify.vue"
 import ProjectCard from "@/components/ProjectCard.vue"
 import { useTranslation } from "i18next-vue"
-import { ChevronRightIcon, Eye, FileUser, Github } from "lucide-vue-next"
+import { ChevronRightIcon, Github } from "lucide-vue-next"
 import { paragraphStyle } from "./project/CommonStyle"
 import IconReact from "@/components/icons/IconReact.vue"
 import IconVue from "@/components/icons/IconVue.vue"
@@ -16,13 +15,15 @@ import PostCard from "@/components/PostCard.vue"
 import { ref, watch } from "vue"
 import { usePosts } from "@/hooks/usePosts"
 import Musicfy from "@/components/project-icons/Musicfy.vue"
+import { useLocalizedPath } from "@/hooks/useLocalizedPath"
 
 const router = useRouter()
+const { localizedPath } = useLocalizedPath()
 
-const { posts: resultPost, error, isLoading } = usePosts({ page: 1, limit: 2 })
+const { posts: resultPost } = usePosts({ page: 1, limit: 2 })
 
 const navigateToAboutPage = () => {
-  router.push("/about")
+  router.push(localizedPath("/about"))
 }
 
 const { t, i18next } = useTranslation()
@@ -169,7 +170,7 @@ watch(
 
         <RouterLink
           class="mt-16 self-center text-base flex items-center gap-2 hover:text-accent transition-colors text-neutral-300"
-          to="/projects"
+          :to="localizedPath('/projects')"
         >
           <span> {{ t("home.project_button") }}</span>
           <div
@@ -225,7 +226,7 @@ watch(
 
         <RouterLink
           class="mt-16 self-center text-base flex items-center gap-2 hover:text-accent transition-colors text-neutral-300"
-          to="/posts"
+          :to="localizedPath('/posts')"
         >
           <span> {{ t("home.post_button") }} </span>
           <div

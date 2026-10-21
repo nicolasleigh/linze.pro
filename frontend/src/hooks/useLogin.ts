@@ -1,12 +1,15 @@
 import { loginApi } from "@/api/auth"
 import type { LoginUser } from "@/types/user"
 import { useMutation, useQueryClient } from "@tanstack/vue-query"
-import { useRouter } from "vue-router"
+import { useRoute, useRouter } from "vue-router"
 import { toast } from "vue-sonner"
+import { useLocalizedPath } from "@/hooks/useLocalizedPath"
 
 export function useLogin() {
   const queryClient = useQueryClient()
+  const route = useRoute()
   const router = useRouter()
+  const { localizedPath } = useLocalizedPath()
 
   const { mutate: login, isPending } = useMutation({
     mutationFn: ({ email, password }: LoginUser) =>
@@ -19,8 +22,14 @@ export function useLogin() {
       const user = data.user
       queryClient.setQueryData(["user"], user)
       localStorage.setItem("jwt-token", token)
-      router.push({ path: "/", replace: true })
-      // console.log(user);
+      const requestedRedirect = route.query.redirect
+      const redirect =
+        typeof requestedRedirect === "string" &&
+        requestedRedirect.startsWith("/") &&
+        !requestedRedirect.startsWith("//")
+          ? requestedRedirect
+          : localizedPath("/")
+      router.replace(redirect)
     },
     onError: () => {
       toast.error("Email or password is incorrect")

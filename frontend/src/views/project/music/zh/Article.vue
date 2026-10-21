@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { getSectionTitleAndSlug, getSectionTitleAndSlugChinese } from "@/utils/helper"
+import { getSectionTitleAndSlugChinese } from "@/utils/helper"
 import {
   h2Style,
   h3Style,

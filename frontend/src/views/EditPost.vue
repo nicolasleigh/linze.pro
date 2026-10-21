@@ -6,15 +6,12 @@ import InputTags from "@/components/InputTags.vue"
 import Button from "@/components/ui/button/Button.vue"
 import { Label } from "@/components/ui/label"
 import { toast } from "vue-sonner"
-import { useCreatePost } from "@/hooks/useCreatePost"
-import Input from "@/components/ui/input/Input.vue"
-import { FilePenLine, NotebookPen } from "lucide-vue-next"
-import { usePost } from "@/hooks/usePost"
+import { FilePenLine } from "lucide-vue-next"
 import { useUpdatePost } from "@/hooks/useUpdatePost"
 import { useRoute } from "vue-router"
 import { usePostForEdit } from "@/hooks/usePostForUpdate"
 
-const { post, isLoading } = usePostForEdit()
+const { post } = usePostForEdit()
 const route = useRoute()
 
 const titleEn = ref(post.value?.titleEn || "")
@@ -39,7 +36,7 @@ watch(
   },
 )
 
-const { updatePost, isPending } = useUpdatePost()
+const { updatePost } = useUpdatePost()
 
 const handleUpdateTags = (data: string[]) => {
   tags.value = data

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { defineAsyncComponent, ref, watch } from "vue"
+import { defineAsyncComponent, ref } from "vue"
 const Editor = defineAsyncComponent(() => import("@/components/Editor.vue"))
 // import Editor from "@/components/Editor.vue"
 import InputTags from "@/components/InputTags.vue"
@@ -21,7 +21,7 @@ const contentZh = ref("")
 const tags = ref<string[]>([])
 const imageUrl = ref("")
 
-const { createPost, isPending } = useCreatePost()
+const { createPost } = useCreatePost()
 
 const handleUpdateTags = (data: string[]) => {
   tags.value = data

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { getSectionTitleAndSlug, getSectionTitleAndSlugChinese } from "@/utils/helper"
+import { getSectionTitleAndSlugChinese } from "@/utils/helper"
 import Section from "../../Section.vue"
 import { h2Style, orderedListStyle, paragraphStyle, unorderedListStyle } from "../../CommonStyle"
 import ExternalLink from "../../ExternalLink.vue"

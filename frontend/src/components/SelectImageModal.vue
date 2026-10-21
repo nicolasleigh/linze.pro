@@ -4,14 +4,10 @@ import {
   Dialog,
   DialogContent,
   DialogDescription,
-  DialogFooter,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog"
-import { useUploadImage } from "@/hooks/useUploadImage"
-import { createReusableTemplate } from "@vueuse/core"
-import { ref } from "vue"
 import DialogClose from "./ui/dialog/DialogClose.vue"
 import { useImages } from "@/hooks/useImages"
 
@@ -32,8 +28,8 @@ const emit = defineEmits<{
         <DialogDescription hidden> Select Image </DialogDescription>
       </DialogHeader>
       <div class="max-h-[500px] overflow-auto flex flex-wrap gap-2 items-center">
-        <DialogClose v-for="(item, index) in images" @click="emit('change', item.url)">
-          <img :key="index" :src="item.url" class="aspect-video h-[50px] rounded-sm" />
+        <DialogClose v-for="item in images" :key="item.id" @click="emit('change', item.url)">
+          <img :src="item.url" class="aspect-video h-[50px] rounded-sm" />
         </DialogClose>
       </div>
     </DialogContent>

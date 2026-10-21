@@ -9,14 +9,14 @@ import { computed, ref, watch } from "vue"
 import { useRoute } from "vue-router"
 
 const route = useRoute()
-const tag = ref(route.query.tag)
-const page = Number(route.query.page) || 1
-const { posts: allPosts, error, isLoading } = usePosts({ page })
-const { posts: postsByTag, refetch } = usePostsByTag(page, tag)
+const tag = computed(() => (typeof route.query.tag === "string" ? route.query.tag : ""))
+const page = computed(() => Math.max(1, Number(route.query.page) || 1))
+const { posts: allPosts } = usePosts({ page })
+const { posts: postsByTag } = usePostsByTag(page, tag)
 const { t, i18next } = useTranslation()
 
 const resultPost = computed(() => {
-  return tag.value && postsByTag.value?.length ? postsByTag.value : allPosts.value
+  return tag.value ? postsByTag.value : allPosts.value
 })
 
 const currentLanguage = ref<string | null>(null)
@@ -27,14 +27,6 @@ watch(
     currentLanguage.value = newLang
   },
   { immediate: true },
-)
-
-watch(
-  () => route.query.tag,
-  (newTag) => {
-    tag.value = newTag
-    refetch()
-  },
 )
 </script>
 
